@@ -12,3 +12,5 @@ BuildOutput/
 .vs/
 Thumbs.db
 desktop.ini
+# simulator databases and DLL build output
+build/
