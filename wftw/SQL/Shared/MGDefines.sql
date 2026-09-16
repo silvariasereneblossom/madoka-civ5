@@ -542,9 +542,7 @@ UPDATE Language_en_US
 SET Text = replace(Text, 'Barbarian encampments', "Witch Labyrinths")
 WHERE Text LIKE ('%Barbarian encampments%');
 
-UPDATE Language_en_US
-SET Text = replace(Text, 'Barbarian Encampment', "Witch's Labyrinth")
-WHERE Text LIKE ('%Barbarian Encampment%');
+-- [port] removed a duplicate of the 'Barbarian Encampment' replace above
 
 UPDATE Language_en_US
 SET Text = replace(Text, 'Encampment', "Labyrinth")
@@ -688,14 +686,16 @@ WHERE Text LIKE ('%Great Person%');
 --==========================================================================================================================
 
 
+-- [port] CP renamed this to BarbarianCampGold (+AIBarbarianCampGold) and still adds the legacy
+-- BarbCampGold on top, so the legacy column must stay 0 or camps pay CP's full gold plus one.
 UPDATE HandicapInfos
-SET BarbCampGold = 1;
+SET BarbarianCampGold = 1, AIBarbarianCampGold = 1, BarbCampGold = 0;
 
 CREATE TRIGGER SetBarbCampGold0
 AFTER INSERT ON HandicapInfos
 BEGIN
 	UPDATE		HandicapInfos
-	SET BarbCampGold = 1
+	SET BarbarianCampGold = 1, AIBarbarianCampGold = 1, BarbCampGold = 0 -- [port]
 	WHERE Type = NEW.Type;
 END;
 
@@ -705,6 +705,10 @@ END;
 --Update Witch's Labyrinth Graphics
 --==========================================================================================================================
 --==========================================================================================================================
+-- [port] the landmark type must exist before ArtDefine_Landmarks rows reference it
+INSERT INTO ArtDefine_LandmarkTypes (Type, LandmarkType, FriendlyName)
+VALUES ('ART_DEF_IMPROVEMENT_PMMM_WITCH_BARRIER', 'Improvement', 'Witch Barrier');
+
 INSERT INTO ArtDefine_Landmarks(Era, State, Scale, ImprovementType, LayoutHandler, ResourceType, Model, TerrainContour)
 SELECT 'Any', 'UnderConstruction', 2.0,  'ART_DEF_IMPROVEMENT_PMMM_WITCH_BARRIER', 'SNAPSHOT', 'ART_DEF_RESOURCE_NONE', 'BloodfireVents_PL.fxsxml', 1 UNION ALL
 SELECT 'Any', 'Constructed', 2.0,  'ART_DEF_IMPROVEMENT_PMMM_WITCH_BARRIER', 'SNAPSHOT', 'ART_DEF_RESOURCE_NONE', 'BloodfireVents.fxsxml', 1 UNION ALL

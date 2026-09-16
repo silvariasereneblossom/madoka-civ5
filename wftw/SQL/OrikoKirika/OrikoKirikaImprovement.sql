@@ -1,3 +1,7 @@
+-- [port] the landmark type must exist before ArtDefine_Landmarks rows reference it
+INSERT INTO ArtDefine_LandmarkTypes (Type, LandmarkType, FriendlyName)
+VALUES ('ART_DEF_IMPROVEMENT_PMMM_FARSIGHT_ORACLE', 'Improvement', 'Farsight Oracle');
+
 INSERT INTO ArtDefine_Landmarks(Era, State, Scale, ImprovementType, LayoutHandler, ResourceType, Model, TerrainContour)
 SELECT 'Any', 'UnderConstruction', 0.75,  'ART_DEF_IMPROVEMENT_PMMM_FARSIGHT_ORACLE', 'SNAPSHOT', 'ART_DEF_RESOURCE_NONE', 'PMMM_Oracle_HB.fxsxml', 1 UNION ALL
 SELECT 'Any', 'Constructed', 0.75,  'ART_DEF_IMPROVEMENT_PMMM_FARSIGHT_ORACLE', 'SNAPSHOT', 'ART_DEF_RESOURCE_NONE', 'PMMM_Oracle_B.fxsxml', 1 UNION ALL

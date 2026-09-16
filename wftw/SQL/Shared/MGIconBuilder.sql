@@ -60,4 +60,4 @@ WHERE Type LIKE ('%AMERICA%') OR Type LIKE ('%BRAZIL%') OR Type LIKE ('CIVILIZAT
 
 UPDATE Civilizations
 SET DefaultMagicalGirlColor = 2
-WHERE Type IN ('%ARABIA%', '%PERSIA%') AND EXISTS(SELECT * FROM WishForTheWorldOptions WHERE Option='CulturalMGSkinTones' AND Value != 0);
+WHERE (Type LIKE '%ARABIA%' OR Type LIKE '%PERSIA%') AND /* [port] IN did no wildcard matching */ EXISTS(SELECT * FROM WishForTheWorldOptions WHERE Option='CulturalMGSkinTones' AND Value != 0);

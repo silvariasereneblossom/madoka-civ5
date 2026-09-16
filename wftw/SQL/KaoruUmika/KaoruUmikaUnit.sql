@@ -5,7 +5,7 @@
 --==========================================================================================================================
 INSERT INTO UnitClasses
 			(Type,									Description,								DefaultUnit,	MaxPlayerInstances)
-VALUES		('UNITCLASS_PMMM_ARTIFICIAL_INCUBATOR',	'TXT_KEY_UNIT_PMMM_ARTIFICIAL_INCUBATOR',	'NO_UNIT',		3);
+VALUES		('UNITCLASS_PMMM_ARTIFICIAL_INCUBATOR',	'TXT_KEY_UNIT_PMMM_ARTIFICIAL_INCUBATOR',	'NONE', /* [port] engine convention */		3);
 
 
 --==========================================================================================================================

@@ -97,7 +97,7 @@ SELECT		('UNIT_PMMM_CLARA_DOLL'), 	BuildType
 FROM Unit_Builds WHERE (UnitType = 'UNIT_GREAT_GENERAL');
 
 DELETE FROM Unit_Builds
-WHERE UnitType = 'UNIT_PMMM_CLARA_DOLL' and BuildType = 'IMPROVEMENT_CITADEL';
+WHERE UnitType = 'UNIT_PMMM_CLARA_DOLL' and BuildType = 'BUILD_CITADEL'; -- [port] was IMPROVEMENT_CITADEL, which never matched
 --==========================================================================================================================
 -- Unit_FreePromotions
 --==========================================================================================================================
