@@ -133,3 +133,33 @@ active player will desync simultaneous-turn games.
    `xml.log`, and any `*.dmp` from the game folder if it crashed. Grep
    `Database.log` for `MadokaTableUpdates` / `duplicate column` to confirm the
    schema fix landed, and `Lua.log` for `PMMM` errors.
+
+## 2026-09-16 evening: "game crashes on start" (not the mod)
+
+Symptom: every launch (DX9 and DX11, via Steam or direct, with or without
+Lekmod, before and after any mod/config change) exited 6-13 s after
+`SetActiveDLCandMods`, i.e. when the main menu should appear. No minidump, no
+Windows Error Reporting event. Last successful session was 2026-04-27.
+
+Diagnosis: process exit code `0x8000DEAD` = `ExitProcess` from a stub in the
+executable (`CivilizationV_DX11.exe` VA `0x495f10`) reached only indirectly,
+preceded by a helper that talks to the Steam client over the DRM IPC channel
+(`STEAM_DRM_IPC` file mapping, `STEAM_DIPC_CONSUME` / `SREAM_DIPC_PRODUCE`
+events): the Steamworks CEG wrapper's fatal path. Under cdb the process
+enumerated DxDiag, the driver store and network adapters right before
+exiting (CEG hardware fingerprinting), and CEG defeats debugger breakpoints,
+so no stack was recoverable.
+
+Fix: `steam://validate/8930`. Steam reported *Files Corrupt*, re-downloaded
+and committed both executables (18:40), and the next launch reached the
+main menu. Restarting the Steam client alone did not help. Exploit
+Protection mitigations were at defaults; the game's owner account matched
+the logged-in account, so it was a stale per-machine CEG binding (new GPU
+driver / Parsec virtual adapters since April), not a licence problem.
+
+Side effects of the investigation, all reversible: `config.ini` gained
+`SkipIntroVideo = 1` (left in place; remove the two lines under
+`LoggingEnabled` to restore); the Steam client was restarted once at 18:36
+(a running OOTP 27 session re-attached fine); Debugging Tools for Windows
+were extracted to `tools/sdk/dbg` (not installed); `build/dbg/` holds the
+cdb logs.
