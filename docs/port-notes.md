@@ -35,7 +35,7 @@ against the files in `wftw/` (Workshop v27) and the CP 5.4.6 checkout in
 | Finding | Status |
 |---|---|
 | `SQL/Shared/MadokaTableUpdates.sql` re-added `UnitPromotions.ShowInUnitPanel`, which CP now ships. Duplicate column → sqlite3_exec aborted the file at statement 39/87, so 48 Magical-Girl columns on Traits/Policies/Buildings/Missions/Civilizations/Beliefs/Specialists were never created and ~15 later files failed on them. Almost certainly the reported "crash when a Magical Girl spawns". | **Fixed** (line removed) |
-| `XML/CIV5Options-MadokaDVMC.xml` flips 16 `CustomModOptions`. 14 still exist (all default 0, so flipping is required). `GLOBAL_PROMOTION_CLASSES` and `GLOBAL_SEPARATE_GREAT_ADMIRAL` rows no longer exist; the updates are silent no-ops. Promotion classes are always on in CP (`Units.PromotionClass` exists and WFTW sets it on `UNIT_PMMM_MAGICAL_GIRL`). Separate-admiral behaviour still to verify in CP's `CvPlayer`. | No-op, verify admiral |
+| `XML/CIV5Options-MadokaDVMC.xml` flips 16 `CustomModOptions`. 14 still exist (all default 0, so flipping is required). `GLOBAL_PROMOTION_CLASSES` and `GLOBAL_SEPARATE_GREAT_ADMIRAL` rows no longer exist; the updates are silent no-ops. Promotion classes are always on in CP (`Units.PromotionClass` exists and WFTW sets it on `UNIT_PMMM_MAGICAL_GIRL`). CP's `CvPlayer` keeps separate `GreatGeneralsCreated`/`GreatAdmiralsCreated` counters and threshold modifiers, so the separate-admiral behaviour is built in. | No-op, verified |
 | `DecisionsMod/SQL/*DecisionData.sql` insert into `DecisionsAddin_Support` first; without Events & Decisions the file aborts, by design. | Leave |
 | `XML/CBPReligiousWonder.xml` (`MinorityHappinessChange`) and `ModCompatibility/Community Balance Patch/PMMMCBP.sql` (`IlliteracyHappinessChange`) use 2015 CBP columns that no longer exist in CP or VP (VP now has `*FlatReduction` columns). Silent failures in CP-only; need a VP companion mod in Phase 3. | Phase 3 |
 | `ModCompatibility/Superpower Modpack/PMMMSuperpower.sql` re-inserts Charisma promotions unconditionally; fails on UNIQUE and aborts when Superpower is absent (harmless). | Cosmetic |
@@ -54,6 +54,33 @@ signatures (`CustomMission*`, `UnitCreated`, `UnitPrekill`, `GetDiploModifier`,
 | `pPlayer:IsPlayerStopSpyingRequestEverAsked(p)` | removed | approximated with spy-promise state (**done**) |
 | `PreGame:GetGameSpeed()` | engine object, fine | — |
 | Everything else (`SetBaseCombatStrength`, `GetMilitaryMight`, `SetName`, `PushMission`, ...) | present | — |
+
+## Lua reference check (`scripts/luarefs.py` against the simulated DB)
+
+- `PMMMKyoukoTrait.lua` used `GameInfoTypes.UNITCLASS_MAGICAL_GIRL` (does not
+  exist; the class is `UNITCLASS_PMMM_MAGICAL_GIRL`), so the "not a Magical
+  Girl" exclusion in Kyouko's bonus never applied. **Fixed.**
+- Benign leftovers: unused locals `BUILDING_PMMM_TEAHOUSE_*_DUMMY`,
+  `BUILDING_PMMM_DEMON_HOMURA_DUMMY` (only the `_1.._N` variants exist),
+  `UNITCLASS_PMMM_SEA_WITCH` (sea witches share `UNITCLASS_PMMM_WITCH`),
+  `PROMOTION_PMMM_TIRO_MUSKETEER_READY` (never used); Time Stop remnants in
+  `PMMMGeneralFunctions.lua` and `UnitPanel.lua`; optional external-mod types
+  (`CIVILIZATION_BRITAIN_FSN`, `UNIT_RECLUSE_VILLAIN`, JFD CulDiv) and engine
+  enums (`NOTIFICATION_*`, `UNITAI_*`, defines) that are not DB rows.
+- WFTW formats thousands of XML values as `<Type>\n\tX\n</Type>`; the game's
+  loader trims them (the mod's art defines and icons work), so `civdb.py`
+  trims too. Do not "clean" the XML for this.
+
+## Custom DLL build (stock CP 5.4.6 source)
+
+| Config | Result | Time | Size |
+|---|---|---|---|
+| Debug | links, 29 warnings | ~22 s | 28.5 MB (+117 MB pdb) |
+| Release (LTO) | links, 29 warnings | ~170 s | 17.03 MB (official 5.4.6: 17.01 MB) |
+
+Outputs: `upstream/Community-Patch-DLL/clang-output/{Debug,Release}/`. Our
+fork for WFTW-specific hooks (e.g. an `IsPlayerNoSettleRequestEverAsked`
+Lua exposure) can start from this.
 
 ## UI overrides
 
@@ -78,3 +105,22 @@ active player will desync simultaneous-turn games.
   `wftw/` in this repo, so edits are live.
 - `config.ini`: `LoggingEnabled = 1`, `MessageLog = 1` (backup:
   `config.ini.bak-madoka-20260916`). Game is already windowed.
+- Computer-use access to the game was declined, so the first in-game run is
+  manual. Custom DLL builds land in
+  `upstream/Community-Patch-DLL/clang-output/{Debug,Release}/`; copy the
+  `.dll` (and `.pdb` for debugging) over `MODS\(1) Community Patch (v 151)\CvGameCore_Expansion2.dll`
+  to test a custom build.
+
+### Manual first run
+
+1. Launch Civ V → Mods → accept → tick **(1) Community Patch** and
+   **Madoka Magica -- Wish for the World [BNW]** only (leave the Rebellion and
+   BalanceGoldPrime packs off; WFTW blocks Rebellion anyway) → Next.
+2. Single Player → Set Up Game → pick Madoka Kaname (or any WFTW civ), small
+   map, then start. Each WFTW civ spawns a Leader Magical Girl at turn 1, which
+   is the path the old crash reports point at.
+3. Play ~10 turns, expend a Great Person if one appears (spawns a second MG).
+4. Collect `My Games\Sid Meier's Civilization 5\Logs\Database.log`, `Lua.log`,
+   `xml.log`, and any `*.dmp` from the game folder if it crashed. Grep
+   `Database.log` for `MadokaTableUpdates` / `duplicate column` to confirm the
+   schema fix landed, and `Lua.log` for `PMMM` errors.
