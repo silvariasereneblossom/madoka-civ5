@@ -25,7 +25,10 @@ function MagicalGirlPolicyMovementBonus(iPlayer, iPolicy)
 		if v.Owner == iPlayer then
 			if v.Class == iClass then
 				local _, pUnit = RetrieveMGPointers(k)
-				pUnit:SetHasPromotion(iPromotion, true)
+				--[port] RetrieveMGPointers returns only the player when the MG is off the map
+				if pUnit then
+					pUnit:SetHasPromotion(iPromotion, true)
+				end
 			end
 		end
 	end

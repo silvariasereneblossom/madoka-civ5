@@ -16,7 +16,10 @@ function LuminousRecoverSoulGem(iPlayer)
 				local pCity = pUnit:GetPlot():GetPlotCity()
 				if pCity:HasBuilding(iLuminousGarden) then
 					local iMGKey = GetMagicalGirlKey(iPlayer, pUnit:GetID())
-					DoChangeCorruption(-1, iMGKey)
+					--[port] GetMagicalGirlKey returns false on a miss
+					if iMGKey then
+						DoChangeCorruption(-1, iMGKey)
+					end
 				end
 			end
 		end

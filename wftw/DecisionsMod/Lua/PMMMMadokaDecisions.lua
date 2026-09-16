@@ -67,7 +67,8 @@ local Decisions_Mitakiharafest = {}
 		pPlayer:ChangeGold(-iCost)
 		pPlayer:ChangeNumResourceTotal(iMagistrate, -2)
 		pPlayer:ChangeGoldenAgeTurns(3)
-		pPlayer:GetCapitalCity():ChangeWeLoveTheKingDayCounter(3)
+		local pCapital = pPlayer:GetCapitalCity()	--[port] a civ with no cities has no capital
+		if pCapital then pCapital:ChangeWeLoveTheKingDayCounter(3) end
 		
 		save(pPlayer, "Decisions_Mitakiharafest", Game:GetGameTurn())
 	end
@@ -83,8 +84,12 @@ local Decisions_Mitakiharafest = {}
 				local iTurnDifference = iCurTurn - load(pPlayer, "Decisions_Mitakiharafest")
 				if iTurnDifference % 25 == 0 then
 					pPlayer:ChangeGoldenAgeTurns(3)
-					pPlayer:GetCapitalCity():ChangeWeLoveTheKingDayCounter(3)
-					pPlayer:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, Locale.ConvertTextKey("TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TEXT"), Locale.ConvertTextKey("TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TITLE"), pPlayer:GetCapitalCity():GetX(), pPlayer:GetCapitalCity():GetY())
+					--[port] a civ with no cities has no capital
+					local pCapital = pPlayer:GetCapitalCity()
+					if pCapital then
+						pCapital:ChangeWeLoveTheKingDayCounter(3)
+						pPlayer:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, Locale.ConvertTextKey("TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TEXT"), Locale.ConvertTextKey("TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TITLE"), pCapital:GetX(), pCapital:GetY())
+					end
 				end
 			end
 			if load(pPlayer, "Decisions_Mitakun") == true then

@@ -97,7 +97,7 @@ function (iMGKey)
 
 	local sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_WENT_ON_VACATION_TEXT", Locale.ConvertTextKey(MagicalGirls[iMGKey].Name), sPlaceVacationedToName, iTurns)
 	local sTitle =  Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_WENT_ON_VACATION_TITLE")
-	pPlayer:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, sText, sTitle, MagicalGirls[iMGKey].LocationX, MagicalGirls[iMGKey].LocationY)
+	pPlayer:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, sText, sTitle, MagicalGirls[iMGKey].PositionX, MagicalGirls[iMGKey].PositionY)	-- [port] LocationX/LocationY are never written anywhere; the fields are PositionX/PositionY
 	if iSelectedPlayer ~= iPlayer then
 		local sTheirText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_ENEMY_MG_VACATION_TEXT", Locale.ConvertTextKey(MagicalGirls[iMGKey].Name), pPlayer:GetCivilizationAdjective())
 		local sTheirTitle = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_ENEMY_MG_VACATION_TITLE")

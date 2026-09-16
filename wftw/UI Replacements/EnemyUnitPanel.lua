@@ -144,7 +144,21 @@ function UpdateUnitPortrait( pUnit )
 				break
 			end
 		end
-		if MapModData.PMMM.MagicalGirls[iMGKey].OverrideIcon then
+		-- [port] A22: the scan above leaves iMGKey nil for an MG with no table entry -- fall back to the vanilla portrait
+		if not iMGKey or not MapModData.PMMM.MagicalGirls[iMGKey] then
+			local portraitOffset, portraitAtlas = UI.GetUnitPortraitIcon(pUnit);
+			textureOffset, textureSheet = IconLookup( portraitOffset, g_iPortraitSize, portraitAtlas );
+			if textureOffset == nil then
+				textureSheet = defaultErrorTextureSheet;
+				textureOffset = nullOffset;
+			end
+			Controls.PMMMBodyPortrait:SetHide(true);
+			Controls.PMMMOutfitPortrait:SetHide(true);
+			Controls.PMMMFacePortrait:SetHide(true);
+			Controls.PMMMHairPortrait:SetHide(true);
+			Controls.UnitPortrait:SetTexture(textureSheet);
+			Controls.UnitPortrait:SetTextureOffset(textureOffset);
+		elseif MapModData.PMMM.MagicalGirls[iMGKey].OverrideIcon then
 			textureOffset, textureAtlas = IconLookup( MapModData.PMMM.MagicalGirls[iMGKey].OverrideIcon[2], g_iPortraitSize, MapModData.PMMM.MagicalGirls[iMGKey].OverrideIcon[1]);
 			if textureOffset == nil then
 				textureOffset = nullOffset;

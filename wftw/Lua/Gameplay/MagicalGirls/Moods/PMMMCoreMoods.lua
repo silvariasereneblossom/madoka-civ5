@@ -9,6 +9,7 @@ t_MoodMods = {}
 
 
 local iGameSpeedMod = GameInfo.GameSpeeds[PreGame.GetGameSpeed()].ResearchPercent / 100
+local iBarbarianPlayer = GameDefines.MAX_CIV_PLAYERS		--[port] B11: barbarians are player MAX_CIV_PLAYERS (63), not MAX_CIV_PLAYERS - 1
 local iMagicalGirlClass = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
 local iWitchClass = GameInfoTypes.UNITCLASS_PMMM_WITCH
 local iSeaWitchClass = GameInfoTypes.UNITCLASS_PMMM_SEA_WITCH
@@ -25,10 +26,14 @@ function RefreshMGMood(iMGKey, pPlayer, pUnit, bGetText, bAccumulators)
 			--Accumulators maintain the duration of Mood modifiers.
 			pMod.Accumulator(iMGKey, pPlayer, pUnit)
 		end
-		tMoodInfos[iNewEntry].Value = pMod.Func(iMGKey, pPlayer, pUnit)
+		--[port] a Func may return a per-MG tooltip as its second value (see Homesick), so it no longer has to write
+		--into the shared t_MoodMods entry.
+		local sFuncTooltip;
+		tMoodInfos[iNewEntry].Value, sFuncTooltip = pMod.Func(iMGKey, pPlayer, pUnit)
 		--default to 0 if no value was returned
 		if not tMoodInfos[iNewEntry].Value then tMoodInfos[iNewEntry].Value = 0 end
-		local iMaxBoost = 1
+		--[port] accumulate the trait boost as a percentage: flooring a 1.xx multiplier per trait collapsed it to 1
+		local iMaxBoostPercent = 0
 		--Mood boosts from traits
 		if MapModData.gPMMMTraitMoodBoosts[pPlayer:GetID()] then
 			for k, v in pairs(MapModData.gPMMMTraitMoodBoosts[pPlayer:GetID()]) do
@@ -38,23 +43,26 @@ function RefreshMGMood(iMGKey, pPlayer, pUnit, bGetText, bAccumulators)
 					else
 						tMoodInfos[iNewEntry].Value = 0
 					end
-					iMaxBoost = math.floor(iMaxBoost * (1 + (v.Value / 100)))
+					iMaxBoostPercent = iMaxBoostPercent + v.Value		--[port] see above
 				end
 			end
 		end
+		local iMaxBoost = 1 + (iMaxBoostPercent / 100)		--[port] apply the accumulated boost percentage once
 		--clamp to MaxValue if the pMod.Func didn't already do it
 		if pMod.Max and tonumber(pMod.Max) and math.abs(tMoodInfos[iNewEntry].Value) > pMod.Max then
 			if tMoodInfos[iNewEntry].Value > 0 then
-				tMoodInfos[iNewEntry].Value = pMod.Max * iMaxBoost
+				tMoodInfos[iNewEntry].Value = math.floor(pMod.Max * iMaxBoost)		--[port] iMaxBoost can now be fractional
 			else
-				tMoodInfos[iNewEntry].Value = -(pMod.Max * iMaxBoost)
+				tMoodInfos[iNewEntry].Value = -math.floor(pMod.Max * iMaxBoost)		--[port] iMaxBoost can now be fractional
 			end
 		end
 		iTotalMood = iTotalMood + tMoodInfos[iNewEntry].Value
 		if bGetText then
 			if tMoodInfos[iNewEntry].Value > 0 then
 				tMoodInfos[iNewEntry].Desc = "[COLOR_POSITIVE_TEXT]"..Locale.ConvertTextKey(pMod.Desc, "+"..tostring(tMoodInfos[iNewEntry].Value)).."[ENDCOLOR]"
-				if pMod.PosTT then
+				if sFuncTooltip then		--[port] a per-MG tooltip returned by the Func wins over the shared one
+					tMoodInfos[iNewEntry].Tooltip = "[COLOR_POSITIVE_TEXT]"..sFuncTooltip.."[ENDCOLOR]"
+				elseif pMod.PosTT then
 					tMoodInfos[iNewEntry].Tooltip = "[COLOR_POSITIVE_TEXT]"..Locale.ConvertTextKey(pMod.PosTT).."[ENDCOLOR]"
 				end
 			elseif tMoodInfos[iNewEntry].Value == 0 then
@@ -62,7 +70,9 @@ function RefreshMGMood(iMGKey, pPlayer, pUnit, bGetText, bAccumulators)
 				tMoodInfos[iNewEntry].Tooltip = nil
 			else
 				tMoodInfos[iNewEntry].Desc = "[COLOR_WARNING_TEXT]"..Locale.ConvertTextKey(pMod.Desc, tostring(tMoodInfos[iNewEntry].Value)).."[ENDCOLOR]"
-				if pMod.NegTT then
+				if sFuncTooltip then		--[port] a per-MG tooltip returned by the Func wins over the shared one
+					tMoodInfos[iNewEntry].Tooltip = "[COLOR_WARNING_TEXT]"..sFuncTooltip.."[ENDCOLOR]"
+				elseif pMod.NegTT then
 					tMoodInfos[iNewEntry].Tooltip = "[COLOR_WARNING_TEXT]"..Locale.ConvertTextKey(pMod.NegTT).."[ENDCOLOR]"
 				end
 			end
@@ -257,9 +267,18 @@ function OnPlayerDoTurnVacationTurn(iPlayer)
 				end
 			end
 			local iNoVacationID = GameInfo.MG_MoodModifiers["MGMOODMOD_NO_VACATION"].ID
+			--[port] the Vacation mission takes the MG off the map, so collect the candidates before touching any missions
+			local tVacationCandidates = {}
 			for pUnit in pPlayer:Units() do
 				if pUnit:GetUnitClassType() == iMagicalGirlClass and pUnit:GetPlot():GetOwner() == iPlayer then
-					local iMGKey = GetMagicalGirlKey(iPlayer, pUnit:GetID())
+					tVacationCandidates[#tVacationCandidates + 1] = pUnit:GetID()
+				end
+			end
+			for c = 1, #tVacationCandidates, 1 do
+				local iLoopUnit = tVacationCandidates[c]
+				local pUnit = pPlayer:GetUnitByID(iLoopUnit)
+				if pUnit then
+					local iMGKey = GetMagicalGirlKey(iPlayer, iLoopUnit)
 					if iMGKey then
 						local iMod = t_MoodMods[iNoVacationID].Func(iMGKey, pPlayer, pUnit)
 						if iMod < 0 then
@@ -553,13 +572,18 @@ end
 function DoSocialize(iPlayer, pHeadUnit, pPlot)
 	local iTurn = Game:GetGameTurn()
 	local pPlayer = Players[iPlayer]
+	--[port] A11: GetMagicalGirlKey returns false on a miss. Resolve both keys before the body runs and skip any
+	--pairing we cannot key, instead of indexing MagicalGirls[false].
+	local iOurMGKey = GetMagicalGirlKey(iPlayer, pHeadUnit:GetID())
+	if not iOurMGKey then return end
 	for i = 0, pPlot:GetNumUnits() - 1 do
 		local pUnit = pPlot:GetUnit(i)
-		if pUnit ~= pHeadUnit and pUnit:GetUnitClassType() == iMagicalGirlClass then
+		local iTheirMGKey = false
+		if pUnit and pUnit ~= pHeadUnit and pUnit:GetUnitClassType() == iMagicalGirlClass then
+			iTheirMGKey = GetMagicalGirlKey(pUnit:GetOwner(), pUnit:GetID())
+		end
+		if iTheirMGKey then
 			local iOwner = pUnit:GetOwner()
-
-			local iOurMGKey = GetMagicalGirlKey(iPlayer, pHeadUnit:GetID())
-			local iTheirMGKey = GetMagicalGirlKey(iOwner, pUnit:GetID())
 			
 			if not MagicalGirls[iOurMGKey].RecentSocializations then MagicalGirls[iOurMGKey].RecentSocializations = {} end
 			if not MagicalGirls[iTheirMGKey].RecentSocializations then MagicalGirls[iTheirMGKey].RecentSocializations = {} end
@@ -663,8 +687,13 @@ function DoSocialize(iPlayer, pHeadUnit, pPlot)
 						iTheirHighestIdeologyAmount = v
 					end
 				end
-				MagicalGirls[iOurMGKey].IdeologicalBelief[iTheirHighestIdeology] = MagicalGirls[iOurMGKey].IdeologicalBelief[iTheirHighestIdeology] + 5 + iTheirLDBonus
-				MagicalGirls[iTheirMGKey].IdeologicalBelief[iOurHighestIdeology] = MagicalGirls[iTheirMGKey].IdeologicalBelief[iOurHighestIdeology] + 5 + iOurLDBonus
+				--[port] A16: with every belief decayed to 0 the highest index stays -1; skip the exchange instead of indexing [-1]
+				if iTheirHighestIdeology > -1 then
+					MagicalGirls[iOurMGKey].IdeologicalBelief[iTheirHighestIdeology] = MagicalGirls[iOurMGKey].IdeologicalBelief[iTheirHighestIdeology] + 5 + iTheirLDBonus
+				end
+				if iOurHighestIdeology > -1 then
+					MagicalGirls[iTheirMGKey].IdeologicalBelief[iOurHighestIdeology] = MagicalGirls[iTheirMGKey].IdeologicalBelief[iOurHighestIdeology] + 5 + iOurLDBonus
+				end
 			end
 			
 			MagicalGirls[iOurMGKey].LastSocializedTurn = iTurn
@@ -678,10 +707,10 @@ function DoSocialize(iPlayer, pHeadUnit, pPlot)
 				pHeadUnit:ChangeExperience(iTheirXPBonusToUs)
 			end
 			if iOurLoyaltyBonusToThem > 0 and MagicalGirls[iOurMGKey].Loyalty > MagicalGirls[iTheirMGKey].Loyalty then
-				MagicalGirls[iTheirMGKey].Loyalty = math.floor(MagicalGirls[iTheirMGKey].Loyalty + iOurLoyaltyBonusToThem, GameDefines.MAXIMUM_MG_LOYALTY)
+				MagicalGirls[iTheirMGKey].Loyalty = math.min(MagicalGirls[iTheirMGKey].Loyalty + iOurLoyaltyBonusToThem, GameDefines.MAXIMUM_MG_LOYALTY)	--[port] math.floor never clamped
 			end
 			if iTheirLoyaltyBonusToUs > 0 and MagicalGirls[iTheirMGKey].Loyalty > MagicalGirls[iOurMGKey].Loyalty then
-				MagicalGirls[iOurMGKey].Loyalty = math.floor(MagicalGirls[iOurMGKey].Loyalty + iTheirLoyaltyBonusToUs, GameDefines.MAXIMUM_MG_LOYALTY)
+				MagicalGirls[iOurMGKey].Loyalty = math.min(MagicalGirls[iOurMGKey].Loyalty + iTheirLoyaltyBonusToUs, GameDefines.MAXIMUM_MG_LOYALTY)	--[port] math.floor never clamped
 			end
 			
 			if iPlayer == Game:GetActivePlayer() then
@@ -761,6 +790,30 @@ for building in GameInfo.Buildings() do
 	end
 end
 
+--[port] PERF: the map-percent moodlet used to walk every plot on the map for every MG on every Mood refresh.
+--Cache the revealed-plot percentage per player, recomputed once per game turn.
+local tRevealedMapPercentCache = {}
+function GetRevealedMapPercent(pPlayer)
+	local iPlayer = pPlayer:GetID()
+	local iTurn = Game:GetGameTurn()
+	local tCached = tRevealedMapPercentCache[iPlayer]
+	if tCached and tCached.Turn == iTurn then
+		return tCached.Percent
+	end
+	local iDiscoveredPlots = 0
+	local iTotalPlots = Map.GetNumPlots()
+	local iTeam = pPlayer:GetTeam()
+	for i = 0, iTotalPlots - 1, 1 do
+		local pPlot = Map.GetPlotByIndex(i)
+		if pPlot:IsRevealed(iTeam) then
+			iDiscoveredPlots = iDiscoveredPlots + 1
+		end
+	end
+	local iPercent = math.floor(iDiscoveredPlots / iTotalPlots * 100)
+	tRevealedMapPercentCache[iPlayer] = { ["Turn"] = iTurn, ["Percent"] = iPercent }
+	return iPercent
+end
+
 row = GameInfo.MG_MoodModifiers["MGMOODMOD_POLICIES"]
 local iPolicyMoodID = row.ID
 t_MoodMods[iPolicyMoodID] = {}
@@ -831,17 +884,8 @@ t_MoodMods[iPolicyMoodID].Func = (
 		end
 		for k, v in pairs(tMoodPerMapPercent) do
 			if pPlayer:HasPolicy(k) then
-				local iDiscoveredPlots = 0
-				local iTotalPlots = Map.GetNumPlots()
-				local iTeam = pPlayer:GetTeam()
-				for i = 0, iTotalPlots - 1, 1 do
-					local pPlot = Map.GetPlotByIndex(i)
-					if pPlot:IsRevealed(iTeam) then
-						iDiscoveredPlots = iDiscoveredPlots + 1
-					end
-				end
-				local iPercent = math.floor(iDiscoveredPlots / iTotalPlots * 100)
-				iVal = iVal + (iPercent * v)
+				--[port] PERF: this walked every plot on the map per MG per Mood refresh; now cached per player per turn
+				iVal = iVal + (GetRevealedMapPercent(pPlayer) * v)
 			end
 		end
 		for k, v in pairs(tMoodPerTech) do
@@ -849,7 +893,7 @@ t_MoodMods[iPolicyMoodID].Func = (
 				local pTeamTechs = Teams[pPlayer:GetTeam()]:GetTeamTechs()
 				local iTechsKnown = pTeamTechs:GetNumTechsKnown()
 				local iFutureScore = pPlayer:GetScoreFromFutureTech() / GameDefines.SCORE_FUTURE_TECH_MULTIPLIER
-				iVal = iVal + ((iTechsKnown + iFutureScore) * v)
+				iVal = iVal + math.floor((iTechsKnown + iFutureScore) * v)		--[port] the future-tech division is fractional; Mood is stored as an integer
 			end
 		end
 		for k, v in pairs(tMoodPerSpecialist) do
@@ -905,7 +949,7 @@ for belief in GameInfo.Beliefs() do
 		}
 	end
 	if belief.PMMMMoodBonusPerFollower ~= 0 then
-		tMoodFromFollowersBelief[policy.ID] = {
+		tMoodFromFollowersBelief[belief.ID] = {		--[port] A17: was policy.ID, which is out of scope here
 			["Value"] = belief.PMMMMoodBonusPerFollower,
 			["Founder"] = belief.Founder
 		}
@@ -935,7 +979,8 @@ t_MoodMods[iBeliefMoodID].Func = (
 					if pPlayer:HasReligionInMostCities(row.ID) then
 						local tThisReligionBeliefs = Game.GetBeliefsInReligion(row.ID)
 						for k2, v2 in pairs(tThisReligionBeliefs) do
-							if k2 == k then
+							--[port] there is no k in scope here; v2 is the belief ID, so test it against the mood-belief tables
+							if tMoodFromFollowersBelief[v2] or tMoodFromFollowingCitiesBelief[v2] then
 								bShouldTestBeliefs = true
 								iReligion = row.ID
 								break
@@ -949,14 +994,17 @@ t_MoodMods[iBeliefMoodID].Func = (
 				local tThisReligionBeliefs = Game.GetBeliefsInReligion(iReligion)
 				for k, v in pairs(tMoodFromFollowersBelief) do
 					for k2, v2 in pairs(tThisReligionBeliefs) do
-						if k2 == k and ((v.Founder == true or v.Founder == 1 and bIsFounder == true) or v.Founder == false) then
+						--[port] GetBeliefsInReligion returns index -> belief ID, so test v2 (as the following-cities branch does);
+						--DB booleans arrive as 0/1 and the old Founder precedence made the test always true
+						if v2 == k and (((v.Founder == 1 or v.Founder == true) and bIsFounder) or (v.Founder == 0 or v.Founder == false)) then
 							iVal = iVal + (Game.GetNumFollowers(iReligion) * v.Value)
 						end
 					end
 				end
 				for k, v in pairs(tMoodFromFollowingCitiesBelief) do
 					for k2, v2 in pairs(tThisReligionBeliefs) do
-						if v2 == k and ((v.Founder == true or v.Founder == 1 and bIsFounder == true) or v.Founder == false) then
+						--[port] DB booleans arrive as 0/1 and the old precedence made the Founder test always true
+						if v2 == k and (((v.Founder == 1 or v.Founder == true) and bIsFounder) or (v.Founder == 0 or v.Founder == false)) then
 							iVal = iVal + (Game.GetNumCitiesFollowing(iReligion) * v.Value)
 						end
 					end
@@ -1069,15 +1117,14 @@ t_MoodMods[iInjuredID].Func = (
 
 t_MoodMods[iInjuredID].Accumulator = (
 	function(iMGKey, pPlayer, pUnit)
+		--[port] only drop Dull Pain on the turn it runs out; the old else-branch stripped the promotion and refilled
+		--every MG's moves on every accumulator pass, not just the ones coming off Dull Pain.
 		if MagicalGirls[iMGKey].DullPainTurns and MagicalGirls[iMGKey].DullPainTurns > 0 then
 			MagicalGirls[iMGKey].DullPainTurns = MagicalGirls[iMGKey].DullPainTurns - 1
 			if MagicalGirls[iMGKey].DullPainTurns == 0 then
 				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_PMMM_DULL_PAIN, false)
 				pUnit:SetMoves(pUnit:MaxMoves())
 			end
-		else
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_PMMM_DULL_PAIN, false)
-			pUnit:SetMoves(pUnit:MaxMoves())
 		end
 	end
 )
@@ -1218,6 +1265,7 @@ t_MoodMods[iHomesickID].Value = row.Value
 t_MoodMods[iHomesickID].Func = (
 	function(iMGKey, pPlayer, pUnit)
 		local iVal = 0
+		local sTooltip;		--[port] per-MG tooltip; this used to be written into the shared t_MoodMods[iHomesickID].NegTT
 		if pPlayer:IsHuman() then
 			if MagicalGirls[iMGKey].HomeCity then
 				local pCity = Vice_DecompileCityID(MagicalGirls[iMGKey].HomeCity)
@@ -1233,17 +1281,17 @@ t_MoodMods[iHomesickID].Func = (
 								iVal = math.floor(iVal / 2)
 							end
 						end
-						t_MoodMods[iHomesickID].NegTT = Locale.ConvertTextKey(GameInfo.MG_MoodModifiers[iHomesickID].NegativeTooltip, pCity:GetName())
+						sTooltip = Locale.ConvertTextKey(GameInfo.MG_MoodModifiers[iHomesickID].NegativeTooltip, pCity:GetName())	--[port] returned, not stored
 					end
 				else --the City has been destroyed and she can never return ;_;
 					iVal = t_MoodMods[iHomesickID].Max
-					t_MoodMods[iHomesickID].NegTT = Locale.ConvertTextKey("TXT_KEY_MGMOODMOD_HOMESICK_DESTROYED_TT") --unique tooltip
+					sTooltip = Locale.ConvertTextKey("TXT_KEY_MGMOODMOD_HOMESICK_DESTROYED_TT") --unique tooltip
 				end
 			else
 				iVal = 0
 			end
 		end
-		return -iVal
+		return -iVal, sTooltip
 	end
 )
 t_MoodMods[iHomesickID].Desc = row.Description
@@ -1648,7 +1696,7 @@ t_MoodMods[iWarScoreID].NegTT = row.NegativeTooltip
 t_MoodMods[iWarScoreID].Max = row.MaxValue
 
 function OnUnitKilledInCombatWarScore(iVictor, iLoser, iUnit)
-	if iVictor == 63 or iLoser == 63 then return end
+	if iVictor == iBarbarianPlayer or iLoser == iBarbarianPlayer then return end	--[port] B11: was hard-coded 63
 	
 	local pVictor = Players[iVictor]
 	local pLoser = Players[iLoser]
@@ -1697,7 +1745,7 @@ function OnUnitKilledInCombatWarScore(iVictor, iLoser, iUnit)
 end
 
 function OnCityCaptureCompleteWarScore(iLoser, bCapital, iX, iY, iVictor, iPop, bConquest)
-	if iLoser == 63 or iVictor == 63 or bConquest == false then return end
+	if iLoser == iBarbarianPlayer or iVictor == iBarbarianPlayer or bConquest == false then return end	--[port] B11: was hard-coded 63
 
 	local pVictor = Players[iVictor]
 	local pLoser = Players[iLoser]

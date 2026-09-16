@@ -22,7 +22,16 @@ end
 
 function PolishCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
 	if iMission == iMissionType then
-		DoPolish(iPlayer, Players[iPlayer]:GetUnitByID(iUnit), Map.GetPlot(-iData1, -iData2))
+		--[port] iData1/iData2 arrive unary-negated (see the InputHandler in PMMMWishForTheWorldMain);
+		--validate them and the plot before use
+		local iX, iY = -iData1, -iData2
+		if iX >= 0 and iY >= 0 then
+			local pPlot = Map.GetPlot(iX, iY)
+			local pUnit = Players[iPlayer]:GetUnitByID(iUnit)
+			if pPlot and pUnit then
+				DoPolish(iPlayer, pUnit, pPlot)
+			end
+		end
 	end
 	return 0
 end

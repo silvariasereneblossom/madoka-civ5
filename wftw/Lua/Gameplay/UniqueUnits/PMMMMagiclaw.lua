@@ -17,7 +17,9 @@ function Magiclaw(iPlayer, iUnit, bTestAllEnemies)
 	
 		
 		--Test if this unit gets a debuff.
-		local bThisUnitStaysDebuffed = MagiclawLoopTest(k, v.Radius, pPlayer, pUnit:GetPlot())
+		--[port] off-map units (Freezer, vacation) have no plot
+		local pThisPlot = pUnit:GetPlot()
+		local bThisUnitStaysDebuffed = pThisPlot and MagiclawLoopTest(k, v.Radius, pPlayer, pThisPlot)
 		if bThisUnitStaysDebuffed then
 			pUnit:SetHasPromotion(v.EnemyPromotionType, true)
 			dprint("Unit debuffed")
@@ -27,19 +29,21 @@ function Magiclaw(iPlayer, iUnit, bTestAllEnemies)
 		end
 		--Test if any enemy unit gets a debuff, but only if the function call said to do it.
 		if bTestAllEnemies then
-			local pTeam = Teams[pPlayer:GetTeam()]
+			--[port] the sweep only visited players we are currently at war with, so the debuff was
+			--never taken off again after peace. Visit every player and let MagiclawLoopTest decide;
+			--it re-tests the war state itself, so units at peace simply get the promotion removed.
 			for iEnemyPlayer, pEnemyPlayer in pairs(Players) do
 				if iEnemyPlayer ~= iPlayer then
-					if pTeam:IsAtWar(pEnemyPlayer:GetTeam()) or iEnemyPlayer == 63 then
-						for pEnemyUnit in pEnemyPlayer:Units() do
-							local bEnemyUnitDebuffed = MagiclawLoopTest(k, v.Radius, pEnemyPlayer, pEnemyUnit:GetPlot())
-							if bEnemyUnitDebuffed then
-								dprint("Unit debuffed")
-								pEnemyUnit:SetHasPromotion(v.EnemyPromotionType, true)
-							else
-								dprint("Unit not debuffed")
-								pEnemyUnit:SetHasPromotion(v.EnemyPromotionType, false)
-							end
+					for pEnemyUnit in pEnemyPlayer:Units() do
+						--[port] off-map units have no plot
+						local pEnemyPlot = pEnemyUnit:GetPlot()
+						local bEnemyUnitDebuffed = pEnemyPlot and MagiclawLoopTest(k, v.Radius, pEnemyPlayer, pEnemyPlot)
+						if bEnemyUnitDebuffed then
+							dprint("Unit debuffed")
+							pEnemyUnit:SetHasPromotion(v.EnemyPromotionType, true)
+						else
+							dprint("Unit not debuffed")
+							pEnemyUnit:SetHasPromotion(v.EnemyPromotionType, false)
 						end
 					end
 				end

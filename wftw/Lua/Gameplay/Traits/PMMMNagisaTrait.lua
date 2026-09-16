@@ -35,8 +35,11 @@ function NagisaGoldenAge(iPlayer)
 				end
 				for k, v in pairs(ResourcesToMake) do
 					while v > 0 and v~= nil do
+						--[port] bail out when the city has no empty plot left; EmptyPlots[1] was nil here
+						if #EmptyPlots == 0 then break end
 						v = v - 1
-						pPlot = EmptyPlots[Game.Rand(#EmptyPlots, "Empty Plot Roll for Resource Spread PMMM") + 1]
+						--[port] pPlot leaked as a global
+						local pPlot = EmptyPlots[Game.Rand(#EmptyPlots, "Empty Plot Roll for Resource Spread PMMM") + 1]
 						pPlot:SetResourceType(k, 1)
 						local sText = Locale.ConvertTextKey("TXT_KEY_NOTIFICATION_PMMM_NAGISA_RESOURCE_TEXT")
 						local sTitle = Locale.ConvertTextKey("TXT_KEY_NOTIFICATION_PMMM_NAGISA_RESOURCE_TITLE")

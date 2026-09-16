@@ -36,6 +36,13 @@ function AddHarmonyOnLevel(iPlayer, iUnit)
 end
 
 
+--[port] PMMM.Harmony is keyed by "owner:unit" and unit IDs are recycled; drop the entry
+--when the unit dies so a later unit does not inherit its Harmony
+function ClearHarmonyOnDeath(iPlayer, iUnit)
+	PMMM.Harmony[GetUnitSpecialID(iPlayer, iUnit)] = nil
+end
+
+
 --Grant a dummy building in each city which has a unit with Harmony garrisoned in it.
 function ExpendHarmony(iPlayer)
 	if iPlayer < iMaxCivs then

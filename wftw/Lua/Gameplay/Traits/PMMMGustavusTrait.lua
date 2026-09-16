@@ -10,6 +10,7 @@ include('PMMMGeneralFunctions.lua');
 function GustavusTrait(iPlayer, iUnit, bDontTestNextUnit)
 	local pPlayer = Players[iPlayer]
 	local pUnit = pPlayer:GetUnitByID(iUnit)
+	if not pUnit then return end --[port] the unit may no longer exist / not be ours
 	local pThisPlot = pUnit:GetPlot()
 	dprint("Running Gustavus trait on " ..pUnit:GetName())
 	local CombatTypes = {}
@@ -52,9 +53,11 @@ function GustavusTrait(iPlayer, iUnit, bDontTestNextUnit)
 									end
 								end
 							end
-						end
-						if not bDontTestNextUnit then
-							GustavusTrait(iPlayer, pPlotUnit:GetID(), true)
+							--[port] the recursion used to sit outside this nil guard and ran on units of any
+							--owner, so the lookup at the top of the next call returned nil and crashed
+							if not bDontTestNextUnit and pPlotUnit:GetOwner() == iPlayer then
+								GustavusTrait(iPlayer, pPlotUnit:GetID(), true)
+							end
 						end
 					end
 				end

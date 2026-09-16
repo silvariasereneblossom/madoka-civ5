@@ -113,7 +113,8 @@ function GetNumVacationingMagicalGirls(pPlayer)
 	local iPlayer = pPlayer:GetID()
 	local iVacationers = 0
 	for k, v in pairs(MapModData.PMMM.MagicalGirls) do
-		if v.CurrentVacationLocation and v.CurrentVacationLocation == iPlayer then
+		--[port] the count ignored Status, so every MG that had ever vacationed here still counted
+		if v.Status == GameInfoTypes.MGACTIONSTATE_VACATIONING and v.CurrentVacationLocation and v.CurrentVacationLocation == iPlayer then
 			iVacationers = iVacationers + 1
 		end 
 	end

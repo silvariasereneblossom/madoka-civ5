@@ -209,7 +209,13 @@ function OnPrekillRunTraitScripts(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iBy
 		UMadokaOnWitchOrMGDeath(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iByPlayer)
 	end
 	if bIsDHomura then
-		DemonHomuraDirectKill(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iByPlayer)
+		--[port] DemonHomuraDirectKill takes the CombatEnded parameter list; the prekill path
+		--has its own adapter now instead of being handed incompatible arguments
+		DemonHomuraPrekill(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iByPlayer)
+	end
+	if bIsKyouko then
+		--[port] unit IDs are recycled, so the per-unit Stolen Food entry has to go with the unit
+		ClearStolenFoodOnDeath(iPlayer, iUnit)
 	end
 end
 
@@ -232,12 +238,15 @@ function OnCityCaptureRunTraitScripts(iCapturedPlayer, bCapital, iX, iY, iCaptur
 	if bIsPleiades then
 		OnPleiadesCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
 	end
+	if bIsDHomura then
+		--[port] a captured city keeps the subjugation dummies it carried under its previous owner
+		DemonHomuraOnCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
+	end
 end
 
 function OnLoadScreenCloseRunTraitScripts()
-	if bIsShirome then
-		OnLoadScreenCloseShiromeTrait()
-	end
+	--[port] Shirome's civ-location reveal used to run here; it mutates game state, so it now
+	--runs once per player from OnPlayerDoTurnShiromeTrait instead of from this per-client event
 end
 
 if bIsDHomura then

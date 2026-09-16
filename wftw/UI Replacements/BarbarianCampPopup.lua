@@ -16,9 +16,10 @@ function OnPopup( popupInfo )
 
 	--PMMM Mod
 	local iPlayer = Game:GetActivePlayer()
-    local iNumGold = MapModData.gPMMMWitchBarrierXP
+    -- [port] A23: fall back to the real camp gold when the PMMM tables are not loaded yet
+    local iNumGold = MapModData.gPMMMWitchBarrierXP or popupInfo.Data1 or 0
 
-	if MapModData.gPMMMTraits[iPlayer] and MapModData.gPMMMTraits[iPlayer].WitchBarrierXPMultiplier then
+	if MapModData.gPMMMTraits and MapModData.gPMMMTraits[iPlayer] and MapModData.gPMMMTraits[iPlayer].WitchBarrierXPMultiplier then
 		if MapModData.gPMMMTraits[iPlayer].WitchBarrierXPMultiplier ~= 0 then
 			iNumGold = iNumGold * MapModData.gPMMMTraits[iPlayer].WitchBarrierXPMultiplier
 		end

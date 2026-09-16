@@ -328,25 +328,27 @@ function PushAIMissions(iPlayer)
 					if not v.AIMoveToTarget and v.Status == iActive then
 						print("Found a MG with a mission but no mission target plot. Attempt to push mission")
 						local _, pUnit = RetrieveMGPointers(k)
-						print("pUnit location: "..pUnit:GetX()..", "..pUnit:GetY())
-						pUnit:PopMission()
-						pUnit:PushMission(v.AIMissionAfterReachingTarget, pUnit:GetX(), pUnit:GetY())
+						if pUnit then	-- [port] RetrieveMGPointers returns no unit for an MG that is off the map
+							print("pUnit location: "..pUnit:GetX()..", "..pUnit:GetY())
+							pUnit:PopMission()
+							pUnit:PushMission(v.AIMissionAfterReachingTarget, pUnit:GetX(), pUnit:GetY())
 						
-						--extra logic for Witch Hunting as it's done in groups. Set the "currently hunting Witches" tag to false if no others are doing it.
-						if v.AIMissionAfterReachingTarget == GameInfoTypes.MISSION_PMMM_WITCH_HUNT then
-							local bAnyWitchHuntersLeft;
-							for k2, v2 in pairs(MagicalGirls) do
-								if v2.AIMissionAfterReachingTarget and k2 ~= k and MagicalGirls[k2].Owner == iPlayer and v2 == GameInfoTypes.MISSION_PMMM_WITCH_HUNT then
-									bAnyWitchHuntersLeft = true
-									break
+							--extra logic for Witch Hunting as it's done in groups. Set the "currently hunting Witches" tag to false if no others are doing it.
+							if v.AIMissionAfterReachingTarget == GameInfoTypes.MISSION_PMMM_WITCH_HUNT then
+								local bAnyWitchHuntersLeft;
+								for k2, v2 in pairs(MagicalGirls) do
+									if v2.AIMissionAfterReachingTarget and k2 ~= k and MagicalGirls[k2].Owner == iPlayer and v2.AIMissionAfterReachingTarget == GameInfoTypes.MISSION_PMMM_WITCH_HUNT then	-- [port] compared the MG record table to a mission ID
+										bAnyWitchHuntersLeft = true
+										break
+									end
+								end
+								if not bAnyWitchHuntersLeft then
+									PMMM.AIAssignedWitchHunters[iPlayer] = false
 								end
 							end
-							if not bAnyWitchHuntersLeft then
-								PMMM.AIAssignedWitchHunters[iPlayer] = false
-							end
-						end
 						
-						v.AIMissionAfterReachingTarget = nil
+							v.AIMissionAfterReachingTarget = nil
+						end
 
 					end
 				end
@@ -359,7 +361,7 @@ end
 local tHiddenMissions = {}
 
 for mission in GameInfo.Missions() do
-	if mission.Visible == 0 or mission.Visible == false and string.find(mission.Type, "_PMMM_") then
+	if (mission.Visible == 0 or mission.Visible == false) and string.find(mission.Type, "_PMMM_") then	-- [port] `and` bound tighter than `or`, so every hidden base-game mission was registered
 		tHiddenMissions[mission.ID] = true
 	end
 end

@@ -42,6 +42,12 @@ PMMM.NumMGsTurnedToWitch = PMMM.NumMGsTurnedToWitch or {}							--Total number o
 PMMM.WitchBombings = PMMM.WitchBombings or {}										--Tracking "Witch Bombings", aka a tactic of dropping a despairing MG into someone else's territory to make them learn The Truth (harsh diplo penalty)
 PMMM.SparringCities = PMMM.SparringCities or {}										--Which cities are currently hosting a Sparring session
 PMMM.PlayerLastGotFreeIntrigueTurn = PMMM.PlayerLastGotFreeIntrigueTurn or {}		--Cooldown time between new Intrigue from v27 Shirome trait
+PMMM.NextMGKey = PMMM.NextMGKey or nil												--[port] next Magical Girl key (initialised lazily from the highest existing key; never derived from #MagicalGirls)
+PMMM.HiddenWitchCityOwners = PMMM.HiddenWitchCityOwners or {}						--[port] which player's CurrentHiddenWitches counter each hidden barrier was added to
+PMMM.ShiromeRevealedCivLocations = PMMM.ShiromeRevealedCivLocations or {}		--[port] Shirome's reveal now runs once per player from PlayerDoTurn
+PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}			--[port] each MG key credited to Demon Homura's subjugation count at most once
+PMMM.StolenFoodPlotsLastSweptTurn = PMMM.StolenFoodPlotsLastSweptTurn or nil	--[port] Kyouko pillage-cooldown sweep runs once per game turn
+PMMM.MamiFriendDummiesCleared = PMMM.MamiFriendDummiesCleared or false			--[port] one-shot sweep of Teahouse friend dummies once no Mami civ is alive
 
 --v21: Are hidden witches spawning? Used to use the root of MapModData, but that was an oversight and is now properly in the gT
 --This clause is for previous versions' savegame compatibility
@@ -80,6 +86,15 @@ function RefreshAllPMMMDefines()
 	PMMM.WarScore = PMMM.WarScore or {}													--War score for Moods
 	PMMM.UnitsEverKilled = PMMM.UnitsEverKilled or {}									--Permanently keep track of how many units of a specific Civ have been killed by a specific other Civ
 	PMMM.NumMGsTurnedToWitch = PMMM.NumMGsTurnedToWitch or {}							--Total number of MGs allowed to become Witches by each Civ
+	--[port] fields the top-level block declares but this refresh used to omit
+	PMMM.UsedGenericWitchNames = PMMM.UsedGenericWitchNames or {}
+	PMMM.WitchBombings = PMMM.WitchBombings or {}
+	PMMM.SparringCities = PMMM.SparringCities or {}
+	PMMM.PlayerLastGotFreeIntrigueTurn = PMMM.PlayerLastGotFreeIntrigueTurn or {}
+	PMMM.HiddenWitchCityOwners = PMMM.HiddenWitchCityOwners or {}
+	PMMM.ShiromeRevealedCivLocations = PMMM.ShiromeRevealedCivLocations or {}
+	PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}
+	PMMM.MamiFriendDummiesCleared = PMMM.MamiFriendDummiesCleared or false
 
 
 	--v21: Are hidden witches spawning? Used to use the root of MapModData, but that was an oversight and is now properly in the gT

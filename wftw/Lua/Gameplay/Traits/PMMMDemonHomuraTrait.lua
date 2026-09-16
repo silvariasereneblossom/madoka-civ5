@@ -19,28 +19,46 @@ local iMoodBuildingsID = GameInfo.MG_MoodModifiers["MGMOODMOD_BUILDINGS"].ID
 
 local iMoodModMultiplierBase = 0.1   --will be pushed out to Defines or Traits later
 
+--[port] write the subjugation dummy bit set into one city; 0 clears it
+function SetDemonHomuraBuildingsInCity(pCity, iSubjugations)
+	local tBuildingTable = toBits(iSubjugations)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_1, tBuildingTable[1] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_2, tBuildingTable[2] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_4, tBuildingTable[3] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_8, tBuildingTable[4] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_16, tBuildingTable[5] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_32, tBuildingTable[6] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_64, tBuildingTable[7] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_128, tBuildingTable[8] or 0)
+	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_256, tBuildingTable[9] or 0)
+end
+
 function SetNumDemonHomuraBuildings(iPlayer)
 	local pPlayer = Players[iPlayer]
 	local pCapital = pPlayer:GetCapitalCity()
+	if not PMMM.Subjugations[iPlayer] then PMMM.Subjugations[iPlayer] = 0 end
+	local iSubjugations = math.floor(PMMM.Subjugations[iPlayer])
+	--[port] the dummies used to be written only to the current capital and were left behind
+	--when the capital moved; clear every city first, then write the current capital
+	for pCity in pPlayer:Cities() do
+		SetDemonHomuraBuildingsInCity(pCity, 0)
+	end
 	if pCapital then
-		if not PMMM.Subjugations[iPlayer] then PMMM.Subjugations[iPlayer] = 0 end
-		local iSubjugations = math.floor(PMMM.Subjugations[iPlayer])
-		local tBuildingTable = toBits(iSubjugations)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_1, tBuildingTable[1] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_2, tBuildingTable[2] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_4, tBuildingTable[3] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_8, tBuildingTable[4] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_16, tBuildingTable[5] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_32, tBuildingTable[6] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_64, tBuildingTable[7] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_128, tBuildingTable[8] or 0)
-		pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_256, tBuildingTable[9] or 0)
+		SetDemonHomuraBuildingsInCity(pCapital, iSubjugations)
 	end
 end
 
 
 --Called by other functions, do not use directly with GameEvents
 function OnDemonHomuraKillMG(iPlayer, iX, iY, iMGKey)
+	--[port] the same death can reach this from both UnitPrekill and CombatEnded (and the
+	--attrition path credits it before the killing ChangeDamage), so credit each MG once.
+	--Callers that cannot supply a key keep the old, undeduplicated behaviour.
+	if iMGKey then
+		PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}
+		if PMMM.DemonHomuraCreditedMGKills[iMGKey] then return end
+		PMMM.DemonHomuraCreditedMGKills[iMGKey] = true
+	end
 	if not PMMM.Subjugations[iPlayer] then
 		PMMM.Subjugations[iPlayer] = 1
 	else
@@ -76,7 +94,8 @@ function DemonHomuraDirectKill(iAttackingPlayer, iAttackingUnit, attackerDamage,
 			pEnemyPlayer = Players[iAttackingPlayer]
 			if pEnemyPlayer then
 				pEnemyUnit = pEnemyPlayer:GetUnitByID(iAttackingUnit)
-				if pEnemyUnit:GetCurrHitPoints() == 0 then
+				--[port] same nil guard the attacking branch above already has
+				if pEnemyUnit and pEnemyUnit:GetCurrHitPoints() == 0 then
 					pPlayer = Players[iDefendingPlayer]
 				else
 					pEnemyUnit = nil
@@ -89,9 +108,33 @@ function DemonHomuraDirectKill(iAttackingPlayer, iAttackingUnit, attackerDamage,
 		--If we've gotten this far, we can ascertain that there's a dead unit detected and the killer was a DHomura player.
 		if pEnemyUnit:GetUnitType() == iMagicalGirlType then
 			local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
-			if not MagicalGirls[iMGKey].IsLeader then
-				OnDemonHomuraKillMG(pPlayer:GetID(), plotX, plotY)
+			--[port] GetMagicalGirlKey returns false on a miss
+			if iMGKey and not MagicalGirls[iMGKey].IsLeader then
+				OnDemonHomuraKillMG(pPlayer:GetID(), plotX, plotY, iMGKey)
 			end
+		end
+	end
+end
+
+--[port] DemonHomuraDirectKill takes the CombatEnded parameter list; the UnitPrekill hook was
+--handed prekill's instead, which silently did nothing. This is the prekill path's own adapter.
+function DemonHomuraPrekill(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iKiller)
+	if not iKiller or iKiller < 0 or iKiller == iPlayer then return end
+	if iUnitType ~= iMagicalGirlType then return end
+	if not MapModData.gPMMMTraits[iKiller] or MapModData.gPMMMTraits[iKiller].CapitalBonusPerKilledMagicalGirl <= 0 then return end
+	local iMGKey = GetMagicalGirlKey(iPlayer, iUnit)
+	if iMGKey and not MagicalGirls[iMGKey].IsLeader then
+		OnDemonHomuraKillMG(iKiller, iX, iY, iMGKey)
+	end
+end
+
+--[port] a captured city keeps the dummy buildings it carried under its previous owner
+function DemonHomuraOnCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
+	local pPlot = Map.GetPlot(iX, iY)
+	if pPlot then
+		local pCity = pPlot:GetPlotCity()
+		if pCity then
+			SetDemonHomuraBuildingsInCity(pCity, 0)
 		end
 	end
 end
@@ -120,7 +163,8 @@ function DemonHomuraOnTurnFunctions(iPlayer)
 						if pTeam:IsAtWar(iOwnerTeam) then
 							local iCurHP = pUnit:GetCurrHitPoints()
 							if iCurHP <= MapModData.gPMMMTraits[iOwner].MagicalGirlAttrition then
-								OnDemonHomuraKillMG(iOwner, pUnit:GetX(), pUnit:GetY())
+								--[port] pass the MG key so the UnitPrekill that the ChangeDamage below may raise is deduplicated
+								OnDemonHomuraKillMG(iOwner, pUnit:GetX(), pUnit:GetY(), GetMagicalGirlKey(iPlayer, pUnit:GetID()))
 							end
 							pUnit:ChangeDamage(MapModData.gPMMMTraits[iOwner].MagicalGirlAttrition, iOwner)
 						end

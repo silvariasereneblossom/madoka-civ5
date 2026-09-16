@@ -164,7 +164,8 @@ local Decisions_PacifyTheWorld = {}
 			if pLoopPlayer:IsAlive() and pLoopPlayer ~= pPlayer then
 				local pLoopCapital = pLoopPlayer:GetCapitalCity()
 				if pLoopCapital then
-					pCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_DECISION_DEMON_HOMURA_PACIFY_OTHERS, iValue)
+					--[port] the "+1 for every other civ" building went into Demon Homura's own capital
+					pLoopCapital:SetNumRealBuilding(GameInfoTypes.BUILDING_DECISION_DEMON_HOMURA_PACIFY_OTHERS, iValue)
 				end
 			end
 		end

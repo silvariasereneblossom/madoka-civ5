@@ -315,7 +315,8 @@ local Event_PMMMFamiliarLurks = {}
 			for c = 0, pCity:Plot():GetNumUnits() - 1, 1 do
 				local pUnit = pCity:Plot():GetUnit(c)
 				if pUnit and pUnit:IsCombatUnit() and pUnit:GetDomainType() == DomainTypes.DOMAIN_LAND then
-					for k, v in pairs(MapModData.gT.PMMM.MagicalGirls) do
+					--[port] MapModData.gT never exists in WFTW
+					for k, v in pairs(MapModData.PMMM.MagicalGirls) do
 						if v.UnitID == pUnit:GetID() and v.IsLeader == true then
 							local iGAPoints = math.ceil(50 * math.max(pPlayer:GetCurrentEra(), 1) * iMod)
 							Event_PMMMFamiliarLurks.Data2 = pUnit

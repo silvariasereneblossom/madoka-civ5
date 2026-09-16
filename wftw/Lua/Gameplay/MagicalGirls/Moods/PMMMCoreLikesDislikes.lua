@@ -113,25 +113,25 @@ function ObtainNewLikeDislike(iPlayer, iMGKey, bNotify, bIgnoreMaximum, iCategor
 	
 	--Determine Category
 	if not iCategory then
+		--[port] A20: build the list of valid categories first and pick one with a single roll. The old
+		--rejection loop rolled until it hit a valid entry and never terminated when none were valid.
 		local tValidCategories = {}
 		for k, v in pairs(t_LikesDislikes) do
-			tValidCategories[k] = v.IsValidFunc(iPlayer, iMGKey)
-		end
-		local bLoop = true
-		while bLoop do
-			local iRand = Game.Rand(#tValidCategories, "PMMM Random Like Dislike Category Roll") + 1
-			if tValidCategories[iRand] == true then
-				iCategory = iRand
-				bLoop = false
-				break
+			if v.IsValidFunc(iPlayer, iMGKey) == true then
+				tValidCategories[#tValidCategories + 1] = k
 			end
 		end
+		if #tValidCategories == 0 then return end
+		iCategory = tValidCategories[Game.Rand(#tValidCategories, "PMMM Random Like Dislike Category Roll") + 1]
 	end
 	
 	--Determine Value
 	if not iValue then
 		iValue = t_LikesDislikes[iCategory].GetValueFunc(iPlayer, iMGKey, {})
 	end
+	--[port] A19: every GetValueFunc can come back empty. Abort rather than storing a nil Value (which later
+	--reaches FulfilledFunc as Players[nil]) or handing nil to GetTypeFunc.
+	if iValue == nil then return end
 	
 	--Determine Type
 	if not iType then
@@ -161,6 +161,7 @@ function ObtainNewLikeDislike(iPlayer, iMGKey, bNotify, bIgnoreMaximum, iCategor
 	
 	if bRetestValue then
 		iValue = t_LikesDislikes[iCategory].GetValueFunc(iPlayer, iMGKey, tIgnoreValues)
+		if iValue == nil then return end		--[port] A19: nothing left to pick; do not store a nil L/D record
 	end
 	
 	local iTableKey = #MagicalGirls[iMGKey].LikesDislikes + 1
@@ -232,6 +233,10 @@ function AddLDTooltipFooter(string, type, value)
 	return string
 end
 
+--[port] hoisted: the Policy GetTypeFunc below closes over iCivLDID about 155 lines before its original
+--"local iCivLDID" in the CIVILIZATIONS section, so it used to read a nil global instead.
+local iCivLDID
+
 ----------------------------------------------------------------------------------------------------------------------------
 -- POLICIES
 ----------------------------------------------------------------------------------------------------------------------------
@@ -279,6 +284,7 @@ t_LikesDislikes[iPolicyLDID].GetValueFunc = (
 			end
 		end
 		
+		if #tValidPoliciesThisTest == 0 then return nil end		--[port] A19: no candidates; return nil cleanly
 		return tValidPoliciesThisTest[Game.Rand(#tValidPoliciesThisTest, "PMMM Like Dislike Policy Type Roll") + 1]
 	end
 )
@@ -325,8 +331,8 @@ t_LikesDislikes[iPolicyLDID].GetTypeFunc = (
 			tWeight[DISLIKE_TYPE] = tWeight[DISLIKE_TYPE] - iHappinessDifference
 			tWeight[HATE_TYPE] = tWeight[HATE_TYPE] - math.floor(iHappinessDifference / 2)
 		else
-			tWeight[LIKE_TYPE] = tWeight[DISLIKE_TYPE] + iHappinessDifference
-			tWeight[LOVE_TYPE] = tWeight[HATE_TYPE] + math.floor(iHappinessDifference / 2)
+			tWeight[LIKE_TYPE] = tWeight[LIKE_TYPE] + iHappinessDifference		--[port] symmetric with the dislike branch
+			tWeight[LOVE_TYPE] = tWeight[LOVE_TYPE] + math.floor(iHappinessDifference / 2)		--[port] symmetric with the hate branch
 		end
 
 		local iScoreDifference = iOurScore - iAvgScore
@@ -334,8 +340,8 @@ t_LikesDislikes[iPolicyLDID].GetTypeFunc = (
 			tWeight[DISLIKE_TYPE] = tWeight[DISLIKE_TYPE] - math.floor(iScoreDifference / 10)
 			tWeight[HATE_TYPE] = tWeight[HATE_TYPE] - math.floor(iScoreDifference / 20)
 		else
-			tWeight[LIKE_TYPE] = tWeight[DISLIKE_TYPE] + math.floor(iScoreDifference / 10)
-			tWeight[LOVE_TYPE] = tWeight[HATE_TYPE] + math.floor(iScoreDifference / 20)
+			tWeight[LIKE_TYPE] = tWeight[LIKE_TYPE] + math.floor(iScoreDifference / 10)		--[port] symmetric with the dislike branch
+			tWeight[LOVE_TYPE] = tWeight[LOVE_TYPE] + math.floor(iScoreDifference / 20)		--[port] symmetric with the hate branch
 		end
 
 
@@ -347,11 +353,11 @@ t_LikesDislikes[iPolicyLDID].GetTypeFunc = (
 					local bHasPolicy = pOtherCiv:HasPolicyBranch(iValue)
 					if bHasPolicy then
 						if v.Type == LIKE_TYPE then
-							tWeight[LIKE_TYPE] = tWeight[DISLIKE_TYPE] + 3
-							tWeight[LOVE_TYPE] = tWeight[HATE_TYPE] + 1
+							tWeight[LIKE_TYPE] = tWeight[LIKE_TYPE] + 3		--[port] accumulated into the Like slot, not read from Dislike
+							tWeight[LOVE_TYPE] = tWeight[LOVE_TYPE] + 1		--[port] ditto for Love/Hate
 						elseif v.Type == LOVE_TYPE then
-							tWeight[LIKE_TYPE] = tWeight[DISLIKE_TYPE] + 9
-							tWeight[LOVE_TYPE] = tWeight[HATE_TYPE] + 3
+							tWeight[LIKE_TYPE] = tWeight[LIKE_TYPE] + 9		--[port]
+							tWeight[LOVE_TYPE] = tWeight[LOVE_TYPE] + 3		--[port]
 						elseif v.Type == DISLIKE_TYPE then
 							tWeight[DISLIKE_TYPE] = tWeight[DISLIKE_TYPE] + 3
 							tWeight[HATE_TYPE] = tWeight[HATE_TYPE] + 1
@@ -496,7 +502,7 @@ t_LikesDislikes[iPolicyLDID].FulfilledFunc = (
 -- CIVILIZATIONS
 ----------------------------------------------------------------------------------------------------------------------------
 row = GameInfo.MG_LikeDislikes["MGLIKEDISLIKE_CIVILIZATION"]
-local iCivLDID = row.ID
+iCivLDID = row.ID		--[port] declared above the POLICIES section (see the hoisted local)
 
 t_LikesDislikes[iCivLDID] = {}
 t_LikesDislikes[iCivLDID].Value = row.Value
@@ -533,6 +539,7 @@ t_LikesDislikes[iCivLDID].GetValueFunc = (
 			end
 		end
 		
+		if #tValidCivsThisTest == 0 then return nil end		--[port] A19: no candidates; return nil cleanly
 		return tValidCivsThisTest[Game.Rand(#tValidCivsThisTest, "PMMM Like Dislike Civilization Type Roll") + 1]
 	end
 )
@@ -603,7 +610,7 @@ t_LikesDislikes[iCivLDID].GetTypeFunc = (
 		
 		local iIdeology = pEnemyPlayer:GetLateGamePolicyTree()
 		
-		if iIdeology and MagicalGirls[iMGKey].PreferredIdeology then
+		if iIdeology and iIdeology > -1 and MagicalGirls[iMGKey].PreferredIdeology then	--[port] GetLateGamePolicyTree returns -1 with no ideology
 			if iIdeology == MagicalGirls[iMGKey].PreferredIdeology then
 				tWeight[LIKE_TYPE] = tWeight[LIKE_TYPE] + 15
 				tWeight[LOVE_TYPE] = tWeight[LOVE_TYPE] + 10
@@ -682,20 +689,10 @@ t_LikesDislikes[iCivLDID].FulfilledFunc = (
 				sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_CIVILIZATION_TRADE_ROUTES", iFromTRs).."[NEWLINE]"
 			end
 		
-			local deal = UI.GetScratchDeal();
-			local iNumCurrentDeals = UI.GetNumCurrentDeals(iPlayer);
-			local iFromDeals = 0
-			if( iNumCurrentDeals > 0 ) then
-				for i = 0, iNumCurrentDeals - 1 do
-					UI.LoadCurrentDeal( iPlayerID, i )
-					if deal:GetOtherPlayer(iPlayer) == iValue then iFromDeals = iFromDeals + 5 end
-				end
-			end
-
-			if iFromDeals > 0 then
-				iFulfillment = iFulfillment + iFromDeals
-				sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_CIVILIZATION_DEALS", iFromDeals).."[NEWLINE]"
-			end
+			--[port] B2: the +5-per-active-deal term used to read the client-local UI deal list
+			--(UI.GetScratchDeal / UI.GetNumCurrentDeals / UI.LoadCurrentDeal, the last with an undefined iPlayerID).
+			--That is per-client state, so it desynced multiplayer and threw in gameplay contexts. Removed; the
+			--remaining trade-route/open-borders/DoF terms still cover "any sort of trade".
 		
 			if pTeam:IsAtWar(iEnemyTeam) and pEnemyPlayer:IsAlive() then
 				iFulfillment = iFulfillment - 75
@@ -764,6 +761,8 @@ t_LikesDislikes[iCivLDID].FulfilledFunc = (
 )]]
 
 function OnUnitKilledInCombatIterateUnitsEverKilled(iKiller, iKilled)
+	--[port] B11: skip barbarians (player MAX_CIV_PLAYERS) so PMMM.UnitsEverKilled never persists an entry for them
+	if iKiller == GameDefines.MAX_CIV_PLAYERS or iKilled == GameDefines.MAX_CIV_PLAYERS then return end
 	if not PMMM.UnitsEverKilled[iKiller] then
 		PMMM.UnitsEverKilled[iKiller] = {}
 	end
@@ -816,6 +815,7 @@ t_LikesDislikes[iCSLDID].GetValueFunc = (
 			end
 		end
 		
+		if #tValidCSThisTest == 0 then return nil end		--[port] A19: no candidates; return nil cleanly
 		return tValidCSThisTest[Game.Rand(#tValidCSThisTest, "PMMM Like Dislike Civilization Type Roll") + 1]
 	end
 )
@@ -846,7 +846,7 @@ t_LikesDislikes[iCSLDID].FulfilledFunc = (
 			elseif pCityState:GetMinorCivFriendshipLevelWithMajor(iPlayer) == 1 then
 				iVal = iVal + 25
 				sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_CITYSTATE_FRIEND", 25).."[NEWLINE]"
-			elseif pCityState:GetMinorCivFriendshipWithMajor() < 0 then
+			elseif pCityState:GetMinorCivFriendshipWithMajor(iPlayer) < 0 then	--[port] was missing the player argument
 				iVal = iVal - 25
 				sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_CITYSTATE_BAD_RELATIONS", -25).."[NEWLINE]"
 			end
@@ -1063,7 +1063,7 @@ t_LikesDislikes[iReligionLDID].GetValueFunc = (
 		
 		if pPlayer:HasCreatedReligion() then
 			local iCreatedReligion = pPlayer:GetReligionCreatedByPlayer()
-			if (not tIgnoreValues[iCreatedReligion] or tIgnoreValue[iCreatedReligion] == false) then
+			if (not tIgnoreValues[iCreatedReligion] or tIgnoreValues[iCreatedReligion] == false) then	--[port] A18: tIgnoreValue typo
 				--Leaders always like their own Religions
 				if MagicalGirls[iMGKey].IsLeader == true then
 					return iCreatedReligion
@@ -1088,6 +1088,7 @@ t_LikesDislikes[iReligionLDID].GetValueFunc = (
 			end
 		end
 		
+		if next(tWeights) == nil then return nil end		--[port] A19: DeckShuffle on an empty table returns nil
 		return DeckShuffle(tWeights, "PMMM Like Dislike Religion Type Roll");
 	end
 )
@@ -1416,6 +1417,7 @@ t_LikesDislikes[iLuxuryLDID].GetValueFunc = (
 			end
 		end
 		
+		if #tValidLuxuriesThisTest == 0 then return nil end		--[port] A19: no candidates; return nil cleanly
 		return tValidLuxuriesThisTest[Game.Rand(#tValidLuxuriesThisTest, "PMMM Like Dislike Luxury Type Roll") + 1]
 	end
 )
@@ -1469,13 +1471,15 @@ t_LikesDislikes[iLuxuryLDID].FulfilledFunc = (
 
 		local iSurplus = pPlayer:GetNumResourceAvailable(iValue, true)
 		if iSurplus > 1 then
-			iSurplus = (iSurplus - 1) * 20
-			iFulfillment = iFulfillment + iSurplus
-			sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_LUXURY_SURPLUS", 20).."[NEWLINE]"
+			--[port] keep iSurplus as the copy count; it used to be overwritten with the point total, which then
+			--decided the "direct control" gate below. The tooltip also printed a hard-coded 20.
+			local iSurplusPoints = (iSurplus - 1) * 20
+			iFulfillment = iFulfillment + iSurplusPoints
+			sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_LUXURY_SURPLUS", iSurplusPoints).."[NEWLINE]"
 		end
 		
 		local iDirectControl = pPlayer:GetNumResourceTotal(iValue, false)
-		if iSurplus > 1 then
+		if iSurplus > 1 then		--[port] now really the number of spare copies
 			iDirectControl = iDirectControl * 10
 			iFulfillment = iFulfillment + iDirectControl
 			sString = sString.."[ICON_BULLET]"..Locale.ConvertTextKey("TXT_KEY_PMMM_TT_LD_LUXURY_DIRECT", iDirectControl).."[NEWLINE]"

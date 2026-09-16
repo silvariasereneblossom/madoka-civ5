@@ -36,7 +36,8 @@ function BubbleBomber(iPlayer, iUnit)
 							for c = 0, pPlot:GetNumUnits() -1 do
 								local pPlotUnit = pPlot:GetUnit(c)
 								if pPlotUnit then
-									if pTeam:IsAtWar(pPlotUnit:GetOwner():GetTeam()) then
+									--[port] GetOwner() returns a player id, not a player object
+									if pTeam:IsAtWar(Players[pPlotUnit:GetOwner()]:GetTeam()) then
 										dprint("Found a unit at war with the original unit's owner.")
 										pUnit:SetHasPromotion(MapModData.gPMMMAdjacentEnemyBuffs[k].NewPromotionType, true)
 										bIsFoundEnemy = true

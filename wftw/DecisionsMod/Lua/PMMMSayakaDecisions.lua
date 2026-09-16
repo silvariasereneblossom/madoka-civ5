@@ -118,9 +118,13 @@ local Decisions_OktaviaDanceQueen = {}
 		pPlayer:ChangeGold(-iCost)
 		pPlayer:ChangeNumResourceTotal(iMagistrate, -1)
 		local iTurns = math.ceil(iGAMod * 6)
-		pPlayer:GetCapitalCity():ChangeWeLoveTheKingDayCounter(iTurns)
+		--[port] a civ with no cities has no capital
+		local pCapital = pPlayer:GetCapitalCity()
+		if pCapital then
+			pCapital:ChangeWeLoveTheKingDayCounter(iTurns)
 
-		pPlayer:GetCapitalCity():SetNumRealBuilding(iDummy, 1)
+			pCapital:SetNumRealBuilding(iDummy, 1)
+		end
 		
 		save(pPlayer, "Decisions_OktaviaDanceQueen", Game:GetGameTurn())
 	end
@@ -131,17 +135,26 @@ local Decisions_OktaviaDanceQueen = {}
 	function (iPlayer)
 		if iPlayer < GameDefines.MAX_MAJOR_CIVS then
 			local pPlayer = Players[iPlayer]
-			if load(pPlayer, "Decisions_OktaviaDanceQueen") then
-				local iCurTurn = Game:GetGameTurn()
-				local iTurnDifference = iCurTurn - load(pPlayer, "Decisions_OktaviaDanceQueen")
+			--[port] both Sayaka decisions drive the same BUILDING_DECISION_SAYAKA_DUMMY, and the two
+			--refresh passes used to clobber each other. Work out what each decision wants and write
+			--the combined result once per city. Capital writes are nil-guarded (cityless civ).
+			local bDanceQueen = false
+			local iEnactedTurn = load(pPlayer, "Decisions_OktaviaDanceQueen")
+			if iEnactedTurn then
 				local iTurns = math.ceil(iGAMod * 6)
-				if iTurnDifference % iTurns == 0 then
-					pPlayer:GetCapitalCity():SetNumRealBuilding(iDummy, 0)
-				end
+				local iTurnDifference = Game:GetGameTurn() - iEnactedTurn
+				bDanceQueen = (iTurnDifference % iTurns ~= 0)
 			end
-			if load(pPlayer, "Decisions_AllyOfJustice") == true then
+			local bAllyOfJustice = (load(pPlayer, "Decisions_AllyOfJustice") == true)
+			if bDanceQueen or bAllyOfJustice then
 				for pCity in pPlayer:Cities() do
-					if pCity:IsCapital() or pPlayer:IsCapitalConnectedToCity(pCity) then
+					local bWantsDummy = false
+					if pCity:IsCapital() then
+						bWantsDummy = bDanceQueen or bAllyOfJustice
+					elseif bAllyOfJustice and pPlayer:IsCapitalConnectedToCity(pCity) then
+						bWantsDummy = true
+					end
+					if bWantsDummy then
 						pCity:SetNumRealBuilding(iDummy, 1)
 					else
 						pCity:SetNumRealBuilding(iDummy, 0)
@@ -214,13 +227,10 @@ local Decisions_AllyOfJustice = {}
 	end
 	)
 
-	Decisions_AllyOfJustice.Monitors[Events.WarStateChanged] =  (
-	function(iTeam1, iTeam2, bWar)
-		for i = 0, GameDefines.MAX_MAJOR_CIVS -1 , 1 do
-			CheckAllyOfJustice(Players[iPlayer])
-		end
-	end
-	)
+	--[port] there used to be a second monitor on the per-client UI event Events.WarStateChanged.
+	--It looped on i but passed an undefined global iPlayer into CheckAllyOfJustice, so every war
+	--declaration raised a Lua error, and it wrote game state from a UI event. The PlayerDoTurn
+	--monitor above already runs CheckAllyOfJustice for every major civ, so it is simply gone.
 
 
 Decisions_AddCivilisationSpecific(GameInfoTypes.CIVILIZATION_SAYAKA, "Decisions_AllyOfJustice", Decisions_AllyOfJustice)

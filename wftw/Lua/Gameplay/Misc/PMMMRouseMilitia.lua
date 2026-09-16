@@ -194,7 +194,6 @@ function GetRouseMilitiaUnitsAndType(iPlayer, iUnit, ttable)
 		end
 	end
 	
-	print("strongest player might: "..iStrongestMight..", active player might: "..iMyMight)
 
 	local iNumUnits = 0
 	if iMyMight <= math.floor(iStrongestMight * 0.3) then

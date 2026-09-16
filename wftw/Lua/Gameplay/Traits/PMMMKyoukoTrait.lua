@@ -28,7 +28,8 @@ function AddStolenFoodFromImprovement(iPlotX, iPlotY, iOwner, iOldImprovement, i
 			local bBreak
 			dprint("Looping through " ..pPlot:GetNumUnits().. " units.")
 			local pUnit = pPlot:GetUnit(i)
-			if pUnit:GetUnitCombatType() == iMelee or pUnit:GetUnitCombatType() == iGun or pUnit:GetUnitCombatType() == iMounted or pUnit:GetUnitCombatType() == iNavalMelee and pUnit:GetUnitClassType() ~= iMGClass then
+			--[port] precedence: the Magical Girl exclusion only bound to the naval branch
+			if (pUnit:GetUnitCombatType() == iMelee or pUnit:GetUnitCombatType() == iGun or pUnit:GetUnitCombatType() == iMounted or pUnit:GetUnitCombatType() == iNavalMelee) and pUnit:GetUnitClassType() ~= iMGClass then
 				dprint("Checking a " ..pUnit:GetName().. ".")
 				local iUnitOwner = pUnit:GetOwner()
 				for k, v in pairs(PMMM.StolenFoodPlots) do
@@ -193,16 +194,25 @@ function AIStolenFoodCheck(iPlayer)
 end
 
 
+--[port] PMMM.StolenFood is keyed by "owner:unit" and unit IDs are recycled; drop the entry
+--when the unit dies so a later unit does not inherit its stolen food
+function ClearStolenFoodOnDeath(iPlayer, iUnit)
+	PMMM.StolenFood[GetUnitSpecialID(iPlayer, iUnit)] = nil
+end
+
 
 --v19: Upkeep on recently pillaged plots
 function OnDoTurnStolenFoodPillageUpkeep(iPlayer)
-	--Only do this on player 0's turn
+	--[port] was gated on iPlayer == 0, which never fires if player 0 is not in the game;
+	--run the sweep once per game turn instead, keyed on a persisted last-swept turn
+	local iTurn = Game:GetGameTurn()
+	if PMMM.StolenFoodPlotsLastSweptTurn == iTurn then return end
+	PMMM.StolenFoodPlotsLastSweptTurn = iTurn
 	local tToRemove = {}
-	if iPlayer == 0 then
-		for k, v in pairs(PMMM.StolenFoodPlots) do
-			if v.Turn + GameDefines.STOLEN_FOOD_SAME_TILE_TURNS_BETWEEN >= Game:GetGameTurn() then
-				tToRemove[k] = true
-			end
+	for k, v in pairs(PMMM.StolenFoodPlots) do
+		--[port] comparison was inverted: entries were dropped while still on cooldown and kept once it expired
+		if v.Turn + GameDefines.STOLEN_FOOD_SAME_TILE_TURNS_BETWEEN <= iTurn then
+			tToRemove[k] = true
 		end
 	end
 	for i = #PMMM.StolenFoodPlots, 1, -1 do

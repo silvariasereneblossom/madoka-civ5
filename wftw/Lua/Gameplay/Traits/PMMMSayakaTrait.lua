@@ -17,9 +17,10 @@ function GreatPersonProgressFromKills(iKiller, iKilled, iKilledUnit)
 	dprint("Both civs are majors")
 	if Teams[pKiller:GetTeam()]:IsHasTech(GameInfoTypes.TECH_ACOUSTICS) then
 	dprint("Killer has discovered acoustics")
-		if MapModData.gPMMMTraits[iPlayer] and MapModData.gPMMMTraits[iPlayer].GreatPersonProgressFromKills and GameInfo.Units[iKilledUnit].Combat > 0 then
+		--[port] read the killer's trait row, not a stale global iPlayer
+		if MapModData.gPMMMTraits[iKiller] and MapModData.gPMMMTraits[iKiller].GreatPersonProgressFromKills and GameInfo.Units[iKilledUnit].Combat > 0 then
 			dprint("Trait is correct and killed unit has a Combat Str value")
-			iSpecialistType = GameInfoTypes[MapModData.gPMMMTraits[iPlayer].GreatPersonProgressFromKills]
+			iSpecialistType = GameInfoTypes[MapModData.gPMMMTraits[iKiller].GreatPersonProgressFromKills]
 			iSpecialistAmount = (math.floor(GameInfo.Units[iKilledUnit].Combat / 10)) * 100
 			if ContentManager.IsActive("6DA07636-4123-4018-B643-6575B4EC336B", ContentType.GAMEPLAY) then
 				dprint("BNW is active")
@@ -48,16 +49,24 @@ function GreatPersonProgressFromKills(iKiller, iKilled, iKilledUnit)
 						end
 					end
 				else
-					pKiller:GetCapitalCity():ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
-					if iKiller == Game:GetActivePlayer() then
-						Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pKiller:GetCapitalCity():GetName()))
+					--[port] a cityless civ has no capital
+					local pCapital = pKiller:GetCapitalCity()
+					if pCapital then
+						pCapital:ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
+						if iKiller == Game:GetActivePlayer() then
+							Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pCapital:GetName()))
+						end
 					end
 					return
 				end
 			else
-				pKiller:GetCapitalCity():ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
-				if iKiller == Game:GetActivePlayer() then
-					Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pKiller:GetCapitalCity():GetName()))
+				--[port] a cityless civ has no capital
+				local pCapital = pKiller:GetCapitalCity()
+				if pCapital then
+					pCapital:ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
+					if iKiller == Game:GetActivePlayer() then
+						Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pCapital:GetName()))
+					end
 				end
 			end
 		end

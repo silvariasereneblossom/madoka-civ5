@@ -22,6 +22,13 @@ local iImmuneToTruth = GameInfoTypes.PROMOTION_PMMM_IMMUNE_TO_TRUTH  --also used
 
 local iTurnsNeededForWitch = math.floor(GameDefines.FAMILIAR_CONVERSION_TO_WITCH_TURNS * (GameInfo.GameSpeeds[PreGame:GetGameSpeed()].TrainPercent / 100))
 
+-- [port] iHalicarnassusGold is a file-local of PMMMMagicalGirls.lua, so it was always nil here; recompute it the same way
+local iHalicarnassus = GameInfoTypes.BUILDING_MAUSOLEUM_HALICARNASSUS
+local iHalicarnassusGold;
+if iHalicarnassus then
+	iHalicarnassusGold = GameInfo.Buildings[iHalicarnassus].GoldFromKillingWitches
+end
+
 
 function ReplaceHostileUnits(iPlayer, iUnit, iUnitType)
 	if iPlayer == iMaxCivsAndCS and iUnitType ~= iWitchType and iUnitType ~= iFamiliarType and iUnitType ~= iSeaWitchType and iUnitType ~= iSeaFamiliarType and iUnitType ~= iIncubatorType then
@@ -108,61 +115,69 @@ function UpgradeFamiliarToWitch(iPlayer)
 	end
 	if iPlayer == iMaxCivsAndCS then
 		local pPlayer = Players[iPlayer]
+		-- [port] this loop kills and creates units, which invalidates pPlayer:Units(); collect first, mutate second
+		local tUnitIDs = {}
 		for pUnit in pPlayer:Units() do
-			local pPlot = pUnit:GetPlot()
-			local iThisTurn = Game.GetGameTurn()
-			local iX = pUnit:GetX()
-			local iY = pUnit:GetY()
-			--Familiar upgrading
-			if pUnit:GetUnitType() == iFamiliarType or pUnit:GetUnitType() == iSeaFamiliarType then
-				local iCreationTurn = pUnit:GetGameTurnCreated()
-				if (iThisTurn - iCreationTurn) >= iTurnsNeededForWitch then
-					local iCurrentEra = Game:GetCurrentEra()	
-					pUnit:Kill(true)
-					local iNewType;
-					if pPlot:IsWater() then
-						iNewType = iSeaWitchType
-					else
-						iNewType = iWitchType
-					end
-					pNewUnit = pPlayer:InitUnit(iNewType, iX, iY, UNITAI_ATTACK)
-					pNewUnit:SetBaseCombatStrength(MapModData.gPMMMWitchEraStrengths[iCurrentEra])
-				end
-			end
-
-			--Witch's Labyrinth tracking, since there isn't a "Barb Camp Cleared" event.
-			if pPlot:GetImprovementType() == iBarbCamp then
-				local sPlotKey = pPlot:GetX()..":"..pPlot:GetY()
-				if not PMMM.WitchBarrierStartTracking[sPlotKey] then
-					PMMM.WitchBarrierStartTracking[sPlotKey] = iThisTurn
-					--v20: If there is a civilian unit captured by the Witches in the barrier, it turns into a new Witch!
-					if not pUnit:IsCombatUnit() then
-						local pCivilianWitch = pPlayer:InitUnit(iWitchType, pPlot:GetX(), pPlot:GetY(), UNITAI_ATTACK)
-						pCivilianWitch:JumpToNearestValidPlot()
-						pCivilianWitch:SetBaseCombatStrength(MapModData.gPMMMWitchEraStrengths[iCurrentEra])
+			tUnitIDs[#tUnitIDs + 1] = pUnit:GetID()
+		end
+		for iUnitLoop = 1, #tUnitIDs do
+			local pUnit = pPlayer:GetUnitByID(tUnitIDs[iUnitLoop])
+			if pUnit then
+				local iCurrentEra = Game:GetCurrentEra()	-- [port] hoisted; it was declared inside the Familiar branch but read again below
+				local pPlot = pUnit:GetPlot()
+				local iThisTurn = Game.GetGameTurn()
+				local iX = pUnit:GetX()
+				local iY = pUnit:GetY()
+				--Familiar upgrading
+				if pUnit:GetUnitType() == iFamiliarType or pUnit:GetUnitType() == iSeaFamiliarType then
+					local iCreationTurn = pUnit:GetGameTurnCreated()
+					if (iThisTurn - iCreationTurn) >= iTurnsNeededForWitch then
 						pUnit:Kill(true)
+						local iNewType;
+						if pPlot:IsWater() then
+							iNewType = iSeaWitchType
+						else
+							iNewType = iWitchType
+						end
+						pNewUnit = pPlayer:InitUnit(iNewType, iX, iY, UNITAI_ATTACK)
+						pNewUnit:SetBaseCombatStrength(MapModData.gPMMMWitchEraStrengths[iCurrentEra])
 					end
 				end
-			end
 
-			--v21:Incubators
-			if pUnit:GetUnitType() == iIncubatorType then
-				--Grant them the promotion to enable Emotional Abuse if they were not created this turn.
-				if pUnit:GetGameTurnCreated() ~= Game:GetGameTurn() then
-					pUnit:SetHasPromotion(iImmuneToTruth, true)
-					--Check if they're near a MG, and if so, hit them with Emotional Abuse!
-					for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), 1) do
-						if pAreaPlot:IsUnit() then
-							for i = 0, pAreaPlot:GetNumUnits() - 1 do
-								local pEnemyUnit = pAreaPlot:GetUnit(i)
-								if pEnemyUnit:GetOwner() ~= iPlayer and pEnemyUnit:GetUnitClassType() == iMagicalGirlClass then
-									local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
-									if iMGKey then
-										DoIncubatorEmotionalAbuse(iPlayer, pUnit, pAreaPlot)
+				--Witch's Labyrinth tracking, since there isn't a "Barb Camp Cleared" event.
+				if pPlot:GetImprovementType() == iBarbCamp then
+					local sPlotKey = pPlot:GetX()..":"..pPlot:GetY()
+					if not PMMM.WitchBarrierStartTracking[sPlotKey] then
+						PMMM.WitchBarrierStartTracking[sPlotKey] = iThisTurn
+						--v20: If there is a civilian unit captured by the Witches in the barrier, it turns into a new Witch!
+						if not pUnit:IsCombatUnit() then
+							local pCivilianWitch = pPlayer:InitUnit(iWitchType, pPlot:GetX(), pPlot:GetY(), UNITAI_ATTACK)
+							pCivilianWitch:JumpToNearestValidPlot()
+							pCivilianWitch:SetBaseCombatStrength(MapModData.gPMMMWitchEraStrengths[iCurrentEra])
+							pUnit:Kill(true)
+						end
+					end
+				end
+
+				--v21:Incubators
+				if pUnit:GetUnitType() == iIncubatorType then
+					--Grant them the promotion to enable Emotional Abuse if they were not created this turn.
+					if pUnit:GetGameTurnCreated() ~= Game:GetGameTurn() then
+						pUnit:SetHasPromotion(iImmuneToTruth, true)
+						--Check if they're near a MG, and if so, hit them with Emotional Abuse!
+						for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), 1) do
+							if pAreaPlot:IsUnit() then
+								for i = 0, pAreaPlot:GetNumUnits() - 1 do
+									local pEnemyUnit = pAreaPlot:GetUnit(i)
+									if pEnemyUnit:GetOwner() ~= iPlayer and pEnemyUnit:GetUnitClassType() == iMagicalGirlClass then
+										local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
+										if iMGKey then
+											DoIncubatorEmotionalAbuse(iPlayer, pUnit, pAreaPlot)
+										end
 									end
 								end
-							end
-						end	
+							end	
+						end
 					end
 				end
 			end
@@ -284,7 +299,7 @@ function GetGriefSeed(iKillerPlayer, iKilledPlayer, iKilledUnitType)
 		end
 		
 		--v19: Halicarnassus grants gold from Witch corpses instead of its regular effect (mostly for flavor)
-		if pPlayer:HasWonder(GameInfoTypes.BUILDING_MAUSOLEUM_HALICARNASSUS) then
+		if iHalicarnassusGold and pPlayer:HasWonder(GameInfoTypes.BUILDING_MAUSOLEUM_HALICARNASSUS) then	-- [port] guard the (previously nil) amount
 			pPlayer:ChangeGold(iHalicarnassusGold)
 		end
 		
@@ -357,6 +372,10 @@ function HiddenWitchSpawn(iPlayer)
 	if not PMMM.CurrentHiddenWitches[iPlayer] then
 		PMMM.CurrentHiddenWitches[iPlayer] = 0
 	end
+	-- [port] remember whose CurrentHiddenWitches counter each HWB was counted against, so it can be decremented again when the city is gone
+	if not PMMM.HiddenWitchCityOwners then
+		PMMM.HiddenWitchCityOwners = {}
+	end
 	
 	--Every turn, subtract Food Storage from every City which is being harassed by a HW
 	if PMMM.CurrentHiddenWitches[iPlayer] > 0 then
@@ -400,6 +419,12 @@ function HiddenWitchSpawn(iPlayer)
 		local pPlot = ReturnPlotFromSpecialID(k)
 		local pCity = pPlot:GetPlotCity()
 		if not pCity then
+			-- [port] the razed city's owner kept its counter forever, so it eventually stopped spawning hidden witches
+			local iOldOwner = PMMM.HiddenWitchCityOwners[k]
+			if iOldOwner and PMMM.CurrentHiddenWitches[iOldOwner] then
+				PMMM.CurrentHiddenWitches[iOldOwner] = math.max((PMMM.CurrentHiddenWitches[iOldOwner] - 1), 0)
+			end
+			PMMM.HiddenWitchCityOwners[k] = nil
 			PMMM.HiddenWitchPlots[v] = nil
 			PMMM.HiddenWitchCities[k] = nil
 		end
@@ -455,6 +480,7 @@ function HiddenWitchSpawn(iPlayer)
 									local iPlotSpecialID = GetUnitSpecialID(pSpawnPlot:GetX(), pSpawnPlot:GetY())
 									PMMM.HiddenWitchPlots[iPlotSpecialID] = iSpecialID
 									PMMM.HiddenWitchCities[iSpecialID] = iPlotSpecialID
+									PMMM.HiddenWitchCityOwners[iSpecialID] = iPlayer	-- [port] record whose counter this was added to
 									PMMM.CurrentHiddenWitches[iPlayer] = PMMM.CurrentHiddenWitches[iPlayer] + 1
 
 									local sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_HIDDEN_WITCH_SPAWNED_TEXT", pCity:GetName(), GameDefines.HIDDEN_WITCH_GROWTH_PROGRESS_REMOVED_PER_TURN)
@@ -496,6 +522,7 @@ function HiddenWitchSpawn(iPlayer)
 									--The HiddenWitchPlots and HiddenWitchCities contain values for the IDs of the City and Plot respectively for easy cross-referencing
 									PMMM.HiddenWitchPlots[iPlotSpecialID] = iSpecialID
 									PMMM.HiddenWitchCities[iSpecialID] = iPlotSpecialID
+									PMMM.HiddenWitchCityOwners[iSpecialID] = iPlayer	-- [port] record whose counter this was added to
 									PMMM.CurrentHiddenWitches[iPlayer] = PMMM.CurrentHiddenWitches[iPlayer] + 1
 
 									local sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_HIDDEN_WITCH_SPAWNED_CITY_STATE_TEXT", pPlayer:GetCivilizationShortDescription())
@@ -554,8 +581,10 @@ function HiddenWitchSpawn(iPlayer)
 						tPlots[#tPlots + 1] = pAreaPlot
 					end
 				end
-				local pSpawnPlot = tPlots[Game.Rand(#tPlots, "PMMM Hostile Incubator Plot Roll") + 1]
-				Players[63]:InitUnit(iIncubatorType, pSpawnPlot:GetX(), pSpawnPlot:GetY(), UNITAI_ATTACK)
+				if #tPlots > 0 then	-- [port] the ring can be fully blocked, leaving tPlots empty
+					local pSpawnPlot = tPlots[Game.Rand(#tPlots, "PMMM Hostile Incubator Plot Roll") + 1]
+					Players[63]:InitUnit(iIncubatorType, pSpawnPlot:GetX(), pSpawnPlot:GetY(), UNITAI_ATTACK)
+				end
 			end
 		end
 	end
@@ -635,14 +664,19 @@ end
 function OnCityCaptureHWB(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
 	local iSpecialID = GetUnitSpecialID(iX, iY)
 	if PMMM.HiddenWitchCities[iSpecialID] then
-		if MapModData.gPMMMTraits[iCapturingPlayer] and (MapModData.gPMMMTraits[iCapturingPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iCapturingPlayer].NoMagicalGirls == 1)
-		or (MapModData.gPMMMTraits[iCapturingPlayer].NoWitches == true or MapModData.gPMMMTraits[iCapturingPlayer].NoWitches == 1) then
+		-- [port] the second clause used to re-index gPMMMTraits outside the nil guard; city-states and barbarians have no entry
+		local tCapturerTraits = MapModData.gPMMMTraits[iCapturingPlayer]
+		if tCapturerTraits and (tCapturerTraits.NoMagicalGirls == true or tCapturerTraits.NoMagicalGirls == 1
+		or tCapturerTraits.NoWitches == true or tCapturerTraits.NoWitches == 1) then
 			--The HWB disappears if UM or DH captures a city
 			PMMM.HiddenWitchCities[iSpecialID] = nil
+			if PMMM.HiddenWitchCityOwners then PMMM.HiddenWitchCityOwners[iSpecialID] = nil end
 		else
-			PMMM.CurrentHiddenWitches[iCapturingPlayer] = PMMM.CurrentHiddenWitches[iCapturingPlayer] + 1
+			-- [port] counters default to 0 rather than erroring on a missing entry
+			PMMM.CurrentHiddenWitches[iCapturingPlayer] = (PMMM.CurrentHiddenWitches[iCapturingPlayer] or 0) + 1
+			if PMMM.HiddenWitchCityOwners then PMMM.HiddenWitchCityOwners[iSpecialID] = iCapturingPlayer end
 		end
-		PMMM.CurrentHiddenWitches[iCapturedPlayer] = math.max((PMMM.CurrentHiddenWitches[iCapturedPlayer] - 1), 0)
+		PMMM.CurrentHiddenWitches[iCapturedPlayer] = math.max(((PMMM.CurrentHiddenWitches[iCapturedPlayer] or 0) - 1), 0)
 	end
 end
 

@@ -394,16 +394,16 @@
     <File md5="01D9A158CA2937FA23EDD073F1A3DFB6" import="1">DecisionsMod/Art/DecisionsKyoukoRockyIcon.dds</File>
     <File md5="E796C0F768F1BB126BC7D69C9D2299C4" import="1">DecisionsMod/Art/DecisionsKyoukoRockyIcon.ggxml</File>
     <File md5="2CFA48493D9115D91445A04EC0CC4423" import="1">DecisionsMod/Lua/PMMMChurchCultDecisions.lua</File>
-    <File md5="6BFE9DA3019427515E5A23298B1F9437" import="1">DecisionsMod/Lua/PMMMDemonHomuraDecisions.lua</File>
+    <File md5="7D4353EBDCA4E4C4B8CBFA3A47BEFC89" import="1">DecisionsMod/Lua/PMMMDemonHomuraDecisions.lua</File>
     <File md5="43F6128BE492E26BBAFB67F610A779F4" import="1">DecisionsMod/Lua/PMMMHomuraDecisions.lua</File>
     <File md5="4D44C91DEBB9524C28933874AB5019F8" import="1">DecisionsMod/Lua/PMMMKaoruUmikaDecisions.lua</File>
     <File md5="8DD13B10ADE10EE7E324071A88288919" import="1">DecisionsMod/Lua/PMMMKyoukoDecisions.lua</File>
-    <File md5="E5B264064FC3B83EF61B6DC7C73BF985" import="1">DecisionsMod/Lua/PMMMMadokaDecisions.lua</File>
+    <File md5="CB4E1C2126209D20AF4DBD085070C51B" import="1">DecisionsMod/Lua/PMMMMadokaDecisions.lua</File>
     <File md5="A1675148224C7DB58BEF0F70ACCD6B59" import="1">DecisionsMod/Lua/PMMMMamiDecisions.lua</File>
     <File md5="2364AE34603342A3527F33D1CDD8809A" import="1">DecisionsMod/Lua/PMMMNagisaDecisions.lua</File>
     <File md5="EA0155E8EC71FFFC422126595320690C" import="1">DecisionsMod/Lua/PMMMOrikoKirikaDecisions.lua</File>
-    <File md5="7E7D2D8AD196E8D3B8E62607510C173A" import="1">DecisionsMod/Lua/PMMMSayakaDecisions.lua</File>
-    <File md5="F581842420698F6A22EFC9A32D9A8A76" import="1">DecisionsMod/Lua/PMMMUltimateMadokaDecisions.lua</File>
+    <File md5="6DFDBDEBF49C661104AF84113AE46FF5" import="1">DecisionsMod/Lua/PMMMSayakaDecisions.lua</File>
+    <File md5="2676AA246D7261DBE45E0383A21AA1D6" import="1">DecisionsMod/Lua/PMMMUltimateMadokaDecisions.lua</File>
     <File md5="60761AF21F30651A57E5FD472F3A95B3" import="0">DecisionsMod/SQL/DemonHomuraDecisionData.sql</File>
     <File md5="0A2F7C401A6E410570EF96D80DEEDDA6" import="0">DecisionsMod/SQL/HomuraDecisionData.sql</File>
     <File md5="E6EFF16318CFBA699FF938FD08E6B8BD" import="0">DecisionsMod/SQL/KaoruUmikaDecisionData.sql</File>
@@ -426,62 +426,62 @@
     <File md5="102C0CE63B1D0795900C55945FA0DB3A" import="0">DecisionsMod/XML/PMMMChurchCultDecisionText.xml</File>
     <File md5="9C480CDFD5E54524FB6E5E37F3E34916" import="0">DecisionsMod/XML/SayakaDecisionText.xml</File>
     <File md5="6962A42D170FD7C3AE26CB55F4A20613" import="0">DecisionsMod/XML/UltimateMadokaDecisionText.xml</File>
-    <File md5="FC20A28A3A62F0D5C62CE8B3BF787C3D" import="1">EventsMod/PMMMEvents.lua</File>
+    <File md5="578C946EF2A77D752C9A00F9BECDCAD3" import="1">EventsMod/PMMMEvents.lua</File>
     <File md5="DDB50E57B63B4ADD6D6B6A9E1F309C65" import="0">EventsMod/PMMMEvents.sql</File>
     <File md5="4B8C198C1B0107CAB90ACECC4F50E760" import="0">EventsMod/PMMMEvents.xml</File>
     <File md5="7901F4BEA8EF1438383A2B9A995B7458" import="1">Lua/Gameplay/Buildings/PMMMKyoukoBuilding.lua</File>
-    <File md5="CF7C3D7BE26027A7B9B88DB430C19769" import="1">Lua/Gameplay/Buildings/PMMMMamiBuilding.lua</File>
+    <File md5="9C66C9B442A47943BD850507AAA3FBBD" import="1">Lua/Gameplay/Buildings/PMMMMamiBuilding.lua</File>
     <File md5="539B5C8929BB4B51F91AE2CFF3E6DC39" import="1">Lua/Gameplay/Buildings/PMMMNagisaBuilding.lua</File>
     <File md5="C2CA51723710A9A97DC0B2564F69AEA8" import="1">Lua/Gameplay/Buildings/PMMMSayakaBuilding.lua</File>
-    <File md5="CF1223E312E71A94FDA1413175018194" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
+    <File md5="F5FEF9CD061ED73016A49A09F03F132C" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
     <File md5="CC70F0002A43E73EDE2CB2C411CA1E0E" import="1">Lua/Gameplay/Improvements/PMMMFarsightOracle.lua</File>
-    <File md5="9D213645AB4EAFDD3A3C000BE45B310F" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
-    <File md5="FFEAB4BA4DA344AB2D045809437BA4B8" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
-    <File md5="D31B62C2D754AA2167BD3DC8296F49DA" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
-    <File md5="CA1826FE4855200CE46A990AB2791352" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
-    <File md5="1A0F13B29C43D8CBE7EA0625D3DB59C9" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
-    <File md5="061B72CD738B72D4F9A19F05F87C5A25" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
-    <File md5="19C2742794AF35037515B8C3167D7D59" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
-    <File md5="4B32F09B62C0B0DF2F14D42362EEA2C8" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
+    <File md5="F30334E7C8505CE586C29E90809F3E0E" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
+    <File md5="B0F9E95DE7DA0D433445C24B238F07FB" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
+    <File md5="0052B69A92403AABDE630DDD86E40DB2" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
+    <File md5="ECC4CFE4673E34D88493ABD5A063B1CE" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
+    <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
+    <File md5="E9D3B59EC60C1A7D9A4632BCBC38D549" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
+    <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
+    <File md5="EB3D05C91B97C7E2638136BB2E4CB3A4" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
-    <File md5="A55119C9796570292660F9B7BB40A37E" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
+    <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
-    <File md5="D62FC1C31D1221671A61F16421FC9DD9" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
-    <File md5="02546A4F05674F4540AB5123A87301DD" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
+    <File md5="256F1D92A4F28CB19FD2E3DB13B23DD4" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
+    <File md5="2B752B097943BA1F1705B32CCF80E706" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
     <File md5="20089693576C66CF07DFC6AB0FCFB172" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
-    <File md5="BEAD7D67904E5C3FE95A15D1938BC51F" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
-    <File md5="8CEDFFB87053F4CB000EA36C9FBAF78B" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
-    <File md5="BC3CC3CEB573D3FAB22229D2D616C3DC" import="1">Lua/Gameplay/Traits/PMMMGustavusTrait.lua</File>
+    <File md5="3706F4617A15C2F91C6DC5EDA3A6FE39" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
+    <File md5="D275A6ADB29A1CE691A3E49D2D4A1EFA" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
+    <File md5="3A28CA4124E8AE678D90308A170E8CCA" import="1">Lua/Gameplay/Traits/PMMMGustavusTrait.lua</File>
     <File md5="B855B49EA39152812DFA4D723C1539CE" import="1">Lua/Gameplay/Traits/PMMMHomuraTrait.lua</File>
-    <File md5="97FCEC2EA61BA57C078DB91A9D01E258" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
+    <File md5="4329D05FC48CEB6A334ED225318C6E2D" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
     <File md5="322DE6C82681F565BC0C8A034A597461" import="1">Lua/Gameplay/Traits/PMMMMamiTrait.lua</File>
-    <File md5="C8519307C12CE6435D80391E0D28647A" import="1">Lua/Gameplay/Traits/PMMMNagisaTrait.lua</File>
+    <File md5="92B0D7551312CEF3FD4B780DFB606CEF" import="1">Lua/Gameplay/Traits/PMMMNagisaTrait.lua</File>
     <File md5="6C0979AD5760868F01F89B91D634402F" import="1">Lua/Gameplay/Traits/PMMMPleiadesTrait.lua</File>
-    <File md5="4AE1F158727B00988DAEB74B51242651" import="1">Lua/Gameplay/Traits/PMMMSayakaTrait.lua</File>
-    <File md5="FEA68A3E13303AFFCE5C493E2D32C5E5" import="1">Lua/Gameplay/Traits/PMMMShiromeTrait.lua</File>
+    <File md5="38DA64AAF12FFE0CDBF90F63AC03F9A9" import="1">Lua/Gameplay/Traits/PMMMSayakaTrait.lua</File>
+    <File md5="DE77E01D13903C0D3A06E1EA82EDDF97" import="1">Lua/Gameplay/Traits/PMMMShiromeTrait.lua</File>
     <File md5="DC44BE1978CF85BEF1C5A0E57C961350" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>
-    <File md5="EA7DAC5AC219BE18F26368C75BCA3BF3" import="1">Lua/Gameplay/UniqueUnits/PMMMArtificialIncubator.lua</File>
-    <File md5="C184E7F894240C09EEB14AEE8F0C5E68" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
+    <File md5="E6CC3808D8A7C5BACD150821295FF36C" import="1">Lua/Gameplay/UniqueUnits/PMMMArtificialIncubator.lua</File>
+    <File md5="C401DCE659ED7E27C0C628EB7384D2BA" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
     <File md5="C7E7915F1FD4AD320E7C0BF2B2D4A9D8" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
     <File md5="282A54679CD88C854984373CD4F1D83E" import="1">Lua/Gameplay/UniqueUnits/PMMMClockstopper.lua</File>
-    <File md5="E44A0798E585DE913C6A45227693E40A" import="1">Lua/Gameplay/UniqueUnits/PMMMCutlassConductor.lua</File>
-    <File md5="F3D622E359A0D4F3391C5AC4D89E6A49" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
-    <File md5="084295C665C5A9E235E5B05A1B1229C3" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
+    <File md5="5682B2D858351B222D44EFFE492DCE61" import="1">Lua/Gameplay/UniqueUnits/PMMMCutlassConductor.lua</File>
+    <File md5="74C6AF1C697572E1D4A3406EB48B1F35" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
+    <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
     <File md5="F1979632BB637781FF17F503CCF544A1" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
-    <File md5="7935EE92FEA27397C49B7FEC915AD6A5" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
+    <File md5="6B9425B01E18D7CE93821E8A021FE0C6" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
     <File md5="E4E3DDFB8592237A51A4D7064B9A77D1" import="1">Lua/PMMMDataStorage.lua</File>
-    <File md5="4C6E49AA34A2D5BF7B97FFB0498BD8CC" import="1">Lua/PMMMDefines.lua</File>
-    <File md5="8EC58508D8123ECCDCFE93AD8E6BBB5A" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="B1D8EB03D8FA14E9145EC523ACEBC7F3" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
-    <File md5="6CD0A19D5E0CD974D03778DE21E69981" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
+    <File md5="EBCE98E71C6984CFB4F522C15488138F" import="1">Lua/PMMMDefines.lua</File>
+    <File md5="89E26F85B37B9E3FD0E8C7F402063DE1" import="1">Lua/PMMMGeneralFunctions.lua</File>
+    <File md5="48F176D58302B9022477955845FC0340" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
-    <File md5="EA0FC1F8DB5D3D6E26ACE4F1C863F692" import="0">Lua/UI/PleiadesFreezer.lua</File>
+    <File md5="A29208355FDEB9E5CF6855A3A68F499F" import="0">Lua/UI/PleiadesFreezer.lua</File>
     <File md5="1B4E1B082A559BDF0DBB218BE71106D4" import="0">Lua/UI/PleiadesFreezer.xml</File>
-    <File md5="13E2F5E647498355B23D7E582C91FD31" import="0">Lua/UI/TopPanelEntertainmentDisplay.lua</File>
+    <File md5="3C4FCC21079FE48507D266CBCD7702B7" import="0">Lua/UI/TopPanelEntertainmentDisplay.lua</File>
     <File md5="25380CA53A73D67D8240DA66579E8B20" import="0">Lua/UI/TopPanelEntertainmentDisplay.xml</File>
-    <File md5="E56049B062D7F4AC8E647E97BBA4EE00" import="0">Lua/UI/TopPanelFreezerDisplay.lua</File>
+    <File md5="9D50A23816F4894DB91C24B4BC55C326" import="0">Lua/UI/TopPanelFreezerDisplay.lua</File>
     <File md5="B9EEFF3D61D20142C9243288667E130F" import="0">Lua/UI/TopPanelFreezerDisplay.xml</File>
-    <File md5="943174FFF0A3500C2CCD2088B5EDF839" import="0">Lua/UI/TopPanelGriefSeedDisplay.lua</File>
+    <File md5="58B9D4FE9F7199B32E4BF3D376BBE377" import="0">Lua/UI/TopPanelGriefSeedDisplay.lua</File>
     <File md5="D62B1B89ADE9A2E49377AABF88E048FE" import="0">Lua/UI/TopPanelGriefSeedDisplay.xml</File>
     <File md5="64DF635BD57CDEB13DC1038934568A7E" import="1">Lua/Utils/CityInfoStack.lua</File>
     <File md5="120EB71025973A8A48B38314241DD0B3" import="1">Lua/Utils/CityInfoStack.xml</File>
@@ -506,7 +506,7 @@
     <File md5="717CB315D54CF569E12108AC5735565C" import="1">Sound/HomuraTimeStop.mp3</File>
     <File md5="4FCDC194F791630BEA0DA9B325515987" import="0">SQL/DemonHomura/DemonHomuraCivilization.sql</File>
     <File md5="4196D34861B66EEFDB3CDDB80A07ECF2" import="0">SQL/DemonHomura/DemonHomuraLeaderAndTrait.sql</File>
-    <File md5="40437D3DB439A9BE55B9D51A79DC6E76" import="0">SQL/DemonHomura/DemonHomuraUnit.sql</File>
+    <File md5="D22F8896C838A411E7C93F75FFA23E2F" import="0">SQL/DemonHomura/DemonHomuraUnit.sql</File>
     <File md5="94649F7831C6A8FAAE4B18826F4164C0" import="0">SQL/Germany/BismarckTrait.sql</File>
     <File md5="D75A304806AD8D39D244DC268EAD767B" import="0">SQL/Homura/HomuraBuilding.sql</File>
     <File md5="79BC5610E318903354E7840D01982150" import="0">SQL/Homura/HomuraCivilization.sql</File>
@@ -515,7 +515,7 @@
     <File md5="3ED0AD1304554BDCD410CACF1A94FFBD" import="0">SQL/KaoruUmika/KaoruUmikaBuilding.sql</File>
     <File md5="6321BA6607D9AEED6996922DB0507C23" import="0">SQL/KaoruUmika/KaoruUmikaMissions.sql</File>
     <File md5="3D7A3D79EED9E9E6AA87BDC6BCCF0C90" import="0">SQL/KaoruUmika/KaoruUmikaResource.sql</File>
-    <File md5="42E229101379226D792E93FA6365CD5A" import="0">SQL/KaoruUmika/KaoruUmikaUnit.sql</File>
+    <File md5="E85AC2A27A75E6FEBA4367FFF4CC9ABB" import="0">SQL/KaoruUmika/KaoruUmikaUnit.sql</File>
     <File md5="D95419C8DD097EB0B520588BA1809623" import="0">SQL/KaoruUmika/KaoruUmikaCivilization.sql</File>
     <File md5="8CDB257E49E718C4EB1EE9B043F69A5F" import="0">SQL/KaoruUmika/KaoruUmikaLeaderAndTrait.sql</File>
     <File md5="EB3060F954F17E6CA3EF92AA2918A0AB" import="0">SQL/Kyouko/KyoukoBuilding.sql</File>
@@ -536,7 +536,7 @@
     <File md5="E3DFA26322ACAD7ECF6D6A068C26CA4D" import="0">SQL/Nagisa/NagisaUnit.sql</File>
     <File md5="DD78F6F61E61638B0F5848CD418D2D04" import="0">SQL/Nagisa/NagisaLeaderAndTrait.sql</File>
     <File md5="3F45B752B200C8275E1FF05602BAC3B9" import="0">SQL/Nagisa/NagisaCivilization.sql</File>
-    <File md5="17F4754973346EBE80167C9DC61BA90C" import="0">SQL/OrikoKirika/OrikoKirikaImprovement.sql</File>
+    <File md5="78B82F11948E3DDB4D5ADE93328E2320" import="0">SQL/OrikoKirika/OrikoKirikaImprovement.sql</File>
     <File md5="797805EB420DB61C162862013723B294" import="0">SQL/OrikoKirika/OrikoKirikaUnit.sql</File>
     <File md5="A0167CE03825BEFC6058CE1FB4F50595" import="0">SQL/OrikoKirika/OrikoKirikaLeaderAndTrait.sql</File>
     <File md5="ECFDCAA9A8B26DFFA8CBFDA5B5365CF1" import="0">SQL/OrikoKirika/OrikoKirikaCivilization.sql</File>
@@ -548,9 +548,9 @@
     <File md5="B9DDFF1A22B2E3C182AB5F91851B2FFC" import="0">SQL/Shared/EntertainmentYield.sql</File>
     <File md5="6A002E4637DD226863D6BF59B7A99865" import="0">SQL/Shared/Feminizer.sql</File>
     <File md5="862033F7E2E2ACF7E175FB716677AC5C" import="0">SQL/Shared/IconAtlases.sql</File>
-    <File md5="FCC929BB9A0DDB81A46A25B449CB267C" import="0">SQL/Shared/MGActionStates.sql</File>
-    <File md5="E9DA3158F926EFB3DBB4C028D9BB91A7" import="0">SQL/Shared/MGDefines.sql</File>
-    <File md5="44C447105B67523D3B3428612CD9EDA9" import="0">SQL/Shared/MGIconBuilder.sql</File>
+    <File md5="0C6A93EC71639C1D64A3A24860666C31" import="0">SQL/Shared/MGActionStates.sql</File>
+    <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
+    <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
     <File md5="7B2B72CF6A4B1EFF92A35179F0D8832D" import="0">SQL/Shared/MGMissions.sql</File>
     <File md5="410E6A46F02A3D8159200D0D0E403B1D" import="0">SQL/Shared/MGMoods.sql</File>
     <File md5="8D91A4495B354871BCCC2C9C98FE13A3" import="0">SQL/Shared/MGPersonalityTraits.sql</File>
@@ -560,10 +560,10 @@
     <File md5="8E968CB796E87F10284EBCF8B6E90C0D" import="0">SQL/Shared/NavalOutpost.sql</File>
     <File md5="DB0DF1CE20A39BDE8332889E708ADF79" import="0">SQL/Shared/PlayerColors.sql</File>
     <File md5="DCEB8BE87F29E5E36AFA159E20626EB1" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
-    <File md5="B420C920B406EEEFEC7592693C45DB55" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="3384CA94BD59548876D2AFEB5C5B23D7" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
     <File md5="FD01B1194B3EE011A39E86749EBDBF68" import="1">SQL/Shared/UnitArtDefines.sql</File>
     <File md5="5CA12672FE05C265D6C10749CC4510E5" import="0">SQL/Shared/WFTWConcepts.sql</File>
-    <File md5="88199A38E1D276ED6F12FBF72AED2909" import="0">SQL/Songhai/AskiaTrait.sql</File>
+    <File md5="B0BD2983D305AE2DB0AB9CD52B234F36" import="0">SQL/Songhai/AskiaTrait.sql</File>
     <File md5="1ABB70635E0AABF44FB9310D3BA9C9BC" import="0">SQL/Sweden/GustavusTrait.sql</File>
     <File md5="C98D9520F085AF6D38AEDF086678A892" import="0">SQL/Sweden/ReplaceHakkaAbility.sql</File>
     <File md5="7118A09EEC8F9CEFED4F026BEFA6C3F4" import="0">SQL/UltimateMadoka/UltimateMadokaBuilding.sql</File>
@@ -572,13 +572,13 @@
     <File md5="743F120DF947CC6C5EC71DF5CB0916BF" import="0">SQL/UltimateMadoka/UltimateMadokaLeaderAndTrait.sql</File>
     <File md5="E893B0C21B718C8FD07C69BDC96543C0" import="0">SQL/UltimateMadoka/UltimateMadokaCivilization.sql</File>
     <File md5="BC8670313F6A8772452885B77C40F3A6" import="0">SQL/WonderChanges/PMMMChangeHalicarnassus.sql</File>
-    <File md5="2158CAEF0CBBFC83FCC66D1107EF8D0B" import="1">UI Replacements/BarbarianCampPopup.lua</File>
+    <File md5="FBEE0B5423AF6031598D45BB28B5DD4B" import="1">UI Replacements/BarbarianCampPopup.lua</File>
     <File md5="B1BF7CDC8EC3EA4E47304AF8D0703116" import="1">UI Replacements/CivilopediaScreen.lua</File>
-    <File md5="A1FEB49236038E2D4F6469CD27D00EC1" import="1">UI Replacements/EnemyUnitPanel.lua</File>
+    <File md5="101414130E4C29F4C3471AC99834461B" import="1">UI Replacements/EnemyUnitPanel.lua</File>
     <File md5="288ACF3886BECFF049C31ECF62F46224" import="1">UI Replacements/EnemyUnitPanel.xml</File>
     <File md5="636263FA3D8368404004E89413D2D114" import="1">UI Replacements/EnemyUnitPanel_small.xml</File>
-    <File md5="67DFBA2AB8C8DFFD9F80A1698528404E" import="1">UI Replacements/SetUnitName.lua</File>
-    <File md5="C667A71351DDFC97675BB67F072B1B50" import="1">UI Replacements/UnitPanel.lua</File>
+    <File md5="B44375739958889F526DAEEEA4D43245" import="1">UI Replacements/SetUnitName.lua</File>
+    <File md5="AC2C9AC4AC72093406188863F4052049" import="1">UI Replacements/UnitPanel.lua</File>
     <File md5="13D25294DE2F185B85216F0322870FD8" import="1">UI Replacements/UnitPanel.xml</File>
     <File md5="94BDD259D8832E8276BFF893EE49DED9" import="1">UI Replacements/UnitPanel_small.xml</File>
     <File md5="9A0F0B4D893F04F860B16B24B564B744" import="1">UnitArt/black_4x4.dds</File>

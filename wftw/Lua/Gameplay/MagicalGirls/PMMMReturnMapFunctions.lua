@@ -83,7 +83,12 @@ function (iMGKey)
 				pOwner:ChangeMinorCivFriendshipWithMajor(iPlayer, GameDefines.INFLUENCE_BONUS_PER_HIDDEN_WITCH_UNCOVERED_FROM_MINOR)
 			end
 
-			PMMM.CurrentHiddenWitches[iPlayer] = math.max((PMMM.CurrentHiddenWitches[iPlayer] - 1), 0)
+			-- [port] HiddenWitchSpawn increments the counter of the city's owner, not of the hunting player
+			local iCounterOwner = (PMMM.HiddenWitchCityOwners and PMMM.HiddenWitchCityOwners[v]) or iOwner
+			if iCounterOwner and iCounterOwner > -1 and PMMM.CurrentHiddenWitches[iCounterOwner] then
+				PMMM.CurrentHiddenWitches[iCounterOwner] = math.max((PMMM.CurrentHiddenWitches[iCounterOwner] - 1), 0)
+			end
+			if PMMM.HiddenWitchCityOwners then PMMM.HiddenWitchCityOwners[v] = nil end
 			PMMM.HiddenWitchCities[v] = nil
 			PMMM.HiddenWitchPlots[k] = nil
 
@@ -154,7 +159,7 @@ function (iMGKey)
 		MagicalGirls[iMGKey].Loyalty = math.min(MagicalGirls[iMGKey].Loyalty + 25, GameDefines.MAXIMUM_MG_LOYALTY)
 	--Penalty of 25 Loyalty if she vacationed outside of her owner's territory, and they had more Entertainment.
 	elseif GetEmpireEntertainment(pPlayer) < GetEmpireEntertainment(pVacationDestination) then
-		MagicalGirls[iMGKey].Loyalty = math.max(MagicalGirls[iMGKey].Loyalty - 25, GameDefines.MAXIMUM_MG_LOYALTY)
+		MagicalGirls[iMGKey].Loyalty = math.max(0, math.min(MagicalGirls[iMGKey].Loyalty - 25, GameDefines.MAXIMUM_MG_LOYALTY))	-- [port] math.max against the maximum set Loyalty to the maximum instead of deducting 25
 	end
 	
 

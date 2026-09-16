@@ -58,7 +58,7 @@ function OnShowHide(bHide, bInit)
 				LuaEvents.PMMMGetNumAcademies(iActivePlayer, ttable)
 				iNumAcademies = ttable[0]
 				Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", iNumAcademies)
-				iNumSuccesses = PMMM.FreezerSuccesses[iActivePlayer] or 0
+				iNumSuccesses = MapModData.PMMM.FreezerSuccesses[iActivePlayer] or 0 -- [port] A21: bare PMMM global
 				Controls.PreviousSuccessesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES", iNumSuccesses)
 				return
 			end
@@ -86,7 +86,7 @@ function OnMagicalGirlClicked(iMGKey)
 
 	--Grief Seed Button
 	if MapModData.PMMM.MagicalGirls[iMGKey].SoulGem < 100 then
-		if PMMM.GriefSeeds[Game:GetActivePlayer()] > 0 then
+		if (MapModData.PMMM.GriefSeeds[Game:GetActivePlayer()] or 0) > 0 then -- [port] A21: bare PMMM global; nil seed count
 			Controls.GriefSeedButton:SetDisabled(false)
 			Controls.GriefSeedButton:SetVoid1(iMGKey)
 			Controls.GriefSeedButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_TT"))
@@ -144,7 +144,7 @@ function OnBeginButtonClicked()
 		LuaEvents.PMMMGetNumAcademies(iPlayer, ttable)
 		iNumAcademies = ttable[0]
 		Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", iNumAcademies)
-		iNumSuccesses = PMMM.FreezerSuccesses[iPlayer] or 0
+		iNumSuccesses = MapModData.PMMM.FreezerSuccesses[iPlayer] or 0 -- [port] A21: bare PMMM global
 		Controls.PreviousSuccessesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES", iNumSuccesses)
 		iScience = 0;
 		Controls.ScienceValue:SetText(tostring(iScience))
@@ -156,6 +156,10 @@ end
 Controls.BeginButton:RegisterCallback(Mouse.eLClick, OnBeginButtonClicked)
 
 function Init()
+	-- [port] A23: this runs at file load, before the gameplay state has populated MapModData.PMMM
+	if not MapModData.PMMM then
+		return
+	end
 	g_InstanceManager:ResetInstances()
 	iCurrentMG = -1;
 	iCurrentPrediction = -1;
@@ -184,13 +188,16 @@ function Init()
 				instance.SubIconBG:EnableToolTip(true)
 				instance.SubIconShadow:EnableToolTip(true)
 				
-				local sOwnerString = Players[v.OriginalOwner]:GetCivilizationAdjective()
-				
-				instance.SubIconFrame:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-				instance.SubIcon:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-				instance.SubIconBG:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-				instance.SubIconShadow:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-				
+				-- [port] A23: Players[nil] -- only build the owner tooltip when there is an OriginalOwner
+				if (v.OriginalOwner) then
+					local sOwnerString = Players[v.OriginalOwner]:GetCivilizationAdjective()
+
+					instance.SubIconFrame:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+					instance.SubIcon:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+					instance.SubIconBG:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+					instance.SubIconShadow:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+				end
+
 				instance.MagicalGirlButton:SetVoid1(k)
 				instance.MagicalGirlButton:RegisterCallback(Mouse.eLClick, OnMagicalGirlClicked)
 			end
@@ -209,6 +216,12 @@ function Init()
 end
 
 Init()
+
+-- [port] A23: Init at load may bail out because MapModData.PMMM is not there yet -- run it again once the game is up
+function OnLoadScreenCloseInit()
+	Init()
+end
+Events.LoadScreenClose.Add(OnLoadScreenCloseInit)
 
 
 
@@ -238,9 +251,9 @@ Controls.ScienceSlider:RegisterSliderCallback(OnScienceSliderValueChanged)
 
 function OnScienceValueChanged(sValue, control, bFire)
 	if bFire then
-		local iValue = tonumber(sValue)
+		local iValue = tonumber(sValue) or 0 -- [port] A23: tonumber is nil for non-numeric text
 		local iProgressThisTech = GetAvailableDivertScience()
-		
+
 		if iValue < 0 then
 			iValue = 0
 		elseif iValue > iProgressThisTech then
@@ -249,7 +262,11 @@ function OnScienceValueChanged(sValue, control, bFire)
 		
 		iScience = iValue
 		
-		iSliderSetValue = iValue / iProgressThisTech
+		-- [port] A23: was a missing-local global, and divided by zero with no research progress
+		local iSliderSetValue = 0
+		if iProgressThisTech > 0 then
+			iSliderSetValue = iValue / iProgressThisTech
+		end
 
 		local iPlayer = Game:GetActivePlayer()
 		LuaEvents.PMMMGetPleiadesPrediction(iPlayer, iCurrentMG, iScience, ttable)
@@ -282,11 +299,13 @@ function OnAdditionalInformationDropdownGatherEntries(additionalEntries)
 end
 
 --Don't use the cached trait table since it has issues when first loading -- find it directly from the DB
-local leaderType = GameInfo.Leaders[Players[Game:GetActivePlayer()]:GetLeaderType()].Type
-local traitType = GameInfo.Leader_Traits("LeaderType ='" .. leaderType .. "'")().TraitType
-local trait = GameInfo.Traits[traitType]
+-- [port] A23: every step of this chain can be nil in observer/autoplay
+local pActivePlayer = Players[Game:GetActivePlayer()]
+local leaderInfo = pActivePlayer and GameInfo.Leaders[pActivePlayer:GetLeaderType()]
+local leaderTraitRow = leaderInfo and GameInfo.Leader_Traits("LeaderType ='" .. leaderInfo.Type .. "'")()
+local trait = leaderTraitRow and GameInfo.Traits[leaderTraitRow.TraitType]
 
-if trait.EnableFreezerSystem == true or trait.EnableFreezerSystem == 1 then
+if trait and (trait.EnableFreezerSystem == true or trait.EnableFreezerSystem == 1) then
 	LuaEvents.AdditionalInformationDropdownGatherEntries.Add(OnAdditionalInformationDropdownGatherEntries)
 	LuaEvents.RequestRefreshAdditionalInformationDropdownEntries()
 end

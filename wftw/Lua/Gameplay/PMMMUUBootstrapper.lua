@@ -37,7 +37,7 @@ function OnDoTurnUUFunctions(iPlayer)
 			Magiclaw(iPlayer, id, bFirstLoop)
 			BubbleBomber(iPlayer, id)
 			ClaraDoll(iPlayer, id, false)
-			bNotFirstLoop = false
+			bFirstLoop = false --[port] was a typo'd global, so Magiclaw's all-enemies sweep ran once per unit
 		end
 	if iPlayer < iMaxCivs then
 		ExpendHarmony(iPlayer)
@@ -58,6 +58,13 @@ function OnUnitPromotedUUFunctions(iPlayer, iUnit)
 		AddHarmonyOnLevel(iPlayer, iUnit)
 	end
 end
+
+--[port] Main.lua registers no UU prekill hook, so register one here; per-unit persisted state
+--keyed by "owner:unit" has to be dropped when the unit dies because unit IDs are recycled.
+function OnPrekillUUFunctions(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iByPlayer)
+	ClearHarmonyOnDeath(iPlayer, iUnit)
+end
+GameEvents.UnitPrekill.Add(OnPrekillUUFunctions)
 
 function OnCustomMissionPossibleUUFunctions(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)
 	local bReturn = TiroFinaleCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)

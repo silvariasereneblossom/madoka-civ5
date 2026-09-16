@@ -6,8 +6,13 @@
 include("PMMMEntertainmentSystem.lua")
 
 function UpdateEntertainmentDisplay()
-	Controls.EntertainmentString:ChangeParent(ContextPtr:LookUpControl("/InGame/TopPanel/TopPanelInfoStack"))
-	ContextPtr:LookUpControl("/InGame/TopPanel/TopPanelInfoStack"):ReprocessAnchoring()
+	-- [port] A23: looked up twice with no nil check
+	local pInfoStack = ContextPtr:LookUpControl("/InGame/TopPanel/TopPanelInfoStack")
+	if not pInfoStack then
+		return
+	end
+	Controls.EntertainmentString:ChangeParent(pInfoStack)
+	pInfoStack:ReprocessAnchoring()
 	DoInitEntertainmentTooltips()
 	RefreshEntertainmentDisplay()
 end

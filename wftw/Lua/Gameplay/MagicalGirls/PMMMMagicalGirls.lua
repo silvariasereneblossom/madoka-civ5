@@ -71,6 +71,7 @@ function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
 				MagicalGirls[iMGKey].Status = GameInfoTypes.MGACTIONSTATE_RETURNED_NORMAL
 				OnDemonHomuraKillMG(iPlayer, pUnit:GetX(), pUnit:GetY())
 				pUnit:Kill(true)
+				tMagicalGirlSpawnTable = {}	-- [port] this early return skipped the reset at the end of the function
 				return
 			end
 
@@ -155,10 +156,22 @@ function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
 			if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true) then
 				OnDemonHomuraKillMG(iPlayer, pUnit:GetX(), pUnit:GetY())
 				pUnit:Kill(true)
+				tMagicalGirlSpawnTable = {}	-- [port] this early return skipped the reset at the end of the function
 				return
 			end
 
-			local iKey = #MagicalGirls + 1
+			-- [port] #MagicalGirls + 1 reuses a key whenever the table has a hole, silently overwriting a live record
+			if not PMMM.NextMGKey then
+				local iHighestKey = 0
+				for k, v in pairs(MagicalGirls) do
+					if type(k) == "number" and k > iHighestKey then
+						iHighestKey = k
+					end
+				end
+				PMMM.NextMGKey = iHighestKey + 1
+			end
+			local iKey = PMMM.NextMGKey
+			PMMM.NextMGKey = PMMM.NextMGKey + 1
 
 			MagicalGirls[iKey] = {
 				["Owner"] = iPlayer,
@@ -262,14 +275,16 @@ function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
 			local iNumDeserts = 0
 			local iNumTundraSnow = 0
 			local iNumJungles = 0
-			for pHomeCityPlot in PlotAreaSpiralIterator(pHomeCity:Plot(), 1, false, false, false, true) do
-					if pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_DESERT then
-						iNumDeserts = iNumDeserts + 1
-					elseif pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_TUNDRA or pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_SNOW then
-						iNumTundraSnow = iNumTundraSnow + 1
-					elseif pHomeCityPlot:GetFeatureType() == FeatureTypes.FEATURE_JUNGLE then
-						iNumJungles = iNumJungles + 1
-					end
+			if pHomeCity then	-- [port] a cityless civ or a razed home city leaves pHomeCity nil
+				for pHomeCityPlot in PlotAreaSpiralIterator(pHomeCity:Plot(), 1, false, false, false, true) do
+						if pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_DESERT then
+							iNumDeserts = iNumDeserts + 1
+						elseif pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_TUNDRA or pHomeCityPlot:GetTerrainType() == TerrainTypes.TERRAIN_SNOW then
+							iNumTundraSnow = iNumTundraSnow + 1
+						elseif pHomeCityPlot:GetFeatureType() == FeatureTypes.FEATURE_JUNGLE then
+							iNumJungles = iNumJungles + 1
+						end
+				end
 			end
 			if iNumDeserts > iNumTundraSnow and iNumDeserts > iNumJungles then
 				MagicalGirls[iKey].AdaptedHostileTerrain = TerrainTypes.TERRAIN_DESERT
@@ -573,12 +588,21 @@ function MagicalGirlUpkeep(iPlayer)
 		local pPlayer = Players[iPlayer]
 		local bIsHuman = pPlayer:IsHuman()
 		local iTurn = Game:GetGameTurn()
+		-- [port] the body below kills MGs (defection, witching out) and creates units, which invalidates pPlayer:Units(); collect first, mutate second
+		local tMGUnitIDs = {}
 		for pUnit in pPlayer:Units() do
 			if pUnit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL then
-				local iUnitID = pUnit:GetID()
+				tMGUnitIDs[#tMGUnitIDs + 1] = pUnit:GetID()
+			end
+		end
+		for iMGLoop = 1, #tMGUnitIDs do
+			local iUnitID = tMGUnitIDs[iMGLoop]
+			local pUnit = pPlayer:GetUnitByID(iUnitID)
+			if pUnit then
 				local iMGKey = GetMagicalGirlKey(iPlayer, iUnitID)
 				
 				if iMGKey then
+					local bLeftMap = false	-- [port] takes the place of the old `break`
 					--Refresh certain bits of data.
 					MagicalGirls[iMGKey].Promotions = {}
 					MagicalGirls[iMGKey].Level = pUnit:GetLevel()
@@ -668,8 +692,8 @@ function MagicalGirlUpkeep(iPlayer)
 						end
 						--Ideology
 						local iPlayerIdeology = pPlayer:GetLateGamePolicyTree()
-						if iPlayerIdeology then
-							local iOurFulfillment = tIdeologyLDTable.FulfilledFunc(iPlayer, iMGKey, k)
+						if iPlayerIdeology and iPlayerIdeology > -1 and MagicalGirls[iMGKey].IdeologicalBelief then	-- [port] -1 (no ideology) was truthy, and k was out of scope
+							local iOurFulfillment = tIdeologyLDTable.FulfilledFunc(iPlayer, iMGKey, MagicalGirls[iMGKey].IdeologicalBelief)
 							iFromLDs = iFromLDs + math.ceil(iOurFulfillment * (GameDefines.MG_LD_LOYALTY_MULTIPLIER_IDEOLOGY_X1000 / 1000))
 						end
 						MagicalGirls[iMGKey].LDLoyaltyChange = iFromLDs
@@ -712,7 +736,7 @@ function MagicalGirlUpkeep(iPlayer)
 
 						if MagicalGirls[iMGKey].Loyalty <= 0 then
 							DoMagicalGirlDisappearFromMapAction(iMGKey, iPlayer, pUnit:GetID(), GameInfoTypes.MGACTIONSTATE_DEFECTING)
-							break
+							bLeftMap = true	-- [port] was `break`, which skipped every remaining MG of this player
 						else
 							--Adjust Influence
 							--Influence increases or decreases by the following:
@@ -776,7 +800,7 @@ function MagicalGirlUpkeep(iPlayer)
 					end
 					
 					--Find out the corruption amount.
-					if pUnit then
+					if pUnit and not bLeftMap then	-- [port] she has just left the map, her unit is gone
 						local iTotalCorruption = iCorruptionPerTurnBase
 						local iCurrentDamage = pUnit:GetDamage()
 						local iHealAmount = 0
@@ -828,17 +852,18 @@ function MagicalGirlUpkeep(iPlayer)
 									DoConsumeGriefSeed(iMGKey, iPlayer)
 								end
 							end
-						end
-						--If she's in Critical, she might become a Witch!
-						if (MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].CanBecomeWitch == 1 or MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].CanBecomeWitch == true) then
-							local iRand = Game.Rand(100, "PMMM Roll to become Witch")
-							--The chance starts at 10% and increases by 5% for every 1 percent her Soul Gem is below the MaxPercent.
-							local iThreshold = 10 + ((MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].MaxPercent - MagicalGirls[iMGKey].SoulGem) * 5)
-							if iRand <= iThreshold then
-								if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoWitches == true or MapModData.gPMMMTraits[iPlayer].NoWitches == 1) then
-									DoLawOfCyclesTakeaway(iMGKey)
-								else
-									TurnIntoWitch(iMGKey)
+							--If she's in Critical, she might become a Witch!
+							-- [port] this roll used to run even when the branch above had already converted and killed her
+							if (MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].CanBecomeWitch == 1 or MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].CanBecomeWitch == true) then
+								local iRand = Game.Rand(100, "PMMM Roll to become Witch")
+								--The chance starts at 10% and increases by 5% for every 1 percent her Soul Gem is below the MaxPercent.
+								local iThreshold = 10 + ((MapModData.gPMMMSoulGemStates[MagicalGirls[iMGKey].SoulGemState].MaxPercent - MagicalGirls[iMGKey].SoulGem) * 5)
+								if iRand <= iThreshold then
+									if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoWitches == true or MapModData.gPMMMTraits[iPlayer].NoWitches == 1) then
+										DoLawOfCyclesTakeaway(iMGKey)
+									else
+										TurnIntoWitch(iMGKey)
+									end
 								end
 							end
 						end
@@ -882,13 +907,13 @@ end
 --Turn that bitch into a Witch!
 function TurnIntoWitch(iMGKey, pGivenPlot)
 	local pPlayer, pUnit = RetrieveMGPointers(iMGKey)
+	local iPlayer = pPlayer:GetID()	-- [port] iPlayer was only declared inside the leader branch, so the non-leader branch indexed tables with nil
 	
 	--v19: Leaders respawn
 	if MagicalGirls[iMGKey].IsLeader == true then
 		local ID = pUnit:GetID()
-		local iPlayer = pPlayer:GetID()
 		local iX = pUnit:GetX()
-		local iY = pUnit:GetX()
+		local iY = pUnit:GetY()	-- [port] was GetX()
 		pUnit:Kill(true)
 		local iNumTurns = math.ceil(GameDefines.LEADER_MG_RESPAWN_TURNS * GameInfo.GameSpeeds[PreGame.GetGameSpeed()].DealDuration / 30)
 		if MapModData.gPMMMTraits[iPlayer] and MapModData.gPMMMTraits[iPlayer].LeaderMGRespawnTimeModifier then
@@ -905,7 +930,7 @@ function TurnIntoWitch(iMGKey, pGivenPlot)
 		if pGivenPlot then
 			pPlot = pGivenPlot
 		else
-			pPlot = FindBestEnemySpawnPlot(pUnit:GetPlot())
+			pPlot = FindBestEnemySpawnPlot(pUnit:GetPlot(), pUnit)	-- [port] pass the spawning unit instead of relying on a global
 		end
 		local iX = pPlot:GetX()
 		local iY = pPlot:GetY()
@@ -941,8 +966,8 @@ function TurnIntoWitch(iMGKey, pGivenPlot)
 		local iTurn = Game:GetGameTurn()
 		local iPlotOwner = pPlot:GetOwner()
 		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 2) do
-			for i = 0, pPlot:GetNumUnits() - 1 do
-				local pUnit = pPlot:GetUnit(i)
+			for i = 0, pAreaPlot:GetNumUnits() - 1 do	-- [port] scanned the centre plot 19 times instead of the ring
+				local pUnit = pAreaPlot:GetUnit(i)
 				if pUnit:GetUnitClassType() == iMagicalGirlClass then
 					local iOwner = pUnit:GetOwner()
 					local pOwner = Players[iOwner]
@@ -1063,7 +1088,9 @@ end
 function WitchHuntCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
 	if iMission == iWitchHuntMission then
 		local iMGKey = GetMagicalGirlKey(iPlayer, iUnit)
-		DoMagicalGirlDisappearFromMapAction(iMGKey, iPlayer, iUnit, GameInfoTypes.MGACTIONSTATE_WITCH_HUNT)
+		if iMGKey then	-- [port] GetMagicalGirlKey returns false on a miss
+			DoMagicalGirlDisappearFromMapAction(iMGKey, iPlayer, iUnit, GameInfoTypes.MGACTIONSTATE_WITCH_HUNT)
+		end
 	end
 	return 0
 end
@@ -1083,6 +1110,7 @@ function SparringCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2,
 	if iMission == iSparringMission and pUnit:GetUnitClassType() == iMagicalGirlClass and not pUnit:IsEmbarked() then
 		if pUnit:GetDamage() == 0 then
 			local iMGKey = GetMagicalGirlKey(iPlayer, iUnit)
+			if not iMGKey then return false end	-- [port] GetMagicalGirlKey returns false on a miss
 			if (not MagicalGirls[iMGKey].SparringCooldown or Game:GetGameTurn() - MagicalGirls[iMGKey].SparringCooldown >= iSparCooldown) then
 				for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), 1, false, false, false, true) do
 					if pAreaPlot:IsCity() then
@@ -1365,7 +1393,7 @@ function RandomizeMagicalGirlPortrait(iKey, iOwner)
 	local NumFATypes = {}
 	local NumHATypes = {}
 	for row in GameInfo.MG_IconFaceAccessories() do
-		for i = 0, row.NumAccessories - 1, 0 do 
+		for i = 0, row.NumAccessories - 1, 1 do 	-- [port] step was 0, so no MG ever got a face accessory
 			NumFATypes[#NumFATypes + 1] = {
 				["ID"] = row.ID,
 				["Color"] = i
@@ -1373,7 +1401,7 @@ function RandomizeMagicalGirlPortrait(iKey, iOwner)
 		end
 	end
 	for row in GameInfo.MG_IconHairAccessories() do
-		for i = 0, row.NumAccessories - 1, 0 do 
+		for i = 0, row.NumAccessories - 1, 1 do 	-- [port] step was 0, so no MG ever got a hair accessory
 			NumHATypes[#NumHATypes + 1] = {
 				["ID"] = row.ID,
 				["Color"] = i

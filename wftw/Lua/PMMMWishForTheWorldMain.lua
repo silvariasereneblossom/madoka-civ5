@@ -90,6 +90,16 @@ end
 
 --Input handler for custom missions and saving
 function InputHandler( uiMsg, wParam, lParam )
+	-- [port] chain the TSL serializer's save keys; this context's SetInputHandler below displaces the serializer's own handler
+	if uiMsg == KeyEvents.KeyDown then
+		if wParam == Keys.VK_F11 then
+			QuickSaveIntercept()
+			return true
+		elseif wParam == Keys.S and UIManager:GetControl() then
+			SaveGameIntercept()
+			return true
+		end
+	end
 	if uiMsg == MouseEvents.LButtonUp then
 			local pPlot = Map.GetPlot( UI.GetMouseOverHex() )
 			if pPlot then
@@ -156,7 +166,7 @@ GameEvents.PlayerDoTurn.Add(PushAIMissions)
 
 
 ---------Always run SavePMMMTable last!-----------------------------------------------------------
-GameEvents.PlayerDoTurn.Add(SavePMMMTable)
+-- [port] SavePMMMTable is defined nowhere in the mod, so this registered nil; saving is done by the TSL serializer
 
 
 ---------UnitSetXY--------------------------------------------------------------------------------
@@ -172,7 +182,7 @@ GameEvents.UnitSetXY.Add(OnUnitSetXYCheckEmotionalAbuse)
 
 
 --------LoadScreenClose------------------------------------------------------------------------
-Events.LoadScreenClose.Add(OnEnterGame)
+-- [port] OnEnterGame is not defined here (only as a file-local in TSLSerializerCoreV3.lua, which registers it itself)
 Events.LoadScreenClose.Add(OnLoadScreenCloseRunTraitScripts)
 
 --------UnitKilledInCombat------------------------------------------------------------------------
@@ -220,7 +230,7 @@ GameEvents.UnitPromoted.Add(OnPromotedRunTraitScripts)
 GameEvents.UnitCreated.Add(ReplaceHostileUnits)
 GameEvents.UnitCreated.Add(GiveGPAName)
 GameEvents.UnitCreated.Add(OnCreatedMagicalGirl)
-GameEvents.UnitCreated.Add(RemoveGeneralAdmiralBonusFromProdigies)
+-- [port] RemoveGeneralAdmiralBonusFromProdigies is commented out in PMMMRouseMilitia.lua, so this registered nil
 
 --------TileImprovementChanged (added by DVMC)--------------------------------------------------------
 GameEvents.TileImprovementChanged.Add(AddStolenFoodFromImprovement)
@@ -304,18 +314,7 @@ Events.SerialEventUnitInfoDirty.Add(OnUnitInfoDirtyUpdateMood)
 
 
 --------UI LuaEvents-----------------------------------------------------------------------------------
-LuaEvents.PMMMGetUnitHarmony.Add(GetUnitHarmony)
-LuaEvents.PMMMGetUnitStolenFood.Add(GetUnitStolenFood)
-LuaEvents.PMMMGetLeaderMaxStolenFood.Add(GetLeaderMaxStolenFood)
-LuaEvents.PMMMGetSoulGemCorruption.Add(GetSoulGemCorruption)
-LuaEvents.PMMMGetSoulGemPolish.Add(GetSoulGemPolish)
-LuaEvents.PMMMGetSoulGemStateStringAndDanger.Add(GetSoulGemStateStringAndDanger)
-LuaEvents.PMMMGetGriefSeeds.Add(GetGriefSeeds)
-LuaEvents.PMMMGetLeaderTimeStopDuration.Add(GetLeaderTimeStopDuration)
-LuaEvents.PMMMGetLeaderTimeStopCooldown.Add(GetLeaderTimeStopCooldown)
-LuaEvents.PMMMGetBarbarianCampXP.Add(GetBarbarianCampXP)
-LuaEvents.PMMMLoadPMMMTable.Add(LoadPMMMTable)
-LuaEvents.PMMMSavePMMMTable.Add(SavePMMMTable)
+-- [port] the ten PMMMGet* getters plus LoadPMMMTable/SavePMMMTable are defined nowhere in the mod; every one of these registered nil
 LuaEvents.PMMMUseGriefSeed.Add(UseGriefSeed)
 LuaEvents.PMMMRandomizeMagicalGirlPortrait.Add(RandomizeMagicalGirlPortrait)
 LuaEvents.PMMMSetCustomMissionInfo.Add(SetCustomMissionInfo)

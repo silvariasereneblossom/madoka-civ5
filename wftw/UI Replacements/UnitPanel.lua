@@ -4,7 +4,7 @@
 include( "IconSupport" );
 include( "InstanceManager" );
 --PMMM Mod Start
-include("MagicalGirlInfoPanel.lua");
+-- [port] E: dropped include("MagicalGirlInfoPanel.lua") -- the file is import="0" so it never resolved, and UnitPanel defines its own RefreshMGInfo/RefreshMagicalGirlPortrait
 include( "PMMMGeneralFunctions.lua" );
 --PMMM Mod End
 
@@ -1053,10 +1053,11 @@ function UpdateUnitStats(unit)
 		local iCorruption = MapModData.PMMM.MagicalGirls[g_MGKey].SoulGem or 0
 		local iPolish = MapModData.PMMM.MagicalGirls[g_MGKey].Polish or 0
 		local sStateString = "";
+		local bCanBecomeWitch = false -- [port] A22: was read from gPMMMSoulGemStates[nil] outside the SoulGemState guard
 		if MapModData.PMMM.MagicalGirls[g_MGKey].SoulGemState then
 			sStateString = Locale.ConvertTextKey(MapModData.gPMMMSoulGemStates[MapModData.PMMM.MagicalGirls[g_MGKey].SoulGemState].Description)
+			bCanBecomeWitch = MapModData.gPMMMSoulGemStates[MapModData.PMMM.MagicalGirls[g_MGKey].SoulGemState].CanBecomeWitch or false
 		end
-		local bCanBecomeWitch = MapModData.gPMMMSoulGemStates[MapModData.PMMM.MagicalGirls[g_MGKey].SoulGemState].CanBecomeWitch or false
 		local rangeStrengthStr = Locale.ConvertTextKey("TXT_KEY_UPANEL_PMMM_SOUL_GEM")
 		Controls.UnitStatNameRangedAttack:SetText(rangeStrengthStr);
 		if iPolish <= 0 then
@@ -1228,7 +1229,8 @@ Controls.UnitPortraitButton:RegisterCallback( Mouse.eLClick, OnUnitNameClicked )
 function OnUnitRClicked()
 	local unit = UI.GetHeadSelectedUnit();
 	if unit then
-		if unit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL and MapModData.PMMM.MagicalGirls[g_MGKey].OverrideIcon == nil then
+		-- [port] A22: g_MGKey can be nil, and the MG may have no table entry
+		if unit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL and g_MGKey and MapModData.PMMM and MapModData.PMMM.MagicalGirls[g_MGKey] and MapModData.PMMM.MagicalGirls[g_MGKey].OverrideIcon == nil then
 			LuaEvents.PMMMOpenMGInfoPanel("Appearance")
 		else
 			-- search by name
@@ -1783,7 +1785,7 @@ function TipHandler( control )
 			if (MapModData.PMMM.TimeStopDuration[iPlayer] and MapModData.PMMM.TimeStopDuration[iPlayer] > 0) then
 				strToolTip = strToolTip .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_MISSION_PMMM_TIME_STOP_ACTIVE")
 			elseif (MapModData.PMMM.TimeStopCooldown[iPlayer] and MapModData.PMMM.TimeStopCooldown[iPlayer] > 0) then
-				strToolTip = strToolTip .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_MISSION_PMMM_TIME_STOP_COOLDOWN", PMMM.TimeStopCooldown[iPlayer])
+				strToolTip = strToolTip .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_MISSION_PMMM_TIME_STOP_COOLDOWN", MapModData.PMMM.TimeStopCooldown[iPlayer]) -- [port] A21: bare PMMM global
 			else
 				strToolTip = strToolTip .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_MISSION_PMMM_TIME_STOP_DISABLED")
 			end

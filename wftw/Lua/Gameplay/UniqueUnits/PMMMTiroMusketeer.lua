@@ -23,7 +23,16 @@ end
 
 function TiroFinaleCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
 	if iMission == iMissionType then
-		DoTiroFinale(iPlayer, Players[iPlayer]:GetUnitByID(iUnit), Map.GetPlot(-iData1, -iData2))
+		--[port] iData1/iData2 arrive unary-negated (see the InputHandler in PMMMWishForTheWorldMain);
+		--validate them and the plot before use
+		local iX, iY = -iData1, -iData2
+		if iX >= 0 and iY >= 0 then
+			local pPlot = Map.GetPlot(iX, iY)
+			local pUnit = Players[iPlayer]:GetUnitByID(iUnit)
+			if pPlot and pUnit then
+				DoTiroFinale(iPlayer, pUnit, pPlot)
+			end
+		end
 	end
 	return 0
 end
@@ -39,6 +48,8 @@ function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
 	print("Tiro Finale called")
 	local pPlayer = Players[iPlayer]
 	local pTeam = Teams[pPlayer:GetTeam()]
+	--[port] iTeam was an undefined global; derive the owner's real team id
+	local iTeam = pPlayer:GetTeam()
 	local iNumUnits = pPlot:GetNumUnits();
 	local pThisPlot = pHeadUnit:GetPlot()
 	
@@ -53,7 +64,8 @@ function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
 		pUnit = pPlot:GetUnit(i);
 		if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
 			 if (pUnit:GetBaseCombatStrength() > 0 or pHeadUnit:IsRanged()) then
-				if (pTeam:IsAtWar(pUnit:GetTeam()) or (UIManager:GetAlt() and pUnit:GetOwner() ~= iTeam)) then
+				--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
+				if pTeam:IsAtWar(pUnit:GetTeam()) then
 					print("Found valid target")
 					iStrength = math.floor(pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier)
 					print("iStrength: " ..iStrength)
@@ -68,7 +80,8 @@ function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
 		for i = 0, iNumUnits do
 			pUnit = pPlot:GetUnit(i);
 			if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-				if (pTeam:IsAtWar(pUnit:GetTeam()) or (UIManager:GetAlt() and pUnit:GetOwner() ~= iTeam)) then
+				--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
+				if pTeam:IsAtWar(pUnit:GetTeam()) then
 				print("Found valid target")
 					iStrength = math.floor(pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier)
 					print("iStrength: " ..iStrength)
@@ -87,7 +100,8 @@ function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
 			pUnit = pAreaPlot:GetUnit(i);
 			if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
 				 if (pUnit:GetBaseCombatStrength() > 0 or pHeadUnit:IsRanged()) then
-					if (pTeam:IsAtWar(pUnit:GetTeam()) or (UIManager:GetAlt() and pUnit:GetOwner() ~= iTeam)) then
+					--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
+					if pTeam:IsAtWar(pUnit:GetTeam()) then
 					print("Found valid target")
 						iStrength = math.floor((pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier) / 2)
 						print("iStrength: " ..iStrength)
@@ -102,7 +116,8 @@ function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
 			for i = 0, iNumUnits do
 				pUnit = pAreaPlot:GetUnit(i);
 				if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-					if (pTeam:IsAtWar(pUnit:GetTeam()) or (UIManager:GetAlt() and pUnit:GetOwner() ~= iTeam)) then
+					--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
+					if pTeam:IsAtWar(pUnit:GetTeam()) then
 					print("Found valid target")
 						iStrength = math.floor((pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier) / 2)
 						print("iStrength: " ..iStrength)

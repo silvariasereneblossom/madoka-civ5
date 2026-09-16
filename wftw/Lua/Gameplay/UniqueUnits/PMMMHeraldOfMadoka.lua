@@ -40,7 +40,9 @@ end
 
 
 function HeraldCustomMissionCompleted(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)
-	if iMission == iMissionType and iPlayer == Game:GetActivePlayer() then
+	--[port] this is a TESTANY hook that pops the mission queue, so the active-player test
+	--made it return a different value on every client
+	if iMission == iMissionType then
 		return true
 	end
 	return false
@@ -49,9 +51,10 @@ end
 function DoLawOfCyclesMission(iPlayer, pUnit, pPlot)
 	local pPlayer = Players[iPlayer]
 	local iNumUnits = pPlot:GetNumUnits();
-	for i = 0, iNumUnits do
+	--[port] ran one index past the end and dereferenced the nil it got back
+	for i = 0, iNumUnits - 1 do
 		pEnemyUnit = pPlot:GetUnit(i);
-		if pEnemyUnit:GetUnitType() == GameInfoTypes.UNIT_PMMM_MAGICAL_GIRL then
+		if pEnemyUnit and pEnemyUnit:GetUnitType() == GameInfoTypes.UNIT_PMMM_MAGICAL_GIRL then
 			local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
 			if iMGKey and MagicalGirls[iMGKey].IsLeader == false then
 				if MagicalGirls[iMGKey].SoulGemState == GameInfoTypes.PMMM_SGSTATE_CRITICAL then

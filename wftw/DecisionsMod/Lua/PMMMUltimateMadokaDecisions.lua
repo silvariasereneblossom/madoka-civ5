@@ -87,7 +87,7 @@ local Decisions_KnightOfMadoka = {}
 		if pPlayer:GetCivilizationType() ~= GameInfoTypes.CIVILIZATION_MADOKA then return false, false end
 		
 		if load(pPlayer, "Decisions_KnightOfMadoka") then
-			local MagicalGirls = MapModData.gT.PMMM.MagicalGirls
+			local MagicalGirls = MapModData.PMMM.MagicalGirls --[port] MapModData.gT never exists in WFTW
 			local iMGKey = load(pPlayer, "Decisions_KnightOfMadoka")
 			for k, v in pairs(MagicalGirls) do
 				if k == iMGKey and v.Owner == pPlayer:GetID() then
@@ -136,7 +136,7 @@ local Decisions_KnightOfMadoka = {}
 					local sKey = "Decisions_KnightOfMadoka" ..pPlayer:GetID()..":"..pUnit:GetID()
 					local iCost = math.ceil(200 * iMod)
 
-					local MagicalGirls = MapModData.gT.PMMM.MagicalGirls
+					local MagicalGirls = MapModData.PMMM.MagicalGirls --[port] MapModData.gT never exists in WFTW
 					local iMGKey;
 					for k, v in pairs(MagicalGirls) do
 						if v.UnitID == pUnit:GetID() and v.Owner == pPlayer:GetID() then

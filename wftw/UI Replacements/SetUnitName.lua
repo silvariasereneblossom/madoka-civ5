@@ -17,23 +17,25 @@ Controls.CancelButton:RegisterCallback( Mouse.eLClick, OnCancel );
 function OnAccept()
 	local pUnit = UI.GetHeadSelectedUnit();
 	if pUnit then
-		if pUnit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL then
-			local iKey;
+		local iKey;
+		-- [port] A?: MapModData.PMMM may not exist yet -- guard the scan
+		if pUnit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL and MapModData.PMMM and MapModData.PMMM.MagicalGirls then
 			for k, v in ipairs(MapModData.PMMM.MagicalGirls) do
 				if v.UnitID == pUnit:GetID() then
 					iKey = k
 					break
 				end
 			end
-			if iKey then
-				local sName = Controls.EditUnitName:GetText()
-				MapModData.PMMM.MagicalGirls[iKey].Name = sName
-				if MapModData.PMMM.MagicalGirls[iKey].IsLeader == true then
-					sName = GameDefines.LEADER_MG_HIGHLIGHT_STRING..Controls.EditUnitName:GetText()..'[ENDCOLOR]'
-				end
-				Network.SendRenameUnit(pUnit:GetID(), sName);
+		end
+		if iKey then
+			local sName = Controls.EditUnitName:GetText()
+			MapModData.PMMM.MagicalGirls[iKey].Name = sName
+			if MapModData.PMMM.MagicalGirls[iKey].IsLeader == true then
+				sName = GameDefines.LEADER_MG_HIGHLIGHT_STRING..Controls.EditUnitName:GetText()..'[ENDCOLOR]'
 			end
+			Network.SendRenameUnit(pUnit:GetID(), sName);
 		else
+			-- [port] A?: always fall through to the plain rename when there is no MG record
 			Network.SendRenameUnit(pUnit:GetID(), Controls.EditUnitName:GetText());
 		end
 	end

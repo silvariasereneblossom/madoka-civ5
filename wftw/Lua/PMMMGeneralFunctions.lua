@@ -144,10 +144,12 @@ function SetSoulGemState(iMGKey)
 		if v.MinPercent <= MagicalGirls[iMGKey].SoulGem and v.MaxPercent >= MagicalGirls[iMGKey].SoulGem then
 			MagicalGirls[iMGKey].SoulGemState = k
 			local pPlayer, pUnit = RetrieveMGPointers(iMGKey)
-			pUnit:SetHasPromotion(v.Promotion, true)
-			for k2, v2 in pairs(MapModData.gPMMMSoulGemStates) do
-				if k2 ~= k then
-					pUnit:SetHasPromotion(v2.Promotion, false)
+			if pUnit then	-- [port] off-map MGs (Freezer, hunt, vacation, sparring) have no unit
+				pUnit:SetHasPromotion(v.Promotion, true)
+				for k2, v2 in pairs(MapModData.gPMMMSoulGemStates) do
+					if k2 ~= k then
+						pUnit:SetHasPromotion(v2.Promotion, false)
+					end
 				end
 			end
 			return
@@ -187,7 +189,7 @@ function DoChangeCorruption(iCorruption, iMGKey)
 		end
 		MagicalGirls[iMGKey].SoulGem = MagicalGirls[iMGKey].SoulGem - iSoulGemCorruption
 		local pPlayer, pMagicalGirl = RetrieveMGPointers(iMGKey)
-		if pPlayer:GetID() == Game:GetActivePlayer() then
+		if pMagicalGirl and pPlayer:GetID() == Game:GetActivePlayer() then	-- [port] no unit for off-map MGs
 			Events.AddPopupTextEvent(HexToWorld(ToHexFromGrid(Vector2(pMagicalGirl:GetX(), pMagicalGirl:GetY()))), Locale.ConvertTextKey("TXT_KEY_PMMM_TILEPOPUP_SOUL_GEM_MINUS", iSoulGemCorruption), 1)
 		end
 	else
@@ -200,7 +202,7 @@ function DoChangeCorruption(iCorruption, iMGKey)
 		end
 		SetSoulGemState(iMGKey)
 		local pPlayer, pMagicalGirl = RetrieveMGPointers(iMGKey)
-		if pPlayer:GetID() == Game:GetActivePlayer() then
+		if pMagicalGirl and pPlayer:GetID() == Game:GetActivePlayer() then	-- [port] no unit for off-map MGs
 			local sString;
 			if iCorruption > 0 then
 				sString = Locale.ConvertTextKey("TXT_KEY_PMMM_TILEPOPUP_SOUL_GEM_MINUS", iCorruption)
@@ -227,7 +229,8 @@ end
 
 
 --Get the best possible spot to plop a new Hostile unit. Copied from Recluse's Lua.
-function FindBestEnemySpawnPlot(pOriginalPlot)
+--pSpawningUnit is the unit the new Hostile is replacing; it is excluded from the "is this plot occupied" test. It may be nil.
+function FindBestEnemySpawnPlot(pOriginalPlot, pSpawningUnit)	-- [port] pUnit used to be read as an undeclared global here
 	local pSpawnPlot;
 	--We'll keep a table of how acceptable a plot is to spawn on if it doesn't have perfect conditions (no cities or units).
 	--Values used:
@@ -235,26 +238,34 @@ function FindBestEnemySpawnPlot(pOriginalPlot)
 	--1: Contains civilian units, only acceptable as a last resort since it will kill the civilian unit.
 	--0: Contains a city. NEVER spawn it in a city!
 	local tPlotValidity = {}
+	-- [port] tPlotValidity is keyed by plot userdata, so pairs() order differs per client; keep a parallel ordered list for the Game.Rand pick
+	local tPlotOrder = {}
+	local function SetPlotValidity(pPlot, iValidity)
+		if tPlotValidity[pPlot] == nil then
+			tPlotOrder[#tPlotOrder + 1] = pPlot
+		end
+		tPlotValidity[pPlot] = iValidity
+	end
 	--Let's see if the plot it's already on is okay first.
 	if not pOriginalPlot:IsCity() then
 		local bThisPlotValid = true;
 		--Iterate over units in this plot, if there are any units other than the GP itself then this shouldn't be considered valid for this first check
 		for i = 0, pOriginalPlot:GetNumUnits() - 1 do
 			local pPlotUnit = pOriginalPlot:GetUnit(i)
-			if pPlotUnit ~= pUnit then
+			if pPlotUnit ~= pSpawningUnit then
 				bThisPlotValid = false
 				if not pPlotUnit:IsCombatUnit() then
-					tPlotValidity[pOriginalPlot] = 1
+					SetPlotValidity(pOriginalPlot, 1)
 				end
 			end
 		end
 		if bThisPlotValid == true then
 			pSpawnPlot = pOriginalPlot
 		elseif tPlotValidity[pOriginalPlot] == nil then
-			tPlotValidity[pOriginalPlot] = 2
+			SetPlotValidity(pOriginalPlot, 2)
 		end
 	else
-		tPlotValidity[pOriginalPlot] = 0
+		SetPlotValidity(pOriginalPlot, 0)
 	end
 
 	--If that didn't work, then let's try each adjacent plot.
@@ -275,18 +286,18 @@ function FindBestEnemySpawnPlot(pOriginalPlot)
 						for i = 0, pNextPlot:GetNumUnits() - 1 do
 							local pPlotUnit = pNextPlot:GetUnit(i)
 							if not pPlotUnit:IsCombatUnit() then
-								tPlotValidity[pNextPlot] = 1
+								SetPlotValidity(pNextPlot, 1)
 							end
 						end
 						if tPlotValidity[pNextPlot] == nil then
-							tPlotValidity[pNextPlot] = 2
+							SetPlotValidity(pNextPlot, 2)
 						end
 					else
 						pSpawnPlot = pNextPlot
 						break
 					end
 				else
-					tPlotValidity[pNextPlot] = 0
+					SetPlotValidity(pNextPlot, 0)
 				end
 			end
 		end
@@ -295,14 +306,16 @@ function FindBestEnemySpawnPlot(pOriginalPlot)
 	--If THAT didn't work, then we'll refer to the table we've created.
 	if not pSpawnPlot then
 		local tBestPlots = {}
-		for pPlot, iValidity in pairs(tPlotValidity) do
-			if iValidity == 2 then
+		for i = 1, #tPlotOrder do	-- [port] ordered iteration so every client picks the same plot
+			local pPlot = tPlotOrder[i]
+			if tPlotValidity[pPlot] == 2 then
 				table.insert(tBestPlots, pPlot)
 			end
 		end
 		if #tBestPlots < 1 then
-			for pPlot, iValidity in pairs(tPlotValidity) do
-				if iValidity == 1 then
+			for i = 1, #tPlotOrder do
+				local pPlot = tPlotOrder[i]
+				if tPlotValidity[pPlot] == 1 then
 					table.insert(tBestPlots, pPlot)
 				end
 			end	

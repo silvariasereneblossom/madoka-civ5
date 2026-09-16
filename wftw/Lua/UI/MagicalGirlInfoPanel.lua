@@ -22,7 +22,10 @@ local dkBlue = {12/255,22/255,30/255,120/255};
 
 local pink = {x=255/255,y=181/255,z=196/255,w=255/255};
 local orange = {x=255/255,y=100/255,z=0/255,w=255/255};
-local red = {x=255/255,z=0/255,z=0/255,w=255/255};
+local red = {x=255/255,y=0/255,z=0/255,w=255/255}; -- [port] E: was {x,z,z,w} -- duplicate z, no y
+
+--v21: Flag for whether or not this is a MP game
+local bMulti = Game.IsNetworkMultiPlayer() -- [port] B3: bMulti is only set in the gameplay state, so it was always nil here
 
 -------------------------------------------------
 -- Global Constants
@@ -66,6 +69,13 @@ Controls.TabButtonAppearance:RegisterCallback( Mouse.eLClick, function() TabSele
 
 g_Tabs["Mood"].RefreshContent = function()
 	MagicalGirls = MapModData.PMMM.MagicalGirls
+
+	-- [port] A11: GetMagicalGirlKey returns false on a miss -- bail out instead of indexing MagicalGirls[false]
+	if not g_MGKey or not MagicalGirls or not MagicalGirls[g_MGKey] then
+		g_MoodInstance:ResetInstances()
+		g_LDInstance:ResetInstances()
+		return
+	end
 
 	--Mood Stack
 	g_MoodInstance:ResetInstances()
@@ -250,6 +260,11 @@ g_Tabs["Appearance"].RefreshContent = function()
 		Controls.HairAccNextButton:SetHide(bool)
 
 		Controls.NoCustomsLabel:SetHide(not bool)
+	end
+	-- [port] A11: no MG record for this unit -- hide the editors instead of indexing MagicalGirls[false]
+	if not g_MGKey or not MagicalGirls or not MagicalGirls[g_MGKey] then
+		ShowHideAppearanceChangers(true)
+		return
 	end
 	if MagicalGirls[g_MGKey].OverrideIcon then
 		ShowHideAppearanceChangers(true)
@@ -1090,7 +1105,7 @@ function ShowHideHandler(bIsHide, bInitState)
 				g_MGKey = iMGKey
 			else
 				g_MGKey = nil
-				ContextPtr:SetHide(true)
+				Controls.MainBox:SetHide(true) -- [port] E: was ContextPtr:SetHide -- LuaEventOpen only unhides MainBox, so the panel could never reopen
 			end
 		end
 	end
