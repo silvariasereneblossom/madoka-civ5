@@ -163,7 +163,10 @@ def apply_sql(conn: sqlite3.Connection, text: str, mod: str, file: str, rep: Rep
 def _lit(v: str):
     if v is None:
         return None
-    lv = v.strip().lower()
+    # The game's loader trims element text: mods routinely format values as
+    # <Type>\n\tPROMOTION_X\n</Type> and those rows resolve fine in-game.
+    v = v.strip()
+    lv = v.lower()
     if lv == "true":
         return 1
     if lv == "false":

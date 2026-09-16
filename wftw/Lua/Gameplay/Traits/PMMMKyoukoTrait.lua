@@ -13,7 +13,9 @@ local iMelee = GameInfoTypes.UNITCOMBAT_MELEE
 local iGun = GameInfoTypes.UNITCOMBAT_GUN
 local iMounted = GameInfoTypes.UNITCOMBAT_MOUNTED
 local iNavalMelee = GameInfoTypes.UNITCOMBAT_NAVALMELEE
-local iMGClass = GameInfoTypes.UNITCLASS_MAGICAL_GIRL
+-- Upstream referenced UNITCLASS_MAGICAL_GIRL, which does not exist (resolved to nil, so the
+-- "not a Magical Girl" exclusion below never applied). The real class is UNITCLASS_PMMM_MAGICAL_GIRL.
+local iMGClass = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
 
 function AddStolenFoodFromImprovement(iPlotX, iPlotY, iOwner, iOldImprovement, iNewImprovement, bPillaged)
 	if not bPillaged then return end
