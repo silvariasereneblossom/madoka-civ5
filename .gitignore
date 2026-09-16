@@ -1,0 +1,14 @@
+# third-party checkouts and tools (not part of this repo)
+upstream/
+tools/
+# build products
+BuildOutput/
+*.pdb
+*.obj
+*.ilk
+# packed workshop archives
+*.civ5mod
+# editor/OS noise
+.vs/
+Thumbs.db
+desktop.ini
