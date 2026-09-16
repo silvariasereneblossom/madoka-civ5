@@ -40,7 +40,8 @@ function CheckAllyOfJustice(pPlayer)
 	if load(pPlayer, "Decisions_AllyOfJustice") == true then
 		if IsDenunciationThreshold(pPlayer) then
 			save(pPlayer, "Decisions_AllyOfJustice", false)
-			pPlayer:SetNumAnarchyTurns(math.ceil(iGAMod * 3))
+			-- CP 5.x exposes SetAnarchyNumTurns (the VMC-era SetNumAnarchyTurns no longer exists)
+			pPlayer:SetAnarchyNumTurns(math.ceil(iGAMod * 3))
 			return
 		end
 		for i = 0, GameDefines.MAX_MAJOR_CIVS - 1, 1 do

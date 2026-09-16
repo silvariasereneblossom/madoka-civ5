@@ -72,6 +72,16 @@ def main(argv=None) -> int:
     patched = patched.replace("    update_commit_id(log)\n", "    pass  # commit_id.inc written by build_dll.py\n")
     write_commit_id(repo)
 
+    # Newer LLVM (23.x) emits C++11 magic-static guards (__Init_thread_*), sized
+    # deallocation and __std_terminate, none of which exist in the VC9 CRT the game
+    # links against. Turn the first two off and supply the last as a shim.
+    patched = patched.replace("args = ['-m32', '-msse3', '/c',",
+                              "args = ['-m32', '-msse3', '/Zc:threadSafeInit-', '/Zc:sizedDealloc-', '/c',")
+    shim = repo / "clang_local.cpp"
+    shim.write_text('#include "clang.cpp"\n#include <exception>\n'
+                    'extern "C" void __cdecl __std_terminate(void) { std::terminate(); }\n', encoding="utf-8")
+    patched = patched.replace("PROJECT_DIR.joinpath('clang.cpp')", "PROJECT_DIR.joinpath('clang_local.cpp')")
+
     tmp = repo / "build_vp_clang_local.py"
     tmp.write_text(patched, encoding="utf-8")
 

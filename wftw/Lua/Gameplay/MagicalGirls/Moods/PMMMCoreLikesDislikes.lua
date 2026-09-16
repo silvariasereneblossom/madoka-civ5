@@ -708,9 +708,14 @@ t_LikesDislikes[iCivLDID].FulfilledFunc = (
 			end
 
 			local iFromDemands = 0
-			if pPlayer:IsPlayerNoSettleRequestEverAsked(iValue) then iFromDemands = iFromDemands + 20 end
-		
-			if pPlayer:IsPlayerStopSpyingRequestEverAsked(iValue) then iFromDemands = iFromDemands + 10 end
+			-- CP 5.x removed the vanilla "request ever asked" flags. Its promise system is the
+			-- closest equivalent: an expansion/spy promise exists only after we asked them to stop.
+			if pPlayer:GetNumTurnsExpansionPromise(iValue) > 0
+				or pPlayer:IsPlayerBrokenExpansionPromise(iValue)
+				or pPlayer:IsPlayerIgnoredExpansionPromise(iValue) then iFromDemands = iFromDemands + 20 end
+
+			if pPlayer:IsPlayerBrokenSpyPromise(iValue)
+				or pPlayer:IsPlayerIgnoredSpyPromise(iValue) then iFromDemands = iFromDemands + 10 end
 		
 			if pPlayer:IsDemandEverMade(iValue) then iFromDemands = iFromDemands + 20 end
 
