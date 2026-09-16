@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mod id="0ba6de75-d016-4e5e-955b-d8e1e154b839" version="12">
+  <Properties>
+    <Name>Madoka Magica Civilization Pack -- Rebellion [BNW]</Name>
+    <Teaser>Adds eight Civilizations based off of the animated series Puella Magi Madoka Magica, and its movie sequel, Rebellion.</Teaser>
+    <Description>Adds eight Civilizations based off of the animated series Puella Magi Madoka Magica, and its movie sequel, Rebellion. Requires Gods &amp; Kings and/or Brave New World.</Description>
+    <Authors>Vicevirtuoso</Authors>
+    <SpecialThanks>Deliverator, whoward69, Nomad or What, hazel16, pazyryk, DarkScythe, the translator anon in the 2ch Civ mod thread</SpecialThanks>
+    <HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <MinCompatibleSaveVersion>10</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>1</SupportsMultiplayer>
+    <SupportsHotSeat>1</SupportsHotSeat>
+    <SupportsMac>1</SupportsMac>
+    <ReloadAudioSystem>1</ReloadAudioSystem>
+    <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>1</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>1</ReloadUnitSystem>
+  </Properties>
+  <Dependencies>
+    <Dlc id="6DA07636-4123-4018-B643-6575B4EC336B" minversion="0" maxversion="999" />
+  </Dependencies>
+  <References>
+    <Mod id="1f941088-b185-4159-865c-472df81247b2" minversion="1" maxversion="999" title="Events and Decisions" />
+    <Mod id="36e88483-48fe-4545-b85f-bafc50dde315" minversion="1" maxversion="999" title="Yet (not) Another Earth Maps Pack" />
+    <Mod id="43868e8d-de88-48a1-a8d9-ce144e07f5e0" minversion="0" maxversion="999" title="Exploration Continued Expanded" />
+    <Mod id="1153b26a-69fd-4cd5-899c-a8ba8e0e5e5d" minversion="0" maxversion="999" title="Civ IV Leader Traits" />
+    <Mod id="7fdd72a5-d4ae-441c-bc4e-2e3d2a26cff4" minversion="0" maxversion="999" title="Ethnic Units" />
+    <Mod id="e576894a-ed2b-4033-be14-ed1c8ceb81d3" minversion="0" maxversion="999" title="Map Labels" />
+    <Mod id="eea66053-7579-481a-bb8d-2f3959b59974" minversion="0" maxversion="999" title="Piety &amp; Prestige" />
+    <Mod id="31a31d1c-b9d7-45e1-842c-23232d66cd47" minversion="0" maxversion="999" title="Cultural Diversity" />
+    <Mod id="8411a7a8-dad3-4622-a18e-fcc18324c799" minversion="0" maxversion="999" title="Community Balance Patch" />
+  </References>
+  <Blocks />
+  <Files>
+    <File md5="217261362E082679964C9A212454CD7C" import="1">Art/ChurchOfMadoka128.dds</File>
+    <File md5="6CDA9CAFECC2CC667788C4678EDC931D" import="1">Art/ChurchOfMadoka16.dds</File>
+    <File md5="58DBD179DBE0A7344DD79958CB9F50FA" import="1">Art/ChurchOfMadoka24.dds</File>
+    <File md5="1B47C986CBA83AF8209D9FC337528567" import="1">Art/ChurchOfMadoka32.dds</File>
+    <File md5="F0C63AF6960D348E36077BB84567798C" import="1">Art/ChurchOfMadoka48.dds</File>
+    <File md5="762A3873952FF7A45ED2FC5F51C47B64" import="1">Art/ChurchOfMadoka64.dds</File>
+    <File md5="3F6B0EEFEEC328983845370DBFD917BF" import="1">Art/ChurchOfMadoka80.dds</File>
+    <File md5="651E4923951E4324ED1AA12A1D8E05B7" import="1">Art/ChurchOfMadokaFontIcons.dds</File>
+    <File md5="1DF1344F9BD8A090883FC32BFED55F77" import="1">Art/ChurchOfMadokaFontIcons.ggxml</File>
+    <File md5="860F7495F34B5AA12BD915D2D708FD73" import="1">Art/CivIconAtlases/HomuraCivAlpha128.dds</File>
+    <File md5="190C51ADC467F80A84D61DDD26855C83" import="1">Art/CivIconAtlases/HomuraCivAlpha16.dds</File>
+    <File md5="984C57F1E95C269D9DD23626C3D44F0F" import="1">Art/CivIconAtlases/HomuraCivAlpha24.dds</File>
+    <File md5="83FB6136395B2F5A4AF20C2AFDC0BC50" import="1">Art/CivIconAtlases/HomuraCivAlpha32.dds</File>
+    <File md5="1F3FEA30F3B350BB310D27B0E4C5D789" import="1">Art/CivIconAtlases/HomuraCivAlpha48.dds</File>
+    <File md5="D095960142CD3BCB481125981C55EB5C" import="1">Art/CivIconAtlases/HomuraCivAlpha64.dds</File>
+    <File md5="9909400D83F9DC68ABBFD280AA55CFE0" import="1">Art/CivIconAtlases/HomuraIconAtlas128.dds</File>
+    <File md5="85D4E96A062054D603A4172466602365" import="1">Art/CivIconAtlases/HomuraIconAtlas214.dds</File>
+    <File md5="933545CAB7366AC1FEE06048AE646B22" import="1">Art/CivIconAtlases/HomuraIconAtlas256.dds</File>
+    <File md5="BCB95D48C9BBA2A875CBD07B8C37055A" import="1">Art/CivIconAtlases/HomuraIconAtlas32.dds</File>
+    <File md5="DA76383E1F8B0C76092A21B23985C6B6" import="1">Art/CivIconAtlases/HomuraIconAtlas45.dds</File>
+    <File md5="DC5DE51DFFDEA63D97EE845A177B1DA3" import="1">Art/CivIconAtlases/HomuraIconAtlas64.dds</File>
+    <File md5="F1DB65E22D4CF3A23A1ABD3CE5F2F00C" import="1">Art/CivIconAtlases/HomuraIconAtlas80.dds</File>
+    <File md5="5A1CC2108FB76953D3CEAFAD20E9C677" import="1">Art/CivIconAtlases/HomuraRebellionAlpha128.dds</File>
+    <File md5="519C96A476EF50606AABE1F640807DE1" import="1">Art/CivIconAtlases/HomuraRebellionAlpha16.dds</File>
+    <File md5="1FF359337B464CAC646FE78300EE13E6" import="1">Art/CivIconAtlases/HomuraRebellionAlpha24.dds</File>
+    <File md5="32A12A5D37598A0A60BC8EA4AB662C4A" import="1">Art/CivIconAtlases/HomuraRebellionAlpha32.dds</File>
+    <File md5="1555B45AB82F42E756B426DAA8F3406C" import="1">Art/CivIconAtlases/HomuraRebellionAlpha48.dds</File>
+    <File md5="55899D35466D534FFB615423ED9AFFDA" import="1">Art/CivIconAtlases/HomuraRebellionAlpha64.dds</File>
+    <File md5="F4C93490D51ACAD057205EFD89E82628" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas128.dds</File>
+    <File md5="2C87BAFD1912678C5204FE1CA0A30A23" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas214.dds</File>
+    <File md5="93CD2E04347E35B7D20470ED8964057F" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas256.dds</File>
+    <File md5="63290EBDFD0A049F38DBCC75CCFF9C1E" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas32.dds</File>
+    <File md5="D33FF02E390CD0EF81775AC4B153C01F" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas45.dds</File>
+    <File md5="FB8686811D2A6497A69C06F523F804B9" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas64.dds</File>
+    <File md5="87C7941BBF119B9C52C087C04D3309CB" import="1">Art/CivIconAtlases/HomuraRebellionIconAtlas80.dds</File>
+    <File md5="241E06B2BB0BAE4193569908DC15077C" import="1">Art/CivIconAtlases/KyoukoIconAlpha128.dds</File>
+    <File md5="B7E80CB0BFA449666D01449BCA498D29" import="1">Art/CivIconAtlases/KyoukoIconAlpha16.dds</File>
+    <File md5="5F93A100AEC13A814EC70216694457C5" import="1">Art/CivIconAtlases/KyoukoIconAlpha24.dds</File>
+    <File md5="8E7B633174B401379C252D7DCF5DEACD" import="1">Art/CivIconAtlases/KyoukoIconAlpha32.dds</File>
+    <File md5="51C2801876D1620423EC344CBE570778" import="1">Art/CivIconAtlases/KyoukoIconAlpha48.dds</File>
+    <File md5="56340B77F95CDC4164A06FA2463B64D5" import="1">Art/CivIconAtlases/KyoukoIconAlpha64.dds</File>
+    <File md5="997A01CDCD056643606EBB1A27CCBA00" import="1">Art/CivIconAtlases/KyoukoIconAtlas128.dds</File>
+    <File md5="3A273A62C6EDBA91F22B65435AD52065" import="1">Art/CivIconAtlases/KyoukoIconAtlas214.dds</File>
+    <File md5="B2B996C7A63ABDA29B0882C0587F05CC" import="1">Art/CivIconAtlases/KyoukoIconAtlas256.dds</File>
+    <File md5="32D9D6CC1DCE7322C5F72E0BE5D15B59" import="1">Art/CivIconAtlases/KyoukoIconAtlas32.dds</File>
+    <File md5="DE47B903B3469D6245F8AC8ECD2653C1" import="1">Art/CivIconAtlases/KyoukoIconAtlas45.dds</File>
+    <File md5="1310A4B63A0EC5AB32175D6CD69ADAAC" import="1">Art/CivIconAtlases/KyoukoIconAtlas64.dds</File>
+    <File md5="C65E019F2AFD8176B015261B8F73EA56" import="1">Art/CivIconAtlases/KyoukoIconAtlas80.dds</File>
+    <File md5="ED6708A327968F5999A42F248BCA8CC0" import="1">Art/CivIconAtlases/MadokaCivAlpha128.dds</File>
+    <File md5="3DF9E3AB52372EC5D9D7FF0D1FE4F05D" import="1">Art/CivIconAtlases/MadokaCivAlpha16.dds</File>
+    <File md5="5435CB1BBFA05FCBF080E756BECF034B" import="1">Art/CivIconAtlases/MadokaCivAlpha24.dds</File>
+    <File md5="A137523064B4DD642A487F948970D697" import="1">Art/CivIconAtlases/MadokaCivAlpha32.dds</File>
+    <File md5="5CA1EB30FEFBE2B5ED2CA73E17E3394D" import="1">Art/CivIconAtlases/MadokaCivAlpha48.dds</File>
+    <File md5="C78D74B43291449111ADB241AE16D552" import="1">Art/CivIconAtlases/MadokaCivAlpha64.dds</File>
+    <File md5="3713C67CE3C7DCF0F742E08694510EA6" import="1">Art/CivIconAtlases/MadokaIconAtlas128.dds</File>
+    <File md5="54A667C5AC80AA7E162FD953950B47EE" import="1">Art/CivIconAtlases/MadokaIconAtlas214.dds</File>
+    <File md5="D7F8F5C796E69852FF5C6770892D99AD" import="1">Art/CivIconAtlases/MadokaIconAtlas256.dds</File>
+    <File md5="777BF415D5E7891D388ED7C8F50B1AB3" import="1">Art/CivIconAtlases/MadokaIconAtlas32.dds</File>
+    <File md5="5FCBB2BC04C8E437350DB7DF44B85FAC" import="1">Art/CivIconAtlases/MadokaIconAtlas45.dds</File>
+    <File md5="29A39B4C1E6A7A1F26A9B8A9A547B3C3" import="1">Art/CivIconAtlases/MadokaIconAtlas64.dds</File>
+    <File md5="312E60D9CD4ECB93812394902C013FDB" import="1">Art/CivIconAtlases/MadokaIconAtlas80.dds</File>
+    <File md5="F02D58F60F7FBEE97CE71F39835F2A44" import="1">Art/CivIconAtlases/MadokaIconAtlasNew128.dds</File>
+    <File md5="8308DDC7513AB15DA0B0EBCBED226DE7" import="1">Art/CivIconAtlases/MadokaIconAtlasNew256.dds</File>
+    <File md5="A350F42B93054AAF4E0F908012FC8B51" import="1">Art/CivIconAtlases/MadokaIconAtlasNew32.dds</File>
+    <File md5="FE9F74ED0CA46436FD0BEEC951A2D5EA" import="1">Art/CivIconAtlases/MadokaIconAtlasNew45.dds</File>
+    <File md5="4AB9281DA8EAAE53790B6F3149B0A4BF" import="1">Art/CivIconAtlases/MadokaIconAtlasNew64.dds</File>
+    <File md5="39F3B0F42E4BDFDDEE0B5B66AEB192DB" import="1">Art/CivIconAtlases/MadokaIconAtlasNew80.dds</File>
+    <File md5="548845BACD607E259DDDD2B5113BE75A" import="1">Art/CivIconAtlases/MamiIconAlpha128.dds</File>
+    <File md5="85265BFB94F967AA8542470F8BDB7F66" import="1">Art/CivIconAtlases/MamiIconAlpha16.dds</File>
+    <File md5="38D082EC9D7AD27F9ACABD32738E7F62" import="1">Art/CivIconAtlases/MamiIconAlpha24.dds</File>
+    <File md5="E8357F7CFF0306BB77B0FFD67173A507" import="1">Art/CivIconAtlases/MamiIconAlpha32.dds</File>
+    <File md5="998472EF59B7B3B7B00F9F543CB041F2" import="1">Art/CivIconAtlases/MamiIconAlpha48.dds</File>
+    <File md5="4F36A35C186F47B3FA4E47ACF0869F0A" import="1">Art/CivIconAtlases/MamiIconAlpha64.dds</File>
+    <File md5="A23184708AF3F93CB04E9750860A29F4" import="1">Art/CivIconAtlases/MamiIconAtlas128.dds</File>
+    <File md5="69AC1262EA8972C9559F841DD213F815" import="1">Art/CivIconAtlases/MamiIconAtlas214.dds</File>
+    <File md5="EF875575AF38532208C7031D3DCFE035" import="1">Art/CivIconAtlases/MamiIconAtlas256.dds</File>
+    <File md5="A147AC99B3E75606F64C4EE40C2273B9" import="1">Art/CivIconAtlases/MamiIconAtlas32.dds</File>
+    <File md5="78C307D6EBE1CC041ED36357A4D81A61" import="1">Art/CivIconAtlases/MamiIconAtlas45.dds</File>
+    <File md5="0115FC8993516D9A2B3923E9ECEB1F16" import="1">Art/CivIconAtlases/MamiIconAtlas64.dds</File>
+    <File md5="5BEA48B52B2B09CA982755DD86E78239" import="1">Art/CivIconAtlases/MamiIconAtlas80.dds</File>
+    <File md5="50AB0ED5389FFB412285C3DFD6D0E1E6" import="1">Art/CivIconAtlases/NagisaCivAlpha128.dds</File>
+    <File md5="192F8C1C77F5E7FE160238C6176A8FF4" import="1">Art/CivIconAtlases/NagisaCivAlpha16.dds</File>
+    <File md5="B463AF15598AA39E61968ABEB13CD32D" import="1">Art/CivIconAtlases/NagisaCivAlpha24.dds</File>
+    <File md5="EFA05D522DFAD8650002D8E8866B13DE" import="1">Art/CivIconAtlases/NagisaCivAlpha32.dds</File>
+    <File md5="CB284263C1FF2ACE60A6451D3468783D" import="1">Art/CivIconAtlases/NagisaCivAlpha48.dds</File>
+    <File md5="FAEC0C06FDFB90364506E5B9EDA5DE9B" import="1">Art/CivIconAtlases/NagisaCivAlpha64.dds</File>
+    <File md5="98C6E5782EFB539CE130E6DC77EE9950" import="1">Art/CivIconAtlases/NagisaIconAtlas128.dds</File>
+    <File md5="3ED0649731F291FE3451F98B6337D833" import="1">Art/CivIconAtlases/NagisaIconAtlas256.dds</File>
+    <File md5="96108849B241BF0838CB0719F3758395" import="1">Art/CivIconAtlases/NagisaIconAtlas32.dds</File>
+    <File md5="2007791182D9DEB8D68787AA4355B6D9" import="1">Art/CivIconAtlases/NagisaIconAtlas45.dds</File>
+    <File md5="EC86931290505D9D7B131D5B49345E9B" import="1">Art/CivIconAtlases/NagisaIconAtlas64.dds</File>
+    <File md5="02FF3114D934F1B1E777B4487A41F0AE" import="1">Art/CivIconAtlases/NagisaIconAtlas80.dds</File>
+    <File md5="112E3CB070CECC27C7332532B01EDBE2" import="1">Art/CivIconAtlases/OriginalMadokaAlpha128.dds</File>
+    <File md5="39A7261D9F39D059B2521D345D109BE5" import="1">Art/CivIconAtlases/OriginalMadokaAlpha16.dds</File>
+    <File md5="8D906EADF727FF014B955913CC838198" import="1">Art/CivIconAtlases/OriginalMadokaAlpha24.dds</File>
+    <File md5="A684856AE68A2EB68D38D781B0516F87" import="1">Art/CivIconAtlases/OriginalMadokaAlpha32.dds</File>
+    <File md5="1225FE25E97CB61148C82C240B690F59" import="1">Art/CivIconAtlases/OriginalMadokaAlpha48.dds</File>
+    <File md5="98AEAFE1918A5E275E19D70441B994D4" import="1">Art/CivIconAtlases/OriginalMadokaAlpha64.dds</File>
+    <File md5="05F6C5DE05BC6535987DA43231B56BD9" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas128.dds</File>
+    <File md5="291C76DA014B52ABBA59D8F765502AA1" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas256.dds</File>
+    <File md5="D481BA234A187529D145CEAC8C51EE77" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas32.dds</File>
+    <File md5="155D0819B831255FC762AE8DC70FF946" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas45.dds</File>
+    <File md5="52D10F81789991BE38FF6B634BD0B7C3" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas64.dds</File>
+    <File md5="8A5FC512C33671678C276033DC0BEC6B" import="1">Art/CivIconAtlases/OriginalMadokaIconAtlas80.dds</File>
+    <File md5="6C2F167B50B399F8C0ACF40B02999858" import="1">Art/CivIconAtlases/SayakaIconAlpha128.dds</File>
+    <File md5="177A0425AAFDD662F4873F4FBF0ADD94" import="1">Art/CivIconAtlases/SayakaIconAlpha16.dds</File>
+    <File md5="9ABA92306DDA79554E6BE0C64309AC80" import="1">Art/CivIconAtlases/SayakaIconAlpha24.dds</File>
+    <File md5="0DF70D3A94301DAC7460AEDC1508778F" import="1">Art/CivIconAtlases/SayakaIconAlpha32.dds</File>
+    <File md5="40109ADE740B01CB81AE9ECACDAA8DA9" import="1">Art/CivIconAtlases/SayakaIconAlpha48.dds</File>
+    <File md5="77F767994940BFA9AC446C827238E93A" import="1">Art/CivIconAtlases/SayakaIconAlpha64.dds</File>
+    <File md5="A486DEB595D87D5932430D218114CF80" import="1">Art/CivIconAtlases/SayakaIconAtlas128.dds</File>
+    <File md5="868EC96828854DC0AF7A646204F7065F" import="1">Art/CivIconAtlases/SayakaIconAtlas214.dds</File>
+    <File md5="9F080AD8A982FAD5E8339116CF37C138" import="1">Art/CivIconAtlases/SayakaIconAtlas256.dds</File>
+    <File md5="76D1B23105867D58F8F5969D1690948E" import="1">Art/CivIconAtlases/SayakaIconAtlas32.dds</File>
+    <File md5="ED13CDD245BB3807C0EF721A6F2151F1" import="1">Art/CivIconAtlases/SayakaIconAtlas45.dds</File>
+    <File md5="7EEBB22C3AF396A3B6AE7ABD2EACDC8C" import="1">Art/CivIconAtlases/SayakaIconAtlas64.dds</File>
+    <File md5="64BBBF4448682B7416364D37F9F4DDF1" import="1">Art/CivIconAtlases/SayakaIconAtlas80.dds</File>
+    <File md5="5841A4FE3BDC71A9081B539FF9ECC87D" import="1">Art/CultOfHomura128.dds</File>
+    <File md5="FE0FC4FFF55EF5FF80FA6CA8CE664680" import="1">Art/CultOfHomura16.dds</File>
+    <File md5="C2A700554063669619CD2815CB9AC6D1" import="1">Art/CultOfHomura24.dds</File>
+    <File md5="0A73D7D6204CF12B9A498A5BC2740E44" import="1">Art/CultOfHomura32.dds</File>
+    <File md5="A43B02D9587D26456E1D11FA4F9B313A" import="1">Art/CultOfHomura48.dds</File>
+    <File md5="A86DB25FBD560A6F754D77CF6A34D645" import="1">Art/CultOfHomura64.dds</File>
+    <File md5="8106552C072603A557D0522ABFCFBBD4" import="1">Art/CultOfHomura80.dds</File>
+    <File md5="BC55F4A650E1076138A63BCDABC3DE57" import="1">Art/CultOfHomuraFontIcons.dds</File>
+    <File md5="7E2615CE073F9A6D357F01C346018F36" import="1">Art/CultOfHomuraFontIcons.ggxml</File>
+    <File md5="498BF1EDBBBE39AA6D0FA381F2E0EDB1" import="1">Art/DOM_Nagisa.dds</File>
+    <File md5="28878A8E391D0292A64FF77EF6BD2204" import="1">Art/DOM_OriginalMadoka.dds</File>
+    <File md5="34F3805ED2EB7B3F279F7D52C8DD947C" import="1">Art/HomuraRebellionScene.dds</File>
+    <File md5="693FC1A00B4D8FF13BAC2957ECEF5E3A" import="1">Art/HomuraRebellionScene.xml</File>
+    <File md5="3FB3E44FAA04BA703DFC3A6A634268E6" import="1">Art/MagicalGirlIcon32.dds</File>
+    <File md5="F394AFBA79158A7B879CB58FDD5B3379" import="1">Art/NagisaScene.xml</File>
+    <File md5="B722F487BE80ACBE4F07663CE7EB98F6" import="1">Art/NagisaScene.dds</File>
+    <File md5="B59D8B804503FB83A57C059B1E49B95A" import="1">Art/DOM_Homura.dds</File>
+    <File md5="EBE8F7C6B3EEA8ED55BEA32355A6CF20" import="1">Art/DOM_HomuraRebellion.dds</File>
+    <File md5="A88FCD66D6EA0FC4471E596AB03BE876" import="1">Art/DOM_Kyouko.dds</File>
+    <File md5="386119FE96128F8262A90E137A9D8EC3" import="1">Art/DOM_Madoka.dds</File>
+    <File md5="9CBBC6D3C1AE5CA9EDFFE2B61D686CCE" import="1">Art/DOM_Mami.dds</File>
+    <File md5="8CB36CB5C58DA3617F9AF8658198EB1B" import="1">Art/DOM_Sayaka.dds</File>
+    <File md5="B8288651E6965A7CC184358814787E53" import="1">Art/HomuraRebellionSelectImage.dds</File>
+    <File md5="CDCE1519204CB5B934E705B5B89A3A4B" import="1">Art/HomuraScene.dds</File>
+    <File md5="849CA4446C0A3B2BFF35D4E2817C1465" import="1">Art/HomuraScene.xml</File>
+    <File md5="41C882D250C4411BEC43863558895A31" import="1">Art/HomuraSelectImage.dds</File>
+    <File md5="7710391FC10F5471F281957F47AE292D" import="1">Art/KyoukoScene.dds</File>
+    <File md5="9E077785FA1FF8DE85C209FA86B9B459" import="1">Art/KyoukoScene.xml</File>
+    <File md5="B0DC40C72A4BDC2A9AFB163A44DD30FF" import="1">Art/KyoukoSelectImage.dds</File>
+    <File md5="5A77E05BF065DCE78DF1C5F10D727729" import="1">Art/MadokaScene.xml</File>
+    <File md5="DBC047FFEB690CB2176A65494B83529F" import="1">Art/MadokaScene.dds</File>
+    <File md5="41C882D250C4411BEC43863558895A31" import="1">Art/MadokaSelectImage.dds</File>
+    <File md5="ACEB72ECCDB47E29155489DAF34550A0" import="1">Art/MamiScene.dds</File>
+    <File md5="EA19EFE918F29CAE43138BA13C662C53" import="1">Art/MamiScene.xml</File>
+    <File md5="670D95CA2344C3DA6462B100E921CEE2" import="1">Art/MamiSelectImage.dds</File>
+    <File md5="350E317BD830290BE88D655CB70663BD" import="1">Art/NagisaSelectImage.dds</File>
+    <File md5="A70994334AF568052CF5083667A69168" import="1">Art/OriginalMadokaScene.dds</File>
+    <File md5="F3AFA6C843295C9A66ECD063BF43260F" import="1">Art/OriginalMadokaScene.xml</File>
+    <File md5="671C14D733E21488E20FA0402CB7B569" import="1">Art/OriginalMadokaSelectImage.dds</File>
+    <File md5="C6B7C6535868B3E5548799E288F8DE77" import="1">Art/SayakaScene.dds</File>
+    <File md5="EBB1144EB4E1AC20E21CAF3DE2DE21B4" import="1">Art/SayakaScene.xml</File>
+    <File md5="B0DC40C72A4BDC2A9AFB163A44DD30FF" import="1">Art/SayakaSelectImage.dds</File>
+    <File md5="778A9D9AD82BC408C455C66E30E517C7" import="1">Art/SV_Incubator.dds</File>
+    <File md5="01A9AB1EB90F8E30799CDE3ACAE99C3A" import="1">Art/SV_MadokaWitch.dds</File>
+    <File md5="76CF0648FE9035610575BC87C2288F70" import="1">Art/SV_MagicalGirl.dds</File>
+    <File md5="315157BC6A1A750351A22A0164F3AFCE" import="1">Art/UnitAlphaMG1.dds</File>
+    <File md5="0D4262562C301D60062F276B763831D2" import="1">Art/UnitAlphaMG2.dds</File>
+    <File md5="2A93A143F514ADCD7794DC243D3D25DD" import="1">Art/UnitAlphaMG3.dds</File>
+    <File md5="D99113D2763E4872ACC8F02BF19AA7AB" import="1">Art/UnitAlphaMG4.dds</File>
+    <File md5="04FF23975C73B22DF8140EB6697E618A" import="1">Art/UnitAlphaMG5.dds</File>
+    <File md5="1EC381103F0A794201F7480A9F48EEE6" import="1">Art/UnitAlphaMG6.dds</File>
+    <File md5="8170900403A7FA0F7661CA3578C341A3" import="1">Art/UnitIncubatorAlpha.dds</File>
+    <File md5="3B90CD034030353201451C6D59BED123" import="1">Art/WitchAlphaFlag.dds</File>
+    <File md5="FC05659D9F5C39274C62F72EB5937CE1" import="1">Art/WitchIconAtlas128.dds</File>
+    <File md5="DD5A69486C3D61EB2B9A25A9B733EF74" import="1">Art/WitchIconAtlas256.dds</File>
+    <File md5="F087525443C30B120175C14B704C5D4B" import="1">Art/WitchIconAtlas32.dds</File>
+    <File md5="3603D3705EB046BAB506328A160B408A" import="1">Art/WitchIconAtlas45.dds</File>
+    <File md5="93695D72B505340A99E0DD0F571F658F" import="1">Art/WitchIconAtlas64.dds</File>
+    <File md5="773AEC94285D0FCA3BECADCA16F26C8B" import="1">Art/WitchIconAtlas80.dds</File>
+    <File md5="BFE721D924FA311CD43EF22665D75BBC" import="1">Lua/Gameplay/Buildings/PMMMKyoukoBuilding.lua</File>
+    <File md5="9B35B542458CC75A378C7E1440D7EEE2" import="1">Lua/Gameplay/Buildings/PMMMMamiBuilding.lua</File>
+    <File md5="8D61BEB5F6B91F78BFB993BF1A14AE17" import="1">Lua/Gameplay/Buildings/PMMMNagisaBuilding.lua</File>
+    <File md5="8EF7DC8498C0B9D454D3948630FF4DC9" import="1">Lua/Gameplay/Buildings/PMMMSayakaBuilding.lua</File>
+    <File md5="94C3218BF53B5881844AF5230D97BC40" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
+    <File md5="1C4819A31F65A578D1BE2DAC5280C2B5" import="1">Lua/Gameplay/PMMMDataStorage.lua</File>
+    <File md5="CCE9795516D4D3C119516454783A1291" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
+    <File md5="75A777663C2772F18CE23B7E95A5FBE5" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
+    <File md5="31076B0F14C40F1623E98FA1FD4A2144" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
+    <File md5="A707A7CF3459D8C0E14A4451E810B785" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
+    <File md5="431647B704DB349C04360976C7347B5A" import="1">Lua/Gameplay/Traits/PMMMHomuraTrait.lua</File>
+    <File md5="0C49AD524A1D004EB7A9121066ED09E7" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
+    <File md5="B3647D667A394A6126CB26D941721923" import="1">Lua/Gameplay/Traits/PMMMMamiTrait.lua</File>
+    <File md5="A4B15AB89564C0609FDBB62959433CDD" import="1">Lua/Gameplay/Traits/PMMMNagisaTrait.lua</File>
+    <File md5="0F267812DA49E547513EA54FCCC9655C" import="1">Lua/Gameplay/Traits/PMMMSayakaTrait.lua</File>
+    <File md5="DCDE4C70F05C306244122D5A5F9DE745" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>
+    <File md5="2804EBA20EEEFDCC221F7F230E108CE5" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
+    <File md5="9F309870396EA0BA8B7EA028DC8AE7F1" import="1">Lua/Gameplay/UniqueUnits/PMMMClockstopper.lua</File>
+    <File md5="8A027DB92097C8DDA31BBA3EE1B19171" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
+    <File md5="8D183E4C26B212D91A4A240D41A2AF1C" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
+    <File md5="2D356969A5DEAFCC5A4319594DA631B1" import="0">Lua/PMMMRebellionMain.lua</File>
+    <File md5="1A3C9892BE0230ABBDE0F2BB7BD7F75A" import="1">Lua/Utils/PlotIterators.lua</File>
+    <File md5="57E35E9B973B4D5D2D339777AEA576EB" import="0">ModCompatibility/Community Balance Patch/PMMMCBP.sql</File>
+    <File md5="625577DE71BA10810C36A728FB5331F7" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Atomic.dds</File>
+    <File md5="1D1A212CC6CEC91DBCDC75D4665D8CB2" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Classical.dds</File>
+    <File md5="28AA01A029E1B6CDEA4FE4AC7AA10994" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Future.dds</File>
+    <File md5="A1B163C011A1B0CFF3769A9D233539DB" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Industrial.dds</File>
+    <File md5="A3B74AACD51EDE4796F6C1CF8C1F98B0" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Medievel.dds</File>
+    <File md5="0AFF6C00F85FF87230937AA04FDF264D" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Modern.dds</File>
+    <File md5="844E884961FAE1335BA4617A002A95BA" import="1">ModCompatibility/Cultural Diversity/Era_JFD_Madoka_Renissance.dds</File>
+    <File md5="34FBE7E0D609F77449BB13723884AE72" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte128.dds</File>
+    <File md5="0865E7FFB2B2168FA00EE18EA235A1D9" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte256.dds</File>
+    <File md5="307C46B7205807A01F02C67706205428" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte32.dds</File>
+    <File md5="54B90E7D2D2E418381FA0A67991700C4" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte45.dds</File>
+    <File md5="5B96AB6DA002D2219DECE3D060748205" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte64.dds</File>
+    <File md5="9A2BCA1F90C0F7BEF21FDEB7EA4B40B2" import="1">ModCompatibility/Events And Decisions/Art/DecisionsCharlotte80.dds</File>
+    <File md5="1C7163C4BC1082739CE2F7E025430F89" import="1">ModCompatibility/Events And Decisions/Art/DecisionsKyoukoRocky256.dds</File>
+    <File md5="01D9A158CA2937FA23EDD073F1A3DFB6" import="1">ModCompatibility/Events And Decisions/Art/DecisionsKyoukoRockyIcon.dds</File>
+    <File md5="E796C0F768F1BB126BC7D69C9D2299C4" import="1">ModCompatibility/Events And Decisions/Art/DecisionsKyoukoRockyIcon.ggxml</File>
+    <File md5="2CFA48493D9115D91445A04EC0CC4423" import="1">ModCompatibility/Events And Decisions/Lua/PMMMChurchCultDecisions.lua</File>
+    <File md5="0C1369D44966E2DD60AE1639999C5279" import="1">ModCompatibility/Events And Decisions/Lua/PMMMDemonHomuraDecisions.lua</File>
+    <File md5="AA8A48C70FC7FFFDBCCB7668E1BA0179" import="1">ModCompatibility/Events And Decisions/Lua/PMMMHomuraDecisions.lua</File>
+    <File md5="8607B6D7B5CCCF8B1C0A92E4A451D4A4" import="1">ModCompatibility/Events And Decisions/Lua/PMMMKyoukoDecisions.lua</File>
+    <File md5="6245B4AC0F62764E179EB9622F891759" import="1">ModCompatibility/Events And Decisions/Lua/PMMMMadokaDecisions.lua</File>
+    <File md5="7BD548ACCB41DDBEABFCD1AF8F04AF7A" import="1">ModCompatibility/Events And Decisions/Lua/PMMMMamiDecisions.lua</File>
+    <File md5="2364AE34603342A3527F33D1CDD8809A" import="1">ModCompatibility/Events And Decisions/Lua/PMMMNagisaDecisions.lua</File>
+    <File md5="7E7D2D8AD196E8D3B8E62607510C173A" import="1">ModCompatibility/Events And Decisions/Lua/PMMMSayakaDecisions.lua</File>
+    <File md5="E6640044435E738AA7C602A9731A498D" import="1">ModCompatibility/Events And Decisions/Lua/PMMMUltimateMadokaDecisions.lua</File>
+    <File md5="7344D19AA0313FCC9EF51635C80F7D6D" import="0">ModCompatibility/Events And Decisions/PMMMDecisionData.sql</File>
+    <File md5="C5BB2DADFA63BDE47ED2F04A22EE95A5" import="0">ModCompatibility/PMMMModCompatibility.sql</File>
+    <File md5="717CB315D54CF569E12108AC5735565C" import="1">Sound/HomuraTimeStop.mp3</File>
+    <File md5="2849DA724D2B0F1BF0DD12B39984FA06" import="0">SQL/DemonHomura/DemonHomuraCivilization.sql</File>
+    <File md5="97B18EAD372778771A1EE058C9F46152" import="0">SQL/DemonHomura/DemonHomuraLeaderAndTrait.sql</File>
+    <File md5="5694121D9A1313295C81CAFB6F60FFEF" import="0">SQL/DemonHomura/DemonHomuraUnit.sql</File>
+    <File md5="233F676A0CB10C55BECD2B53F40E2951" import="0">SQL/DemonHomura/DemonHomuraBuilding.sql</File>
+    <File md5="D75A304806AD8D39D244DC268EAD767B" import="0">SQL/Homura/HomuraBuilding.sql</File>
+    <File md5="6BD81F5DAEB9DF352C86CFD83EF67AEC" import="0">SQL/Homura/HomuraCivilization.sql</File>
+    <File md5="B2834DBB044DDE3909AE4DE4AFE649BF" import="0">SQL/Homura/HomuraLeaderAndTrait.sql</File>
+    <File md5="290FE5E9F73F1BFA0D8510227F0DB9AE" import="0">SQL/Homura/HomuraUnit.sql</File>
+    <File md5="176CD3A380302DF6B600CF5F8665966B" import="0">SQL/Kyouko/KyoukoBuilding.sql</File>
+    <File md5="B2E0C95308C589609AFDAB691EA27354" import="0">SQL/Kyouko/KyoukoCivilization.sql</File>
+    <File md5="147C58C723DA0542449D1F45E15E3C10" import="0">SQL/Kyouko/KyoukoLeaderAndTrait.sql</File>
+    <File md5="530A3F7FC5D2ABFF3F162505F598BD23" import="0">SQL/Kyouko/KyoukoUnit.sql</File>
+    <File md5="BB1D5A1045293BB0047D151B59538C32" import="0">SQL/Madoka/MadokaBuilding.sql</File>
+    <File md5="0D1AE98F99DE48205BB3E4E5DAA76929" import="0">SQL/Madoka/MadokaCivilization.sql</File>
+    <File md5="0D21D0A37E4425ED09814FC6DBB74D16" import="0">SQL/Madoka/MadokaLeaderAndTrait.sql</File>
+    <File md5="78665A7AEB524A62443C15229678E589" import="0">SQL/Madoka/MadokaUnit.sql</File>
+    <File md5="197906733B5C1134B742413F0E98634F" import="0">SQL/Mami/MamiBuilding.sql</File>
+    <File md5="A338FB540F357B0154773A8BF1D9FCB1" import="0">SQL/Mami/MamiCivilization.sql</File>
+    <File md5="E85CFC9A2F62FBF23DE77A4D13DB6F70" import="0">SQL/Mami/MamiLeaderAndTrait.sql</File>
+    <File md5="7C2649B8D9E06BB9051ADE1725794255" import="0">SQL/Mami/MamiUnit.sql</File>
+    <File md5="C2B0E3A30737A8DB00B2EC5C1624C957" import="0">SQL/Nagisa/NagisaBuilding.sql</File>
+    <File md5="F62D0D7B4ED483C550A0AA9DF2FD5ED6" import="0">SQL/Nagisa/NagisaCivilization.sql</File>
+    <File md5="F67523B1DE300482FEB2DF524E0EDD21" import="0">SQL/Nagisa/NagisaLeaderAndTrait.sql</File>
+    <File md5="E3DFA26322ACAD7ECF6D6A068C26CA4D" import="0">SQL/Nagisa/NagisaUnit.sql</File>
+    <File md5="FA8383E0333D369C4D93CD4331146AB2" import="0">SQL/Sayaka/SayakaBuilding.sql</File>
+    <File md5="9E506DF95D0F28EAB82B7EF090FD5BF2" import="0">SQL/Sayaka/SayakaCivilization.sql</File>
+    <File md5="0A626C7F9DA051875290A5D44B908AF8" import="0">SQL/Sayaka/SayakaLeaderAndTrait.sql</File>
+    <File md5="DAF886BEB8EADFD3D66723EF162B7B73" import="0">SQL/Sayaka/SayakaUnit.sql</File>
+    <File md5="CD6390A1CF8D7FEAB7CEB9B9729F2645" import="0">SQL/Shared/Dialog.sql</File>
+    <File md5="58C351D3975CB287A0090C1CE2EF479A" import="0">SQL/Shared/IconAtlases.sql</File>
+    <File md5="572B8E7CB3F811E6A96A25130D842B08" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="1B227521FA6138E1598327A5DA133134" import="0">SQL/Shared/PlayerColors.sql</File>
+    <File md5="525DC6BD778B2F1168EB617F722004CC" import="0">SQL/Shared/Promotions.sql</File>
+    <File md5="0C101B6296877CA9D2595EB1F40DF607" import="0">SQL/Shared/UnitArtDefines.sql</File>
+    <File md5="7118A09EEC8F9CEFED4F026BEFA6C3F4" import="0">SQL/UltimateMadoka/UltimateMadokaBuilding.sql</File>
+    <File md5="F9296353535A5DA3C5B6B78C8CB90960" import="0">SQL/UltimateMadoka/UltimateMadokaCivilization.sql</File>
+    <File md5="0A54C122E67AE4623BF04D77453C8CA5" import="0">SQL/UltimateMadoka/UltimateMadokaLeaderAndTrait.sql</File>
+    <File md5="7362E78540D4E533B5364A1A2803D01E" import="0">SQL/UltimateMadoka/UltimateMadokaMGWeaken.sql</File>
+    <File md5="568D9C59B31AFE9ACC3AC5EC14F9802A" import="0">SQL/UltimateMadoka/UltimateMadokaUnit.sql</File>
+    <File md5="9A0F0B4D893F04F860B16B24B564B744" import="1">UnitArt/black_4x4.dds</File>
+    <File md5="AB99E43C6C11147808520567752270F3" import="1">UnitArt/f_longswordsman.fxsxml</File>
+    <File md5="2BC3988E097E0CA704F7C36980D5ADE5" import="1">UnitArt/f_longswordsman.gr2</File>
+    <File md5="00B4291CCC350D7741F1DEEBEC60C89D" import="1">UnitArt/f_longswordsman_DIFF.dds</File>
+    <File md5="94D43549CDD2658B27A902B86F738A22" import="1">UnitArt/f_longswordsman_SREF.dds</File>
+    <File md5="2CE46BF33A097D1EB33FE982367FD8B1" import="1">UnitArt/incubator.fxsxml</File>
+    <File md5="F699692AE3CE18BC6C7D319085BF65B1" import="1">UnitArt/incubator.gr2</File>
+    <File md5="DD080A1F75C9F3670A6E4475520E81C0" import="1">UnitArt/incubator_md_diea_anim.gr2</File>
+    <File md5="4AABC29DB36005BFC695AB2C6ECEE683" import="1">UnitArt/incubator_md_diea_fade_anim.gr2</File>
+    <File md5="856C7E98CCAD4B2299C1D3B1D4D55E46" import="1">UnitArt/incubator_md_fidget_anim.gr2</File>
+    <File md5="4C06D3042547C8BBC4AE2608826D6280" import="1">UnitArt/incubator_md_fortifya_anim.gr2</File>
+    <File md5="D7EC6F79242801D2B2AE8C1416A204D9" import="1">UnitArt/incubator_md_fortifya_idle_anim.gr2</File>
+    <File md5="D8FC87743023EB511D3EFDBD21664862" import="1">UnitArt/incubator_md_hurta_anim.gr2</File>
+    <File md5="23D25B9114569D4CC67C71AFCCD6D9A9" import="1">UnitArt/incubator_md_idle_anim.gr2</File>
+    <File md5="6E63BD09142547B4B63D9C742E7E3D3A" import="1">UnitArt/incubator_md_run_anim.gr2</File>
+    <File md5="589FDD3BA27B65497418C8FC1E29E054" import="1">UnitArt/incubator_md_strikea_anim.gr2</File>
+    <File md5="34546D77FD0355B549CFCEE780DA02E4" import="1">UnitArt/incubator_md_strikeb_anim.gr2</File>
+    <File md5="ED097A8A40D60379F1CCE9C7536E8E67" import="1">UnitArt/qb4x4black.dds</File>
+    <File md5="9CD4A4074657425DB9179211ADF43218" import="1">UnitArt/qbtexture.dds</File>
+    <File md5="4E7851F313A026E41F8AA9263EB30F68" import="1">UnitArt/Wraith_E.dds</File>
+    <File md5="9DD28C8CB11DCAFA64ED659965E8E98B" import="1">UnitArt/Wraith_E.fxsxml</File>
+    <File md5="8630D001B13B4113D3ADA8E00C1A670A" import="1">UnitArt/Wraith_E.gr2</File>
+    <File md5="4DC06C150B05285B008F6EA4EA84EA5B" import="0">XML/CIV5ArtDefines-MadokaUnits.xml</File>
+    <File md5="307CFBC709849B93BA5E6F9960CEA70C" import="0">XML/CIV5Audio-Madoka.xml</File>
+    <File md5="32655E6CB79A676E6FD37CFA43A4AE59" import="0">XML/CIV5IconTextures-Madoka.xml</File>
+    <File md5="C96AC3DDA8C9782A0687668EC9C32116" import="0">XML/CIV5MagicalGirlPromotions.xml</File>
+    <File md5="7ADF6FFAF14BAF18FAF07C0DED7E87B2" import="0">XML/CIV5MagicalGirlUnits.xml</File>
+    <File md5="FB014D0C2FC48DF22F7C553B6CD8A627" import="0">XML/CIV5Religions-Madoka.xml</File>
+    <File md5="56AADCDEF6D24ECBB4422A3F846EF5E7" import="0">XML/MadokaNewTables.xml</File>
+    <File md5="1CEFE89BD574CEAA54A579C4E42170DC" import="0">XML/Text/DE_DE/MadokaDialogText_DE_DE.xml</File>
+    <File md5="7A154E2AC926AC0870FEB1B7D51031E4" import="0">XML/Text/DE_DE/MadokaGameText_DE_DE.xml</File>
+    <File md5="1CEFE89BD574CEAA54A579C4E42170DC" import="0">XML/Text/en_US/MadokaDialogText_en_US.xml</File>
+    <File md5="414A093C5E032B80BE6B3B07F1C45845" import="0">XML/Text/en_US/MadokaGameText_en_US.xml</File>
+    <File md5="36E8B2673538B534E67E09C0B8223138" import="0">XML/Text/ES_ES/MadokaDialogText_ES_ES.xml</File>
+    <File md5="2968D94E7CFCD2BD97F56CAEB2BCC00C" import="0">XML/Text/ES_ES/MadokaGameText_ES_ES.xml</File>
+    <File md5="CBB90F0A4D11D06AB52586790C4BF4E7" import="0">XML/Text/FR_FR/MadokaDialogText_FR_FR.xml</File>
+    <File md5="C76C2E3A427DCD1BFA0BC305CACC3157" import="0">XML/Text/FR_FR/MadokaGameText_FR_FR.xml</File>
+    <File md5="0DE1CD9C93AB0DB2AB915B16CAFF5C36" import="0">XML/Text/IT_IT/MadokaDialogText_IT_IT.xml</File>
+    <File md5="9D3C9A298916E107114A20B1F85BD530" import="0">XML/Text/IT_IT/MadokaGameText_IT_IT.xml</File>
+    <File md5="E04AC7F2A61BAA0E9A7F2327C8040CD2" import="0">XML/Text/JA_JP/MadokaDialogText_JA_JP.xml</File>
+    <File md5="4C247D020BEAF1D1B73E8AA31487561C" import="0">XML/Text/JA_JP/MadokaGameText_JA_JP.xml</File>
+    <File md5="B1A9114C3D21C2CBD6EFA43FA9A669B7" import="0">XML/Text/KO_KR/MadokaDialogText_KO_KR.xml</File>
+    <File md5="32EECED82C2A8419192276520E503EB5" import="0">XML/Text/KO_KR/MadokaGameText_KO_KR.xml</File>
+    <File md5="882B287F63346E8AE4C9EBB4BC18AA93" import="0">XML/Text/PL_PL/MadokaDialogText_PL_PL.xml</File>
+    <File md5="519B43531DDC819AAB57C879C4970300" import="0">XML/Text/PL_PL/MadokaGameText_PL_PL.xml</File>
+    <File md5="DB188DD07F76DA244C4ED8438F21FCB7" import="0">XML/Text/RU_RU/MadokaDialogText_RU_RU.xml</File>
+    <File md5="DB980431129634E6B97BB0FBE21DCCFB" import="0">XML/Text/RU_RU/MadokaGameText_RU_RU.xml</File>
+    <File md5="63A8A82DCD962C9785F3F41ACE83E417" import="0">XML/Text/ZH_Hant_HK/MadokaDialogText_ZH_Hant_HK.xml</File>
+    <File md5="85A538E52EE1779BB685AA8F48545ED0" import="0">XML/Text/ZH_Hant_HK/MadokaGameText_ZH_Hant_HK.xml</File>
+  </Files>
+  <Actions>
+    <OnModActivated>
+      <UpdateDatabase>XML/MadokaNewTables.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/MadokaTableUpdates.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/IconAtlases.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/PlayerColors.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/UnitArtDefines.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/Promotions.sql</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5ArtDefines-MadokaUnits.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/Dialog.sql</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5IconTextures-Madoka.xml</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5Religions-Madoka.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/DemonHomura/DemonHomuraBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/DemonHomura/DemonHomuraLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/DemonHomura/DemonHomuraUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/DemonHomura/DemonHomuraCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Homura/HomuraBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Homura/HomuraUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Homura/HomuraLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Homura/HomuraCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Kyouko/KyoukoBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Kyouko/KyoukoLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Kyouko/KyoukoUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Kyouko/KyoukoCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Madoka/MadokaBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Madoka/MadokaLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Madoka/MadokaUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Madoka/MadokaCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Mami/MamiBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Mami/MamiUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Mami/MamiLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Mami/MamiCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Nagisa/NagisaBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Nagisa/NagisaLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Nagisa/NagisaUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Nagisa/NagisaCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Sayaka/SayakaBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Sayaka/SayakaLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Sayaka/SayakaUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Sayaka/SayakaCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5MagicalGirlUnits.xml</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5MagicalGirlPromotions.xml</UpdateDatabase>
+      <UpdateDatabase>SQL/UltimateMadoka/UltimateMadokaBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/UltimateMadoka/UltimateMadokaLeaderAndTrait.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/UltimateMadoka/UltimateMadokaUnit.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/UltimateMadoka/UltimateMadokaMGWeaken.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/UltimateMadoka/UltimateMadokaCivilization.sql</UpdateDatabase>
+      <UpdateDatabase>XML/CIV5Audio-Madoka.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/DE_DE/MadokaDialogText_DE_DE.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/DE_DE/MadokaGameText_DE_DE.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/en_US/MadokaDialogText_en_US.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/en_US/MadokaGameText_en_US.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/ES_ES/MadokaDialogText_ES_ES.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/ES_ES/MadokaGameText_ES_ES.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/FR_FR/MadokaDialogText_FR_FR.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/FR_FR/MadokaGameText_FR_FR.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/IT_IT/MadokaDialogText_IT_IT.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/IT_IT/MadokaGameText_IT_IT.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/JA_JP/MadokaDialogText_JA_JP.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/JA_JP/MadokaGameText_JA_JP.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/KO_KR/MadokaDialogText_KO_KR.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/KO_KR/MadokaGameText_KO_KR.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/PL_PL/MadokaDialogText_PL_PL.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/PL_PL/MadokaGameText_PL_PL.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/RU_RU/MadokaDialogText_RU_RU.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/RU_RU/MadokaGameText_RU_RU.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/ZH_Hant_HK/MadokaDialogText_ZH_Hant_HK.xml</UpdateDatabase>
+      <UpdateDatabase>XML/Text/ZH_Hant_HK/MadokaGameText_ZH_Hant_HK.xml</UpdateDatabase>
+      <UpdateDatabase>ModCompatibility/Events And Decisions/PMMMDecisionData.sql</UpdateDatabase>
+      <UpdateDatabase>ModCompatibility/Community Balance Patch/PMMMCBP.sql</UpdateDatabase>
+      <UpdateDatabase>ModCompatibility/PMMMModCompatibility.sql</UpdateDatabase>
+    </OnModActivated>
+  </Actions>
+  <EntryPoints>
+    <EntryPoint type="InGameUIAddin" file="Lua/PMMMRebellionMain.lua">
+      <Name>PMMMRebellionMain</Name>
+      <Description>Madoka Rebellion Civpack Main Script</Description>
+    </EntryPoint>
+  </EntryPoints>
+</Mod>

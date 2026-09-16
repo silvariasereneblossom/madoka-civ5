@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 8/13/2014 7:29:04 PM -->
+<GameData>
+	<IconFontTextures>
+		<Row>
+			<IconFontTexture>
+				ICON_FONT_TEXTURE_CHURCH_OF_MADOKA
+			</IconFontTexture>
+			<IconFontTextureFile>
+				ChurchOfMadokaFontIcons
+			</IconFontTextureFile>
+		</Row>
+		<Row>
+			<IconFontTexture>
+				ICON_FONT_TEXTURE_CULT_OF_HOMURA
+			</IconFontTexture>
+			<IconFontTextureFile>
+				CultOfHomuraFontIcons
+			</IconFontTextureFile>
+		</Row>
+	</IconFontTextures>
+	<IconFontMapping>
+		<Row>
+			<IconName>
+				ICON_RELIGION_CHURCH_OF_MADOKA
+			</IconName>
+			<IconFontTexture>
+				ICON_FONT_TEXTURE_CHURCH_OF_MADOKA
+			</IconFontTexture>
+			<IconMapping>
+				1
+			</IconMapping>
+		</Row>
+		<Row>
+			<IconName>
+				ICON_RELIGION_CULT_OF_HOMURA
+			</IconName>
+			<IconFontTexture>
+				ICON_FONT_TEXTURE_CULT_OF_HOMURA
+			</IconFontTexture>
+			<IconMapping>
+				1
+			</IconMapping>
+		</Row>
+	</IconFontMapping>
+</GameData>

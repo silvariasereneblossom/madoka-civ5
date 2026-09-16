@@ -1,0 +1,5464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 6/14/2014 11:18:57 PM -->
+<GameData>
+	<Language_JA_JP>
+		<!-- この英訳はほとんど以下のリンクからコピペしました。-->
+		<!-- http://ux.getuploader.com/SGT_Civ5_MOD/download/212/Madoka+Magica+Civilization+Pack+Rebellion+%28v+11%29_%E6%97%A5%E6%9C%AC%E8%AA%9E%E5%8C%96ver.0.02.zip -->
+		<Row Tag="TXT_KEY_CIV_MADOKA_ADJECTIVE">
+			<Text>
+				アルティメットまどかの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MADOKA_DESC">
+			<Text>
+				まどか文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MADOKA_SHORT_DESC">
+			<Text>
+				まどかの世界
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_ADJECTIVE">
+			<Text>
+				暁美ほむらの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_DESC">
+			<Text>
+				新見滝原文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_SHORT_DESC">
+			<Text>
+				新見滝原
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_ADJECTIVE">
+			<Text>
+				巴マミの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_DESC">
+			<Text>
+				ティロエセ文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_SHORT_DESC">
+			<Text>
+				ナツィオーネ・ディ・ティロ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_ADJECTIVE">
+			<Text>
+				美樹さやかの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_DESC">
+			<Text>
+				オクタヴィアン文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_SHORT_DESC">
+			<Text>
+				オクタヴィアンズ
+			</Text>
+			<Plurality>
+				2
+			</Plurality>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_ADJECTIVE">
+			<Text>
+				佐倉杏子の
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_DESC">
+			<Text>
+				風見野文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_SHORT_DESC">
+			<Text>
+				風見野
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_ADJECTIVE">
+			<Text>
+				百江なぎさの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_DESC">
+			<Text>
+				シャルロッテ文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_SHORT_DESC">
+			<Text>
+				ベベ
+			</Text>
+			<Plurality>
+				2
+			</Plurality>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_ADJECTIVE">
+			<Text>
+				悪魔ほむらの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_DESC">
+			<Text>
+				ほむら文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_SHORT_DESC">
+			<Text>
+				ほむらの世界
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_ADJECTIVE">
+			<Text>
+				鹿目まどかの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_DESC">
+			<Text>
+				見滝原文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_SHORT_DESC">
+			<Text>
+				見滝原
+			</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_LEADER_MADOKA">
+			<Text>
+				アルティメットまどか
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_NAME">
+			<Text>
+				アルティメットまどか
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TITLES_1">
+			<Text>
+				中学生
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TITLES_2">
+			<Text>
+				魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TITLES_3">
+			<Text>
+				女神
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_SUBTITLE">
+			<Text>
+				まどかの世界の指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_LIVED">
+			<Text>
+				紀元1998年頃 - 2011年
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_HEADING_2">
+			<Text>
+				The End...or Is It?
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_HEADING_3">
+			<Text>
+				Turmoil in Time
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_HEADING_4">
+			<Text>
+				Breaking the Cycle
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。家族には愛する両親の詢子と知久、かわいい弟のタツヤがいる。そして親友にはクラスメートでもある美樹さやかと志筑仁美がいる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TEXT_2">
+			<Text>
+				Her normal life came to a screeching halt when she came across a cat who had been struck by a passing car. She was approached by a creature named Kyubey, and offered her the opportunity to save the cat's life by wishing for it. In exchange, she would have to become a Magical Girl, which made her responsible for hunting down monsters known as Witches. She accepted the deal. She soon allied with a fellow magical girl and upperclassman, Mami Tomoe, and became friends with a new transfer student, Homura Akemi. But the happy times were not to last, as the monster known as Walpurgisnacht came to Mitakihara, and both she and Mami died fighting it.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TEXT_3">
+			<Text>
+				All was not lost, however. The transfer student, Homura, contracted with Kyubey, wishing that she could have another chance to meet Madoka for the first time, and to be someone who could protect her, rather than having to be protected. This launched a long and bitter campaign for Homura, as she reset the timeline a countless number of times, and failed every time in preventing Madoka from becoming a magical girl. To make matters worse, each repetition of the time loop affected Madoka's fate, increasing her potential as a magical girl, and making it even more inevitable that she will make the contract. The girls' hopes seemed to be crushed.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MADOKA_TEXT_4">
+			<Text>
+				However, in one fateful timeline, Madoka made a wish so powerful that it changed the very fabric of space and time. She wished that all Witches were erased from existence -- past, present, and future. This created a causality paradox when she destroyed her own Witch form with her own two hands, causing her to be essentially "rewritten" out of the universe's history, unbeknownst to all but Homura. Despite nearly nobody remembering her existence, she still exists in some form, out in a dimension nobody can see or hear, absorbing the grief and pain of magical girls across the globe.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_MADOKA_TEXT">
+			<Text>
+				心優しく強大な鹿目まどか、魔法少女の救世主よ、そなたに祝福あれ。高潔な心に従い、傷ついた「猫」を保護したことで、そなたはこれまでに想像もできなかった運命に巻き込まれることとなった。かつてのそなたは魔法少女となり、ヴァルプルギスの夜として知られる、天変地異を起こすほどの魔女と戦った。しかし、この戦闘はあまりに過酷であり、敗れることとなってしまった。もっとも、すべてが失われたわけではなかった。そなたの友人暁美ほむらがそなたを助けることを願い、時間を遡ったのである。彼女は幾度となくそなたを救おうとし、幾度となく失敗を重ねた。だが、彼女の努力のおかげで、そなたは自分自身や世界中の魔法少女の悪循環を断ち切るための力を手にすることとなったのである。[NEWLINE][NEWLINE]穏やかな女神よ、そなたの究極の願いにより魔法少女たちには新たな、そして平穏な運命が与えられることとなった。今や彼女たちはそなたを単なる魔法少女としてではなく、指導者・女神として見つめている。そなたは魔法少女たちの苦しみに終止符を打ち、彼女たちを幸福な結末へと導くことができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_HOMURA">
+			<Text>
+				暁美ほむら
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_NAME">
+			<Text>
+				暁美ほむら
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_TITLES_1">
+			<Text>
+				中学生[NEWLINE][NEWLINE]魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_SUBTITLE">
+			<Text>
+				新見滝原の指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_LIVED">
+			<Text>
+				紀元1998年頃 -
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_HEADING_2">
+			<Text>
+				The End...or Is It?
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_HEADING_3">
+			<Text>
+				Turmoil in Time
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_HEADING_4">
+			<Text>
+				Breaking the Cycle
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。また、彼女の家族構成は不明である。心臓の健康状態が原因で入院していたが、物語の開始時点では学校に登校できる程度には体調が回復している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_TEXT_2">
+			<Text>
+				Shortly after returning to her normal school life, she was befriended by the kind-hearted Madoka Kaname. Despite this, she at one point began considering committing suicide. This was due to the influence of a Witch. Before the Witch could consume her, she was saved by Madoka, who revealed that she was a Magical Girl, and her partner Mami Tomoe. The three of them became friends and enjoyed an idyllic existence for a time. However, once the monstrous Witch known as Walpurgisnacht attacked Mitakihara, both Madoka and Mami gave up their lives fighting it. Homura could not stand to let this happen, and forged a contract with Kyubey to become a Magical Girl. Her wish was to have a second chance at her first meeting with Madoka. She wished to be the one to protect Madoka, instead of the other way around.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_TEXT_3">
+			<Text>
+				Her first trip back in time was met with failure, as she was unable to save Madoka. The nature of her wish gave her a degree of manipulation over space and time; however, she had no actual means of manifesting any weaponry to actually kill Witches. Her answer to this problem was to learn how to build bombs by way of Internet research. Even armed with this, she was unable to successfully save Madoka. She then discovered the truth of Magical Girls -- that they were being used by Incubators as a means of harvesting energy, and that their ultimate fate is to become Witches themselves. She was never able to convince the other girls of this terrible truth. This led her to swear off trusting others to help her in her mission. She became cold and aloof, acting only as a distant protector for Madoka rather than her friend. She discarded her homemade bombs in favor of much more effective military weaponry, which she stole directly out of military bases. She reset the timeline so many times that she began to lose sight of herself, and was nearly unrecognizable compared to the timid girl she used to be.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_HOMURA_TEXT_4">
+			<Text>
+				However, in one fateful timeline, Madoka made a wish so powerful that it changed the very fabric of space and time. She wished that all Witches were erased from existence -- past, present, and future. This created a causality paradox when she destroyed her own Witch form with her own two hands, causing her to be essentially "rewritten" out of the universe's history, unbeknownst to all but Homura. This nearly crushed Homura, but she has managed to carry on in a world without her greatest friend. She has now accepted a new mission -- to protect the world that Madoka loved so much, despite the fact that Homura herself despises it.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_HOMURA_TEXT">
+			<Text>
+				暁美ほむらよ、鹿目まどかの一番の親友であり、おそらくこれまでで最も意志の強い魔法少女であるそなたに挨拶と哀悼を。かつてのそなたは弱々しく、長年にわたり心臓病を患っており、さらに極度の内気と自虐的思考に悩まされていた。しかし、鹿目まどかの友情がゆっくりと、だが劇的にそなたを変え始めた。鹿目まどかの死を受け、彼女との出会いをやり直し、彼女に守られる自分ではなく、彼女を守る自分になることを願った。そなたは数え切れないほどの時間軸をやり直し、彼女を救おうとした。これにより、内気で病気がち少女は鉄の意志を有する女性へと変貌を遂げ、そなたの道を遮るものは何も無くなった。もっとも、そなたの目的は自身が望んだ形では実現されなかった。しかし、鹿目まどかは去ってしまったが、魔法少女が希望を持って輝く世界を彼女が作り上げたということをそなたは知っているのである。[NEWLINE][NEWLINE]強大なる時の弾丸よ、そなたの親友は希望で満ちた世界を創造するために尊い犠牲を払った。次はそなたが魔法少女たちの繁栄と平穏そして幸福を守らなければならない。そなたは友情への誓いとして鹿目まどかの最後の望みを果たすことができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_MAMI">
+			<Text>
+				巴マミ
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_NAME">
+			<Text>
+				巴マミ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_TITLES_1">
+			<Text>
+				中学生[NEWLINE][NEWLINE]魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_SUBTITLE">
+			<Text>
+				ナツィオーネ・ディ・ティロの指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_LIVED">
+			<Text>
+				紀元1997年頃 - 2011年
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_HEADING_2">
+			<Text>
+				Her Loss
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_HEADING_3">
+			<Text>
+				As a Magical Girl
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_HEADING_4">
+			<Text>
+				Death
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_TEXT_2">
+			<Text>
+				Mami lost her parents in a horrific traffic accident. Indeed, the same accident should have killed her as well. But as fate would have it, the Incubator, Kyubey, intervened and offered her the chance to make a wish in exchange for becoming a Magical Girl. She had no time to think. The wish was an obvious one -- a wish to stay alive.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_TEXT_3">
+			<Text>
+				Mami took to her duties as a Magical Girl well. In contrast to the selfish desires of most Magical Girls, Mami used her powers primarily to save others. But it was a full-time job. She began to lose her friends, since she never had time to speak to them anymore. Coupled with the loss of her parents, this led to Mami becoming almost completely alone, with only Kyubey as company.[NEWLINE][NEWLINE]She eventually met a fellow Magical Girl, Kyouko Sakura, whom she adoped as a pupil. Together, they forged a partnership -- and friendship -- which she treasured and hoped would last. It was, however, short-lived. After tragedy befell Kyouko and her family, she turned to the path of selfishness and broke ties with Mami, moving to a neighboring city. Mami was crushed, but continued to fight.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_MAMI_TEXT_4">
+			<Text>
+				Eventually, Mami rescued two of her underclassmen, Madoka Kaname and Sayaka Miki. Kyubey informed the three of them that both of these young girls had the potential to become Magical Girls. While Mami wanted nothing more than friends and partners, she also respected their right to make their own decisions about making the contract. She began to allow them to accompany her into Witch barriers to get an idea of what it is like to be a Magical Girl. Just prior to a fight with a Witch, Madoka told her that she would become a Magical Girl and fight alongside her, although she planned to wait until after this Witch was vanquished to give her time to decide on a wish. Mami was ecstatic. She began to fight with a flair and attitude she had never felt before, and was determined to destroy the Witch she was fighting quickly so that they could finally decide on Madoka's wish. But this determination led to a streak of fatal recklessness. The Witch used a non-threatening form to conceal its true shape as Mami unloaded a volley of attacks into it. The Witch then struck when Mami least expected it. It killed and ate Mami gruesomely, and it was only through the intervention of the mysterious Homura Akemi that Madoka and Sayaka escaped with their lives.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_MAMI_TEXT">
+			<Text>
+				無数のマスケットの主、巴マミに安らぎあれ。幼少時代、そなたが送っていた至福の生活は悲惨な交通事故により打ち砕かれてしまった。これが原因で両親を失うこととなってしまったが、そなたはキュゥべえと契約することにより生き残ることができた。そして、魔法少女として他者の命を救うための戦いを始めた。その責任感は友人や他の魔法少女を遠ざけ、長年にわたり孤独な日々を送っていたが、そなたはついに共に戦うことを誓ってくれる新たな友人――鹿目まどかを見つけた。もっとも、悲劇的にもその希望は絶たれた。わずか数分後に魔女により殺害されてしまったのである。しかし、その後の鹿目まどかの願いにより、新世界での新たな機会が与えられたのである。[NEWLINE][NEWLINE]華麗なる巴マミよ、そなたはこの新たな世界で指導者となることを誓い、そのリーダーシップを尊敬する魔法少女達を集めた。この世界では紛争を避けることができないだろう。しかし、そなたはその魅力と振る舞いにより多くの友人を作ることができる。そなたは長きにわたり求めてきた友情を築きつつ、魔法少女達に栄光をもたらすことができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_SAYAKA">
+			<Text>
+				美樹さやか
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_NAME">
+			<Text>
+				美樹さやか
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_TITLES_1">
+			<Text>
+				中学生[NEWLINE][NEWLINE]魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_SUBTITLE">
+			<Text>
+				オクタヴィアンズの指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_LIVED">
+			<Text>
+				紀元1998年頃 - 2011年
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_HEADING_2">
+			<Text>
+				Interest in Music (and its Player)
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_HEADING_3">
+			<Text>
+				Wish
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_HEADING_4">
+			<Text>
+				Downfall
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。両親に育てられ、おそらく2人は健在であると推定される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_TEXT_2">
+			<Text>
+				At a young age, Sayaka was brought to a musical performance of some sort by her parents. It was there that she heard the young violin prodigy, Kyousuke Kamijou, for the first time. She was absolutely enthralled by his music. This sparked an interest in classical music which would last her the rest of her life. More importantly, it sparked an interest in Kyousuke himself. They grew up as friends throughout elementary and middle school, and Sayaka eventually began to develop romantic feelings for him.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_TEXT_3">
+			<Text>
+				Kyousuke was diagnosed with an unknown medical condition sometime in middle school. It rendered one of his hands numb, making it impossible for him to play the violin anymore. Doctors were unsure if his condition was treatable, which led Kyousuke into a depression. When Sayaka was approached by Kyubey, she considered wishing for his health several times, but finally made a decision not to do so after witnessing Mami Tomoe's horrible end. But her emotions got the best of her when Kyousuke made an angry outburst at Sayaka. She hastily made a wish to heal Kyousuke, unable to bear the sight of him acting the way he was. The wish worked well, and Kyousuke's hand was healed immediately.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_SAYAKA_TEXT_4">
+			<Text>
+				Sayaka wished to use her powers as a Magical Girl to be an "Ally of Justice," helping the weak by saving them from the monsters known as Witches. However, she was confronted very early on by another Magical Girl, Kyouko Sakura, who had a much different perspective on the situation. She claimed that Magical Girls were at the top of the food chain, and allowing their prey (Witches and their Familiars) to themselves prey on their own food (humans) was the best way to survive. Her anger towards Kyouko was the first in a long line of events which led to Sayaka's complete disillusionment and despair. She discovered that making the wish with Kyubey caused her soul to be separated from her body. Homura Akemi and Kyouko continued to antagonize her at every turn. Madoka was indecisive and wouldn't make her wish, leaving Sayaka with no allies in battle. But the straw that broke the camel's back was when one of her best friends, Hitomi Shizuki, confessed her love to Kyousuke. Sayaka felt like she could not do the same, as she felt guilt towards the idea of making Kyousuke be in love with "a zombie," referring to how her soul is no longer part of her body. This cemented her downward spiral, and she finally turned into a Witch, who was defeated by Kyouko in a kamikaze attack.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_SAYAKA_TEXT">
+			<Text>
+				美樹さやかよ、腐敗した世界で正義の理想のために戦った数少ない魔法少女たるそなたのために、トランペット吹きがファンファーレを奏でている。幼少期に、ある音楽の神童がそなたの心を魅了した。彼は同い年の少年であり、そなたが成長するにつれ、その友情がクラシック音楽への関心を形作った。しかし、不幸な事故が原因となり彼は二度と演奏ができない状態にあると診断されてしまった。そなたは彼の回復を願ったが、これは誤りであったかもしれない。願いが叶えられると、そなたは魔法少女が生きる世界の真実を知ることとなり、絶望と怒りの螺旋へと陥っていった。これにより彼への愛を告げることができなくなり、ついには魔女への転化に繋がってしまった。しかし、鹿目まどかの究極の願いのおかげで、自身の理想のために戦う新たな機会が与えられたのである。[NEWLINE][NEWLINE]正義の人よ、そなたは過去の失敗から教訓を学んだ。かつての素朴さは失われてしまったかもしれないが、自身の力により他者を助けたいという気持ちは持ち続けている。中にはそなたが最悪の選択をしたと言う者もいる。それゆえ、そなたは彼らが間違っていることを証明しなければならない。世界中にそなたの歌声を響き渡らせることはできるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_KYOUKO">
+			<Text>
+				佐倉杏子
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_NAME">
+			<Text>
+				佐倉杏子
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_TITLES_1">
+			<Text>
+				魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_SUBTITLE">
+			<Text>
+				風見野の指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_LIVED">
+			<Text>
+				紀元1998年頃 - 2011年
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_HEADING_2">
+			<Text>
+				A Tragic Wish
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_HEADING_3">
+			<Text>
+				The Selfish Life
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_HEADING_4">
+			<Text>
+				Sacrifice
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市あるいは隣の風見野市で生まれ育ったものと考えられる。「魔法少女まどか☆マギカ ポータブル」によれば父の教会は見滝原市郊外に存在していたとされていることから、風見野市は見滝原市郊外から極めて近いものと推定される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_TEXT_2">
+			<Text>
+				Kyouko was the eldest of two daughters born to a Japanese Christian preacher and his wife. However, Father Sakura began to insert more and more of his personal beliefs into his sermons, which angered his congregation and caused them to abandon the church. This left the Sakura family in poverty. Kyouko had to resort to stealing to eat. She was eventually discovered by the Incubator, Kyubey. She made a magical contract with him and wished that people would listen to her father's words. Surely enough, crowds began to flock to the Sakura Church to listen to Father Sakura. But, upon learning that his followers were only listening to him because of magic, he became furious at Kyouko, even going so far as to call his own daughter a witch. This led him to a heavy alcoholic binge, which tragically culminated in the murder-suicide of his wife and youngest daughter, Momo.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_TEXT_3">
+			<Text>
+				Kyouko managed to overcome this unthinkably horrific trauma by swearing to use her magic only for personal gain from that moment forward. She dropped out of school and began to steal and commit other acts of petty crime (though her conscience still compelled her to intervene if she saw a more heinous crime, such as a mugging). Additionally, she broke her partnership with Mami Tomoe, to Mami's deep disheartenment. In a short time, she became a complete delinquent and was more than willing to fight other Magical Girls over prime Witch-hunting territory. In particular, after Mami's death and the subsequent inheritance of Mitakihara's territory by the new Magical Girl, Sayaka Miki, she immediately decided to fight her in an attempt to claim Mitakihara for herself -- and she would have succeeded if it weren't for the interference of the "irregular," Homura Akemi.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_KYOUKO_TEXT_4">
+			<Text>
+				Before the second fight between Sayaka and Kyouko could begin, Sayaka's friend Madoka made a desperate attempt to keep the fight from happening by stealing Sayaka's Soul Gem and tossing it off of the highway overpass they were on. It worked rather well. This led to the revelation that Soul Gems literally contained the girl's soul, and that Kyubey had been deceiving all of them. Kyouko, upon learning of this, reflected on her past actions. Seeing shades of herself in Sayaka, she attempted to bury the hatchet and befriend her. Sayaka, however, was in no mental state to accept a truce. Kyouko continued to try to help Sayaka, but her actions were futile, and Sayaka turned into a Witch in the end. Unable to cope with the same fate potentially happening to her, Kyouko made a desperate attack to destroy the Witch and buy Homura Akemi time to escape with Madoka. This attack successfully destroyed the Witch, but at the cost of Kyouko's life.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_KYOUKO_TEXT">
+			<Text>
+				佐倉杏子よ、その名を称えよう。そなたは伝道師の娘に産まれたが、家族に苦難の時が訪れた。父が教義に自身の信念を折り込んだことで教会から信徒が離れていってしまったのである。絶望と飢餓に襲われたそなたは、人々が再び父の話を聞くようになることを願った。その願いは叶えられ、父の教会には多くの集団が押し寄せるようになった。しかし、彼は人々が話を聞くようになったのは、自身の言葉ではなく魔法の力によるものであることを知ってしまった。真実を知った彼はそなたを呪い、酒に溺れ、ついに家族を巻き込んで心中を遂げた。そなたは誰のためでもなく自分のために魔法を使うことを誓い、どうにか自身の正気を保った。しかし、最後には自分の優しさを否定しきれず、自己を犠牲にして魔女を倒し、他人を救うことを選択したのである。[NEWLINE][NEWLINE]佐倉杏子よ、そなたの槍はこの新たな世界における輝かしい未来を指し示している。もはや自分勝手に生きるのではなく、父の教えを通じて魔法少女達を栄光へと導くことを決断したのである。そなたは父の言葉に秘められた真実を世界に対して示すことができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_NAGISA">
+			<Text>
+				百江なぎさ
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_NAME">
+			<Text>
+				百江なぎさ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_TITLES_1">
+			<Text>
+				魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_SUBTITLE">
+			<Text>
+				ベベの指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_LIVED">
+			<Text>
+				紀元2001年頃 -
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_NAGISA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。彼女は小学生であり、他の登場人物より数歳年下である。過去についてはほぼ不明であるが、チーズへの愛とシャルロッテへの魔女化という事実は判明している。しかし、鹿目まどかの願い以後は、美樹さやかと共に鹿目まどかの「ナイト」となり、魔女の結界に囚われた暁美ほむらの救出を助けた。暁美ほむらにより改変された後の世界においては普通の小学生としての生活を送っているようである。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_NAGISA_TEXT">
+			<Text>
+				ごきげんよう、鹿目まどかのナイトにしてベベの指導者たる百江なぎさよ。過去の行いや幼さにも関わらず、そなたは決意を固め、暁美ほむらに仕掛けられた罠を打ち破る鹿目まどかと美樹さやかを手助けした。大のチーズ好きにも良い者はいるものだ！[NEWLINE][NEWLINE]幼く可愛らしい百江なぎさよ、そなたは新たな世界で自分自身を見つけるだろう。その世界は鹿目まどかの世界、それとも暁美ほむらの世界、あるいは他の誰かの世界であろうか？しかし、そのようなことは重大ではない！そなたはチーズへの愛を共有する魔法少女を集めたのだ。外へ繰り出して世界がこれまで見たこともない最高のチーズを作り上げ、世界全体と共有する時がやってきた！そなたはチーズ製品の力を通じて地球全体を1つにすることができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_DEMON_HOMURA">
+			<Text>
+				悪魔ほむら
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_NAME">
+			<Text>
+				悪魔ほむら
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TITLES_1">
+			<Text>
+				中学生[NEWLINE][NEWLINE]魔法少女[NEWLINE][NEWLINE]女神(?)/悪魔(?)
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_SUBTITLE">
+			<Text>
+				ほむらの世界の指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_LIVED">
+			<Text>
+				???
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_HEADING_2">
+			<Text>
+				The End...or Is It?
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_HEADING_3">
+			<Text>
+				Turmoil in Time
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_HEADING_4">
+			<Text>
+				Breaking the Cycle
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_HEADING_5">
+			<Text>
+				The Rebellion
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。また、彼女の家族構成は不明である。心臓の健康状態が原因で入院していたが、物語の開始時点では学校に登校できる程度には体調が回復している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_2">
+			<Text>
+				Shortly after returning to her normal school life, she was befriended by the kind-hearted Madoka Kaname. Despite this, she at one point began considering committing suicide. This was due to the influence of a Witch. Before the Witch could consume her, she was saved by Madoka, who revealed that she was a Magical Girl, and her partner Mami Tomoe. The three of them became friends and enjoyed an idyllic existence for a time. However, once the monstrous Witch known as Walpurgisnacht attacked Mitakihara, both Madoka and Mami gave up their lives fighting it. Homura could not stand to let this happen, and forged a contract with Kyubey to become a Magical Girl. Her wish was to have a second chance at her first meeting with Madoka. She wished to be the one to protect Madoka, instead of the other way around.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_3">
+			<Text>
+				Her first trip back in time was met with failure, as she was unable to save Madoka. The nature of her wish gave her a degree of manipulation over space and time; however, she had no actual means of manifesting any weaponry to actually kill Witches. Her answer to this problem was to learn how to build bombs by way of Internet research. Even armed with this, she was unable to successfully save Madoka. She then discovered the truth of Magical Girls -- that they were being used by Incubators as a means of harvesting energy, and that their ultimate fate is to become Witches themselves. She was never able to convince the other girls of this terrible truth. This led her to swear off trusting others to help her in her mission. She became cold and aloof, acting only as a distant protector for Madoka rather than her friend. She discarded her homemade bombs in favor of much more effective military weaponry, which she stole directly out of military bases. She reset the timeline so many times that she began to lose sight of herself, and was nearly unrecognizable compared to the timid girl she used to be.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_4">
+			<Text>
+				However, in one fateful timeline, Madoka made a wish so powerful that it changed the very fabric of space and time. She wished that all Witches were erased from existence -- past, present, and future. This created a causality paradox when she destroyed her own Witch form with her own two hands, causing her to be essentially "rewritten" out of the universe's history, unbeknownst to all but Homura. This nearly crushed Homura, but she has managed to carry on in a world without her greatest friend. She has now accepted a new mission -- to protect the world that Madoka loved so much, despite the fact that Homura herself despises it.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_5">
+			<Text>
+				In a world without Madoka, Homura eventually fought to the point that her Soul Gem got tarnished. The Incubator, Kyubey, recalled what Homura had told her about "Witches" and "Madoka Kaname," and devised a plan to try to break Madoka's Law of Cycles and bring back Witches. Homura was trapped in a powerful barrier which allowed anything inside, but allowed nothing out. Trapped inside this barrier, Homura was unable to either become a Witch or be taken away by Madoka. This caused her consciousness to be locked inside a illusionary world inside her Soul Gem. Subconsciously, she reached out to those she knew, such as Mami Tomoe and Kyouko Sakura, who also became trapped inside. Even Madoka herself, along with her knights Sayaka Miki and Nagisa Momoe, became trapped in this world -- as was hoped for by the Incubators. Homura finally managed to escape her realm and destroy the Incubators' trap. But when Madoka appeared again to take her away, Homura betrayed Madoka and stole a large portion of her power. This, combined with the revelation that she filled her Soul Gem with love instead of despair, gave her an unimaginable amount of power, and turned her into something that could not accurately be called a Magical Girl or a Witch. Her power was strong enough to manifest a field, much like a Witch Barrier, which covered the entire universe. In this "new universe," Madoka's remaining power has been hidden from her, the Incubators have been enslaved, and Homura herself has demonstrated an unknown degree of omniscience and omnipotence. How long this world can remain stable remains yet to be seen.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_DEMON_HOMURA_TEXT">
+			<Text>
+				全知全能の暁美ほむらよ、もはやこの名前が適切かどうかは分からないが、そなたの命令にインキュベーターたちが仕えている。昔のそなたは今では想像できないほど体が弱く、病気がちな少女であった。愛によりこの世界に一人取り残されたそなたは、鹿目まどかが慈しんだ世界の平和を維持することを誓った。もっとも、そなたの忍耐と正気は長くは続かなかった。魔女の復活を目論むインキュベーターに捕らえられ、彼らが作った結界に閉じ込められてしまったのである。しかし、そなたはインキュベーターや鹿目まどか双方との形勢を逆転させた。彼女から力を奪い取り、すべてのインキュベーターを服従させ、そして、鹿目まどかが自身の運命に無自覚であり続ける新たな別の世界を創造したのである。[NEWLINE][NEWLINE]恐るべき暁美ほむらよ、その名を知らぬ者は恐怖を知ることだろう。中にはそなたのことを悪魔と言う者もいるかもしれない。もはやそなたが長きにわたり保ち続けた禁欲や勇敢さといった見せかけは消え去った。新たな世界はそなたの欲望の産物であり、今やそなたは欲望を満たすことだけに専念している。そなたは巨大な国家と対峙することになるかもしれないし、最終的に鹿目まどかと戦う決断を強いられることになるかもしれない。また、そなたの欲望を否定する過去の自分自身が存在しているという流言すらある。障害は存在しているが、そなたの目標は明白である。時の試練を耐え抜く文明を築き上げることであろうか？そのようなことは単なる気晴らしに過ぎない。そなたは自身の望みを知っている。すなわち、鹿目まどかの安全を維持し、彼女に残された時を守り抜く世界を作り上げるのだ。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_ORIGINAL_MADOKA">
+			<Text>
+				鹿目まどか
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_NAME">
+			<Text>
+				鹿目まどか
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_TITLES_1">
+			<Text>
+				中学生[NEWLINE][NEWLINE]魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_SUBTITLE">
+			<Text>
+				見滝原の指導者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_LIVED">
+			<Text>
+				紀元1998年頃 -
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_FACT_1">
+			<Text>
+				なし
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_HEADING_2">
+			<Text>
+				The End...or Is It?
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_HEADING_3">
+			<Text>
+				Turmoil in Time
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_TEXT_1">
+			<Text>
+				彼女の生年月日や出身地その他の情報は明らかにされてはいないが、見滝原市で生まれ育ったものと考えられる。家族には愛する両親の詢子と知久、かわいい弟のタツヤがいる。そして親友にはクラスメートでもある美樹さやかと志筑仁美がいる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_TEXT_2">
+			<Text>
+				Her normal life came to a screeching halt when she came across a cat who had been struck by a passing car. She was approached by a creature named Kyubey, and offered her the opportunity to save the cat's life by wishing for it. In exchange, she would have to become a Magical Girl, which made her responsible for hunting down monsters known as Witches. She accepted the deal. She soon allied with a fellow magical girl and upperclassman, Mami Tomoe, and became friends with a new transfer student, Homura Akemi. But the happy times were not to last, as the monster known as Walpurgisnacht came to Mitakihara, and both she and Mami died fighting it.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIVILOPEDIA_LEADERS_ORIGINAL_MADOKA_TEXT_3">
+			<Text>
+				All was not lost, however. The transfer student, Homura, contracted with Kyubey, wishing that she could have another chance to meet Madoka for the first time, and to be someone who could protect her, rather than having to be protected. This launched a long and bitter campaign for Homura, as she reset the timeline a countless number of times, and failed every time in preventing Madoka from becoming a magical girl. To make matters worse, each repetition of the time loop affected Madoka's fate, increasing her potential as a magical girl, and making it even more inevitable that she will make the contract. The girls' hopes seemed to be crushed.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_DAWN_ORIGINAL_MADOKA_TEXT">
+			<Text>
+				ごきげんよう、年若き鹿目まどかよ！そなたはついに自分の願いを見つけた。世界中の魔法少女を救うため、自らが魔法少女となることを決意したのである。その強い正義感、そして希望を与える力は仲間の心に光を灯し、その力強い弓は彼女たちに降りかかる災厄を払っている。将来に何が起こるのかは分からないかもしれないが、そなたはその将来が輝いていることを確信しているのである。[NEWLINE][NEWLINE]希望の矢よ、そなたを待ち受けているのは恐ろしい結末かもしれない。しかし、いかなる障害が立ちはだかろうと、そなたはその運命を変えることができる！魔法少女と自身の価値を証明してはくれないだろうか？そなたは見滝原に繁栄と幸福をもたらすことができるだろうか？そして時の試練を耐え抜く文明を築き上げるのだ。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_CIV_MADOKA_TITLE">
+			<Text>まどかの世界</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MADOKA_HEADING_1">
+			<Text>歴史</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MADOKA_TEXT_1">
+			<Text>まどかの世界は、彼女が究極の願いを叶えたことにより移行した先の次元にある空間である。キュゥべえは彼女が死よりも苦しい道を選択したと考えたが、彼女はこの空間に存在し、世界中の魔法少女の苦しみを背負っている。[NEWLINE][NEWLINE]都市の名前は魔女の名前に由来している（スピンオフ作品を含む）。</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_TITLE">
+			<Text>
+				新見滝原
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_HOMURA_TEXT_1">
+			<Text>
+				見滝原市は、まどか☆マギカおよび多くのスピンオフの舞台となった場所である。我々が知る限り、よく発展した大きな都市であり、魅力的な建築物が存在している。まどかの願いが叶えられる以前においては多くの魔女が誕生した場所であったが、現在では魔獣が出現する場所になっている。[NEWLINE][NEWLINE]都市の名前は現実世界の兵器メーカーの名前に由来している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_TITLE">
+			<Text>
+				ナツィオーネ・ディ・ティロ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_TEXT_1">
+			<Text>
+				ナツィオーネ・ディ・ティロは「射撃の国」という意味である。不健全な名前ではあるが、巴マミの「創造力に富んだ」命名法の産物にすぎない。[NEWLINE][NEWLINE]都市の名前は巴マミ(と巴マミの世界観)に関連した愉快な言葉やフレーズに由来している。イタリア語への機械翻訳であり、イタリア語を話す人が巴マミの文明をプレイすれば大いに笑うことができるだろう。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_TITLE">
+			<Text>
+				オクタヴィアンズ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_SAYAKA_TEXT_1">
+			<Text>
+				オクオタヴィアは美樹さやかの文明における魔法少女の名前であり、集団的に捉えてオクタヴィアンズとして知られる。[NEWLINE][NEWLINE]都市の名前は美樹さやかが尊敬する音楽家に由来しており、1人を除いては実在する人物である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_TITLE">
+			<Text>
+				風見野
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_KYOUKO_TEXT_1">
+			<Text>
+				風見野市はまどか☆マギカの舞台となる見滝原市に隣接する都市である。佐倉杏子はしばらくの間、風見野市を本拠地にしていたが、魔女に遭遇する機会は少なかった。巴マミの死を知った後の佐倉杏子は風見野市を去り、見滝原市に移動した。[NEWLINE][NEWLINE]都市の名前は実在する日本の製菓会社およびインスタント・ラーメン製造会社の名前に由来している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_TITLE">
+			<Text>
+				ベベ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_NAGISA_TEXT_1">
+			<Text>
+				ベベ族は百江なぎさの魔法少女の連合であり、チーズへの執念で有名である。[NEWLINE][NEWLINE]都市の名前は様々な種類のチーズに由来している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_TITLE">
+			<Text>
+				ほむらの世界
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_DEMON_HOMURA_TEXT_1">
+			<Text>
+				ほむらの世界は、「叛逆の物語」のクライマックスにおいて宇宙全体を覆った、魔女の結界のような空間である。まどかの力を奪い取り、これを制御することで暁美ほむらは神（より正確には悪魔かもしれない）となった。まどかとは異なり、ほむらは自身の世界において積極的に神としての役割を演じており、まどかの安全や幸福に対する脅威を取り除いている。たとえその脅威がまどか自身が望んだものであってもである。[NEWLINE][NEWLINE]都市の名前はギリシャ神話における冥界に関連する場所およびダンテの神曲に由来している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_TITLE">
+			<Text>
+				見滝原
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_HEADING_1">
+			<Text>
+				歴史
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_ORIGINAL_MADOKA_TEXT_1">
+			<Text>
+				見滝原市は、まどか☆マギカおよび多くのスピンオフ作品の舞台となった場所である。我々が知る限り、よく発展した大きな都市であり、魅力的な建築物が存在している。多くの魔女が誕生する場所でもある。[NEWLINE][NEWLINE]都市の名前はバラの名前に由来している。
+			</Text>
+		</Row>
+
+		<!-- Civ IV Traits Tags-->
+		<Row Tag="TXT_KEY_LEADER_MADOKA_C4T">
+			<Text>
+				アルティメットまどか [ICON_PEACE][ICON_GREAT_PEOPLE]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_HOMURA_C4T">
+			<Text>
+				暁美ほむら [ICON_PRODUCTION][ICON_STRENGTH]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_MAMI_C4T">
+			<Text>
+				巴マミ [ICON_HAPPINESS_1][ICON_INFLUENCE]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_SAYAKA_C4T">
+			<Text>
+				美樹さやか　[ICON_GREAT_PEOPLE][ICON_WAR]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_KYOUKO_C4T">
+			<Text>
+				佐倉杏子 [ICON_FOOD][ICON_PEACE]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_NAGISA_C4T">
+			<Text>
+				百江なぎさ [ICON_HAPPINESS_1][ICON_FOOD]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_DEMON_HOMURA_C4T">
+			<Text>
+				悪魔ほむら [ICON_CITY_STATE][ICON_WAR]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_LEADER_ORIGINAL_MADOKA_C4T">
+			<Text>
+				鹿目まどか [ICON_GREAT_PEOPLE][ICON_STRENGTH]
+			</Text>
+			<Gender>
+				feminine
+			</Gender>
+		</Row>
+		
+		<!-- City List -->
+				<!--U Madoka-->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MADOKAS_REALM">
+			<Text>
+				まどかの世界
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GERTRUD">
+			<Text>
+				ゲルトルート
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ELSA_MARIA">
+			<Text>
+				エルザ・マリア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ELLY">
+			<Text>
+				エリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ALBERTINE">
+			<Text>
+				アルベルティーネ
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GISELA">
+			<Text>
+				ギーゼラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_UHRMANN">
+			<Text>
+				ウアマン
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_IZABEL">
+			<Text>
+				イザベル
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_QUITTERIE">
+			<Text>
+				キトリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ITZLI">
+			<Text>
+				イツトリ
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NIE_BLUEHEN_HERZEN">
+			<Text>
+				ニー・ブリューエン・ヘルツェン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROSASHARN">
+			<Text>
+				ローザシャーン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CECIL">
+			<Text>
+				セシル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ARZT_KOCHEN">
+			<Text>
+				アルツト・コッヒェン
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_VIRGINIA">
+			<Text>
+				バージニア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_STACY">
+			<Text>
+				ステーシー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MARGOT">
+			<Text>
+				マーゴット
+			</Text>
+		</Row>
+
+		<!-- Homura A -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NEW_MITAKIHARA">
+			<Text>
+				新見滝原
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_HECKLER">
+			<Text>
+				ヘッケラー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BERETTA">
+			<Text>
+				ベレッタ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_WESSON">
+			<Text>
+				ウェッソン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BROWNING">
+			<Text>
+				ブローニング
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KALASHNIKOV">
+			<Text>
+				カラシニコフ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BENELLI">
+			<Text>
+				ベネリ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SAUER">
+			<Text>
+				ザウエル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_WALTHER">
+			<Text>
+				ワルサー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_STEYR">
+			<Text>
+				ステアー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TAURUS">
+			<Text>
+				トーラス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_RUGER">
+			<Text>
+				ルガー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_FABRIQUE">
+			<Text>
+				ファブリック
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SPRINGFIELD">
+			<Text>
+				スプリングフィールド
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GLOCK">
+			<Text>
+				グロック
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_THOMPSON">
+			<Text>
+				トンプソン
+			</Text>
+		</Row>
+
+		<!-- Mami-->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CITTA_DI_TIRO">
+			<Text>
+				チッタ・ディ・ティロ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROMA_NUOVA">
+			<Text>
+				ローマ・ヌオーヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PALLOTTOLA">
+			<Text>
+				パロットラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_LEGGE_DEI_CICLI">
+			<Text>
+				レッジェ・デイ・チクリ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PICCO_DI_SPERANZA">
+			<Text>
+				ピッコ・ディ・スペランツァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_COVE_MISTICO">
+			<Text>
+				コーヴ・ミスティコ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_EGIDA">
+			<Text>
+				エヂダ
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NASTRI_DORO">
+			<Text>
+				ナストリ・ドーロ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MILIONI_DI_MOSCHETTI">
+			<Text>
+				ミリオニ・ディ・モスチェッティ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_AMICIZIA">
+			<Text>
+				アミチツィア
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TERRITORIO_ASSOLUTA">
+			<Text>
+				テリトーリオ・アッソルータ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROGO_DELLA_STREGA">
+			<Text>
+				ロゴ・デッラ・ストレガ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PASE_FOGLIA_DI_TE">
+			<Text>
+				パエッセ・フォーリア・ディ・テ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TORTACITTA">
+			<Text>
+				トルタチッタ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_DUE_CANNONI_ENORMI">
+			<Text>
+				デュエ・カンノーニ・エノルミ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MA_QUESTO_E_AMORE_PROIBITO">
+			<Text>
+				マクエスト・エ・アモーレ・プロイビート
+			</Text>
+		</Row>
+
+		<!-- Sayaka -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_OKTAVIANNA">
+			<Text>
+				オクタヴィアンナ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KAMIJOU">
+			<Text>
+				上条
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_AMADEUS">
+			<Text>
+				アマデウス
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PETROVICH">
+			<Text>
+				ペトローヴィチ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ILYICH">
+			<Text>
+				イリイチ
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BARTHOLDY">
+			<Text>
+				バルトルディ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_VIVALDI">
+			<Text>
+				ヴィヴァルディ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_FRIDERIC">
+			<Text>
+				フリードリヒ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ACHILLE">
+			<Text>
+				アシル
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TELEMANN">
+			<Text>
+				テレマン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SCHOENBERG">
+			<Text>
+				シェーンベルク
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PAGANINI">
+			<Text>
+				パガニーニ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROSSINI">
+			<Text>
+				ロッシーニ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PACHELBEL">
+			<Text>
+				パッヘルベル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SCHUBERT">
+			<Text>
+				シューベルト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BOCCHERINI">
+			<Text>
+				ボッケリーニ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_LISZT">
+			<Text>
+				リスト
+			</Text>
+		</Row>
+
+		<!-- Kyouko -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KASAMINO">
+			<Text>
+				風見野
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_LOTTE">
+			<Text>
+				ロッテ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GLICO">
+			<Text>
+				グリコ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MEIJI_SEIKA">
+			<Text>
+				明治
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CALBEE">
+			<Text>
+				カルビー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SAPPORO_KYOUKO">
+			<Text>
+				サッポロ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROYCE">
+			<Text>
+				ロイズ'
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MORINAGA">
+			<Text>
+				森永
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MARUCHAN">
+			<Text>
+				マルちゃん
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NISSIN">
+			<Text>
+				日清
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MIKAKUTO">
+			<Text>
+				味覚糖
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TOHATO">
+			<Text>
+				東ハト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KAMEDA_SEIKA">
+			<Text>
+				亀田
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KABAYA">
+			<Text>
+				カバヤ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KURIYAMA_BEIKA">
+			<Text>
+				栗山米菓
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TORAYA">
+			<Text>
+				とらや
+			</Text>
+		</Row>
+		<!-- Nagisa -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CHARLOTTES_PEAK">
+			<Text>
+				シャルロッテの峰
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MASCARPONE">
+			<Text>
+				マスカルポーネ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PARMIGIANO_REGGIANO">
+			<Text>
+				パルミジャーノ・レッジャーノ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GORGONZOLA_DOLCE">
+			<Text>
+				ゴルゴンゾーラ・ドルチェ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MONTEREY_JACK">
+			<Text>
+				モントレー・ジャック
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROUMY">
+			<Text>
+				ルーミー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BEYAZ_PEYNIR">
+			<Text>
+				ベヤズ・ペイニル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_VASTERBOTTENSOST">
+			<Text>
+				ヴェステルボッテン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MAJDOULE">
+			<Text>
+				マジドゥール
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SERRA_DA_ESTRELA">
+			<Text>
+				セーラ・ダ・エストレーラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GBEJINA">
+			<Text>
+				ジュベイナ  <!-- Removed the diacritic from the "G" since it was causing display errors-->
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ANTHOTYROS">
+			<Text>
+				アンソティロス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_WEISSLACKER">
+			<Text>
+				ヴァイスラッカー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_HALLOUMI">
+			<Text>
+				ハルーミ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KASHKAVAL">
+			<Text>
+				カシュカヴァル
+			</Text>
+		</Row>
+
+		<!-- D Homura -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_HOMURAS_DIMENSION">
+			<Text>
+				ほむらの次元
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_STYX">
+			<Text>
+				ステュクス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PHLEGETHON">
+			<Text>
+				ピュリプレゲトン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ACHERON">
+			<Text>
+				アケロン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_COCYTUS">
+			<Text>
+				コーキュートス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CAINA">
+			<Text>
+				カイーナ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ANTENORA">
+			<Text>
+				アンテノーラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PTOLOMAEA">
+			<Text>
+				トロメア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_JUDECCA">
+			<Text>
+				ジュデッカ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ERIDANOS">
+			<Text>
+				エリダノス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ALPHEUS">
+			<Text>
+				アルペイオス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TARTARUS">
+			<Text>
+				タルタロス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PURGATORIO">
+			<Text>
+				プルガトーリョ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_EDEN">
+			<Text>
+				エデン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PARADISIO">
+			<Text>
+				パラディーゾ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_LOVE">
+			<Text>
+				ラブ
+			</Text>
+		</Row>
+
+		<!-- Madoka K -->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MITAKIHARA">
+			<Text>
+				見滝原
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_FORTUNIANA">
+			<Text>
+				フォーチュニアーナ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_KATHLEEN">
+			<Text>
+				キャサリーン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_SOMBREUIL">
+			<Text>
+				ソン・ブレイユ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BOCCELLA">
+			<Text>
+				ボッチェラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NATCHITOCHES">
+			<Text>
+				ナッキトッシュ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GRAVEREAUX">
+			<Text>
+				グラブロー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PAESTUM">
+			<Text>
+				パエストゥム
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_RUSSELLIANA">
+			<Text>
+				ルッセリアーナ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ALTISSIMO">
+			<Text>
+				アルティッシモ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_JACQUEMINOT">
+			<Text>
+				ジャックミノ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_AUDUBON">
+			<Text>
+				オーデュボン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_GROOTENDORST">
+			<Text>
+				グルーテンドルスト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CAROLINE">
+			<Text>
+				カロリーヌ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_FRANCESCA">
+			<Text>
+				フランチェスカ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_BERGKASE">
+			<Text>
+				ベルクケーゼ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_FELLENBERG">
+			<Text>
+				フェルレンベルク
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_HILLINGTON">
+			<Text>
+				ヒリントン
+			</Text>
+		</Row>
+		
+		<!-- New Cities list, 1/8/2015 -->
+		<!-- for ease of SQL use, these will no longer have the city's name in the text key and will just be numbered.-->
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_1">
+			<Text>
+				スレイカ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_2">
+			<Text>
+				ロベルタ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_3">
+			<Text>
+				ホムリリィ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_4">
+			<Text>
+				パトリシア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_5">
+			<Text>
+				グレッチェン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOKA_ADDON_6">
+			<Text>
+				ワルプルギス
+			</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_1">
+			<Text>
+				ミネベア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_2">
+			<Text>
+				レミントン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_3">
+			<Text>
+				トゥーラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_4">
+			<Text>
+				コルト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_5">
+			<Text>
+				住友
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_6">
+			<Text>
+				ハースタル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_7">
+			<Text>
+				アンサルド
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_8">
+			<Text>
+				ネクスター
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_HOMURA_ADDON_9">
+			<Text>
+				モーゼル
+			</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_1">
+			<Text>
+				ベートーヴェン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_2">
+			<Text>
+				ハイドン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_3">
+			<Text>
+				シュトラウス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_4">
+			<Text>
+				ブラームス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_5">
+			<Text>
+				ワーグナー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_6">
+			<Text>
+				ドビュッシー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_7">
+			<Text>
+				セバスチャン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_8">
+			<Text>
+				ホルスト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_SAYAKA_ADDON_9">
+			<Text>
+				モンテヴェルディ
+			</Text>
+		</Row>
+		
+		<!-- I am really running out of ideas of what to name Mami's cities. -->
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_1">
+			<Text>
+				フィレンツェ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_2">
+			<Text>
+				ミラノ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_3">
+			<Text>
+				ヴェネツィア・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_4">
+			<Text>
+				ジェノヴァ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_5">
+			<Text>
+				ナポリ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_6">
+			<Text>
+				カリャリ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_7">
+			<Text>
+				トリエステ・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_8">
+			<Text>
+				アクイレイア・ノヴァ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MAMI_ADDON_9">
+			<Text>
+				シエーナ・ノヴァ
+			</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_1">
+			<Text>
+				ローソン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_2">
+			<Text>
+				石屋
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_3">
+			<Text>
+				春日井
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_4">
+			<Text>
+				不二家
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_5">
+			<Text>
+				山崎
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_KYOUKO_ADDON_6">
+			<Text>
+				丸川
+			</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_1">
+			<Text>
+				ドミアティ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_2">
+			<Text>
+				ボックマキリ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_3">
+			<Text>
+				パニール
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_4">
+			<Text>
+				桜
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_5">
+			<Text>
+				ジャミード
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_6">
+			<Text>
+				オロムーケー・シレッキー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_7">
+			<Text>
+				リップタウアー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_8">
+			<Text>
+				ガマロスト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_NAGISA_ADDON_9">
+			<Text>
+				ザモラノ
+			</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_1">
+			<Text>
+				輪廻
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_2">
+			<Text>
+				無明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_3">
+			<Text>
+				苦
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_4">
+			<Text>
+				涅槃
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_5">
+			<Text>
+				ドゥルジ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_6">
+			<Text>
+				アフリマン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_7">
+			<Text>
+				勝楽
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_8">
+			<Text>
+				悟り
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_DEMON_HOMURA_ADDON_9">
+			<Text>
+				解脱
+			</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_1">
+			<Text>
+				アレトゥーサ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_2">
+			<Text>
+				スチャブリキーネ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_3">
+			<Text>
+				フェリゴンデ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_4">
+			<Text>
+				ヘルモサ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_5">
+			<Text>
+				カタリナ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_6">
+			<Text>
+				リビー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_7">
+			<Text>
+				ニンフェンブルク
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_8">
+			<Text>
+				コチョウラン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_ORIGINAL_MADOKA_ADDON_9">
+			<Text>
+				セティーナ
+			</Text>
+		</Row>
+		
+		<!-- Traits -->
+		<Row Tag="TXT_KEY_TRAIT_NO_WITCHES">
+			<Text>
+				偉人を消費すると特別な戦闘ユニットを獲得する。これらのユニットは強力な固有の昇進を取得することができ、また、規定のテクノロジーを獲得すると自動的に[ICON_STRENGTH]戦闘力が上昇する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_NO_WITCHES_SHORT">
+			<Text>
+				円環の理
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_STEAL_ENEMY_UNIQUE_ON_CONQUEST">
+			<Text>
+				軍隊ユニットはHPが33未満になったら80%確率で近接攻撃を回避して遠隔攻撃に対する防御+33%. スパイがテクノロジーを盗む速度+33%.
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_STEAL_ENEMY_UNIQUE_ON_CONQUEST_SHORT">
+			<Text>
+				時間操作
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_FRIENDSHIP_PRODUCTION_BONUS">
+			<Text>
+				同盟関係にある都市国家の数に応じて火器ユニットの[ICON_STRENGTH]戦闘力が1ずつ増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_FRIENDSHIP_PRODUCTION_BONUS_SHORT">
+			<Text>
+				もう何も恐くない
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_TOURISM_HEALING_BONUS">
+			<Text>
+				敵ユニットを倒すごとに音楽家ギルドが建設された都市における[ICON_GREAT_PEOPLE]大音楽家ポイントを獲得する。敵文明に対して及ぼしている[ICON_TOURISM]観光力のレベルに応じて敵領内における[ICON_STRENGTH]戦闘力が5%ずつ増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_TOURISM_HEALING_BONUS_SHORT">
+			<Text>
+				正義のためのオーケストラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_GROWTH_SPEED_FROM_RELIGION">
+			<Text>
+				佐倉杏子が創始した宗教を信奉している都市2つにつき都市の[ICON_FOOD]成長速度が1%ずつ上昇する。[ICON_CAPITAL]首都の[ICON_CITIZEN]人口が最高値に達するごとに[ICON_PEACE]信仰力を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_GROWTH_SPEED_FROM_RELIGION_SHORT">
+			<Text>
+				何千人の給食
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS">
+			<Text>
+				出会った文明の[ICON_HAPPINESS_1]幸福度を5上昇させる。出会った文明ごとに、人口数から生み出される[ICON_HAPPINESS_4]不満度が10%上昇し、都市の産出量が5%増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS_SHORT">
+			<Text>
+				「愛よ。」
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_CATTLE_BONUS_MERCHANT_PLANT_CATTLE">
+			<Text>
+				牧草地から[ICON_CULTURE]文化力+1。[ICON_GOLDEN_AGE]黄金時代の間、[ICON_RES_COW]家畜と[ICON_RES_SHEEP]羊資源が未改善のタイルに拡散することがある。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_CATTLE_BONUS_MERCHANT_PLANT_CATTLE_SHORT">
+			<Text>
+				チーズ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_FREE_ARCHERY_BONUS_GARRISON_ATTACK">
+			<Text>
+				弓術のテクノロジーを最初から持っている。弓術ユニットの維持費が25%軽減される。友好宣言を締結すると、鹿目まどかとその友好国の[ICON_GREAT_PEOPLE]偉人の誕生速度が10%上昇する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_TRAIT_FREE_ARCHERY_BONUS_GARRISON_ATTACK_SHORT">
+			<Text>
+				希望の矢
+			</Text>
+		</Row>
+		
+		<!-- Units -->
+		<Row Tag="TXT_KEY_UNIT_PMMM_INCUBATOR_SLAVE">
+			<Text>
+				インキュベーター・スレイヴ
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_INCUBATOR_SLAVE_TEXT">
+			<Text>
+				インキュベーターは地球外知性体である。しかし、暁美ほむらが創造した新たな世界においては、もはや彼女の奴隷――そしてストレス発散の手段でしかなかった。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_INCUBATOR_SLAVE_STRATEGY">
+			<Text>
+				インキュベーター・スレイヴは悪魔ほむらの固有ユニットで、他の文明では労働者にあたる。通常の労働者より資源活用施設の生産速度が25%早い。そのため、重要な資源を素早く手に入れることができ、また、都市の発展も早くなる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_INCUBATOR_SLAVE_HELP">
+			<Text>
+				悪魔ほむらだけが作成できる労働者の代替ユニット。通常の労働者より資源活用施設の生産速度が25%早い。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CLOCKSTOPPER">
+			<Text>
+				時の盗賊
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_TEXT">
+			<Text>
+				この魔法少女部隊は暁美ほむらの魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]暁美ほむらの魔法は時間を停止することができる。しかし、彼女は自身で武器を作ることはできないため、時の盗賊は通常の武器を装備しなければならない。もっとも、彼女たちは時間停止能力を使用して都市の武器庫を襲撃し、本来は手にすることのできない武器を装備することが可能である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_STRATEGY">
+			<Text>
+				時の盗賊は暁美ほむらの固有ユニットで、他の文明では歩兵にあたる。当初は通常の歩兵と同じ性能しか有していないが、都市を占領すると一変する。すなわち、都市を所有していた文明の固有ユニットだけが利用可能とされている固有昇進を盗むことができるのである。これは、たとえその固有ユニットが陳腐化している場合でも可能である。この能力により時の盗賊を素早く強力なユニットにすることができる。もっとも、固有ユニットのペナルティまでも獲得する可能性が残されている点には注意が必要である。同種の他の能力とは異なり、この能力は同じ都市であっても好きなだけ発動させることができる。なお、市民ユニットや偉人ユニットの能力は盗むことはできない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_HELP">
+			<Text>
+				暁美ほむらだけが作成できる歩兵の代替ユニット。都市を占領すると、都市の所有者の固有ユニットに備わる昇進を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CHAIN_LANCER">
+			<Text>
+				チェーン・ランサー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CHAIN_LANCER_TEXT">
+			<Text>
+				この魔法少女部隊は佐倉杏子の魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]彼女たちは佐倉杏子の魔女化能力の一部を手にしており、騎乗するための馬を自ら召喚することができる。そのため、あらかじめ馬を用意しておく必要性から解放される。また、佐倉杏子と同じ型の槍を召喚することができる。その槍は長い鎖で繋がれた複数の部品に分割することのできる巨大な武器である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CHAIN_LANCER_STRATEGY">
+			<Text>
+				チェーン・ランサーは佐倉杏子の固有ユニットで、他の文明では槍騎兵にあたる。槍騎兵とは異なり[ICON_RES_HORSE]馬を必要とせず、また、側面攻撃のボーナスが2倍になる。これらの能力を組み合わせることによりチェーン・ランサーの大軍で敵に襲いかかることが可能となり、素早く効果的な攻撃と略奪を行うことができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CHAIN_LANCER_HELP">
+			<Text>
+				佐倉杏子だけが作成できる槍騎兵の代替ユニット。[ICON_RES_HORSE]馬を必要としない。側面攻撃ボーナスが2倍。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_ROSEBOW_INFANTRY">
+			<Text>
+				ローズ・ボウ兵
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_ROSEBOW_INFANTRY_TEXT">
+			<Text>
+				この魔法少女部隊は鹿目まどかの魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]彼女の強力な弓を装備しており、強力な攻撃を素早く行うことができる。弓を引くと上部に取り付けられたバラがピンクの炎とともに光を放ち、引き絞るほど炎が大きくなる。都市や城塞の壁に十分に守られている時は、この炎を最大限に大きくする時間がある。鹿目まどかは朗らかで親身な性格であるため、魔法少女達の訓練に逐一手を差し伸べている。これにより、彼女たちの訓練はずっと短時間で効率的に達成されるのである。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_ROSEBOW_INFANTRY_STRATEGY">
+			<Text>
+				ローズ・ボウ兵は鹿目まどかの固有ユニットで、他の文明では戦闘弓射手にあたる。戦闘弓射手よりも作成コストが抑えられており、鹿目まどかの指導者特性と相まって膨大な数のローズ・ボウ兵を揃えることができる。また、都市や城塞に駐留していると1ターンに2回攻撃することが可能となる。これらの能力を組み合わせることにより、古典時代においては鉄壁の守りを誇ることができ、アップグレードして行くことで以降の時代の守備も盤石となる。さらに、城塞を用いて攻勢に出る場合には剣としての役割を担うことができるかもしれない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_ROSEBOW_INFANTRY_HELP">
+			<Text>
+				鹿目まどかだけが作成できる戦闘弓射手の代替ユニット。作成コストが低く、都市や城塞に駐留していると1ターンに2回攻撃することが可能となる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER">
+			<Text>
+				ティロ・マスケット兵
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_TEXT">
+			<Text>
+				この魔法少女部隊は巴マミの魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]彼女の美麗な武器の取り扱いだけではなく、彼女のスタイリッシュでドラマティックな戦闘スタイルも習得している。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_STRATEGY">
+			<Text>
+				ティロ・マスケット兵は巴マミの固有ユニットで、他の文明ではライフル兵にあたる。ライフル兵とは異なり、通常の白兵戦に突入する前に遠隔攻撃を行う（ズールーのインピのように）。また、同盟都市国家の領内においては[ICON_STRENGTH]戦闘力が25%増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_HELP">
+			<Text>
+				巴マミだけが作成できるライフル兵の代替ユニット。戦闘前に先制の遠隔攻撃を行うことができる。同盟都市国家の領内において[ICON_STRENGTH]戦闘力+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CUTLASS_CONDUCTOR">
+			<Text>
+				カトラス・コンダクター
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CUTLASS_CONDUCTOR_TEXT">
+			<Text>
+				この魔法少女部隊は美樹さやかの魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]彼女たちは自らの魔法により武器を生成しているため、鉄を必要としない。音楽と同調しているため、戦闘に勝利することによりハーモニーが強化され、文明の音楽が与える影響力を広めることができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CUTLASS_CONDUCTOR_STRATEGY">
+			<Text>
+				カトラス・コンダクターは美樹さやかの固有ユニットで、他の文明では長剣士にあたる。長剣士とは異なり[ICON_RES_IRON]鉄を必要とせず、また、敵ユニットを倒すたびに[ICON_CULTURE]文化力を獲得する。ライフリングにより陳腐化し、ライフル兵にアップグレードすることができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_CUTLASS_CONDUCTOR_HELP">
+			<Text>
+				美樹さやかだけが作成できる長剣士の代替ユニット。[ICON_RES_IRON]鉄を必要としない。敵ユニットを倒すたびに[ICON_CULTURE]文化力を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_BUBBLE_BOMBER">
+			<Text>
+				バブル・ボンバー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_BUBBLE_BOMBER_TEXT">
+			<Text>
+				この魔法少女部隊は百江なぎさの魔法を模倣する訓練を施されており、装備までもが彼女と一致している。[NEWLINE][NEWLINE]典型的な魔法少女部隊とは異なり、変わった手法で指導者の魔法を取り入れている。彼女たちは百江なぎさの魔法を使うことができると同時に熟練のパイロットでもある。彼女の「シャボン玉・ラッパ」と同等の武器を生成し、ジェット機から投下することで、他のいかなる爆弾よりも効果的な爆撃を行うことができる。もっとも、残念なことにジェット機は魔法で生成することができないため、通常の手段により建造しなければならない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_BUBBLE_BOMBER_STRATEGY">
+			<Text>
+				バブル・ボンバーは百江なぎさの固有ユニットで、他の文明では第1次大戦爆撃機にあたる。投下される泡は非常に威力が高く、都市や守りを固めたユニットに対して50%多くのダメージを与える。百江なぎさの文明は概ね平和的な集団であるが、チーズを守るときには凶暴になる。すなわち、バブル・ボンバーが駐留している都市の2タイル以内に敵ユニットがいると、[ICON_RANGE_STRENGTH]遠隔戦闘力が33%増加するのだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_BUBBLE_BOMBER_HELP">
+			<Text>
+				百江なぎさだけが作成できる第1次大戦爆撃機の代替ユニット。都市や守りを固めたユニットに対して[ICON_RANGE_STRENGTH]遠隔戦闘力+50%。2タイル以内に敵ユニットがいると[ICON_RANGE_STRENGTH]遠隔戦闘力+33%。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_UNIT_PMMM_WITCH">
+			<Text>
+				魔女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_WITCH_TEXT">
+			<Text>
+				魔女は世界の呪いから生まれた悪夢のような存在であり、魔法少女のソウルジェムが完全に黒く濁りきることで誕生する。しかし、アルティメットまどかの世界では、魔女と魔法少女は同一の存在の一部であり、魔法少女は魔女に対して共同して戦うよう命令することができるのである。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_WITCH_STRATEGY">
+			<Text>
+				魔女はアルティメットまどかの固有ユニットで、他の文明では戦士にあたる。自国領内においては通常の戦士よりも遙かに戦闘力が高いが、自国領外においては戦士よりも弱体化してしまう。序盤の侵略からの防衛に活用するのだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_WITCH_HELP">
+			<Text>
+				アルティメットまどかだけが作成できる戦士の代替ユニット。自国領外においては[ICON_STRENGTH]戦闘力-50%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_MAGICAL_GIRL">
+			<Text>
+				大魔法少女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_MAGICAL_GIRL_TEXT">
+			<Text>
+				若い少女、特に11歳から15歳の少女は魔法少女の候補である考えられている。少女が魔法少女となるための素質は、世界全体において占める少女の重要性に基づいており(例えば、世界の指導者の娘は潜在能力が高い傾向にある。)、また、少女がその人生においてどれほどの苦痛が運命づけられているかも影響する。彼女たちには、富や知識、愛や人生の第2のチャンスなど、どのような願いでも1つだけ叶えられる能力が与えられる。しかしながら、願いを叶えると魔法少女となり、以後魔女を倒すことが義務付けられる。まどかの願いより前の魔法少女の人生は厳しいものであったが、彼女たちが以前送っていた人生よりは休息が多かった。[NEWLINE][NEWLINE]魔法少女の魂はソウルジェムという宝石に移される。魂を肉体から分離することで身体的苦痛を無視することが可能になる。加えて、ソウルジェムが傷ついておらず、穢れていない限りは魔法によって傷を素早く治癒することができる。[NEWLINE][NEWLINE]まどかの世界の住人は全て魔法少女であり、途方もない潜在魔法能力を備えている。彼女たちは、当初は普通の戦士と何ら変わりない強さであるが、経験を積み重ねることで彼らより遙かに強くなることができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_MAGICAL_GIRL_STRATEGY">
+			<Text>
+				大魔法少女は、アルティメットまどかが偉人を消費したときのみ誕生する特殊なユニットである。基本ステータスは戦士の2/3の値にとどまるが、他のユニットにない強力な昇進ルートを備えている。また、消費された偉人に基づいてボーナス能力が追加される。戦士のアップグレード・ルートにある技術を研究すると、大魔法少女の[ICON_STRENGTH]戦闘力が新しく作成可能になったユニットの2/3の値にまで自動的に上昇する。ただし、これが適用されるためには自文明の国境内でターンを開始しなければならない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UNIT_PMMM_MAGICAL_GIRL_HELP">
+			<Text>
+				偉人を消費することによって誕生する特殊な戦闘ユニット。アルティメットまどかだけが作成できる。固有の昇進ルートを備えている。また、自国領内にいると、規定の技術を獲得したときに自動的に[ICON_STRENGTH]戦闘力が上昇する。さらに、消費された偉人の種類に基づいて特別な能力を獲得する。
+			</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_UNITCOMBAT_MAGICALGIRL">
+			<Text>
+				魔法少女ユニット
+			</Text>
+		</Row>
+		
+		
+		<!-- Buildings -->
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL_HELP">
+			<Text>
+				都市の[ICON_CITIZEN]市民2人につき[ICON_RESEARCH]科学力+1。この都市における[ICON_GREAT_PEOPLE]偉人の出現速度+25%。[NEWLINE][NEWLINE]都市に大学があることが建設条件。[ENDCOLOR]
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL">
+			<Text>
+				中学校
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL_TEXT">
+			<Text>
+				中学校は、魔法少女になる見込みのある少女を見つけ出そうとするインキュベーターにとっては絶好の場所である。この年頃の少女は多感な時期にあり、まさにインキュベーターが探し求めている対象である。中学校が存在するだけで、驚くべき力を秘めた魔法少女を発見できる機会が増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL_STRATEGY">
+			<Text>
+				中学校は鹿目まどかに特有の建造物であり、公立学校に取って代わる。研究ボーナスに加え、[ICON_PMMM_ENTERTAINMENT]偉人の出現速度が25%上昇する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_DIMENSIONAL_ARMORY_HELP">
+			<Text>
+				すべてのユニットに+15の経験値。異次元兵器庫あるいは空港が建設された都市にユニットを移転させることができる。この都市を基地にできる航空ユニットが4増加する。[NEWLINE][NEWLINE]都市に武器庫があることが建設条件。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_DIMENSIONAL_ARMORY">
+			<Text>
+				異次元兵器庫
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_DIMENSIONAL_ARMORY_TEXT">
+			<Text>
+				この新たな世界において、暁美ほむらは異次元魔法を建造物へと応用した。異次元魔法と時間操作を組み合わせることにより、ほんの数分で世界中に全軍を送り込むことができるようになった。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_DIMENSIONAL_ARMORY_STRATEGY">
+			<Text>
+				異次元兵器庫は暁美ほむらに特有の建造物であり、士官学校に取って代わる。新しく作成されるユニットの経験値を15追加するとともに、空輸施設を備える都市間でユニットを移転させることができるようになる。また、基地にできる航空ユニットが4増加する（空港と組み合わせることにより合計14機の航空ユニットを駐留させることができる。）。早期の部分的な空港代替施設としても役立つが、維持費が著しく増大している。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_BUILDING_PMMM_TEAHOUSE_HELP">
+			<Text>
+				この都市から出る陸上交易路の到達可能距離が50%伸び、他の文明に接続すると[ICON_GOLD]ゴールド2が追加でもたらされる。[NEWLINE][NEWLINE]友好宣言を締結している文明ごとに[ICON_PRODUCTION]生産力+1。友好宣言の相手文明は、喫茶店の数に応じて[ICON_PRODUCTION]首都の生産力+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_TEAHOUSE">
+			<Text>
+				喫茶店
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_TEAHOUSE_TEXT">
+			<Text>
+				巴マミの一番の望みは、魔法少女として共に戦ってくれる本当の友達を見つけることである。このために、彼女は紅茶を入れ、ケーキを作ることが趣味であり、何よりもこれを友達に振る舞うことに幸せを感じる。共に紅茶を飲むことでマミと友達との絆を強め、さらなる難局を乗り切ることができるだろう。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_TEAHOUSE_STRATEGY">
+			<Text>
+				喫茶店は巴マミに特有の建造物であり、隊商宿に取って代わる。隊商宿の利点に加え、友好宣言を締結している文明ごとに[ICON_PRODUCTION]生産力が1ずつ増加し、相手文明は巴マミが所有している喫茶店の数に応じて[ICON_CAPITAL]首都の[ICON_PRODUCTION]生産力が1ずつ増加する。この建造物の利点を最大限に生かすため、可能な限り多くの友人を作るのだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_STAGE_OF_OKTAVIA_HELP">
+			<Text>
+				傑作音楽を所蔵するオクタヴィアの舞台の数に応じて、ユニットがターン開始時に回復するHPが1ずつ増加する。「連合部隊」のテクノロジーを獲得すると[ICON_CULTURE]文化力+2および[ICON_TOURISM]観光力+2。[NEWLINE][NEWLINE]円形競技劇がなければならない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_STAGE_OF_OKTAVIA">
+			<Text>
+				オクタヴィアの舞台
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_STAGE_OF_OKTAVIA_TEXT">
+			<Text>
+				まどかの願い以前の時間軸における美樹さやかは、魔女になるという不幸な運命にあった。しかし、新たな世界においてはオクタヴィア・フォン・ゼッケンドルフという魔女を完全に制御し、自身の力として利用することができるようになった。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_STAGE_OF_OKTAVIA_STRATEGY">
+			<Text>
+				オクタヴィアの舞台は美樹さやかに特有の建造物であり、オペラハウスに取って代わる。傑作音楽を所蔵するオクタヴィアの舞台の数に応じて、ユニットがターン開始時に回復するHPが1ずつ増加する。この効果はどの領土にいるときでも発生し、守りを固めていなくても発生する。また、「連合部隊」のテクノロジーを獲得すると[ICON_CULTURE]文化力および[ICON_TOURISM]観光力が2増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH_HELP">
+			<Text>
+				この都市からの宗教的圧力が20%上昇する。[NEWLINE][NEWLINE]この都市にいる、佐倉杏子が創始した宗教を信奉している信徒2人につき、新しく生まれる市民用に持ち越させる[ICON_FOOD]食料の割合が1%ずつ上昇する（最大20%）。[NEWLINE][NEWLINE]都市に神殿が必要である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH">
+			<Text>
+				佐倉教会
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH_TEXT">
+			<Text>
+				佐倉教会は佐倉杏子の父が神父を務めていた場所である。彼は当初他の多くの伝道者と同じ教えを説いていたが、次第に自身の教えを取り入れるようになっていった。彼の思想が急進的であると考えられたため、かつての信徒たちから避けられるようになり、教会から破門されてしまった。食べるものにも困窮したことで、杏子は「人々が父の話を聞いてくれるように」と願った。その願いは一時的に効果を上げたものの、それは、かつて中傷していた人々が急に話を聞くようになった理由を父が理解するようになるまでの間のことであった。茫然自失した父は酒浸りになり、ついに杏子の母と妹を道連れに無理心中してしまった。[NEWLINE][NEWLINE]まどかが願いを叶える以前の杏子は信仰を断ち、他人を手助けすることをやめた。しかしながら、この新たな世界における佐倉杏子は、再び人々が父の話を聞いてくれるかもしれないという思いを抱いている。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH_STRATEGY">
+			<Text>
+				佐倉教会は佐倉杏子に特有の建造物であり、寺院に取って代わる。都市からの宗教的圧力を上昇させるため、近隣の都市に宗教が伝播する速度が上昇する。また、都市に存在する国内の多数派宗教の信徒の数により、用水路あるいは医学研究所と同様の効果が発生する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MAGICAL_DAIRY_HELP">
+			<Text>
+				この都市から出る陸上交易路の到達可能距離が50%伸び、他の文明に接続すると[ICON_GOLD]ゴールド2が追加でもたらされる。[NEWLINE][NEWLINE]他のプレイヤーが魔法のチーズ製造場のある都市に交易路を引くと、さらに[ICON_GOLD]ゴールド+2。また、交易路を引いた側は、この都市が活用する[ICON_RES_COW]家畜および[ICON_RES_SHEEP]羊資源の数に応じて[ICON_GOLD]ゴールド+1。[NEWLINE][NEWLINE]国外交易路を引くと、到着先の都市が活用する[ICON_RES_COW]家畜および[ICON_RES_SHEEP]羊資源の数に応じて[ICON_GOLDEN_AGE]黄金時代ポイントを獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MAGICAL_DAIRY">
+			<Text>
+				魔法のチーズ製造場
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MAGICAL_DAIRY_TEXT">
+			<Text>
+				魔法のチーズ製造場は、機械ではなく魔法を使用して家畜から搾乳するという点で通常の酪農施設とは異なる。これは動物にとってストレスが少なく、普通のものよりも高品質な牛乳やチーズを生産することができる。ベベのチーズはその風味により世界中で評価が高く、外国は最高額の代金を支払うだろう。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_MAGICAL_DAIRY_STRATEGY">
+			<Text>
+				魔法のチーズ製造場は百江なぎさに特有の建造物であり、隊商宿に取って代わる。隊商宿の利点に加え、他のプレイヤーが魔法のチーズ製造場のある都市に交易路を引くと、さらに[ICON_GOLD]ゴールドが2追加される。また、交易路を引いた側は、この都市が活用する[ICON_RES_COW]家畜および[ICON_RES_SHEEP]羊資源の数に応じて[ICON_GOLD]1ゴールドずつ受け取る。さらに、これらの資源を有する都市に交易路を引くと[ICON_GOLDEN_AGE]黄金時代ポイントを獲得する。備考：この部分の効果は他文明の都市が活用している資源に依存するものであり、あなたの資源ではない！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN">
+			<Text>
+				ルミナス庭園
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_TEXT">
+			<Text>
+				見滝原の魅力的な建築物は公園や庭園でも見ることができる。ルミナス庭園は、緑に覆われた、息をのむほどの野原である。見滝原の2人の魔法少女の習慣は、椅子を並べて肩を寄せ合い、顔を摺り合わせることである。この行為の目的は不明であるが、控え目な同性愛に関連していると言う人もいる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_STRATEGY">
+			<Text>
+				ルミナス庭園はアルティメットまどかに特有の建造物であり、庭園に取って代わる。庭園の利点に加え、ルミナス庭園が建設された都市に駐留する大魔法少女はターン開始時に経験値1を獲得する。この効果は魔法少女がレベル3に達すると停止し、以後その大魔法少女はこの効果により経験値を獲得することができない。なお、庭園と同様に都市が河川か湖に隣接していなければならない。都市に適した淡水資源の発見に全力を尽くすのだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_HELP">
+			<Text>
+				この都市における[ICON_GREAT_PEOPLE]偉人の出現速度+25%。[NEWLINE][NEWLINE]ルミナス庭園が建設された都市に駐留する大魔法少女は、レベル3に達するまでターン開始時に経験値1を獲得する。[NEWLINE][NEWLINE]都市は河川か湖に隣接していなければならない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_ILLUSION_REALM">
+			<Text>
+				幻想の世界
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_ILLUSION_REALM_HELP">
+			<Text>
+				占領された都市の[ICON_HAPPINESS_4]不満度を減少させる。維持費が不要。追加の[ICON_HAPPINESS_1]幸福度をもたらし、人口数から生み出される[ICON_HAPPINESS_4]不満度を2%減少させる。これにより、悪魔ほむらの指導者特性による悪影響を緩和させることができる。悪魔ほむらのみが建設することができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_ILLUSION_REALM_TEXT">
+			<Text>
+				全知全能の悪魔ほむらは世界を彼女の望み通りに操ることができる。世界を覆う幻想を創り出し、鹿目まどかの自己犠牲を必要としない世界を約束することで、人々の感情を鎮めることができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_PMMM_ILLUSION_REALM_STRATEGY">
+			<Text>
+				幻想の世界は悪魔ほむらに特有の建造物であり、裁判所に取って代わる。裁判所の利点を引き継ぐとともに、維持費が不要であり、追加の幸福度をもたらす。さらに、人口数から生み出される文明全体の[ICON_HAPPINESS_4]不満度を2%減少させる。これにより、悪魔ほむらは、征服を通じて指導者特性による幸福度ペナルティを緩和させることができる。――力によって世界の感情を鎮めるのだ！
+			</Text>
+		</Row>
+		
+		<!-- Spies -->
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_0">
+			<Text>エリーゼ</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_1">
+			<Text>クレール</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_2">
+			<Text>ひより</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_3">
+			<Text>小巻</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_4">
+			<Text>ゆま</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_5">
+			<Text>ルカ</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_6">
+			<Text>レミ</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_7">
+			<Text>ユウリ</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_8">
+			<Text>あやせ</Text>
+			<Gender>feminine</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_MADOKA_9">
+			<Text>鈴音</Text>
+			<Gender>feminine</Gender>
+		</Row>
+
+
+		<!--Demon Homura's are named after her familiars (except Kyubey) -->
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_0">
+			<Text>キュゥべえ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_1">
+			<Text>ロッテ A</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_2">
+			<Text>ロッテ B</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_3">
+			<Text>ルイセロッテ A</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_4">
+			<Text>ルイセロッテ B</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_5">
+			<Text>リーゼ A</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_6">
+			<Text>リーゼ B</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_7">
+			<Text>リリア A</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_8">
+			<Text>リリア B</Text>
+		</Row>
+		<Row Tag="TXT_KEY_SPY_NAME_DEMON_HOMURA_9">
+			<Text>リリア C</Text>
+		</Row>
+		
+		<!-- Promotions -->
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_EXOTIC">
+			<Text>
+				戦争の賛美歌
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_EXOTIC_HELP">
+			<Text>
+				このユニットが存在するタイルの所有文明に及ぼしている影響力により、[ICON_STRENGTH]戦闘力が[COLOR_POSITIVE_TEXT]5%[ENDCOLOR]増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_FAMILIAR">
+			<Text>
+				戦争のメロディ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_FAMILIAR_HELP">
+			<Text>
+				このユニットが存在するタイルの所有文明に及ぼしている影響力により、[ICON_STRENGTH]戦闘力が[COLOR_POSITIVE_TEXT]10%[ENDCOLOR]増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_POPULAR">
+			<Text>
+				戦争のロンド
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_POPULAR_HELP">
+			<Text>
+				このユニットが存在するタイルの所有文明に及ぼしている影響力により、[ICON_STRENGTH]戦闘力が[COLOR_POSITIVE_TEXT]15%[ENDCOLOR]増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_INFLUENTIAL">
+			<Text>
+				戦争のシンフォニー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_INFLUENTIAL_HELP">
+			<Text>
+				このユニットが存在するタイルの所有文明に及ぼしている影響力により、[ICON_STRENGTH]戦闘力が[COLOR_POSITIVE_TEXT]20%[ENDCOLOR] [ICON_STRENGTH]増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_DOMINANT">
+			<Text>
+				戦争のオーケストラ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SAYAKA_DOMINANT_HELP">
+			<Text>
+				このユニットが存在するタイルの所有文明に及ぼしている影響力により、[ICON_STRENGTH]戦闘力が[COLOR_POSITIVE_TEXT]25%[ENDCOLOR] [ICON_STRENGTH]増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER">
+			<Text>
+				ティロ・ボレー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_HELP">
+			<Text>
+				白兵攻撃を行う前に遠隔攻撃を行う。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_BONUS">
+			<Text>
+				私の友達には傷つけさせない！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_BONUS_HELP">
+			<Text>
+				同盟関係にある都市国家領内にいるときに[ICON_STRENGTH]戦闘力+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_ROSEBOW_INFANTRY">
+			<Text>
+				純粋なる者の守護者
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_ROSEBOW_INFANTRY_HELP">
+			<Text>
+				[COLOR_POSITIVE_TEXT]都市あるいは城塞[ENDCOLOR]に駐留していると[COLOR_POSITIVE_TEXT]攻撃回数+1[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_ROSEBOW_INFANTRY_BONUS">
+			<Text>
+				純粋なる者の守護者（有効）
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_ROSEBOW_INFANTRY_BONUS_HELP">
+			<Text>
+				現在「攻撃回数+1」が適用されている。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_CHAIN_LANCER">
+			<Text>
+				十字軍の鎖
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_CHAIN_LANCER_HELP">
+			<Text>
+				[COLOR_POSITIVE_TEXT]側面攻撃[ENDCOLOR]ボーナス[COLOR_POSITIVE_TEXT]+100%[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_CLOCKSTOPPER">
+			<Text>
+				時間泥棒
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_CLOCKSTOPPER_HELP">
+			<Text>
+				都市を占領すると、都市の所有者の固有ユニットが備える昇進を盗む。市民ユニットが備える昇進は盗むことができない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_INCUBATOR_SLAVE">
+			<Text>
+				奴隷
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_INCUBATOR_SLAVE_HELP">
+			<Text>
+				通常の労働者と比べて地形改善速度[COLOR_POSITIVE_TEXT]+25%[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_BUBBLE_BOMBER">
+			<Text>
+				泡爆撃
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_BUBBLE_BOMBER_HELP">
+			<Text>
+				[COLOR_POSITIVE_TEXT]都市や守りを固めたユニット[ENDCOLOR]に対する[COLOR_POSITIVE_TEXT][ICON_RANGE_STRENGTH]遠隔戦闘力+50% [ENDCOLOR]。2タイル以内に敵ユニットがいると[COLOR_POSITIVE_TEXT][ICON_RANGE_STRENGTH]遠隔戦闘力+33%[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_BUBBLE_BOMBER_BONUS">
+			<Text>
+				チーズを死守！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_BUBBLE_BOMBER_BONUS_HELP">
+			<Text>
+				2タイル以内に敵ユニットがいると[COLOR_POSITIVE_TEXT][ICON_RANGE_STRENGTH]遠隔戦闘力+33%[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_WITCH">
+			<Text>
+				召喚されし魔女
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_WITCH_HELP">
+			<Text>
+				自国領外で[ICON_STRENGTH]戦闘力[COLOR_WARNING_TEXT]-50%[ENDCOLOR]。
+			</Text>
+		</Row>
+
+		<!-- Time Stop promotion -->
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIME_STOP">
+			<Text>
+				時間停止
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PMMM_TIME_STOP_HELP">
+			<Text>
+				時間が停止しているためこのユニットを[COLOR_WARNING_TEXT]動かすことができない[ENDCOLOR]！
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_PROMOTION_OFFENSE_TRAINING">
+			<Text>
+				攻撃訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_OFFENSE_TRAINING_HELP">
+			<Text>
+				攻撃時に戦闘力+15%。攻城および散兵の昇進ツリーが解禁される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_1">
+			<Text>
+				攻城訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_1_HELP">
+			<Text>
+				都市攻撃時に戦闘力+25%。遠隔攻撃に対する防御力+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_1">
+			<Text>
+				射撃訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_1_HELP">
+			<Text>
+				攻撃時に戦闘力+15%。移動力+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_2">
+			<Text>
+				攻城魔法
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_2_HELP">
+			<Text>
+				都市攻撃時に戦闘力+25%。遠隔攻撃に対する防御力+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_3">
+			<Text>
+				攻城魔術
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_TRAINING_3_HELP">
+			<Text>
+				都市攻撃時に戦闘力+25%。遠隔攻撃に対する防御力+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_SPECIALIZATION_1">
+			<Text>
+				魔法：水上歩行
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_SPECIALIZATION_1_HELP">
+			<Text>
+				海上からあるいは川越しの攻撃時のペナルティを受けない。都市を攻撃すると都市の戦闘力の半分に相当するゴールドを獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_SPECIALIZATION_2">
+			<Text>
+				剣の壁
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_SPECIALIZATION_2_HELP">
+			<Text>
+				略奪時の移動ポイント消費なし。都市を攻撃すると都市の戦闘力の半分に相当するゴールドを追加獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_2">
+			<Text>
+				射撃魔法
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_2_HELP">
+			<Text>
+				攻撃時に戦闘力+15%。側面攻撃ボーナス+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_3">
+			<Text>
+				射撃魔術
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_TRAINING_3_HELP">
+			<Text>
+				攻撃時に戦闘力+15%。側面攻撃ボーナス+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_SPECIALIZATION_1">
+			<Text>
+				魔法：電光石火
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_SPECIALIZATION_1_HELP">
+			<Text>
+				移動力+1。攻撃後の移動が可能。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_SPECIALIZATION_2">
+			<Text>
+				なのは式「友達を作る方法」™
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_SPECIALIZATION_2_HELP">
+			<Text>
+				敵を倒すと仲間にできることがある。他の魔法少女に対しては効果が無い。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_MASTERY">
+			<Text>
+				ティロ・フィナーレ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SIEGE_MASTERY_HELP">
+			<Text>
+				攻城昇進ツリーにおける非常に強力な最終昇進。都市攻撃時に戦闘力+30%。遠隔攻撃に対する防御力+20%。都市攻撃時に獲得するゴールド+50%。攻撃回数+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_MASTERY">
+			<Text>
+				ロッソ・ファンタズマ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SKIRMISH_MASTERY_HELP">
+			<Text>
+				散兵昇進ツリーにおける非常に強力な最終昇進。攻撃時に戦闘力+15%。側面攻撃ボーナス+25%。攻撃回数+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DEFENSE_TRAINING">
+			<Text>
+				防御訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DEFENSE_TRAINING_HELP">
+			<Text>
+				防御時に戦闘力+15%。斥候および支援の昇進ツリーが解禁される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_1">
+			<Text>
+				斥候訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_1_HELP">
+			<Text>
+				防御時に戦闘力+10%。起伏地形の防御ボーナス+15%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_1">
+			<Text>
+				支援訓練
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_1_HELP">
+			<Text>
+				近接する全ユニットのHPが1ターンにつき5ポイント多く回復。しかし、自分の回復量は上昇しない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_2">
+			<Text>
+				斥候魔法
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_2_HELP">
+			<Text>
+				防御時に戦闘力+15%。都市に駐留させると都市の戦闘力+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_3">
+			<Text>
+				斥候魔術
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_TRAINING_3_HELP">
+			<Text>
+				防御時に戦闘力+15%。都市に駐留させると都市の戦闘力+25%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_SPECIALIZATION_1">
+			<Text>
+				魔法：竜巻
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_SPECIALIZATION_1_HELP">
+			<Text>
+				Gain the ability to intercept 1 enemy aircraft per turn (100% chance).
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_SPECIALIZATION_2">
+			<Text>
+				隠されたミサイル
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_SPECIALIZATION_2_HELP">
+			<Text>
+				敵航空機の迎撃回数が追加される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_2">
+			<Text>
+				支援魔法
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_2_HELP">
+			<Text>
+				近接する全ユニットおよび自分のHPが1ターンにつき5ポイント多く回復。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_3">
+			<Text>
+				支援魔術
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_TRAINING_3_HELP">
+			<Text>
+				近接する全ユニットおよび自分のHPが1ターンにつき5ポイント多く回復。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_SPECIALIZATION_1">
+			<Text>
+				ウォー・クレッシェンド
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_SPECIALIZATION_1_HELP">
+			<Text>
+				隣接する敵ユニットの戦闘力-15%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_SPECIALIZATION_2">
+			<Text>
+				異次元ポケット
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_SPECIALIZATION_2_HELP">
+			<Text>
+				貨物3個の運搬が可能。どのようにしてあの小さな盾に収納しているのかは謎である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_MASTERY">
+			<Text>
+				フォルティッシモ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SENTRY_MASTERY_HELP">
+			<Text>
+				斥候昇進ツリーにおける非常に強力な最終昇進。防御時に戦闘力+15%。都市に駐留させると都市の戦闘力+33%。自友国領内における戦闘力+20%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_MASTERY">
+			<Text>
+				女神の遺産
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SUPPORT_MASTERY_HELP">
+			<Text>
+				支援昇進ツリーにおける非常に強力な最終昇進。近接する全ユニットおよび自分のHPが1ターンにつき10ポイント多く回復。2タイル以内にいる敵ユニットの戦闘力-10%。別の行動を起こした場合でも毎ターン回復する。
+			</Text>
+		</Row>
+
+		<!-- Inherent -->
+		<Row Tag="TXT_KEY_PROMOTION_MILITARY_WISH">
+			<Text>
+				願い：軍事
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_MILITARY_WISH_HELP">
+			<Text>
+				彼女の願いは戦いを導くことであった。この魔法少女は、獲得する[COLOR_POSITIVE_TEXT]経験値[ENDCOLOR]が20%増え、他のユニットより[COLOR_POSITIVE_TEXT]大将軍[ENDCOLOR]を生み出す可能性が50%高くなる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SCIENCE_WISH">
+			<Text>
+				願い：学才
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_SCIENCE_WISH_HELP">
+			<Text>
+				彼女の願いは知識を得ることであった。この魔法少女が敵ユニットを倒すと、その[ICON_STRENGTH]戦闘力の33%と同数の[ICON_RESEARCH][COLOR_POSITIVE_TEXT]科学力[ENDCOLOR]を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_FINANCIAL_WISH">
+			<Text>
+				願い：裕福
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_FINANCIAL_WISH_HELP">
+			<Text>
+				彼女の願いは裕福になることであった。この魔法少女が敵ユニットを倒すと、その[ICON_STRENGTH]戦闘力の33%と同数の[ICON_GOLD][COLOR_POSITIVE_TEXT]ゴールド[ENDCOLOR]を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_ARTISTIC_WISH">
+			<Text>
+				願い：創造
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_ARTISTIC_WISH_HELP">
+			<Text>
+				彼女の願いは傑作を創り出すことであった。この魔法少女が敵ユニットを倒すと、その[ICON_STRENGTH]戦闘力の33%と同数の[ICON_CULTURE][COLOR_POSITIVE_TEXT]文化力[ENDCOLOR]を獲得する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_INDUSTRIOUS_WISH">
+			<Text>
+				願い：勤勉
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_INDUSTRIOUS_WISH_HELP">
+			<Text>
+				彼女の願いは魅力的な建物を建築することであった。この魔法少女は、[COLOR_POSITIVE_TEXT]道路や鉄道[ENDCOLOR]を建設することができ、また、[COLOR_POSITIVE_TEXT]略奪された資源活用施設を[ENDCOLOR]修理することができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PIOUS_WISH">
+			<Text>
+				願い：敬心
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_PIOUS_WISH_HELP">
+			<Text>
+				彼女の願いは宗教的情熱に基づくものであった。 この魔法少女が敵ユニットを倒すと、その[ICON_STRENGTH]戦闘力の33%と同数の[ICON_PEACE][COLOR_POSITIVE_TEXT]信仰力[ENDCOLOR]を獲得する。
+			</Text>
+		</Row>
+
+
+		
+		<!-- Religion -->
+		<Row Tag="TXT_KEY_RELIGION_CHURCH_OF_MADOKA">
+			<Text>
+				まどか教会
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_RELIGION_CHURCH_OF_MADOKA_PEDIA">
+			<Text>
+				まどか教会は、鹿目まどかと名付けられた全知・全能・偏在の魔法少女の存在を説く信仰である。この世界にそのような人物が誕生したという記録は存在していない。教会の信者の大多数は魔法少女であるが、魔法の素質が無い若い少女も多く、男性も多く存在しているという。[NEWLINE][NEWLINE]まどかという名前は預言者：暁美ほむらによって初めて唱えられた。暁美ほむらの教えによると、鹿目まどかの降臨以前において、魔法少女たちは魔女という残虐な怪物になることを運命づけられていた。今彼女たちが幸福な生活を送っているのは、ひとえに鹿目まどかによる無私の願いの賜であるという。暁美ほむらの教え以外に、そのような少女の存在を証明する証拠は発見されていない。しかし、多くの魔法少女は暁美ほむらの教えを受け入れ、言葉にできない感謝の気持ちを鹿目まどかに対して抱いている。[NEWLINE][NEWLINE]鹿目まどかは、その逸話からイエス・キリストと比較されることが多い。暁美ほむらの教えによると、鹿目まどかはその願いにより、過去・現在・未来に存在する魔法少女の呪いを受け止めているとされるが、これはキリストがその死により全人類の罪を赦したことと類似している。また、鹿目まどかの願いが叶えられ、彼女が神格化した日が、聖金曜日すなわちキリストの受難日と一致するということも指摘されている。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_RELIGION_CULT_OF_HOMURA">
+			<Text>
+				ほむら崇拝
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_RELIGION_CULT_OF_HOMURA_PEDIA">
+			<Text>
+				ほむら崇拝は、まどか教会の教えに背く新しい信仰である。その教義は、暁美ほむらと名付けられた全知・全能・偏在の魔法少女によって唱えられたものである。彼女は、かつてまどか教会の偉大なる預言者として知られていたが、鹿目まどかの力を奪い、彼女の代わりに宇宙の創造主となった。この信仰の信奉者たちは、暁美ほむらを神というよりは悪魔であると認めており、彼女が邪悪であるという見解にも反論しようとしない。鹿目まどかの信徒たちと暁美ほむらの信奉者たちの間では数多くの論争が繰り広げられてきたが、他の多くの信仰論争とは異なり、彼らは決して激情に駆られることがなく、罵り合ったりすることもない。これは、「百合ゴーグル」を通して見ると2人のカップリングが恋人に見える、と信者達が考えているからなのかもしれない。
+			</Text>
+		</Row>
+
+	
+		<!--Alerts and Notifications -->
+		<Row Tag="TXT_KEY_ALERT_SAYAKA_BOOST">
+			<Text>
+				敵を倒したことで{2_Str}ポイントを{1_Num}獲得した。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_MG_CREATED_TITLE">
+			<Text>
+				契約を結んだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_MG_CREATED_TEXT">
+			<Text>
+				あなたの偉人{1_Str}が彼女の願いを叶えた！彼女は契約を結んで魔法少女になった！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_MG_CREATED_NONAME_TEXT">
+			<Text>
+				あなたの偉人が彼女の願いを叶えた！彼女は契約を結んで魔法少女になった！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_NOTIFICATION_PMMM_NAGISA_RESOURCE_TEXT">
+			<Text>
+				黄金時代により、新しい資源が都市のタイルに拡散した！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_NOTIFICATION_PMMM_NAGISA_RESOURCE_TITLE">
+			<Text>
+				資源が拡散した！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_ALERT_PMMM_NAGISA_GOLDEN_AGE_POINTS">
+			<Text>
+				交易路を設立した先の文明が所有している資源より[ICON_GOLDEN_AGE]黄金時代ポイントを{1_Num}獲得。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_HOMURA_TIME_STOP_TITLE">
+			<Text>
+				[COLOR:190:170:211:255]時間停止[ENDCOLOR]
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_HOMURA_TIME_STOP_TITLE_COOLDOWN">
+			<Text>
+				[COLOR:190:170:211:255]時間停止[ENDCOLOR] （{1_Num}）
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_HOMURA_TIME_STOP_TOOLTIP">
+			<Text>
+				一時的に他文明の時間が停止する。時間が停止している間、他文明は無政府状態（[ICON_PRODUCTION]、[ICON_RESEARCH]、[ICON_GOLD]、[ICON_CULTURE]、[ICON_PEACE]無し）に陥るとともに、すべてのユニットの行動ができなくなる。しかし、外交取引や都市砲撃あるいは都市の成長といった特定の行動あるいは現象を止めることはできない。この効果は1ターン持続し、能力を使うと35ターンは再び使用することができなくなる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_HOMURA_TIME_STOP_TOOLTIP_COOLDOWN">
+			<Text>
+				一時的に他文明の時間が停止する。時間が停止している間、他文明は無政府状態（[ICON_PRODUCTION]、[ICON_RESEARCH]、[ICON_GOLD]、[ICON_CULTURE]、[ICON_PEACE]無し）に陥るとともに、すべてのユニットの行動ができなくなる。しかし、外交取引や都市砲撃あるいは都市の成長といった特定の行動あるいは現象を止めることはできない。この効果は1ターン持続し、能力を使うと35ターンは再び使用することができなくなる。[NEWLINE][NEWLINE][COLOR_WARNING_TEXT]この能力は[ENDCOLOR]{1_Num}[COLOR_WARNING_TEXT]ターン[ENDCOLOR]の間は再び使用することができない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_HOMURA_TIME_STOP_TOOLTIP_ALREADY_ACTIVE">
+			<Text>
+				一時的に他文明の時間が停止する。時間が停止している間、他文明は無政府状態（[ICON_PRODUCTION]、[ICON_RESEARCH]、[ICON_GOLD]、[ICON_CULTURE]、[ICON_PEACE]無し）に陥るとともに、すべてのユニットの行動ができなくなる。しかし、外交取引や都市砲撃あるいは都市の成長といった特定の行動あるいは現象を止めることはできない。この効果は1ターン持続し、能力を使うと35ターンは再び使用することができなくなる。[NEWLINE][NEWLINE][COLOR_WARNING_TEXT]この効果はすでに有効化されている。[ENDCOLOR]
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_ALERT_HOMURA_TIME_STOP_ACTIVATED">
+			<Text>
+				時間が停止した！この機会を最大限に活用するのだ！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_ALERT_HOMURA_TIME_STOP_READY">
+			<Text>
+				盾の中にある魔法の砂が砂時計の一方に落ちきった。再び時間を停止することができる！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_ALERT_HOMURA_TIME_STOP_ENDED">
+			<Text>
+				時間の流れが再び元に戻る。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_ALERT_HOMURA_STOLEN_PROMOTION">
+			<Text>
+				あなたの{1_Str}が占領した都市から必要な武器を盗み、「{2_Str}」の昇進を獲得した！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_ALERT_PMMM_KYOUKO_FAITH">
+			<Text>
+				[ICON_CAPITAL]首都の成長により[ICON_PEACE]信仰力を{1_Num}獲得。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_NOTIFICATION_PMMM_ENEMY_TIME_STOP_DESC">
+			<Text>
+				敵文明が時間の流れを停止させた！この間、あなたの文明は[COLOR_WARNING_TEXT]無政府状態[ENDCOLOR]に陥り、あなたのユニットは行動することができない！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_NOTIFICATION_PMMM_ENEMY_TIME_STOP_TITLE">
+			<Text>
+				時間が停止した！
+			</Text>
+		</Row>
+		
+		<!-- Feminine GP Names -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_ADAM_SMITH_PMMM_FEMALEREPLACE">
+			<Text>アデル・スミス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AL_KHWARIZMI_PMMM_FEMALEREPLACE">
+			<Text>アル・フワーリズミー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AL_KINDI_PMMM_FEMALEREPLACE">
+			<Text>アル・キンディー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AL_RAZI_PMMM_FEMALEREPLACE">
+			<Text>アル・ラーズィー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALBERT_EINSTEIN_PMMM_FEMALEREPLACE">
+			<Text>アルベルティーネ・アインシュタイン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALEXANDER_GRAHM_BELL_PMMM_FEMALEREPLACE">
+			<Text>アレクサンドリア・グラハム・ベル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALEXANDRE_GUSTAVE_EIFFEL_PMMM_FEMALEREPLACE">
+			<Text>アレクサンドリア・ギュスターヴ・エッフェル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALHAZEN_PMMM_FEMALEREPLACE">
+			<Text>アルハゼン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AMIR_KHUSRO_PMMM_FEMALEREPLACE">
+			<Text>アミーラ・ホスロー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANDREI_SAKHAROV_PMMM_FEMALEREPLACE">
+			<Text>アンドレイア・サハロフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANDREW_CARNEGIE_PMMM_FEMALEREPLACE">
+			<Text>アナベル・カーネギー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTOINE_LAURENT_LAVOISIER_PMMM_FEMALEREPLACE">
+			<Text>アントニア・ローラン・ラヴォアジエ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTONY_VAN_DIEMEN_PMMM_FEMALEREPLACE">
+			<Text>アンジェラ・ヴァン・ディーメン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTONY_VAN_LEEUWENHOEK_PMMM_FEMALEREPLACE">
+			<Text>アントニア・ファン・レーウェンフック</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARCHIMEDES_PMMM_FEMALEREPLACE">
+			<Text>アルキメデア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARETAS_III_PMMM_FEMALEREPLACE">
+			<Text>アレタ3世</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARISTOTLE_PMMM_FEMALEREPLACE">
+			<Text>アリストートル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARYABHATA_PMMM_FEMALEREPLACE">
+			<Text>アリヤバータ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BENJAMIN_FRANKLIN_PMMM_FEMALEREPLACE">
+			<Text>ベンジャミーネ・フランクリン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BI_SHENG_PMMM_FEMALEREPLACE">
+			<Text>畢昇</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BLAISE_PASCAL_PMMM_FEMALEREPLACE">
+			<Text>ブレイセーナ・パスカル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CAI_LUN_PMMM_FEMALEREPLACE">
+			<Text>蔡倫</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARL_FRIEDRICH_GAUSS_PMMM_FEMALEREPLACE">
+			<Text>カーラ・フリードリヒ・ガウス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_AUGUSTIN_DE_COULOMB_PMMM_FEMALEREPLACE">
+			<Text>シャーリーズ・オーギュスタン・ド・クーロン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_DARWIN_PMMM_FEMALEREPLACE">
+			<Text>シャーリーン・ダーウィン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHRISTOPHER_COLUMBUS_PMMM_FEMALEREPLACE">
+			<Text>クリスティーナ・コロンブス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CLAUDE_MONET_PMMM_FEMALEREPLACE">
+			<Text>クローディア・モネ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_COCO_CHANEL_PMMM_FEMALEREPLACE">
+			<Text>ココ・シャネル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CORNELIUS_VANDERBILT_PMMM_FEMALEREPLACE">
+			<Text>コルネリア・ヴァンダービルト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DANTE_ALIGHIERI_PMMM_FEMALEREPLACE">
+			<Text>ダンティーナ・アリギエーリ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DU_FU_PMMM_FEMALEREPLACE">
+			<Text>杜甫</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DVORAK_PMMM_FEMALEREPLACE">
+			<Text>アントニーナ・ドヴォルザーク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ENRICO_FERMI_PMMM_FEMALEREPLACE">
+			<Text>エンリーカ・フェルミ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ERNEST_RUTHERFORD_PMMM_FEMALEREPLACE">
+			<Text>アーネスティン・ラザフォード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EUCLID_PMMM_FEMALEREPLACE">
+			<Text>ユークリディア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FERDINAND_DE_LESSEPS_PMMM_FEMALEREPLACE">
+			<Text>フェルナンダ・ド・レセップス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FERDINAND_MAGELLAN_PMMM_FEMALEREPLACE">
+			<Text>フェルナンダ・マゼラン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCIS_BACON_PMMM_FEMALEREPLACE">
+			<Text>フランシーヌ・ベーコン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANK_KAFKA_PMMM_FEMALEREPLACE">
+			<Text>フランシス・カフカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GALILEO_GALILEI_PMMM_FEMALEREPLACE">
+			<Text>ガリレア・ガリレイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_WASHINGTON_GOETHALS_PMMM_FEMALEREPLACE">
+			<Text>ジョージナ・ワシントン・ゲーソルズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIOVANNI_DE_MEDICI_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・ディ・メディチ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GOTTFRIED_LEIBNIZ_PMMM_FEMALEREPLACE">
+			<Text>ゴッドフレディーナ・ライプニッツ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUGLIELMO_MARCONI_PMMM_FEMALEREPLACE">
+			<Text>グリエルマ・マルコーニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HANNO_PMMM_FEMALEREPLACE">
+			<Text>ハンノ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HARKUF_PMMM_FEMALEREPLACE">
+			<Text>ハルクファ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRY_BESSEMER_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・ベッセマー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRY_FORD_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・フォード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HERON_PMMM_FEMALEREPLACE">
+			<Text>ヘロン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HOMER_PMMM_FEMALEREPLACE">
+			<Text>ホメラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HYPATIA_PMMM_FEMALEREPLACE">
+			<Text>ヒュパティア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_IBN_BATTUTA_PMMM_FEMALEREPLACE">
+			<Text>イブン・バットゥータ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_IBN_MUQLAH_PMMM_FEMALEREPLACE">
+			<Text>イブン・ムッラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_IMHOTEP_PMMM_FEMALEREPLACE">
+			<Text>イムホテパ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ISAAC_NEWTON_PMMM_FEMALEREPLACE">
+			<Text>イザベル・ニュートン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ISAMBARD_KINGDOM_BRUNEL_PMMM_FEMALEREPLACE">
+			<Text>イザムバード・キングダム・ブルネル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JACQUES_CARTIER_PMMM_FEMALEREPLACE">
+			<Text>ジャクリーヌ・カルティエ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JALAL_ALDIN_RUMI_PMMM_FEMALEREPLACE">
+			<Text>ジャラール・ウッディーン・ルーミー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAMES_CLERK_MAXWELL_PMMM_FEMALEREPLACE">
+			<Text>ジェイミー・クラーク・マクスウェル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAMES_COOK_PMMM_FEMALEREPLACE">
+			<Text>ジェイミー・クック</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAMES_WATT_PMMM_FEMALEREPLACE">
+			<Text>ジェイミー・ワット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_GOETHE_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ヴォルフガング・フォン・ゲーテ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANNES_BRAHMS_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ブラームス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANNES_KEPLER_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ケプラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANNES_VERMEER_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・フェルメール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_D_ROCKEFELLER_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・デイヴィソン・ロックフェラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_DALTON_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ダルトン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_MAYNARD_KEYNES_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・メイナード・ケインズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_ROEBLING_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ローブリング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_STUART_MILL_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・スチュアート・ミル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOSEPH_CONRAD_PMMM_FEMALEREPLACE">
+			<Text>ジョセフィーヌ・コンラッド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOSEPH_MARIE_JACQUARD_PMMM_FEMALEREPLACE">
+			<Text>ジョセフィーヌ・マリー・ジャカール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JS_BACH_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・セバスチャン・バッハ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KALIDAS_PMMM_FEMALEREPLACE">
+			<Text>カリダス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEIF_ERICKSON_PMMM_FEMALEREPLACE">
+			<Text>レイッフェ・エリクソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEONARDO_DA_VINCI_PMMM_FEMALEREPLACE">
+			<Text>レオーナ・ダ・ヴィンチ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LI_PO_PMMM_FEMALEREPLACE">
+			<Text>李白</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LING_LUN_PMMM_FEMALEREPLACE">
+			<Text>伶倫</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LOUIS_ARMSTRONG_PMMM_FEMALEREPLACE">
+			<Text>ルイーズ・アームストロング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LOUIS_DAGUERRE_PMMM_FEMALEREPLACE">
+			<Text>ルイーズ・ダゲール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LOUIS_PASTEUR_PMMM_FEMALEREPLACE">
+			<Text>ルイーズ・パスツール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LUDWIG_VAN_BEETHOVEN_PMMM_FEMALEREPLACE">
+			<Text>ルートヴィヒーナ・ヴァン・ベートーヴェン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARCO_POLO_PMMM_FEMALEREPLACE">
+			<Text>マーシー・ポロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARIE_CURIE_PMMM_FEMALEREPLACE">
+			<Text>マリー・キュリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARK_TWAIN_PMMM_FEMALEREPLACE">
+			<Text>メアリー・トゥウェイン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MERIT_PTAH_PMMM_FEMALEREPLACE">
+			<Text>メリット・プタハ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MICHAEL_FARADAY_PMMM_FEMALEREPLACE">
+			<Text>ミッシェル・ファラデー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MICHAELANGELO_PMMM_FEMALEREPLACE">
+			<Text>ミッシェル・アンジェリーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MICHIEL_DE_RUYTER_PMMM_FEMALEREPLACE">
+			<Text>ミチエラ・デ・ロイテル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MIGUEL_DE_CERVANTES_PMMM_FEMALEREPLACE">
+			<Text>ミゲラ・デ・セルバンテス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MIKHAIL_LOMONOSOV_PMMM_FEMALEREPLACE">
+			<Text>ミハイラ・ロモノーソフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MILES_DAVIS_PMMM_FEMALEREPLACE">
+			<Text>マイルス・デイヴィス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NABU_RIMANNI_PMMM_FEMALEREPLACE">
+			<Text>ナブー・リマンニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NAIN_SINGH_PMMM_FEMALEREPLACE">
+			<Text>ナイン・シング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NICHOLA_TESLA_PMMM_FEMALEREPLACE">
+			<Text>ニコル・テスラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NICOLAUS_COPERNICUS_PMMM_FEMALEREPLACE">
+			<Text>ニコル・コペルニクス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NIELS_BOHR_PMMM_FEMALEREPLACE">
+			<Text>ニコラ・ボーア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NIKOLAUS_AUGUST_OTTO_PMMM_FEMALEREPLACE">
+			<Text>ニコル・アウグスト・オットー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NOBERT_RILLIEUX_PMMM_FEMALEREPLACE">
+			<Text>ノーベルティーナ・リリュー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ORVILLE_WRIGHT_PMMM_FEMALEREPLACE">
+			<Text>オルヴィラ・ライト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PABLO_PICASSO_PMMM_FEMALEREPLACE">
+			<Text>パブラ・ピカソ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PLATO_PMMM_FEMALEREPLACE">
+			<Text>プラタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PTOLEMY_PMMM_FEMALEREPLACE">
+			<Text>プトレマイア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PYTHEAS_PMMM_FEMALEREPLACE">
+			<Text>ピュテア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RAJA_TODAR_MAL_PMMM_FEMALEREPLACE">
+			<Text>ラヤ・トーダル・マル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RAPHAEL_PMMM_FEMALEREPLACE">
+			<Text>ラファエラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RENE_DESCARTES_PMMM_FEMALEREPLACE">
+			<Text>レニー・デカルト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROSALIND_FRANKLIN_PMMM_FEMALEREPLACE">
+			<Text>ロザリンド・フランクリン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RRICHARD_WHITTINGTON_PMMM_FEMALEREPLACE">
+			<Text>レイチェル・ウィッテントン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SHAH_JAHAN_PMMM_FEMALEREPLACE">
+			<Text>シャー・ジャハーン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SINAN_PMMM_FEMALEREPLACE">
+			<Text>シナン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SIR_ALEXANDER_MACKENZIE_PMMM_FEMALEREPLACE">
+			<Text>マダム・アレクサンドリア・マッケンジー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SIR_THOMAS_ROE_PMMM_FEMALEREPLACE">
+			<Text>マダム・タムシン・ロエ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SOCRATES_PMMM_FEMALEREPLACE">
+			<Text>ソクラティア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THESPIS_PMMM_FEMALEREPLACE">
+			<Text>セスピア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THOMAS_EDISON_PMMM_FEMALEREPLACE">
+			<Text>タスミーナ・エジソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TYCHO_BRAHE_PMMM_FEMALEREPLACE">
+			<Text>ティカ・ ブラーエ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VALMIKI_PMMM_FEMALEREPLACE">
+			<Text>ヴァールミーキ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VASCO_DA_GAMA_PMMM_FEMALEREPLACE">
+			<Text>ヴァスカ・ダ・ガマ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VICTOR_HUGO_PMMM_FEMALEREPLACE">
+			<Text>ヴィクトリア・ヒューゴ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VINCENT_VAN_GOGH_PMMM_FEMALEREPLACE">
+			<Text>フィンツェンツァ・ファン・ゴッホ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VIRGIL_PMMM_FEMALEREPLACE">
+			<Text>バージリーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WANG_ANSHI_PMMM_FEMALEREPLACE">
+			<Text>王安石</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WANG_XIZHI_PMMM_FEMALEREPLACE">
+			<Text>王羲之</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WERNER_HEISENBERG_PMMM_FEMALEREPLACE">
+			<Text>ウイルマ・ハイゼンベルク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILBUR_WRIGHT_PMMM_FEMALEREPLACE">
+			<Text>ウイルマ・ライト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILHELM_SCHICKARD_PMMM_FEMALEREPLACE">
+			<Text>ヴィルヘルミナ・シッカート</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_SHAKESPEARE_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・シェイクスピア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAN_MORTON_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・トーマス・グリーン・モートン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WOLFGANG_MOZART_PMMM_FEMALEREPLACE">
+			<Text>ヴォルフガンギーナ・アマデウス・モーツァルト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_XI_LING_SHI_PMMM_FEMALEREPLACE">
+			<Text>西陵氏</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YUNUS_EMRE_PMMM_FEMALEREPLACE">
+			<Text>ユーナ・エムレ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHANG_HENG_PMMM_FEMALEREPLACE">
+			<Text>張衡</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHANG_QIAN_PMMM_FEMALEREPLACE">
+			<Text>張騫</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHENG_HE_PMMM_FEMALEREPLACE">
+			<Text>鄭和</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZU_CHONGZHI_PMMM_FEMALEREPLACE">
+			<Text>祖沖之</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_GREAT_PERSON_MATTHEW_PERRY_PMMM_FEMALEREPLACE">
+			<Text>マチルダ・ペリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DAVID_FARRAGUT_PMMM_FEMALEREPLACE">
+			<Text>ダヴィーナ・ファラガット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_DEWEY_PMMM_FEMALEREPLACE">
+			<Text>ジョルジェット・デューイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHESTER_NIMITZ_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ホーキンス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCIS_DRAKE_PMMM_FEMALEREPLACE">
+			<Text>フランチェス・ドレイク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANDREW_CUNNINGHAM_PMMM_FEMALEREPLACE">
+			<Text>アンドレア・カニンガム</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_COMTE_DE_GRASSE_PMMM_FEMALEREPLACE">
+			<Text>コンテ・デ・グラース</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALFRED_VON_TIRPITZ_PMMM_FEMALEREPLACE">
+			<Text>エルフリーデ・フォン・ティルピッツ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROGER_OF_LAURIA_PMMM_FEMALEREPLACE">
+			<Text>レジーナ・オブ・ラウリーア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALVARO_DE_BAZAN_PMMM_FEMALEREPLACE">
+			<Text>アルヴァラ・デ・バンザ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DON_JOHN_OF_AUSTRIA_PMMM_FEMALEREPLACE">
+			<Text>ドン・ジアンナ・オブ・オーストリア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FERNANDO_VILLAAMIL_PMMM_FEMALEREPLACE">
+			<Text>フェルナンディーナ・ヴィラーミル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PETER_TORDENSKJOLD_PMMM_FEMALEREPLACE">
+			<Text>ペトラ・トルデンスギョル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FYODOR_USHAKOV_PMMM_FEMALEREPLACE">
+			<Text>フィドーラ・ウシャコフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_PAUL_JONES_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ポール・ジョーンズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZINOVY_ROZHESTVENSKI_PMMM_FEMALEREPLACE">
+			<Text>ジノヴィヤ・ロジェストヴェンスキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YI_SUN_SIN_PMMM_FEMALEREPLACE">
+			<Text>李舜臣</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ERIK_THORVALDSSON_PMMM_FEMALEREPLACE">
+			<Text>エーリカ・ソルヴァルドソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEIF_ERICSON_PMMM_FEMALEREPLACE">
+			<Text>レフィーナ・エリクソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HAYREDDIN_BARBAROSSA_PMMM_FEMALEREPLACE">
+			<Text>バルバロス・ハイレッディン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TURGUT_REIS_PMMM_FEMALEREPLACE">
+			<Text>トルグティア・レイス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MURAT_REIS_PMMM_FEMALEREPLACE">
+			<Text>ムラータ・レイス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRY_THE_NAVIGATOR_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・ザ・ナビゲーター</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AFONSO_DE_ALBUQUERQUE_PMMM_FEMALEREPLACE">
+			<Text>アフォンシーネ・デ・アルバカーキ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANREA_DORIA_PMMM_FEMALEREPLACE">
+			<Text>アンドレア・ドリーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PHORMIO_PMMM_FEMALEREPLACE">
+			<Text>フォルミア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARCUS_ATILLIUS_REGULUS_PMMM_FEMALEREPLACE">
+			<Text>マルカ・アティーリウス・レーグルス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARCUS_VIPSANIUS_AGRIPPA_PMMM_FEMALEREPLACE">
+			<Text>マルカ・ウィプサニウス・アグリッパ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HIMILCO_PMMM_FEMALEREPLACE">
+			<Text>ハミルカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CALONYMUS_OF_ALEXANDRIA_PMMM_FEMALEREPLACE">
+			<Text>カロニミア・オブ・アレクサンドリア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_DOUKAS_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ドゥーカス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TOGO_HEIHACHIRO_PMMM_FEMALEREPLACE">
+			<Text>東郷平八郎</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SHI_LANG_PMMM_FEMALEREPLACE">
+			<Text>施琅</Text>
+		</Row>
+		<!-- Great Artists -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANSEL_ADAMS_PMMM_FEMALEREPLACE">
+			<Text>アンセル・アダムス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BARTOLOME_DE_LAS_CASAS_PMMM_FEMALEREPLACE">
+			<Text>バルトロメ・デ・ラ・カサス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SALVADOR_DALI_PMMM_FEMALEREPLACE">
+			<Text>サルバドーラ・ダリ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARTHUR_CONAN_DOYLE_PMMM_FEMALEREPLACE">
+			<Text>アルトゥーリア・コナン・ドイル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTONI_GAUDI_PMMM_FEMALEREPLACE">
+			<Text>アントニーナ・ガウディ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ERNEST_HEMMINGWAY_PMMM_FEMALEREPLACE">
+			<Text>アーネスティン・ヘミングウェイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRIEDENSREICH_HUNDERTWASSER_PMMM_FEMALEREPLACE">
+			<Text>フリーデンスライハ・フンデルトヴァッサー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_OMAR_KHAYYAM_PMMM_FEMALEREPLACE">
+			<Text>オマーラ・ハイヤーム</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_STANLEY_KUBRICK_PMMM_FEMALEREPLACE">
+			<Text>スタニスラワ・キューブリック</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PABLO_NERUDA_PMMM_FEMALEREPLACE">
+			<Text>ポーラ・ネルーダ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RUMI_PMMM_FEMALEREPLACE">
+			<Text>ルーミ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRIEDRICH_SCHILLER_PMMM_FEMALEREPLACE">
+			<Text>フリードリヒーネ・シラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEO_TOLSTOY_PMMM_FEMALEREPLACE">
+			<Text>レオーナ・トルストイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANK_LLOYD_WRIGHT_PMMM_FEMALEREPLACE">
+			<Text>フランチェスカ・ロイド・ライト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_BUTLER_YEATS_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・バトラー・イェイツ</Text>
+		</Row>
+		<!-- Great Scientists -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_AL_DIN_AL_TUSI_PMMM_FEMALEREPLACE">
+			<Text>アル＝ディーン・アル＝トゥースィー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AL_QASIM_AL_ZAHRAWI_PMMM_FEMALEREPLACE">
+			<Text>アル＝カースィム・アッ＝ザフラウィー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEONARD_EULER_PMMM_FEMALEREPLACE">
+			<Text>レオーナ・オイラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RICHARD_FEYNMAN_PMMM_FEMALEREPLACE">
+			<Text>リカルダ・ファインマン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALEXANDER_VON_HUMBOLDT_PMMM_FEMALEREPLACE">
+			<Text>アレクサンドリア・フォン・フンボルト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANDREY_KOLMOGOROV_PMMM_FEMALEREPLACE">
+			<Text>アンドレア・コルモゴロフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARY_LEAKEY_PMMM_FEMALEREPLACE">
+			<Text>メアリー・ルーキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARL_LINNAEUS_PMMM_FEMALEREPLACE">
+			<Text>カーラ・リンネ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SHEN_KUO_PMMM_FEMALEREPLACE">
+			<Text>沈括</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GREGOR_MENDEL_PMMM_FEMALEREPLACE">
+			<Text>グレゴリアメンデル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DMITRY_MENDELEEV_PMMM_FEMALEREPLACE">
+			<Text>ドミトリア・メンデレーエフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_VON_NEUMANN_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・フォン・ノイマン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CLAUDE_SHANNON_PMMM_FEMALEREPLACE">
+			<Text>クローデット・シャノン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALAN_TURING_PMMM_FEMALEREPLACE">
+			<Text>アラナ・チューリング</Text>
+		</Row>
+		<!-- GREAT MERCHANTS -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARCUS_LICINIUS_CRASSUS_PMMM_FEMALEREPLACE">
+			<Text>マーシン・リキニウス・クラッスス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDWARD_HARRIMAN_PMMM_FEMALEREPLACE">
+			<Text>エディー・ハリマン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MILTON_S_HERSHEY_PMMM_FEMALEREPLACE">
+			<Text>ミルティナ・スネイヴリー・ハーシー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SIR_JAMES_LANCASTER_PMMM_FEMALEREPLACE">
+			<Text>マダム・ジェーン・ランカスター</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRI_NESTLE_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・ネスレ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEVI_STRAUSS_PMMM_FEMALEREPLACE">
+			<Text>レヴィ・ストラウス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THOMAS_TWINING_PMMM_FEMALEREPLACE">
+			<Text>タミー・トワイニング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_STEVE_JOBS_PMMM_FEMALEREPLACE">
+			<Text>スティーヴィー・ジョブス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAKOB_FUGGER_PMMM_FEMALEREPLACE">
+			<Text>ジャディン・フッガー</Text>
+		</Row>
+		<!-- GREAT ENGINEERS -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARL_BENZ_PMMM_FEMALEREPLACE">
+			<Text>カーラ・ベンツ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GOTTLIEB_DAIMLER_PMMM_FEMALEREPLACE">
+			<Text>ゴットリーナ・ダイムラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_STARK_DRAPER_PMMM_FEMALEREPLACE">
+			<Text>チャーリー・スターク・ドレイパー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_EASTMAN_PMMM_FEMALEREPLACE">
+			<Text>ジョルジェット・イーストマン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROBERT_GODDARD_PMMM_FEMALEREPLACE">
+			<Text>ロベルタ・ゴダード</Text>
+		</Row>
+		<!-- GREAT GENERALS -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_EPAMINONDAS_PMMM_FEMALEREPLACE">
+			<Text>エパミノンダ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MAURICE_OF_NASSAU_PMMM_FEMALEREPLACE">
+			<Text>モーリス・オブ・ナッソー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_POMPEY_PMMM_FEMALEREPLACE">
+			<Text>ポンペイア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PYRRHUS_PMMM_FEMALEREPLACE">
+			<Text> ピュラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WINFIELD_SCOTT_PMMM_FEMALEREPLACE">
+			<Text>ウィンネッタ・スコット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SITTING_BULL_PMMM_FEMALEREPLACE">
+			<Text>シッティング・ブル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SPARTACUS_PMMM_FEMALEREPLACE">
+			<Text>スパルタツィア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_TSERCLAES_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ツェルクラエス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WALLENSTEIN_PMMM_FEMALEREPLACE">
+			<Text>ヴァレインシュタイン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HANNIBAL_PMMM_FEMALEREPLACE">
+			<Text>ハンニバル</Text>
+		</Row>
+
+		<!-- Great ARTISTS/WRITERS/MUSICIANS -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_AESOP_PMMM_FEMALEREPLACE">
+			<Text>アイソピーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SOPHOCLES_PMMM_FEMALEREPLACE">
+			<Text>ソポクレア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARISTOPHANES_PMMM_FEMALEREPLACE">
+			<Text>アリストパネア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_OVID_PMMM_FEMALEREPLACE">
+			<Text>オヴィディア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LUCIAN_SAMOSATA_PMMM_FEMALEREPLACE">
+			<Text>ルツィーナ・オブ・サモサタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VYASA_PMMM_FEMALEREPLACE">
+			<Text>ヴィヤーサ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BHASA_PMMM_FEMALEREPLACE">
+			<Text>バーサ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KALIDASA_PMMM_FEMALEREPLACE">
+			<Text>カーリダーサ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_QU_YUAN_PMMM_FEMALEREPLACE">
+			<Text>屈原</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SHI_NAIAN_PMMM_FEMALEREPLACE">
+			<Text>施耐庵</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LANLING_XIAOXIAO_SHENG_PMMM_FEMALEREPLACE">
+			<Text>蘭陵笑笑生</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CAO_XUEQIN_PMMM_FEMALEREPLACE">
+			<Text>曹雪芹</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KI_NO_TSURAYUKI_PMMM_FEMALEREPLACE">
+			<Text>紀貫之</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MURASAKI_SHIKIBU_PMMM_FEMALEREPLACE">
+			<Text>紫式部</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YOSHIDA_KENKO_PMMM_FEMALEREPLACE">
+			<Text>吉田兼好</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHIKAMATSU_MONZAEMON_PMMM_FEMALEREPLACE">
+			<Text>近松門左衛門</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_UEDA_AKINARI_PMMM_FEMALEREPLACE">
+			<Text>上田秋成</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NATSUME_SOSEKI_PMMM_FEMALEREPLACE">
+			<Text>夏目漱石</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JORGE_ISAACS_PMMM_FEMALEREPLACE">
+			<Text>ジョルジェット・アイザックス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOSE_HERNANDEZ_PMMM_FEMALEREPLACE">
+			<Text>ジョセファ・エルナンデス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RUBEN_DARIO_PMMM_FEMALEREPLACE">
+			<Text>ルブレン・ダリオ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BERTRAND_DE_BAR_SUR_AUBE_PMMM_FEMALEREPLACE">
+			<Text>ベルトランナ・デ・バール＝シュル＝オーブ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCOIS_RABELAIS_PMMM_FEMALEREPLACE">
+			<Text>フランチェスカ・ラブレー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VOLTAIRE_PMMM_FEMALEREPLACE">
+			<Text>ヴォルテール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALEXANDRE_DUMAS_PMMM_FEMALEREPLACE">
+			<Text>アレクサンドリア・デュマ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JULES_VERNE_PMMM_FEMALEREPLACE">
+			<Text>ジュリア・ヴェルヌ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARCUS_PROUST_PMMM_FEMALEREPLACE">
+			<Text>マルセル・プルースト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PETRARCH_PMMM_FEMALEREPLACE">
+			<Text>ペトラルカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LUDOVICO_ARIOSTO_PMMM_FEMALEREPLACE">
+			<Text>ルドヴィーツァ・アリオスト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VITTORIO_ALFIERI_PMMM_FEMALEREPLACE">
+			<Text>ヴィットリア・アルフィエーリ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_FRIEDRICH_VON_SCHILLER_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ フリードリヒ・フォン・シラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_WOLFGANG_VON_GOETHE_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・フォルフガング・フォン・ゲーテ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NIKOLAI_GOGOL_PMMM_FEMALEREPLACE">
+			<Text>ニコル・ゴーゴル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FYODOR_DOSTOYEVSKY_PMMM_FEMALEREPLACE">
+			<Text>フョードラ・ドストエフスキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTON_CHEKHOV_PMMM_FEMALEREPLACE">
+			<Text>アントニア・チェーホフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MAXIM_GORKY_PMMM_FEMALEREPLACE">
+			<Text>マクシア・ゴーリキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEOFFREY_CHAUCER_PMMM_FEMALEREPLACE">
+			<Text>ジエンナ・チョーサー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THOMAS_MALORY_PMMM_FEMALEREPLACE">
+			<Text>タミー・マロリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDMUND_SPENSER_PMMM_FEMALEREPLACE">
+			<Text>エディー・スペンサー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JANE_AUSTIN_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・オースティン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARY_SHELLEY_PMMM_FEMALEREPLACE">
+			<Text>メアリー・シェリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_DICKENS_PMMM_FEMALEREPLACE">
+			<Text>チャーリーズ・ディケンズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEWIS_CARROLL_PMMM_FEMALEREPLACE">
+			<Text>ルイサ・キャロル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RUDYARD_KIPLING_PMMM_FEMALEREPLACE">
+			<Text>ラドヤルディナ・キプリング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_H_G_WELLS_PMMM_FEMALEREPLACE">
+			<Text>ハーバート・ジョージ・ウェルズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_D_H_LAWRENCE_PMMM_FEMALEREPLACE">
+			<Text>デーヴィッド・ハーバート・ローレンス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WASHINGTON_IRVING_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・アーヴィング</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAMES_FENIMORE_COOPER_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・フェニモア・クーパー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDGAR_ALLEN_POE_PMMM_FEMALEREPLACE">
+			<Text>エディー・アラン・ポー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NATHANIEL_HAWTHORNE_PMMM_FEMALEREPLACE">
+			<Text>ナタリー・ホーソーン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HERMAN_MELVILLE_PMMM_FEMALEREPLACE">
+			<Text>エルマーナ・メルヴィル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HARRIET_BEECHER_STOWE_PMMM_FEMALEREPLACE">
+			<Text>ハリエット・ビーチャー・ストウ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRY_DAVID_THOREAU_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・デイヴィッド・ソロー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WALT_WHITMAN_PMMM_FEMALEREPLACE">
+			<Text>ウェンディー・ホイットマン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EMILY_DICKENSON_PMMM_FEMALEREPLACE">
+			<Text>エミリー・ディキンソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_STEPHEN_CRANE_PMMM_FEMALEREPLACE">
+			<Text>ステファニー・クレーン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_L_FRANK_BAUM_PMMM_FEMALEREPLACE">
+			<Text>ライマン・フランク・ボーム</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_F_SCOTT_FITZGERALD_PMMM_FEMALEREPLACE">
+			<Text>フランシス・スコット・フィッツジェラルド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ENHEDUANNA_PMMM_FEMALEREPLACE">
+			<Text>エンヘドゥアンナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MESOMEDES_PMMM_FEMALEREPLACE">
+			<Text>メソメディア・オブ・クレタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JI_KANG_PMMM_FEMALEREPLACE">
+			<Text>嵆康</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZIRYAB_PMMM_FEMALEREPLACE">
+			<Text>ジリャブ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALKINDI_PMMM_FEMALEREPLACE">
+			<Text>アル＝キンディー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUIDO_DAREZZO_PMMM_FEMALEREPLACE">
+			<Text>グイーダ・ダレッツォ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUILLAUME_DE_MACHAUT_PMMM_FEMALEREPLACE">
+			<Text>ウィルヘルミナ・ド・マショー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOSQUIN_DES_PRES_PMMM_FEMALEREPLACE">
+			<Text>ジョスキーナ・デ・プレ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MEERABAI_PMMM_FEMALEREPLACE">
+			<Text>ミーラバイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THOMAS_TALLIS_PMMM_FEMALEREPLACE">
+			<Text>タマラ・タリス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIOVANNI_PIERLUIGI_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・ピエールルイジ・ダ・パレストリーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GASPAR_FERNANDES_PMMM_FEMALEREPLACE">
+			<Text>ガスパリーナ・フェルナンデス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YATSUHASHI_KENGYO_PMMM_FEMALEREPLACE">
+			<Text>八橋検校</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_SEBASTIAN_BACH_PMMM_FEMALEREPLACE">
+			<Text>ヨハン・セバスチャン・バッハ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ESTABAN_SALAS_Y_CASTRO_PMMM_FEMALEREPLACE">
+			<Text>エステバーナ・サラス・イ・カストロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EMERICO_LOBO_DE_MESQUITA_PMMM_FEMALEREPLACE">
+			<Text>エメリカ・ロボ・デ・メスキータ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YAMADA_KENGYO_PMMM_FEMALEREPLACE">
+			<Text>山田検校</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_NICCOLO_PAGANINI_PMMM_FEMALEREPLACE">
+			<Text>ニコラ・パガニーニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCISCO_MANUEL_DA_SILVA_PMMM_FEMALEREPLACE">
+			<Text>フランシスカ・マヌエル・ダ・シルヴァ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FREDERIC_CHOPIN_PMMM_FEMALEREPLACE">
+			<Text>フレデリカ ・ショパン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RICHARD_WAGNER_PMMM_FEMALEREPLACE">
+			<Text>リカルダ・ワーグナー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIUSEPPE_VERDI_PMMM_FEMALEREPLACE">
+			<Text>ジュゼッパ・ヴェルディ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MANUEL_SAUMELL_PMMM_FEMALEREPLACE">
+			<Text>マヌエラ・ソーメル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANN_STRAUSS_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・ シュトラウス2世</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MODEST_MUSSORGSKY_PMMM_FEMALEREPLACE">
+			<Text>モデスト・ムソルグスキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PYOTR_ILYICH_TCHAIKOVSKY_PMMM_FEMALEREPLACE">
+			<Text>ピョートラ・イリイチ・チャイコフスキー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAN_VERMEER_PMMM_FEMALEREPLACE">
+			<Text>ヤン・フェルメール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HANS_HOLBEIN_PMMM_FEMALEREPLACE">
+			<Text>ハンシーネ・ホルベイン・ザ・ヤンガー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PIETER_BRUEGEL_PMMM_FEMALEREPLACE">
+			<Text>ピーテラ・ブリューゲル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PIERRE_AUGUSTE_ENOIR_PMMM_FEMALEREPLACE">
+			<Text>ピエール＝オーギュスト・ルノワール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_SEURAT_PMMM_FEMALEREPLACE">
+			<Text>ジョルジーナ・スーラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EL_GRECO_PMMM_FEMALEREPLACE">
+			<Text>ラ・グレーカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SANDRO_BOTTICELLI_PMMM_FEMALEREPLACE">
+			<Text>サンドラ・ボッティチェッリ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RAFFAELLO_SANZO_PMMM_FEMALEREPLACE">
+			<Text>ラファエラ・サンティ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PAOLO_UCCELLO_PMMM_FEMALEREPLACE">
+			<Text>パオリーナ・ウッチェロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MICHELANGELO_BUONARROTI_PMMM_FEMALEREPLACE">
+			<Text>ミケランジェラ・ブオナローティ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SAMUEL_MORSE_PMMM_FEMALEREPLACE">
+			<Text>サマンサ・モールス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EMANUAL_LEUTZE_PMMM_FEMALEREPLACE">
+			<Text>エマニュエル・ロイツェ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAMES_WHISTLER_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・マクニール・ホイッスラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WINSLOW_HOMER_PMMM_FEMALEREPLACE">
+			<Text>ウィンスレット・ホメーロス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WANG_XIMENG_PMMM_FEMALEREPLACE">
+			<Text>王希孟</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HUANG_GONGWANG_PMMM_FEMALEREPLACE">
+			<Text>黄公望</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHANG_ZUDUAN_PMMM_FEMALEREPLACE">
+			<Text>張擇端</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JIAO_BINGZHEN_PMMM_FEMALEREPLACE">
+			<Text>焦秉貞</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YAN_LIBEN_PMMM_FEMALEREPLACE">
+			<Text>閻立本</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_QIU_YING_PMMM_FEMALEREPLACE">
+			<Text>秋穎</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KATSUSHIKA_HOKUSAI_PMMM_FEMALEREPLACE">
+			<Text>葛飾北斎</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_UTAGAWA_HIROSHIGE_PMMM_FEMALEREPLACE">
+			<Text>歌川広重</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDGAR_DEGAS_PMMM_FEMALEREPLACE">
+			<Text>エドウィーナ・ドガ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PAUL_GAUDUIN_PMMM_FEMALEREPLACE">
+			<Text>ポーラ・ゴーギャン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDOUARD_MANET_PMMM_FEMALEREPLACE">
+			<Text>エドゥアーラ・マネ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRI_DE_TOULOUSE_LAUTREC_PMMM_FEMALEREPLACE">
+			<Text>アンリエット・ド・トゥールーズ＝ロートレック</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUSTAV_KLIMPT_PMMM_FEMALEREPLACE">
+			<Text>グスターヴァ・クリムト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GRANT_DEVOLSON_WOOD_PMMM_FEMALEREPLACE">
+			<Text>グラディス・デヴォルソン・ウッド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RAJA_RAVI_VARMA_PMMM_FEMALEREPLACE">
+			<Text>ラーヤ・ラヴィ・ヴァルマ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HIRANAND_PMMM_FEMALEREPLACE">
+			<Text>ヒラナンド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KAMALEDDIN_BEHZAD_PMMM_FEMALEREPLACE">
+			<Text>カマレディン・ベザッド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SULTAN_MUHAMMAD_PMMM_FEMALEREPLACE">
+			<Text>スルタン・ムハンマド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EUGENE_DELACROIX_PMMM_FEMALEREPLACE">
+			<Text>ウジェーナ・ドラクロワ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTONELLO_DA_MESSINA_PMMM_FEMALEREPLACE">
+			<Text>アントネッラ・ダ・メッシーナ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ANTONIN_DVORAK_PMMM_FEMALEREPLACE">
+			<Text>アントニーナ・ドヴォルザーク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TAIZAN_HIGUCHI_PMMM_FEMALEREPLACE">
+			<Text>樋口対山</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CLAUSE_DEBUSSY_PMMM_FEMALEREPLACE">
+			<Text>クローデット・ドビュッシー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_IVES_PMMM_FEMALEREPLACE">
+			<Text>チャーリーン・アイヴズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PRINCE_BENBADHANABONGSE_PMMM_FEMALEREPLACE">
+			<Text>ベンバッダナボングセ王妃</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SAYED_DARWISH_PMMM_FEMALEREPLACE">
+			<Text>サイーダ・ダルウィーシュ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUSTAVE_CAILLEBOTTE_PMMM_FEMALEREPLACE">
+			<Text>ギュスターヴル・カイユボット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_REMBRANDT_PMMM_FEMALEREPLACE">
+			<Text>レンブランナ・ファン・レイン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JACQUES_DAVID_PMMM_FEMALEREPLACE">
+			<Text>ジャック＝ルイ・ダヴィッド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JEAN_FOUQUET_PMMM_FEMALEREPLACE">
+			<Text>ジーン・フーゲ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZURBARAN_PMMM_FEMALEREPLACE">
+			<Text>フランシスカ・デ・スルバラン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HANNA_PETROS_PMMM_FEMALEREPLACE">
+			<Text>ハンナ・ペトロス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_GERSHWIN_PMMM_FEMALEREPLACE">
+			<Text>ジョーゼット・ガーシュウィン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SILVESTRE_REVUELTAS_PMMM_FEMALEREPLACE">
+			<Text>シルヴェストラ・レブエルタス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARLOS_CHAVEZ_PMMM_FEMALEREPLACE">
+			<Text>カーラ・チャベス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WASITODININGRAT_PMMM_FEMALEREPLACE">
+			<Text>ワシトディニングラット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_CAGE_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・ケージ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALLA_RAKHA_PMMM_FEMALEREPLACE">
+			<Text>アレ・ラカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DAVID_BLANASI_PMMM_FEMALEREPLACE">
+			<Text>ダリア・ブラナシ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LOUIS_BALLARD_PMMM_FEMALEREPLACE">
+			<Text>ルーズ・バラード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_STEVE_REICH_PMMM_FEMALEREPLACE">
+			<Text>スレラ・ライヒ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CECIL_BUSTAMENTE_PMMM_FEMALEREPLACE">
+			<Text>セシル・ブスタメンテ・キャンプベル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARLOS_NAKAI_PMMM_FEMALEREPLACE">
+			<Text>カルロス・ナカイ</Text>
+		</Row>
+		<!-- additional great artists -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_YANAGAWA_PMMM_FEMALEREPLACE">
+			<Text>柳川重信</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PAUL_DELAROCHE_PMMM_FEMALEREPLACE">
+			<Text>ポーラ・ドラローシュ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CASPAR_DAVID_FRIEDRICH_PMMM_FEMALEREPLACE">
+			<Text>カスパーラ・ダーヴィト・フリードリヒ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PETER_BRUEGHEL_PMMM_FEMALEREPLACE">
+			<Text>ピエトラ・ブリューゲル・ザ・エルダー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PETRUS_CHRISTUS_PMMM_FEMALEREPLACE">
+			<Text>ペトラ・クリストゥス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ASHER_DURAND_PMMM_FEMALEREPLACE">
+			<Text>アシェラ・ドゥランド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THOMAS_GAINSBOROUGH_PMMM_FEMALEREPLACE">
+			<Text>タミー・ゲーンズボロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCISCO_DE_GOYA_PMMM_FEMALEREPLACE">
+			<Text>フランシスカ・デ・ゴヤ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALPHONSE_MARIE_ADOLPHE_DE_NEUVILLE_PMMM_FEMALEREPLACE">
+			<Text>アルフォンス・マリ・ド・ネヴェル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_QIAN_XUAN_PMMM_FEMALEREPLACE">
+			<Text>銭選</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KANO_MASANOBU_PMMM_FEMALEREPLACE">
+			<Text>狩野正信</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TITIAN_PMMM_FEMALEREPLACE">
+			<Text>ティティアン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_GOWER_PMMM_FEMALEREPLACE">
+			<Text>ジョルジェット・ゴワー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JEAN_CLOUET_PMMM_FEMALEREPLACE">
+			<Text>ジーン・クルエ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BARTHOLOMEUM_SPRANGER_PMMM_FEMALEREPLACE">
+			<Text>バルセッラ・シュプランガー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIUSEPPE_ARCIMBOLDO_PMMM_FEMALEREPLACE">
+			<Text>ジュゼッパ・アルチンボルド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TINTORETTO_PMMM_FEMALEREPLACE">
+			<Text>ティントレッタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JAN_VAN_EYCK_PMMM_FEMALEREPLACE">
+			<Text>ヤン・ファン・エイク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIOVANNI_BELLINI_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・ベッリーニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIOTTO_DI_BONDONE_PMMM_FEMALEREPLACE">
+			<Text>ジオッタ・ディ・ボンドーネ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PETER_PAUL_RUBENS_PMMM_FEMALEREPLACE">
+			<Text>ペトリーヌ・パウル・ルーベンス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARY_CASSATT_PMMM_FEMALEREPLACE">
+			<Text>メアリー・カサット</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PAUL_CEZANNE_PMMM_FEMALEREPLACE">
+			<Text>ポーラ・セザンヌ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JEAN_HONORE_FRAGONARD_PMMM_FEMALEREPLACE">
+			<Text>ジーン・オノレ・フラゴナール</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MARTIN_JOHNSON_HEADE_PMMM_FEMALEREPLACE">
+			<Text>マルチナ・ジョンソン·ヒード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BERNARDO_MARTORELL_PMMM_FEMALEREPLACE">
+			<Text>バーナーダ・ マートレル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AMEDEO_MODIGLIANI_PMMM_FEMALEREPLACE">
+			<Text>アメデア・モディリアーニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FREDERIC_REMINGTON_PMMM_FEMALEREPLACE">
+			<Text>フレデリナ・レミントン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GILBERT_STUART_PMMM_FEMALEREPLACE">
+			<Text>ジルベルタ・ステュアート</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TORAJIRO_KASAI_PMMM_FEMALEREPLACE">
+			<Text>葛西虎次郎</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TOYOKUNI_UTAGAWA_PMMM_FEMALEREPLACE">
+			<Text>歌川豊国</Text>
+		</Row>
+		<!-- Additional great musicians -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_RICHARD_STRAUSS_PMMM_FEMALEREPLACE">
+			<Text>レベッカ・シュトラウス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUSTAV_HOLST_PMMM_FEMALEREPLACE">
+			<Text>グスターヴァ・ホルスト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DUKE_ELLINGTON_PMMM_FEMALEREPLACE">
+			<Text>デュッチ・エリントン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ULVI_CEMAL_ERKIN_PMMM_FEMALEREPLACE">
+			<Text>ウルヴィ・ジェマル・エルキン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SOLOMON_LINDA_PMMM_FEMALEREPLACE">
+			<Text>ソロモン・リンダ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHN_ADAMS_PMMM_FEMALEREPLACE">
+			<Text>ジェーン・Adams</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUILLAUME_DUFAY_PMMM_FEMALEREPLACE">
+			<Text>ギュリアンナ・デュファイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOHANNES_OCKEGHEM_PMMM_FEMALEREPLACE">
+			<Text>ヨハンナ・オケゲム</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JACOB_OBRECHT_PMMM_FEMALEREPLACE">
+			<Text>ヤニー・オブレヒト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ORLANDE_DE_LASSUS_PMMM_FEMALEREPLACE">
+			<Text>オーランダ・ディ・ラッソ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GIOVANNI_GABRIELI_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・ガブリエーリ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARLO_GESUALDO_PMMM_FEMALEREPLACE">
+			<Text>カーラ・ジェズアルド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_BYRD_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・バード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_HANDEL_PMMM_FEMALEREPLACE">
+			<Text>ゲオルゲット・フリードリヒ・ヘンデル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANZ_JOSEF_HAYDN_PMMM_FEMALEREPLACE">
+			<Text>フランツィスカ・ヨーゼフ・ハイドン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANZ_LISZT_PMMM_FEMALEREPLACE">
+			<Text>フランツィスカ・リスト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HUGO_WOLF_PMMM_FEMALEREPLACE">
+			<Text>ヘイディ・ウルフ・</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUSTAV_MAHLER_PMMM_FEMALEREPLACE">
+			<Text>グスターヴァ・マーラー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CAMILLE_SAINT_SAENS_PMMM_FEMALEREPLACE">
+			<Text>カミラ・サン＝サーンス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ERIK_SATIE_PMMM_FEMALEREPLACE">
+			<Text>エリカ・サティー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALBAN_BERG_PMMM_FEMALEREPLACE">
+			<Text>アルバナ・ベルグ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MAURICE_RAVEL_PMMM_FEMALEREPLACE">
+			<Text>モーリシア・ラヴェル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BENJAMIN_BRITTEN_PMMM_FEMALEREPLACE">
+			<Text>ベサニー・ブリテン</Text>
+		</Row>
+
+		<!-- GREAT MERCHANTS -->
+		<!-- GREAT ENGINEERS -->
+		<!-- GREAT GENERALS -->
+		<!--MERCHANTS OF VENICE-->
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_MARCO_POLO_PMMM_FEMALEREPLACE">
+			<Text>マルチナ・ポロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_NICCOLO_POLO_PMMM_FEMALEREPLACE">
+			<Text>ニコラ・ポロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_MAFFEO_POLO_PMMM_FEMALEREPLACE">
+			<Text>Maffea Polo</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_GIOVANNI_CABOTO_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・カボト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_GASPARA_BALBI_PMMM_FEMALEREPLACE">
+			<Text>ガスパーラ・バルビ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_NICCOLO_CONTI_PMMM_FEMALEREPLACE">
+			<Text>ニコラ・ド・コンティ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_CESARE_FEDERICI_PMMM_FEMALEREPLACE">
+			<Text>ケサレーナ・フェデリチ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_GIOVANNI_BALZONI_PMMM_FEMALEREPLACE">
+			<Text>ジョヴァンナ・バルゾーニ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_ALVISE_CADAMOSTO_PMMM_FEMALEREPLACE">
+			<Text>アルヴィサ・カダモスト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_GIOSAFAT_BARBARO_PMMM_FEMALEREPLACE">
+			<Text>ジョサファタ・バーバロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_ANTONIO_PIGAFETTA_PMMM_FEMALEREPLACE">
+			<Text>アントニア・ピガフェッタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_MERCHANT_OF_VENICE_AMBROGIO_CONTARINI_PMMM_FEMALEREPLACE">
+			<Text>アンブロジア・コンタリニ</Text>
+		</Row>
+		<!-- Patch great artists -->
+		<Row Tag="TXT_KEY_GREAT_PERSON_HENRI_ROUSSEAU_PMMM_FEMALEREPLACE">
+			<Text>ヘンリエッタ・ルソー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JOZEF_BORSOS_PMMM_FEMALEREPLACE">
+			<Text>ジョセファ・ボルソス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ILYA_REPIN_PMMM_FEMALEREPLACE">
+			<Text>イリヤーナ・レーピン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SERGEY_IVANOV_PMMM_FEMALEREPLACE">
+			<Text>セルゲイナ・ヴァシーリエヴィチ・イワノフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CARAVAGGIO_PMMM_FEMALEREPLACE">
+			<Text>カラヴァッジョ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANS_POST_PMMM_FEMALEREPLACE">
+			<Text>フランサ・ポスト</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLEM_THE_YOUNGER_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・ファン・ド・ヴェルデ・ザ・ヤンガー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_SIMPSON_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・シンプソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GEORGE_HEALY_PMMM_FEMALEREPLACE">
+			<Text>ジョルジェット・ピーター・アレクサンダー・ヒーリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_UTAGAWA_KUNIYOSHI_PMMM_FEMALEREPLACE">
+			<Text>歌川国芳</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ADRIEN_CARPENTIERS_PMMM_FEMALEREPLACE">
+			<Text>アドリエンナ・カーペンターズ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BAHRAM_KIRMANSHAHI_PMMM_FEMALEREPLACE">
+			<Text>バラマ・ケルマンシャヒ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AUGUST_HAAKE_PMMM_FEMALEREPLACE">
+			<Text>オーガスティーネ・ハーク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_BOUGUEREAU_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・ブグロー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCESCO_HAYEZ_PMMM_FEMALEREPLACE">
+			<Text>フランチェスカ・アイエツ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VIKTOR_VASNETSOV_PMMM_FEMALEREPLACE">
+			<Text>ヴィクトリア・ヴァスネツォフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HORACE_VERNET_PMMM_FEMALEREPLACE">
+			<Text>ホレイシア・ヴェルネ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KARL_BRIULLOV_PMMM_FEMALEREPLACE">
+			<Text>カーラ・ブリューロフ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EDMUND_LEIGHTON_PMMM_FEMALEREPLACE">
+			<Text>エディー・レイトン</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_GREAT_PERSON_KHUSRO_PMMM_FEMALEREPLACE">
+			<Text>クスロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AYABHATA_PMMM_FEMALEREPLACE">
+			<Text>アーリヤバタ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GOTTFREID_LEIBNIZ_PMMM_FEMALEREPLACE">
+			<Text>ゴットフリート・ライプニッツ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRIEDRICH_GAUSS_PMMM_FEMALEREPLACE">
+			<Text>フリードリヒーナ・ガウス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RICHARD_WHITTINGTON_PMMM_FEMALEREPLACE">
+			<Text>リキーナ・ウィッテントン </Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TODAR_MAL_PMMM_FEMALEREPLACE">
+			<Text>トーダル・マル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VAN_DIEMEN_PMMM_FEMALEREPLACE">
+			<Text>ヴァン・ディーメン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_MORTON_PMMM_FEMALEREPLACE">
+			<Text>ウィルマ・モートン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FERDINAND_DA_LESSEPS_PMMM_FEMALEREPLACE">
+			<Text>フェルディアンナ・ド・レセップス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SARGON_PMMM_FEMALEREPLACE">
+			<Text>サーガ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SUN_TZU_PMMM_FEMALEREPLACE">
+			<Text>孫武</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LEONIDAS_PMMM_FEMALEREPLACE">
+			<Text>レオニダ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LYSANDER_PMMM_FEMALEREPLACE">
+			<Text>リュサンドラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHANDRAGUPTA_MAURYA_PMMM_FEMALEREPLACE">
+			<Text>チャンドラグプタ・マウリヤ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HAMILCAR_BARCA_PMMM_FEMALEREPLACE">
+			<Text>ハミルカーラ・バルカ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GAIUS_MARIUS_PMMM_FEMALEREPLACE">
+			<Text>ガイア・マリウス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SCIPIO_AFRICANUS_PMMM_FEMALEREPLACE">
+			<Text>スキピア・アフリカヌス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VERCINGETORIX_PMMM_FEMALEREPLACE">
+			<Text>ウェルキンゲトリア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ARMINIUS_PMMM_FEMALEREPLACE">
+			<Text>アルミニア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CAO_CAO_PMMM_FEMALEREPLACE">
+			<Text>曹操</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHUGE_LIANG_PMMM_FEMALEREPLACE">
+			<Text>諸葛亮</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BELISARIUS_PMMM_FEMALEREPLACE">
+			<Text>ベリサリア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KHALED_IBN_AL_WALID_PMMM_FEMALEREPLACE">
+			<Text>ハーリ・イブン・アル＝ワリード</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CHARLES_MARTEL_PMMM_FEMALEREPLACE">
+			<Text>チャーリーズ・マーテル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EL_CID_PMMM_FEMALEREPLACE">
+			<Text>ラ・シド</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_WILLIAM_THE_CONQUEROR_PMMM_FEMALEREPLACE">
+			<Text>ウィルヘルミナ・ザ・コンカー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SUBUTAI_PMMM_FEMALEREPLACE">
+			<Text>スブタイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_TIMUR_PMMM_FEMALEREPLACE">
+			<Text>ティムーラ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JEANNE_DARC_PMMM_FEMALEREPLACE">
+			<Text>ジャンヌ・ダルク</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AUITZOTL_PMMM_FEMALEREPLACE">
+			<Text>アウィソトル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_HERNAN_CORTES_PMMM_FEMALEREPLACE">
+			<Text>エルナンナ・コルテス</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANCISCO_PIZARRO_PMMM_FEMALEREPLACE">
+			<Text>フランシスカ・ピサロ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_IVAN_THE_TERRIBLE_PMMM_FEMALEREPLACE">
+			<Text>イヴェット・ザ・テリブル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AKBAR_PMMM_FEMALEREPLACE">
+			<Text>アクバル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MICHEL_DE_RUYTER_PMMM_FEMALEREPLACE">
+			<Text>ミヒーラ・デ・ロイテル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CROMWELL_PMMM_FEMALEREPLACE">
+			<Text>オリヴィア・クロムウェル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EUGENE_OF_SAVOY_PMMM_FEMALEREPLACE">
+			<Text>オイゲナ・ザヴォイ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LORD_NELSON_PMMM_FEMALEREPLACE">
+			<Text>レディ・ネルソン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GERONIMO_PMMM_FEMALEREPLACE">
+			<Text>ジェロニモ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROBERT_LEE_PMMM_FEMALEREPLACE">
+			<Text>ロベルタ・リー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YAMAMOTO_PMMM_FEMALEREPLACE">
+			<Text>山本</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PATTON_PMMM_FEMALEREPLACE">
+			<Text>ジョルジナ・パットン</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_MONTGOMERY_PMMM_FEMALEREPLACE">
+			<Text>モンゴメリー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_GUERDIAN_PMMM_FEMALEREPLACE">
+			<Text>グデーリア</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROMMEL_PMMM_FEMALEREPLACE">
+			<Text>エルヴィナ・ロンメル</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ZHUKOV_PMMM_FEMALEREPLACE">
+			<Text>ジューコフ</Text>
+		</Row>
+
+
+		<!--Support for my Great Musicians of Classic Rock-->
+		<Row Tag="TXT_KEY_GREAT_PERSON_THE_BEATLES_PMMM_FEMALEREPLACE">
+			<Text>
+				<!--Yoko Ono (just kidding)-->ポーラ・マッカートニー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LED_ZEPPELIN_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェニー・ペイジ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_PINK_FLOYD_PMMM_FEMALEREPLACE">
+			<Text>
+				レジーナ・ウォーターズ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BUDDY_HOLLY_PMMM_FEMALEREPLACE">
+			<Text>
+				ベイビー・ホーリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THE_WHO_PMMM_FEMALEREPLACE">
+			<Text>
+				パトリシア・タウンゼント
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_JIMI_HENDRIX_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェニ・ヘンドリックス
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DAVID_BOWIE_PMMM_FEMALEREPLACE">
+			<Text>
+				ダイアナ・ボウイ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_FRANK_ZAPPA_PMMM_FEMALEREPLACE">
+			<Text>
+				フランチェス・ザッパ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RUSH_PMMM_FEMALEREPLACE">
+			<Text>
+				ナンシー・パート
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_VAN_HALEN_PMMM_FEMALEREPLACE">
+			<Text>
+				エドウィナ・ヴァン・ヘイレン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_AEROSMITH_PMMM_FEMALEREPLACE">
+			<Text>
+				スティーヴィー・テイラー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ACDC_PMMM_FEMALEREPLACE">
+			<Text>
+				アングシーナ・ヤング
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_YES_PMMM_FEMALEREPLACE">
+			<Text>
+				クリッシー・スクワイア
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_LYNYRD_SKYNYRD_PMMM_FEMALEREPLACE">
+			<Text>
+				ロネッツ・ヴァン・ザント
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_CREEDENCE_CLEARWATER_REVIVAL_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェーン・フォガティ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_EAGLES_PMMM_FEMALEREPLACE">
+			<Text>
+				ドンナ・ヘンリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ROLLING_STONES_PMMM_FEMALEREPLACE">
+			<Text>
+				ミッキー・ジャガー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BLACK_SABBATH_PMMM_FEMALEREPLACE">
+			<Text>
+				シャロン・オズボーン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_QUEEN_PMMM_FEMALEREPLACE">
+			<Text>
+				フラニー・マーキュリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_DEREK_AND_THE_DOMINOS_PMMM_FEMALEREPLACE">
+			<Text>
+				エリカ・クラプトン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ALLMAN_BROTHERS_PMMM_FEMALEREPLACE">
+			<Text>
+				ダイアン・アルマン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BEACH_BOYS_PMMM_FEMALEREPLACE">
+			<Text>
+				ブリアナ・ウィルソン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_ELVIS_PRESLEY_PMMM_FEMALEREPLACE">
+			<Text>
+				エルヴィラ・プレスリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BRUCE_SPRINGSTEEN_PMMM_FEMALEREPLACE">
+			<Text>
+				ブリジット・スプリングスティーン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_KING_CRIMSON_PMMM_FEMALEREPLACE">
+			<Text>
+				ロベルタ・フリップ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_THE_DOORS_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェーン・モリソン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_BOB_DYLAN_PMMM_FEMALEREPLACE">
+			<Text>
+				ボビイ・ディラン
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_RAMONES_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェニー・ラモーンズ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_GREAT_PERSON_SEX_PISTOLS_PMMM_FEMALEREPLACE">
+			<Text>
+				ジェーン・ライドン
+			</Text>
+		</Row>
+		
+		<!-- Events and Decisions -->
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_KILL_INCUBATORS">
+			<Text>
+				インキュベーターの処罰
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_KILL_INCUBATORS_DESC">
+			<Text>
+				最近インキュベーターの働きが十分ではなくなっている。彼らに「後悔」という感情がどのようなものであるか教え込む必要があるようだ。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが悪魔ほむらである。
+				[NEWLINE][ICON_BULLET]少なくとも1体のインキュベーター・スレイヴを所有している。
+				[NEWLINE][ICON_BULLET]時代ごとに1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET]インキュベーター・スレイヴが処刑される。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]処刑されたインキュベーターの数ごとに[ICON_CAPITAL]首都の[ICON_HAPPINESS_1]幸福度+1。この効果は永続する。
+				[NEWLINE][ICON_BULLET]実施された時代の残りの期間はインキュベーター・スレイヴを作成することができない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_KILL_INCUBATORS_ENACTED_DESC">
+			<Text>
+				最近インキュベーターの働きが十分ではなくなっている。彼らに「後悔」という感情がどのようなものであるか教え込む必要があるようだ。[NEWLINE]
+				[NEWLINE][ICON_BULLET]処刑されたインキュベーターの数ごとに[ICON_CAPITAL]首都の[ICON_HAPPINESS_1]幸福度+1。この効果は永続する。
+				[NEWLINE][ICON_BULLET]実施された時代の残りの期間はインキュベーター・スレイヴを作成することができない。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_PACIFICATION">
+			<Text>
+				人々の慰撫
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_PACIFICATION_DESC">
+			<Text>
+				世界中のすべての文化に接し、鹿目まどかに代わって人々の幸福を保つことにも疲れ始めている。しかし、まだ十分ではない。さらなる努力を、さらなる努力を重ねる必要があるのだ！[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが悪魔ほむらである。
+				[NEWLINE][ICON_BULLET]すべての文明と接触している。滅亡した文明は除く。
+				[NEWLINE][ICON_BULLET]無政府状態ではない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET]{1_Num}ターン無政府状態に陥る（施策を実施する時期によりターン数が増加する。）。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]他の文明の[ICON_HAPPINESS_1]幸福度+1。
+				[NEWLINE][ICON_BULLET]新たな文明に接触したかのように[ICON_CAPITAL]首都の産出量が増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_DEMON_HOMURA_PACIFICATION_ENACTED_DESC">
+			<Text>
+				世界中のすべての文化に接し、鹿目まどかに代わって人々の幸福を保つことにも疲れ始めている。しかし、まだ十分ではない。さらなる努力を、さらなる努力を重ねる必要があるのだ！[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]他の文明の[ICON_HAPPINESS_1]幸福度+1。
+				[NEWLINE][ICON_BULLET]新たな文明に接触したかのように[ICON_CAPITAL]首都の産出量が増加する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOMURA_DEVOTE_MADOKA">
+			<Text>
+				鹿目まどかへの専心
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOMURA_DEVOTE_MADOKA_DESC">
+			<Text>
+				そなたの目的は明白である。必要なのは鹿目まどかだけであり、他人からどう思われようと全く意に介さない。この施策を実施することで、このことを公にするのだ。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが暁美ほむらである。
+				[NEWLINE][ICON_BULLET]時代が古典以降である。
+				[NEWLINE][ICON_BULLET]時代ごとに1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]ゲーム中に鹿目まどか / アルティメットまどかが存在する場合、彼女たちに対する極めて高い外交ボーナスが与えられる。反面、他の文明に対する少量の外交ペナルティを負い、すべての都市国家に対する[ICON_INFLUENCE]影響力の基礎ポイントが5減少する。
+				[NEWLINE][ICON_BULLET]ゲーム中に鹿目まどか / アルティメットまどかが存在しない場合、首都に「まどかの記念碑」が建設される。これにより、モニュメントから[ICON_PEACE]信仰力+2および人口数から生み出される[ICON_HAPPINESS_4]不満度+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOMURA_DEVOTE_MADOKA_ENACTED_DESC">
+			<Text>
+				そなたの目的は明白である。必要なのは鹿目まどかだけであり、他人からどう思われようと全く意に介さない。この施策を実施することで、このことを公にするのだ。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]ゲーム中に鹿目まどか / アルティメットまどかが存在する場合、彼女たちに対する極めて高い外交ボーナスが与えられる。反面、他の文明に対する少量の外交ペナルティを負い、すべての都市国家に対する[ICON_INFLUENCE]影響力の基礎ポイントが5減少する。
+				[NEWLINE][ICON_BULLET]ゲーム中に鹿目まどか / アルティメットまどかが存在しない場合、首都に「まどかの記念碑」が建設される。これにより、モニュメントから[ICON_PEACE]信仰力+2および人口数から生み出される[ICON_HAPPINESS_4]不満度+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOMURA_SAND_SHIELD">
+			<Text>
+				{1_CityState}から武器を盗む
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOMURA_SAND_SHIELD_DESC">
+			<Text>
+				そなたは他の魔法少女のような魔法武器を作れないので盗難で備えなければならない。大文明から盗むのはちょっと危険すぎだけど、{1_CityState}から盗みやすいだろう。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが暁美ほむらである。
+				[NEWLINE][ICON_BULLET]{1_CityState}との[ICON_INFLUENCE]影響力は0以上である。
+				[NEWLINE][ICON_BULLET]{1_CityState}の領域であなたの軍隊ユニットがいる。
+				[NEWLINE][ICON_BULLET]都市国家の固有ユニットの必要テクノロジーが待っている。({2_TechName})
+				[NEWLINE][ICON_BULLET]固有ユニットがある軍事の都市国家だけに使える。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET]{3_Gold} [ICON_GOLD] ゴールド
+				[NEWLINE][ICON_BULLET]{1_CityState}との[ICON_INFLUENCE]影響力は40で減少する。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]{1_CityState}の固有ユニット１つを受ける。[COLOR_POSITIVE_TEXT]({4_UniqueUnit})[ENDCOLOR]
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_HOMURA_DEVOTE_MADOKA">
+			<Text>
+				まどかの記念碑
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_HOMURA_DEVOTE_MADOKA_CIVILOPEDIA">
+			<Text>
+				鹿目まどかはすべての魔法少女のための良き世界を作るためにすべてを犠牲にした無垢な少女であるが、彼女の存在を知っているのは世界中で暁美ほむらただ1人である。そうであるとしても、暁美ほむらは鹿目まどかの自己犠牲という事実を世界に広め続けるのである。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_HOMURA_DEVOTE_MADOKA_HELP">
+			<Text>
+				モニュメントから[ICON_PEACE]信仰力+2。すべての都市で人口数から生み出される[ICON_HAPPINESS_4]不満度+10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_EMPOWER_MISSIONARIES">
+			<Text>
+				魔法による伝道師強化
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_EMPOWER_MISSIONARIES_DESC">
+			<Text>
+				そなたの願いは人々に父の教義を聞いてもらうことであった。人々は彼の話に魅了され、その言葉に聞き入った。このことを思い返すことは辛いことではあろうが、伝道師に対しても同じ効果を与えることができるかもしれない。この方法により、父の言葉が世界の隅々にまで届くことになるだろう。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが佐倉杏子である。
+				[NEWLINE][ICON_BULLET]宗教を創始している。
+				[NEWLINE][ICON_BULLET]少なくとも合計で100ポイントの[ICON_GREAT_PEOPLE]偉人ポイントが[ICON_CAPITAL]首都に蓄積されている。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_PEACE]信仰力{1_FAITH}
+				[NEWLINE][ICON_BULLET][ICON_CAPITAL]首都のすべての[ICON_GREAT_PEOPLE]偉人ポイントが25ずつ減少する。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]現在そして将来の伝道師と預言者は「歓迎されない福音伝道者」および「視界制限」のペナルティから解放される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_EMPOWER_MISSIONARIES_ENACTED_DESC">
+			<Text>
+				そなたの願いは人々に父の教義を聞いてもらうことであった。人々は彼の話に魅了され、その言葉に聞き入った。このことを思い返すことは辛いことではあろうが、伝道師に対しても同じ効果を与えることができるかもしれない。この方法により、父の言葉が世界の隅々にまで届くことになるだろう。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]現在そして将来の伝道師と預言者は「歓迎されない福音伝道者」および「視界制限」のペナルティから解放される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_DEVELOP_ROCKY">
+			<Text>
+				ロッキーの開発
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_DEVELOP_ROCKY_DESC">
+			<Text>
+				トレーニング中のボクサーのことではない。そなたは今シンプルではあるが美味しいスナック菓子を開発している。それは現実世界に実在する有名な製品に極めて酷似した名前を有している。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが佐倉杏子である。
+				[NEWLINE][ICON_BULLET]「東インド会社」は建造されておった。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Gold}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]東インド会社がある首都に「ロッキー・ベーカリー」が建設される。これにより、[ICON_FOOD]食料+2および特有の高級資源である[ICON_RES_PMMM_ROCKY]ロッキー+3。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_KYOUKO_DEVELOP_ROCKY_ENACTED_DESC">
+			<Text>
+				トレーニング中のボクサーのことではない。そなたは今シンプルではあるが美味しいスナックフードを開発している。それは現実世界に実在する有名なお菓子に極めて酷似した名前を有している。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]東インド会社がある首都に「ロッキー・ベーカリー」が建設される。これにより、[ICON_FOOD]食料+2および特有の高級資源である[ICON_RES_PMMM_ROCKY]ロッキー+3。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_KYOUKO_DEVELOP_ROCKY">
+			<Text>
+				ロッキー・ベーカリー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_KYOUKO_DEVELOP_ROCKY_CIVILOPEDIA">
+			<Text>
+				ロッキーは細長い形状をしており、チョコレートに浸してできているスナック菓子である。様々な種類が存在しており、ストロベリー・ロッキーはチョコレートの代わりにイチゴ味のペーストでコーティングされている。サクサク感、形状、味のすべてが一体となり、あらゆる年代で高い人気を博している菓子である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_BUILDING_KYOUKO_DEVELOP_ROCKY_HELP">
+			<Text>
+				特有の高級資源である[ICON_RES_PMMM_ROCKY]ロッキー+3。[NEWLINE][NEWLINE]この建造物は、佐倉杏子が「ロッキーの開発」を実施する、あるいは実施された後の佐倉杏子の[ICON_CAPITAL]首都を占領することによってのみ獲得することができる。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_RESOURCE_DECISIONS_ROCKY">
+			<Text>
+				ロッキー
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV5_RESOURCE_DECISIONS_ROCKY_TEXT">
+			<Text>
+				ロッキーは細長い形状をしており、チョコレートに浸してできているスナック菓子である。様々な種類が存在しており、ストロベリー・ロッキーはチョコレートの代わりにイチゴ味のペーストでコーティングされている。サクサク感、形状、味のすべてが一体となり、あらゆる年代で高い人気を博している菓子である。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST">
+			<Text>
+				見滝原祭の開催
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_DESC">
+			<Text>
+				鹿目まどかは地球で最も魅力的で清純でかわいらしい少女なのかもしれない。しかし、そなたにも羽目を外すことがあるだろう。図らずも母のような酒好きになるかもしれない。しかし、1人で飲む必要はない。数千の魔法少女と飲み明かすためだけの祝日を設けようではないか（幸いにも感覚が遮断できるために二日酔いとは無縁である。）。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが鹿目まどかである。
+				[NEWLINE][ICON_BULLET]少なくとも4つの [ICON_RES_WHEAT] 小麦資源を農場で改善している。
+				[NEWLINE][ICON_BULLET]少なくとも2つの [ICON_RES_WINE] ワインを大規模農場で改善している。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Gold}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官2人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET][ICON_GOLDEN_AGE]黄金時代に突入し、3ターンの間[ICON_CAPITAL]首都で国王感謝祭が開催される（この期間はゲーム速度で変更されない）。
+				[NEWLINE][ICON_BULLET]この効果は残りのゲーム期間中25ターンごとに繰り返される（この期間はゲーム速度で変更されない）。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_ENACTED_DESC">
+			<Text>
+				鹿目まどかは地球で最も魅力的で清純でかわいらしい少女なのかもしれない。しかし、そなたにも羽目を外すことがあるだろう。図らずも母のような酒好きになるかもしれない。しかし、1人で飲む必要はない。数千の魔法少女と飲み明かすためだけの祝日を設けようではないか（幸いにも感覚が遮断できるために二日酔いとは無縁である。）。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET][ICON_GOLDEN_AGE]黄金時代に突入し、3ターンの間[ICON_CAPITAL]首都で国王感謝祭が開催される（この期間はゲーム速度で変更されない）。
+				[NEWLINE][ICON_BULLET]この効果は残りのゲーム期間中25ターンごとに繰り返される（この期間はゲーム速度で変更されない）。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKUN">
+			<Text>
+				ミータくんの作成
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKUN_DESC">
+			<Text>
+				見滝原に必要なものがあるとすれば、それはマスコットである。バス停で待つ訪問者に現在地を示すために使用するのだ。仮にキュゥべえをマスコットとして利用すれば、おそらくそなたにトマトや空き瓶が投げつけられることになるだろう。有名な芸術家が、ゴールドと引き替えに市民全員に愛されるマスコット「ミータくん」の作成を提案している。「来た、見た、見滝原。」[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが鹿目まどかである。
+				[NEWLINE][ICON_BULLET]「内燃機関」のテクノロジーを獲得している。
+				[NEWLINE][ICON_BULLET]大芸術家を所有している。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Gold}
+				[NEWLINE][ICON_BULLET]大芸術家が1人消滅する。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]施策が実施された時点で道路あるいは鉄道が敷かれているタイルから[ICON_CULTURE]文化力+1。[COLOR_WARNING_TEXT]（注意：施策が実施された後に敷かれた道路や鉄道からはこのボーナスが適用されない！）[ENDCOLOR]
+				[NEWLINE][ICON_BULLET][ICON_CAPITAL]首都および首都と[ICON_TRADE]接続した都市から[ICON_TOURISM]観光力+2。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_ORIGINAL_MADOKA_MITAKUN_ENACTED_DESC">
+			<Text>
+				見滝原に必要なものがあるとすれば、それはマスコットである。バス停で待つ訪問者に現在地を示すために使用するのだ。仮にキュゥべえをマスコットとして利用すれば、おそらくそなたにトマトや空き瓶が投げつけられることになるだろう。有名な芸術家が、ゴールドと引き替えに市民全員に愛されるマスコット「ミータくん」の作成を提案している。「来た、見た、見滝原。」[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]施策が実施された時点で道路あるいは鉄道が敷かれているタイルから[ICON_CULTURE]文化力+1。[COLOR_WARNING_TEXT]（注意：施策が実施された後に敷かれた道路や鉄道からはこのボーナスが適用されない！）[ENDCOLOR]
+				[NEWLINE][ICON_BULLET][ICON_CAPITAL]首都および首都と[ICON_TRADE]接続した都市から[ICON_TOURISM]観光力+2。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TEXT">
+			<Text>
+				見滝原祭がやって来た！グラスを傾け、魔女の結界への旅を語り合おう！乾杯！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_ALERT_DECISIONS_ORIGINAL_MADOKA_MITAKIHARAFEST_TITLE">
+			<Text>
+				見滝原祭！
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_JAPANESE">
+			<Text>
+				公用語の指定：日本語
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_JAPANESE_DESC">
+			<Text>
+				日本語を公用語に指定することで、これまでのイタリア語と日本語の混成状態に対して国内におけるコミュニケーションの円滑化を促す。日本語により国民の勤勉ではあるが硬直した文化的傾向が強まるだろう。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが巴マミである。
+				[NEWLINE][ICON_BULLET]「筆記」のテクノロジーを獲得している。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_RESEARCH]科学力+10%。
+				[NEWLINE][ICON_BULLET]専門家から[ICON_PRODUCTION]生産力+1。
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_CULTURE]文化力-20%および[ICON_TOURISM]観光力-20%。[ICON_GREAT_PEOPLE]大芸術家・大音楽家・大著述家の誕生速度-25%。
+				[NEWLINE][ICON_BULLET]文明と建設した都市の名前が改名される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_JAPANESE_ENACTED_DESC">
+			<Text>
+				日本語を公用語に指定することで、これまでのイタリア語と日本語の混成状態に対して国内におけるコミュニケーションの円滑化を促す。日本語により国民の勤勉ではあるが硬直した文化的傾向が強まるだろう。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_RESEARCH]科学力+10%。
+				[NEWLINE][ICON_BULLET]専門家から[ICON_PRODUCTION]生産力+1。
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_CULTURE]文化力-20%および[ICON_TOURISM]観光力-20%。[ICON_GREAT_PEOPLE]大芸術家・大音楽家・大著述家の誕生速度-25%。
+				[NEWLINE][ICON_BULLET]文明と建設した都市の名前が改名される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_ITALIAN">
+			<Text>
+				公用語の指定：イタリア語
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_ITALIAN_DESC">
+			<Text>
+				イタリア語を公用語に指定することで、これまでのイタリア語と日本語の混成状態に対して国内におけるコミュニケーションの円滑化を促す。イタリア語により国民の芸術性が向上するだろうが、効率性が減退するかもしれない。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが巴マミである。
+				[NEWLINE][ICON_BULLET]「筆記」のテクノロジーを獲得している。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_CULTURE]文化力+20%および[ICON_TOURISM]観光力+20%かつ[ICON_GREAT_PEOPLE]大芸術家・大音楽家・大著述家の誕生速度+25%。
+				[NEWLINE][ICON_BULLET]専門家から[ICON_CULTURE]文化力+1。
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_RESEARCH]科学力-10%。
+				[NEWLINE][ICON_BULLET]日本語の公用語化により都市名が改名されている場合、都市名が元に戻る。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_ITALIAN_ENACTED_DESC">
+			<Text>
+				イタリア語を公用語に指定することで、これまでのイタリア語と日本語の混成状態に対して国内におけるコミュニケーションの円滑化を促す。イタリア語により国民の芸術性が向上するだろうが、効率性が減退するかもしれない。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_CULTURE]文化力+20%および[ICON_TOURISM]観光力+20%かつ[ICON_GREAT_PEOPLE]大芸術家・大音楽家・大著述家の誕生速度+25%。
+				[NEWLINE][ICON_BULLET]専門家から[ICON_CULTURE]文化力+1。
+				[NEWLINE][ICON_BULLET]すべての都市で[ICON_RESEARCH]科学力-10%。
+				[NEWLINE][ICON_BULLET]日本語の公用語化により都市名が改名されている場合、都市名が元に戻る。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_REPEAL_LANGUAGE">
+			<Text>
+				公用語の廃止
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_REPEAL_LANGUAGE_DESC">
+			<Text>
+				国内における公用語の指定を廃止する。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが巴マミである。
+				[NEWLINE][ICON_BULLET]公用語の指定を実施している。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]国内における公用語の指定を廃止する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_REPEAL_LANGUAGE_ENACTED_DESC">
+			<Text>
+				国内における公用語の指定を廃止する。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]国内における公用語の指定を廃止する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_MAMMIE_DOCTRINE">
+			<Text>
+				「マミ式外交術」の採用
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_MAMMIE_DOCTRINE_DESC">
+			<Text>
+				この際、政治的な堅苦しい話は抜きにしよう。そなたは驚くべき「武器」を持っている。外交会議の場で頭の胸元のリボンを緩めれば、相手の男性（もしかすると魔法少女）の態度が多少軟化するだろう。しかし、国内では批判を招く可能性が高く、この結果として内政が少しばかり困難になるかも知れない。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが巴マミである。
+				[NEWLINE][ICON_BULLET]少なくとも15以上の[ICON_HAPPINESS_1]幸福度がある。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_CULTURE]文化力{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官2人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]男性の文明指導者、鹿目まどか、美樹さやか、佐倉杏子、百江なぎさに対する外交ボーナスを獲得する。
+				[NEWLINE][ICON_BULLET]すべての都市国家に対する[ICON_INFLUENCE]影響力の基礎ポイントが10増える。
+				[NEWLINE][ICON_BULLET]新たな社会制度の採用に必要な[ICON_CULTURE]文化力が10%増大する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MAMI_MAMMIE_DOCTRINE_ENACTED_DESC">
+			<Text>
+				この際、政治的な堅苦しい話は抜きにしよう。そなたは驚くべき「武器」を持っている。外交会議の場で頭の胸元のリボンを緩めれば、相手の男性（もしかすると魔法少女）の態度が多少軟化するだろう。しかし、国内では批判を招く可能性が高く、この結果として内政が少しばかり困難になるかも知れない。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]男性の文明指導者、鹿目まどか、美樹さやか、佐倉杏子、百江なぎさに対する外交ボーナスを獲得する。
+				[NEWLINE][ICON_BULLET]すべての都市国家に対する[ICON_INFLUENCE]影響力の基礎ポイントが10増える。
+				[NEWLINE][ICON_BULLET]新たな社会制度の採用に必要な[ICON_CULTURE]文化力が10%増大する。
+			</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_CIV_MAMI_ADJECTIVE_DECISIONS_JAPANESE">
+			<Text>
+				巴マミの
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_DESC_DECISIONS_JAPANESE">
+			<Text>
+				巴花文明
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CIV_MAMI_SHORT_DESC_DECISIONS_JAPANESE">
+			<Text>
+				巴花
+			</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_CITTA_DI_TIRO_DECISIONS_JAPANESE">
+			<Text>
+				巴花
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROMA_NUOVA_DECISIONS_JAPANESE">
+			<Text>
+				新ローマ
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PALLOTTOLA_DECISIONS_JAPANESE">
+			<Text>
+				弾丸森
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_LEGGE_DEI_CICLI_DECISIONS_JAPANESE">
+			<Text>
+				円環里
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PICCO_DI_SPERANZA_DECISIONS_JAPANESE">
+			<Text>
+				北峰
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_COVE_MISTICO_DECISIONS_JAPANESE">
+			<Text>
+				玉入り江
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_EGIDA_DECISIONS_JAPANESE">
+			<Text>
+				守屋
+			</Text>
+			<Gender>
+				neuter:an
+			</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_NASTRI_DORO_DECISIONS_JAPANESE">
+			<Text>
+				紐金
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MILIONI_DI_MOSCHETTI_DECISIONS_JAPANESE">
+			<Text>
+				萬弾
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_AMICIZIA_DECISIONS_JAPANESE">
+			<Text>
+				友情山
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TERRITORIO_ASSOLUTA_DECISIONS_JAPANESE">
+			<Text>
+				絶対領域
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_ROGO_DELLA_STREGA_DECISIONS_JAPANESE">
+			<Text>
+				魔女狩り
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_PASE_FOGLIA_DI_TE_DECISIONS_JAPANESE">
+			<Text>
+				茶葉
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_TORTACITTA_DECISIONS_JAPANESE">
+			<Text>
+				菓子町
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_DUE_CANNONI_ENORMI_DECISIONS_JAPANESE">
+			<Text>
+				大砲
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITY_NAME_MADOMAGI_MA_QUESTO_E_AMORE_PROIBITO_DECISIONS_JAPANESE">
+			<Text>
+				禁断の恋の形
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_RECESS">
+			<Text>
+				休み時間の延長
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_RECESS_DESC">
+			<Text>
+				そなたはまだ小さな子供であるため、学童に共感する。確かに、国家を超大国にするためには教育が最も重要な要素なのかもしれない。しかし、このくらいの年齢の子供にはまだ遊ぶ時間が必要である。学校の休み時間を延長させることにより、子供達を大喜びさせることができるだろう。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが百江なぎさである。
+				[NEWLINE][ICON_BULLET]「科学理論」のテクノロジーを獲得している。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]公立学校から[ICON_HAPPINESS_1]幸福度+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_RECESS_ENACTED_DESC">
+			<Text>
+				そなたはまだ小さな子供であるため、学童に共感する。確かに、国家を超大国にするためには教育が最も重要な要素なのかもしれない。しかし、このくらいの年齢の子供にはまだ遊ぶ時間が必要である。学校の休み時間を延長させることにより、子供達を大喜びさせることができるだろう。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]公立学校から[ICON_HAPPINESS_1]幸福度+1。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_CHARLOTTE_GATE">
+			<Text>
+				{1_CityName}の城門にシャルロッテの口を描く
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_CHARLOTTE_GATE_DESC">
+			<Text>
+				魔女シャルロッテの噂話は世界中の兵士たちを震え上がらせている。シャルロッテは歴戦の魔女でさえも一口で殺害することができる。城門にシャルロッテが大口を開けている絵を描いておくだけで近くの兵士や魔法少女を恐怖させることだろう。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが百江なぎさである。
+				[NEWLINE][ICON_BULLET]都市に城が建設されている。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_CULTURE]文化力{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{2_Gold}。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]都市にシャルロッテの門が建設される。これにより、都市の[ICON_STRENGTH]防御力+2およびヒットポイント+25。さらにその都市に駐留しているユニットに[COLOR_POSITIVE_TEXT]シャルロッテの威嚇[ENDCOLOR]の昇進が付与され、隣接する敵ユニットの[ICON_STRENGTH]戦闘力が10%低下する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_NAGISA_CHARLOTTE_GATE_ENACTED_DESC">
+			<Text>
+				魔女シャルロッテの噂話は世界中の兵士たちを震え上がらせている。シャルロッテは歴戦の魔女でさえも一口で殺害することができる。城門にシャルロッテが大口を開けている絵を描いておくだけで近くの兵士や魔法少女を恐怖させることだろう。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]都市にシャルロッテの門が建設される。これにより、都市の[ICON_STRENGTH]防御力+2およびヒットポイント+25。さらにその都市に駐留しているユニットに[COLOR_POSITIVE_TEXT]シャルロッテの威嚇[ENDCOLOR]の昇進が付与され、隣接する敵ユニットの[ICON_STRENGTH]戦闘力が10%低下する。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_BUILDING_DECISIONS_NAGISA_CHARLOTTE_GATE">
+			<Text>
+				シャルロッテの門
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_DECISIONS_NAGISA_CHARLOTTE_GATE_TEXT">
+			<Text>
+				シャルロッテは過去の時間軸における魔女化した百江なぎさであった。当初は無害でかわいらしい見かけをしているが、これは無謀な攻撃をしてくる不用意な魔法少女をおびき寄せるためのものである。この形態が十分な攻撃を受けると怪物のような真の姿に変貌する。シャルロッテは歴戦の強力な魔法少女である巴マミを一口で殺害した。[NEWLINE][NEWLINE]百江なぎさはかつての魔法少女に戻ったが、シャルロッテの話はこの世界に残っており、その真の姿はこの話を知る者に対してに恐怖をもたらしている。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_DECISIONS_NAGISA_CHARLOTTE_GATE_STRATEGY">
+			<Text>
+				この建造物は百江なぎさが「城門にシャルロッテの口を描く」を実施することによってのみ獲得することができる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_BUILDING_DECISIONS_NAGISA_CHARLOTTE_GATE_HELP">
+			<Text>
+				この都市に駐留しているユニットに[COLOR_POSITIVE_TEXT]シャルロッテの威嚇[ENDCOLOR]の昇進が付与され、隣接する敵ユニットの[ICON_STRENGTH]戦闘力が10%低下する。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_NAGISA">
+			<Text>
+				シャルロッテの威嚇
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_NAGISA_HELP">
+			<Text>
+				このレベルアップを持つユニットに隣接する敵ユニットの[ICON_STRENGTH]戦闘力-10%。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_DANCE_QUEEN">
+			<Text>
+				オクタヴィア・ダンス・クィーン杯
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_DANCE_QUEEN_DESC">
+			<Text>
+				そなたに秘められた才能の1つにダンスがある。クラシックに親しんでいるため社交ダンスに長けているが、最も得意なものはブレイクダンスである。そこで、国民の精神を涵養するために、オクタヴィア・ダンス・クィーン杯を開催することができる。もっとも、練習のさせすぎは禁物である！[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが美樹さやかである。
+				[NEWLINE][ICON_BULLET]「音響学」のテクノロジーを獲得している。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Gold}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官1人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]{2_Turns}ターンの間、都市が活用するタイルおよび世界遺産から生み出される[ICON_CULTURE]文化力の100%が[ICON_CAPITAL]首都の[ICON_TOURISM]観光力に加算される。
+				[NEWLINE][ICON_BULLET]{2_Turns}ターンの間、[ICON_CAPITAL]首都で国王感謝祭が開催される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_DANCE_QUEEN_ENACTED_DESC">
+			<Text>
+				そなたに秘められた才能の1つにダンスがある。クラシックに親しんでいるため社交ダンスに長けているが、最も得意なものはブレイクダンスである。そこで、国民の精神を涵養するために、オクタヴィア・ダンス・クィーン杯を開催することができる。もっとも、練習のさせすぎは禁物である！[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]{2_Turns}ターンの間、都市が活用するタイルおよび世界遺産から生み出される[ICON_CULTURE]文化力の100%が[ICON_CAPITAL]首都の[ICON_TOURISM]観光力に加算される。
+				[NEWLINE][ICON_BULLET]{2_Turns}ターンの間、[ICON_CAPITAL]首都で国王感謝祭が開催される。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_ALLY_OF_JUSTICE">
+			<Text>
+				正義の味方
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_ALLY_OF_JUSTICE_DESC">
+			<Text>
+				魔法少女の驚くべき力を手にしてからというもの、そなたはその力を無辜の民のために使用することを最優先としてきた。もっとも、この試みは些末な問題により妨害されることがあった。しかし、すべての国民がそなたの助けを求めている！今こそ自身が正義の味方であることを宣言し、世界の悪人に正義の鉄槌を下すのだ！ただ、「長く深淵を覗くならば、深淵もまた等しくおまえを見返すのだ」という言葉を忘れてはならない。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーが美樹さやかである。
+				[NEWLINE][ICON_BULLET]「官吏」のテクノロジーを獲得している。
+				[NEWLINE][ICON_BULLET]世界の1/3を超える文明から非難声明を出されていない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_CULTURE]文化力{1_Gold}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官2人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]世界の1/3を超える文明から非難声明を出されている文明と戦争状態にある場合、白兵および火器ユニットに[COLOR_POSITIVE_TEXT]正義の味方[ENDCOLOR]の昇進が与えられ、これにより[ICON_STRENGTH]戦闘力+15%および攻撃回数が増加する。
+				[NEWLINE][ICON_BULLET]自分が世界の1/3を超える文明から非難声明を出されると、この施策が廃止され、かつ文明が3ターンの間無政府状態に陥る。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_SAYAKA_ALLY_OF_JUSTICE_ENACTED_DESC">
+			<Text>
+				魔法少女の驚くべき力を手にしてからというもの、そなたはその力を無辜の民のために使用することを最優先としてきた。もっとも、この試みは些末な問題により妨害されることがあった。しかし、すべての国民がそなたの助けを求めている！今こそ自身が正義の味方であることを宣言し、世界の悪人に正義の鉄槌を下すのだ！ただ、「長く深淵を覗くならば、深淵もまた等しくおまえを見返すのだ」という言葉を忘れてはならない。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]世界の1/3を超える文明から非難声明を出されている文明と戦争状態にある場合、白兵および火器ユニットに[COLOR_POSITIVE_TEXT]正義の味方[ENDCOLOR]の昇進が与えられ、これにより[ICON_STRENGTH]戦闘力+15%および攻撃回数が1増加する。
+				[NEWLINE][ICON_BULLET]自分が世界の1/3を超える文明から非難声明を出されると、この施策が廃止され、かつ文明が3ターンの間無政府状態に陥る。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_SAYAKA">
+			<Text>
+				正義の味方
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_SAYAKA_HELP">
+			<Text>
+				[ICON_STRENGTH]戦闘力[COLOR_POSITIVE_TEXT]+15%[ENDCOLOR]。攻撃回数[COLOR_POSITIVE_TEXT]+1[ENDCOLOR]。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_YURI_VALHALLA">
+			<Text>
+				百合ヴァルハラの創世
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_YURI_VALHALLA_DESC">
+			<Text>
+				2人の少女の間における愛情は最も純粋な愛情の形である……少なくともインターネットの一部の情報によれば。Y染色体が存在しないそなたの国においては、現世と来世の狭間にあるそなたの世界を百合ヴァルハラとすることで、国内のすべての魔法少女達から大いに喜ばれることになるだろう。なぜ人口の成長が加速するのかについては深く考えてはいけない。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーがアルティメットまどかである。
+				[NEWLINE][ICON_BULLET]少なくとも4人の大魔法少女を所有している。
+				[NEWLINE][ICON_BULLET]少なくとも2つのルミナス庭園を建設している。
+				[NEWLINE][ICON_BULLET]ゲーム中に1回しか実施できない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_GOLD]ゴールド{1_Culture}。
+				[NEWLINE][ICON_BULLET][ICON_MAGISTRATES]政務官2人。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市の[ICON_FOOD]成長速度+10%およびルミナス庭園から[ICON_HAPPINESS_1]幸福度+3。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_YURI_VALHALLA_ENACTED_DESC">
+			<Text>
+				2人の少女の間における愛情は最も純粋な愛情の形である……少なくともインターネットの一部の情報によれば。Y染色体が存在しないそなたの国においては、現世と来世の狭間にあるそなたの世界を百合ヴァルハラとすることで、国内のすべての魔法少女達から大いに喜ばれることになるだろう。なぜ人口の成長が加速するのかについては深く考えてはいけない。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]すべての都市の[ICON_FOOD]成長速度+10%およびルミナス庭園から[ICON_HAPPINESS_1]幸福度+3。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_KNIGHT">
+			<Text>
+				{1_MagicalGirlName}をナイトに指名する
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_KNIGHT_DESC">
+			<Text>
+				ナイトとはそなたが最も信頼を置く魔法少女のことであり、かつての時間軸における美樹さやかや百江なぎさがそうであった。{1_MagicalGirlName}をそなたのナイトに指名することで彼女には途方もないほどの力が与えられることであろう。しかし、この世界におけるそなたは、本来の世界にいるときよりも力を失っているため、1人のナイトしか維持できない。[NEWLINE]
+				[NEWLINE]条件 / 制約：
+				[NEWLINE][ICON_BULLET]プレイヤーがアルティメットまどかである。
+				[NEWLINE][ICON_BULLET]{1_MagicalGirlName}のレベルが4以上である。
+				[NEWLINE][ICON_BULLET]他の大魔法少女をナイトに指名していない。
+				[NEWLINE]コスト：
+				[NEWLINE][ICON_BULLET][ICON_PEACE]信仰力{2_Faith}。
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]{1_MagicalGirlName}に[COLOR_POSITIVE_TEXT]まどかのナイト[ENDCOLOR]の昇進が付与され、これにより[ICON_STRENGTH]戦闘力が33%増加し、さらに白兵攻撃の前に遠隔攻撃を行うことができるようになる。
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_MADOKA_KNIGHT_ENACTED_DESC">
+			<Text>
+				ナイトとはそなたが最も信頼を置く魔法少女のことであり、かつての時間軸における美樹さやかや百江なぎさがそうであった。{1_MagicalGirlName}をそなたのナイトに指名することで彼女には途方もないほどの力が与えられることであろう。しかし、この世界におけるそなたは、本来の世界にいるときよりも力を失っているため、1人のナイトしか維持できない。[NEWLINE]
+				[NEWLINE]報酬：
+				[NEWLINE][ICON_BULLET]{1_MagicalGirlName}に[COLOR_POSITIVE_TEXT]まどかのナイト[ENDCOLOR]の昇進が付与され、これにより[ICON_STRENGTH]戦闘力が33%増加し、さらに白兵攻撃の前に遠隔攻撃を行うことができるようになる。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_MADOKA">
+			<Text>
+				まどかのナイト
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PROMOTION_DECISIONS_MADOKA_HELP">
+			<Text>
+				[ICON_STRENGTH]戦闘力+33%。白兵攻撃の前に遠隔攻撃を行うことができる。
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_DECISIONS_HOLYBOOK_MADOKA">
+			<Text>
+				「まど☆マギ」漫画の入手
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_HOLYBOOK_DESC_MADOKA">
+			<Text>
+				鹿目まどかと暁美ほむらの神話を詳細に綴った聖書、「魔法少女まどか☆マギカ」シリーズのフルカラー版漫画をすべて揃えるのはコストがかかることだろう。特に関連作品等の聖書外典まで揃えるならば尚更である。しかし、その程度のことで国内にいるオタクの熱意を阻むことはできないのだ！[NEWLINE]
+			</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_DECISIONS_RELIGIONEVENTS_1MADOKA">
+			<Text>ルミナス・セレモニー</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DECISIONS_RELIGIONEVENTS_1_DESCMADOKA">
+			<Text>ルミナスは、「まどか教会」あるいは「ほむら崇拝」の2人の女性司祭が、草の生えた広場の中央に椅子を並べて肩を寄せ合い、顔を摺り合わせるという儀式である。これは両方の宗教にとって大変神聖な儀式であると考えられている。[NEWLINE]</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_SPECIFIC_DIPLO_STRING_3">
+			<Text>
+				施策によるボーナスあるいはペナルティ
+			</Text>
+		</Row>
+	</Language_JA_JP>
+</GameData>

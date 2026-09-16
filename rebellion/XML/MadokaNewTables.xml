@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 6/5/2014 3:15:55 PM -->
+
+
+
+<GameData>
+	
+	<!--*********************************************TRAIT TABLES********************************************************************-->
+
+	<!-- Nagisa trait: Trade route Gold bonus per specific Resource in YOUR city -->
+	<Table name="Trait_PMMM_TradeRouteBonusPerResource">
+		<Column name="TraitType" type="text" reference="Traits(Type)"/>
+		<Column name="ResourceType" type="text" reference="Resources(Type)"/>
+		<Column name="IncomingGold" type="integer" default="0"/>
+		<Column name="OutgoingGold" type="integer" default="0"/>
+	</Table>
+
+	<!-- Nagisa trait: Spreads Resources automatically -->
+	<Table name="Trait_PMMM_GoldenAgeResourceSpread">
+		<Column name="TraitType" type="text" reference="Traits(Type)"/>
+		<Column name="ResourceType" type="text" reference="Resources(Type)"/>
+		<Column name="ProbabilityPerTurn" type="integer" default="0"/>
+	</Table>
+
+	<Table name="Trait_SpecificMetCivYieldBonuses">
+		<Column name="TraitType" type="text" reference="Traits(Type)"/>
+		<Column name="EnemyCivilizationType" type="text" reference="Civilizations(Type)"/>
+		<Column name="YieldBonus" type="integer"/>
+	</Table>
+	<Table name="Trait_SpecificMetCivUnhappiness">
+		<Column name="TraitType" type="text" reference="Traits(Type)"/>
+		<Column name="EnemyCivilizationType" type="text" reference="Civilizations(Type)"/>
+		<Column name="Unhappiness" type="integer"/>
+	</Table>
+
+	<Table name="Trait_PromotionAtHPThreshold">
+		<Column name="TraitType" type="text" reference="Traits(Type)"/>
+		<Column name="PromotionType" type="text" reference="UnitPromotions(Type)"/>
+		<Column name="Threshold" type="integer" default="0"/>
+	</Table>
+
+	
+	<!--*****************************************END TRAIT TABLES********************************************************************-->
+
+
+
+	<!--*********************************************PROMOTION TABLES****************************************************************-->
+	<!--Grant a promotion to a unit if it is on a specific Improvement-->
+	<Table name="Promotion_PMMM_GrantNewPromotionOnImprovement">
+		<Column name="PromotionType" type="text" reference="UnitPromotions(Type)"/>
+		<Column name="ImprovementType" type="text" reference="Improvements(Type)"/>
+		<Column name="NewPromotionType" type="text" reference="UnitPromotions(Type)"/>
+	</Table>
+
+	<!--Get another promotion when an enemy is near-->
+	<Table name="Promotion_PMMM_GrantNewPromotionNearEnemy">
+		<Column name="PromotionType" type="text" reference="UnitPromotions(Type)"/>
+		<Column name="Radius" type="integer" default="0"/>
+		<Column name="NewPromotionType" type="text" reference="UnitPromotions(Type)"/>
+	</Table>
+	<!--*****************************************END PROMOTION TABLES***************************************************************-->
+</GameData>
+
+
+
