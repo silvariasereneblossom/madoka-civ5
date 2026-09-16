@@ -28,7 +28,7 @@ TYPE_PREFIXES = ("BUILDING_", "BUILDINGCLASS_", "UNIT_", "UNITCLASS_", "UNITCOMB
                  "ARTSTYLE_", "GAMESPEED_", "HANDICAP_", "BUILD_", "ROUTE_", "PLAYERCOLOR_",
                  "COLOR_", "DIPLO_MODIFIER_", "NOTIFICATION_", "SOUND_", "AS2D_", "COMMAND_",
                  "ACTIVITY_", "GREAT_WORK_", "GREATWORK_", "FLAVOR_", "DIRECTION_")
-SKIP_SUBSTRINGS = ("_ATLAS", "TXT_KEY_", "MOD_", "%", "..")  # literal fragments / formats
+SKIP_SUBSTRINGS = ("_ATLAS",)  # atlas names are not Type rows
 
 
 def load_db(db: Path):
@@ -46,20 +46,52 @@ def load_db(db: Path):
 
 
 def strip_lua_comments(src: str) -> str:
-    src = re.sub(r"--\[(=*)\[.*?\]\1\]", "", src, flags=re.S)
-    return re.sub(r"--[^\n]*", "", src)
+    """Blank comments without touching string literals ("--" inside a string is common)."""
+    out: list[str] = []
+    i, n = 0, len(src)
+    while i < n:
+        ch = src[i]
+        if ch == "-" and src.startswith("--", i):
+            m = re.match(r"--\[(=*)\[", src[i:])
+            if m:                                             # long comment --[==[ ... ]==]
+                close = "]" + m.group(1) + "]"
+                j = src.find(close, i + m.end())
+                j = n if j < 0 else j + len(close)
+            else:                                             # line comment
+                j = src.find("\n", i)
+                j = n if j < 0 else j
+            out.append("".join("\n" if c == "\n" else " " for c in src[i:j]))
+            i = j
+        elif ch in ("'", '"'):                                # short string with escapes
+            j = i + 1
+            while j < n and src[j] != ch:
+                j += 2 if src[j] == "\\" else 1
+            j = min(j + 1, n)
+            out.append(src[i:j])
+            i = j
+        elif ch == "[" and re.match(r"\[=*\[", src[i:]):      # long string [==[ ... ]==]
+            m = re.match(r"\[(=*)\[", src[i:])
+            close = "]" + m.group(1) + "]"
+            j = src.find(close, i + m.end())
+            j = n if j < 0 else j + len(close)
+            out.append(src[i:j])
+            i = j
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", required=True)
     ap.add_argument("--mod", required=True)
-    ap.add_argument("--ignore-prefix", action="append", default=[])
+    ap.add_argument("--ignore-prefix", action="append", default=None)
     args = ap.parse_args(argv)
+    ignore_prefixes = tuple(args.ignore_prefix or ())
 
     tables, cols, types_by_table, all_types = load_db(Path(args.db))
-    problems: dict[str, list[str]] = defaultdict(list)
-    seen_literals: dict[str, set[str]] = defaultdict(set)
+    problems: dict[str, set[str]] = defaultdict(set)
 
     for lua in sorted(Path(args.mod).rglob("*.lua")):
         src = strip_lua_comments(lua.read_text(encoding="utf-8-sig", errors="replace"))
@@ -68,18 +100,18 @@ def main(argv=None) -> int:
         for m in re.finditer(r'GameInfoTypes(?:\.([A-Z][A-Z0-9_]+)|\[\s*["\']([A-Z][A-Z0-9_]+)["\']\s*\])', src):
             t = m.group(1) or m.group(2)
             if t not in all_types:
-                problems[rel].append(f"GameInfoTypes.{t}: no row with that Type in any table")
+                problems[rel].add(f"GameInfoTypes.{t}: no row with that Type in any table")
 
         for m in re.finditer(r"GameInfo\.([A-Za-z_][A-Za-z0-9_]*)\s*([\[\(\{\.])", src):
             table, opener = m.group(1), m.group(2)
             if table not in tables:
-                problems[rel].append(f"GameInfo.{table}: table does not exist")
+                problems[rel].add(f"GameInfo.{table}: table does not exist")
                 continue
             if opener == ".":
                 tail = src[m.end():m.end() + 80]
                 mm = re.match(r"([A-Z][A-Z0-9_]+)", tail)
                 if mm and mm.group(1) not in types_by_table.get(table, set()):
-                    problems[rel].append(f"GameInfo.{table}.{mm.group(1)}: no such Type in {table}")
+                    problems[rel].add(f"GameInfo.{table}.{mm.group(1)}: no such Type in {table}")
             elif opener == "[":
                 # GameInfo.Table[expr].Column
                 depth, i = 1, m.end()
@@ -88,23 +120,22 @@ def main(argv=None) -> int:
                     i += 1
                 mm = re.match(r"\.([A-Za-z_][A-Za-z0-9_]*)", src[i:i + 60])
                 if mm and mm.group(1) not in cols[table] and mm.group(1) not in ("ID",):
-                    problems[rel].append(f"GameInfo.{table}[..].{mm.group(1)}: column missing on {table}")
+                    problems[rel].add(f"GameInfo.{table}[..].{mm.group(1)}: column missing on {table}")
 
         for m in re.finditer(r"""['"]([A-Z][A-Z0-9]*_[A-Z0-9_]+)['"]""", src):
             lit = m.group(1)
             if not lit.startswith(TYPE_PREFIXES) or any(s in lit for s in SKIP_SUBSTRINGS):
                 continue
-            if any(lit.startswith(p) for p in args.ignore_prefix):
+            if ignore_prefixes and lit.startswith(ignore_prefixes):
                 continue
-            if lit in all_types or lit in seen_literals[rel]:
+            if lit in all_types:
                 continue
-            seen_literals[rel].add(lit)
-            problems[rel].append(f"literal '{lit}': no row with that Type in any table")
+            problems[rel].add(f"literal '{lit}': no row with that Type in any table")
 
     total = sum(len(v) for v in problems.values())
     for rel, items in problems.items():
         print(f"== {rel}")
-        for it in sorted(set(items)):
+        for it in sorted(items):
             print("   " + it)
     print(f"\n{total} findings in {len(problems)} files "
           f"(db: {len(tables)} tables, {len(all_types)} Type values)")

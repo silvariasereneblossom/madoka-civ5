@@ -23,6 +23,15 @@ against the files in `wftw/` (Workshop v27) and the CP 5.4.6 checkout in
   with Lekmod removed from the DLC folder (45 civs, 369 tables). The
   `Civ5CoreDatabase.db` is base-game only (20 civs) and is not usable as a seed.
   `build/seed_lekmod34_core.db` is the Lekmod v34.15 world for Phase 6.
+  Vanilla text is seeded from the per-package `cache/Localization-*.db`
+  files (24,525 en_US tags) behind the game's `Language_en_US` view and
+  INSTEAD OF triggers, so duplicate-tag and missing-key behaviour matches.
+  Correction (2026-09-16 review): the first version's SQL comment stripper
+  broke on `--` inside `/* */` banners and silently dropped statements (23 of
+  46 in `PMMMNonMGPromotions.sql`) while reporting the file OK; the error
+  counts quoted above were unaffected, but data completeness was not. Fixed;
+  the tool now also warns on zero-row updates, bare `DEFAULT true/false`
+  (a string default on the game's SQLite 3.7.17) and dangling references.
 - `scripts/build_dll.py` builds `CvGameCore_Expansion2.dll` with LLVM 23 and a
   locally extracted Windows SDK 7.0 + VC9 (`tools/sdk/ext`, made with
   `msiexec /a`, nothing installed system-wide). It patches upstream's
