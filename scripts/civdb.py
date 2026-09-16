@@ -217,6 +217,9 @@ def apply_table_def(conn, el: ET.Element, mod, file, rep) -> None:
 
 
 def apply_xml(conn: sqlite3.Connection, text: str, mod: str, file: str, rep: Report) -> bool:
+    # The game's XML reader tolerates "--" inside comments (illegal in strict XML);
+    # drop comments up front so ElementTree does not reject otherwise-valid files.
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
     try:
         root = ET.fromstring(text)
     except ET.ParseError as e:

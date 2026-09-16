@@ -58,7 +58,9 @@ ALTER TABLE Traits ADD COLUMN 'MaximumMetEraMGStrength' BOOLEAN DEFAULT false NO
 --**********************************************************************************************
 --UnitPromotions
 --**********************************************************************************************
-ALTER TABLE UnitPromotions ADD COLUMN 'ShowInUnitPanel' BOOLEAN DEFAULT true NOT NULL; --General purpose field to prevent a promotion from showing up in the Unit Panel.
+-- ShowInUnitPanel is supplied by the Community Patch itself (PromotionTableChanges.sql, default 1).
+-- Re-adding it here fails with "duplicate column name" under CP 5.x, and sqlite3_exec then
+-- abandons the rest of this file, which is what broke every Magical Girl column below.
 ALTER TABLE UnitPromotions ADD COLUMN 'ShowInPedia' BOOLEAN DEFAULT true NOT NULL; --General purpose field to prevent a promotion from showing up in the Civilopedia.
 ALTER TABLE UnitPromotions ADD COLUMN 'ObtainUniqueUnitPromotionOnCityCapture' BOOLEAN DEFAULT false NOT NULL; -- this unit gets a random promotion from the enemy Civ's UU(s) upon city capture
 ALTER TABLE UnitPromotions ADD COLUMN 'SoulGemPolishPercent' INTEGER DEFAULT 0; --this unit can use "Polish Soul Gem" on a Magical Girl; value is amount of Polish granted
