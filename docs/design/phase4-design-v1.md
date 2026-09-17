@@ -259,14 +259,44 @@ start-location reveal and the extra leader girl.
 
 ---
 
-## 11. Consolidated open points
+## 11. Maintainer rulings (2026-09-17, round 2)
 
-1. Ultimate Madoka: complete the "Great People." sentence; accept 3x instead of 4x?
-2. Homura: Time Stop trigger (leader-girl mission vs repeatable national building) and the definition of "a turn's
-   worth of yields"; scaling of Concentrated Missile Fire; tech progress amount for the Thief.
-3. Devil Homura: intent behind removing all unhappiness penalties, and which brake on width remains.
-4. Mami: who receives the Teahouse gold.
-5. Kyouko: "traded" = imported only? Kugatachi line length? Confirm no religion founding is worth the extra work.
-6. Madoka: does Pluvia Magica hit the primary target?
-7. Global: agree to compress Mood and Soul Gem combat modifiers alongside the 100% strength change?
-8. Every UMG: name the AI rule and the tooltip text as part of the spec.
+| # | Topic | Ruling |
+|---|---|---|
+| 1 | Girl strength and multipliers | 100% of the frontline unit, existing Mood and Soul Gem multipliers **kept as they are**. Girls are meant to be overpowered individually; mass is the counter. Revisit only after playtesting. |
+| 2 | Ability damage | Virtual attacks via `GetCombatDamage`. The strength numbers in the spec were reference points, not HP values. |
+| 3 | AI and text | Every UMG ships with an AI rule and tooltip text. Part of the definition of done. |
+| 4 | Devil Homura, Ai Yo | **Kept as specified.** Intent: a steamroll-early-or-fall-behind civ. Civ V favours tall play; going wide without the economy still costs heavily, the halved Prodigy rate compounds that, and her power depends on running up unhappiness through settlement and conquest, which opponents can block. Implementation route (a), DLL trait columns. |
+| 5 | Time Stop | **Mission on Homura's leader girl.** The free turn **includes** Great Person points, tourism and healing, not only city yields and builds. |
+| 6 | Mami, Teahouse | Mami earns +2 Gold and +10% Gold per Declaration of Friendship partner or protected city-state. |
+| 7 | Nagisa, Farms | **Kept at +1 Production on every Farm.** She was the weakest civ and her UU arrives very late, so the strong early line is deliberate. |
+| 8 | Ultimate Madoka, return XP | **100 XP per applied promotion, uncapped.** Promoting a girl is a real investment and this is its payoff. |
+| 9 | Ultimate Madoka, "Great People." | Expending a Great Person grants Golden Age points. |
+| 10 | Nothing To Despair, Ever | **4x strength kept**, cannot target cities, **damage halved against Magical Girls**. Five-turn single kill judged acceptable. |
+
+## 12. Still open, with working defaults
+
+Implementation proceeds on these defaults unless the maintainer overrides them.
+
+| Topic | Working default |
+|---|---|
+| Madoka, Pluvia Magica | Primary target takes the same 0.5 hit and the 15% vulnerability; neighbours as specified. |
+| Homura, Thief of Time | Each trigger grants 10% of the cost of a random unowned, currently researchable tech. |
+| Homura, Missile Fire scaling | Virtual attack at Rocket Artillery's ratio to the era's best land unit, siege bonus against cities included. |
+| Homura, Time Stop Grief Seed reduction | -1 turn per seed, floor 5 turns. |
+| Kyouko, traded luxuries | "Traded" means imported through deals only; exported luxuries are unaffected. |
+| Kyouko, Kugatachi | Target plus the two tiles beyond it along the attack direction, 2.0 each. |
+| Kyouko, no religion | Enforced in Lua by refusing religion founding for her; revisit if it proves fragile. |
+| Mami, Tiro Siege | Once per turn per Musketeer, does not consume the attack, virtual attack at Cannon strength with its city bonus. |
+| Ultimate Madoka, Led Away bonus promotion | One free promotion of the player's choice (promotion-ready flag), after XP is restored. |
+| Kazumi | Section 9 proposal stands until the maintainer amends it. |
+| Devil Homura | Whole kit provisional pending Walpurgisnacht Rising; build the DLL columns so the numbers stay data. |
+
+## 13. Build order
+
+1. UMG framework: mission gating, persisted cooldowns, virtual-attack helper, timed-promotion helper, AI hook, panel readout.
+2. Data-only kits: Nagisa, Oriko/Kirika, Madoka's Middle School, Kyouko's economy, Mami's city-state and trade yields.
+3. Per-civ UMGs on the framework, one civ at a time, each with its AI rule and text.
+4. Lua-heavy mechanics: Time Stop free turn, Thief of Time, Law of Cycles return, Tiro Siege, Sayaka tourism conversion, Kazumi Freezer.
+5. DLL: Ai Yo columns in the bundled build.
+6. Text and Civilopedia pass for every renamed civ, city list and ability.
