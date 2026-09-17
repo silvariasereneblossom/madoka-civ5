@@ -85,9 +85,20 @@ if not PMMM.ConversionDataInit then
 			--v27
 			MapModData.gPMMMTraits[i].LeaderMGIntrigueTurns = trait.LeaderMGIntrigueTurns
 			MapModData.gPMMMTraits[i].RevealCivLocations = trait.RevealCivLocations
+			MapModData.gPMMMTraits[i].HasMagicalGirls = trait.HasMagicalGirls	-- [port] exclusivity flag, see PlayerHasMagicalGirls
 			MapModData.gPMMMTraits[i].MaximumMetEraMGStrength = trait.MaximumMetEraMGStrength
 		end
 	end
+
+-- [port] Does this player take part in the Magical Girl system? With MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS at 0
+-- everyone does (the original behaviour, city-states included); otherwise only leaders whose trait sets
+-- HasMagicalGirls. City-states and Barbarians have no gPMMMTraits entry and are therefore excluded.
+function PlayerHasMagicalGirls(iPlayer)
+	if GameDefines.MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS == 0 then return true end
+	local tTrait = MapModData.gPMMMTraits and MapModData.gPMMMTraits[iPlayer]
+	if not tTrait then return false end
+	return tTrait.HasMagicalGirls == 1 or tTrait.HasMagicalGirls == true
+end
 
 	--Get UBs from this mod.
 	MapModData.gPMMMUniqueBuildings = {}

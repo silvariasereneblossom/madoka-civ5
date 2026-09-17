@@ -17,6 +17,12 @@
 		<!-- Anything which has "DEAL_DURATION" means that it will multiply the Deal Duration of the current game speed (30 turns on standard) to get the value.
 			 This allows for compatibility with custom game speeds. -->
 		
+		<!-- 1 = only civilizations whose trait sets HasMagicalGirls take part in the Magical Girl system (see SQL/Shared/MGCivilizations.sql); 0 = everyone does -->
+		<Row Name="MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS">
+			<Value>
+				1
+			</Value>
+		</Row>
 		<!-- Grief Seed SG Recovery %-->
 		<Row Name="BASE_GRIEF_SEED_RECOVER_AMOUNT">
 			<Value>

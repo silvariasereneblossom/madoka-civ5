@@ -366,6 +366,7 @@ end
 --Make a magical girl from GP expenditure.
 function MadokaInitMagicalGirl(iPlayer, iUnitID, iUnitType, iX, iY)
 	if iPlayer < iMaxCivsAndCS then
+		if not PlayerHasMagicalGirls(iPlayer) then return end	-- [port] Magical Girls are exclusive to MG civs (define MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS)
 		local pPlayer = Players[iPlayer]
 		local pUsedGP = pPlayer:GetUnitByID(iUnitID)
 
@@ -415,6 +416,7 @@ end
 --Create Leader Magical Girl upon founding of the first city.
 function CreateFirstLeaderMagicalGirl(iPlayer, iX, iY)
 	if iPlayer ~= iMaxCivsAndCS then  --not iMaxCivs! City-States get Leader MGs too!
+		if not PlayerHasMagicalGirls(iPlayer) then return end	-- [port] exclusive to MG civs; with the define at 0 city-states get them as before
 		local pCity = Map.GetPlot(iX, iY):GetPlotCity()
 		if pCity then
 			if pCity:GetOwner() == iPlayer and pCity:IsOriginalCapital() then
@@ -872,7 +874,7 @@ function MagicalGirlUpkeep(iPlayer)
 			end
 		end
 		--City-States get free Grief Seeds every number of turns equal to the game's Deal Duration, since they aren't going out and hunting Witches
-		if iPlayer >= iMaxCivs and iPlayer < iMaxCivsAndCS then
+		if iPlayer >= iMaxCivs and iPlayer < iMaxCivsAndCS and PlayerHasMagicalGirls(iPlayer) then
 			local iTurn = Game.GetGameTurn()
 			if iTurn >= iDealDuration then
 				if (iTurn % iDealDuration) == 0 then

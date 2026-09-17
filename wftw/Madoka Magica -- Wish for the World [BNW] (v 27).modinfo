@@ -440,9 +440,9 @@
     <File md5="0052B69A92403AABDE630DDD86E40DB2" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
     <File md5="ECC4CFE4673E34D88493ABD5A063B1CE" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
-    <File md5="E9D3B59EC60C1A7D9A4632BCBC38D549" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
+    <File md5="955E177D3FEFC4E738C91149473650FC" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
-    <File md5="EB3D05C91B97C7E2638136BB2E4CB3A4" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
+    <File md5="3B9878308590CE3D99EB99F515291856" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
     <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
@@ -469,7 +469,7 @@
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
     <File md5="F1979632BB637781FF17F503CCF544A1" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
     <File md5="6B9425B01E18D7CE93821E8A021FE0C6" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
-    <File md5="E4E3DDFB8592237A51A4D7064B9A77D1" import="1">Lua/PMMMDataStorage.lua</File>
+    <File md5="602783B3660CEC55BB1BF96856936B7B" import="1">Lua/PMMMDataStorage.lua</File>
     <File md5="EBCE98E71C6984CFB4F522C15488138F" import="1">Lua/PMMMDefines.lua</File>
     <File md5="89E26F85B37B9E3FD0E8C7F402063DE1" import="1">Lua/PMMMGeneralFunctions.lua</File>
     <File md5="48F176D58302B9022477955845FC0340" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
@@ -481,7 +481,7 @@
     <File md5="25380CA53A73D67D8240DA66579E8B20" import="0">Lua/UI/TopPanelEntertainmentDisplay.xml</File>
     <File md5="9D50A23816F4894DB91C24B4BC55C326" import="0">Lua/UI/TopPanelFreezerDisplay.lua</File>
     <File md5="B9EEFF3D61D20142C9243288667E130F" import="0">Lua/UI/TopPanelFreezerDisplay.xml</File>
-    <File md5="58B9D4FE9F7199B32E4BF3D376BBE377" import="0">Lua/UI/TopPanelGriefSeedDisplay.lua</File>
+    <File md5="ED488FA92E8C6AE973ABC452EB0DBFF8" import="0">Lua/UI/TopPanelGriefSeedDisplay.lua</File>
     <File md5="D62B1B89ADE9A2E49377AABF88E048FE" import="0">Lua/UI/TopPanelGriefSeedDisplay.xml</File>
     <File md5="64DF635BD57CDEB13DC1038934568A7E" import="1">Lua/Utils/CityInfoStack.lua</File>
     <File md5="120EB71025973A8A48B38314241DD0B3" import="1">Lua/Utils/CityInfoStack.xml</File>
@@ -550,6 +550,7 @@
     <File md5="862033F7E2E2ACF7E175FB716677AC5C" import="0">SQL/Shared/IconAtlases.sql</File>
     <File md5="0C6A93EC71639C1D64A3A24860666C31" import="0">SQL/Shared/MGActionStates.sql</File>
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
+    <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
     <File md5="7B2B72CF6A4B1EFF92A35179F0D8832D" import="0">SQL/Shared/MGMissions.sql</File>
     <File md5="410E6A46F02A3D8159200D0D0E403B1D" import="0">SQL/Shared/MGMoods.sql</File>
@@ -560,7 +561,7 @@
     <File md5="8E968CB796E87F10284EBCF8B6E90C0D" import="0">SQL/Shared/NavalOutpost.sql</File>
     <File md5="DB0DF1CE20A39BDE8332889E708ADF79" import="0">SQL/Shared/PlayerColors.sql</File>
     <File md5="DCEB8BE87F29E5E36AFA159E20626EB1" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
-    <File md5="3384CA94BD59548876D2AFEB5C5B23D7" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="2DF50F84E88303FC61F889234B9A1FDF" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
     <File md5="FD01B1194B3EE011A39E86749EBDBF68" import="1">SQL/Shared/UnitArtDefines.sql</File>
     <File md5="5CA12672FE05C265D6C10749CC4510E5" import="0">SQL/Shared/WFTWConcepts.sql</File>
     <File md5="B0BD2983D305AE2DB0AB9CD52B234F36" import="0">SQL/Songhai/AskiaTrait.sql</File>
@@ -620,7 +621,7 @@
     <File md5="4E7851F313A026E41F8AA9263EB30F68" import="1">UnitArt/Wraith_E.dds</File>
     <File md5="9DD28C8CB11DCAFA64ED659965E8E98B" import="1">UnitArt/Wraith_E.fxsxml</File>
     <File md5="8630D001B13B4113D3ADA8E00C1A670A" import="1">UnitArt/Wraith_E.gr2</File>
-    <File md5="5FF731E48F1258CE2C57375204CA34DD" import="0">WFTWGameDefines.xml</File>
+    <File md5="4E8FE8E1C00EBF36AE135E00DD2B5549" import="0">WFTWGameDefines.xml</File>
     <File md5="42F9EDD38245686545A567FB15AA4332" import="0">WishForTheWorldOptions.sql</File>
     <File md5="46342BE1A01426247FE19A85756BE5F4" import="0">XML/CBPReligiousWonder.xml</File>
     <File md5="A8D22E533C09F664732F28C6F7C835E9" import="0">XML/CIV5ArtDefines-MadokaUnits.xml</File>
@@ -744,6 +745,7 @@
       <UpdateDatabase>SQL/Madoka/MadokaLeaderAndTrait.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Madoka/MadokaUnit.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Madoka/MadokaBuilding.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Shared/MGCivilizations.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Shared/MGMoods.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Shared/Dialog.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Germany/BismarckTrait.sql</UpdateDatabase>

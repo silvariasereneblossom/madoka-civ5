@@ -220,3 +220,23 @@ A Leader Magical Girl at 0% Soul Gem fires the "became a Witch" notification but
 mod's v19 rule in `TurnIntoWitch` (leaders are killed and respawn after `LEADER_MG_RESPAWN_TURNS`, scaled by game
 speed and `LeaderMGRespawnTimeModifier`). Only non-leader girls spawn a barbarian Witch. Not a bug; a Phase 4 design
 question if the user wants leaders to witch out for real.
+
+## Magical Girl system made exclusive to the MG civilizations (2026-09-17)
+
+Maintainer decision (scope question 1): the Magical Girl system belongs to the ten MG civilizations, not to every
+player. Implementation:
+
+- `Traits.HasMagicalGirls` (new column, default 0, `SQL/Shared/MadokaTableUpdates.sql`), set to 1 for the ten WFTW
+  traits in `SQL/Shared/MGCivilizations.sql` (loaded after all civ files). Other civ packs opt in by setting it.
+- GameDefine `MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS` = 1 in `WFTWGameDefines.xml`; 0 restores the original global
+  behaviour (every civ and city-state has girls).
+- `PlayerHasMagicalGirls(iPlayer)` in `Lua/PMMMDataStorage.lua` (loaded first, so every gameplay script sees it).
+  City-states and Barbarians have no `gPMMMTraits` entry and are excluded when the define is on.
+- Gated: Great Person to Magical Girl conversion, leader girl on capital founding (including the ExtraLeaderMG path
+  inside it), city-state free Grief Seeds, Hidden Witch Barrier allowance, and the top-panel Grief Seed counter
+  (UI contexts cannot see gameplay functions, so the test is inlined there).
+- Not gated on purpose: Witches still replace Barbarians for everyone (world flavour; Askia's Witch Barrier XP
+  relies on it), and Witch kills still hand a Grief Seed to whoever kills them.
+
+Simulator: define present, exactly 10 traits flagged. Demon Homura keeps `NoMagicalGirls` on top of the flag, so her
+subjugation-on-Prodigy branch still runs.

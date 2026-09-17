@@ -44,7 +44,10 @@ end
 function RefreshGriefSeedDisplay()
 	local iPlayer = Game:GetActivePlayer()
 	if MapModData.gPMMMTraits and MapModData.gPMMMTraits[iPlayer] then -- [port] A23: gPMMMTraits may not exist yet
-		if MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 then
+		local tTrait = MapModData.gPMMMTraits[iPlayer]
+		-- [port] also hidden for players outside the Magical Girl system (MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS)
+		local bOutsideSystem = GameDefines.MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS ~= 0 and not (tTrait.HasMagicalGirls == 1 or tTrait.HasMagicalGirls == true)
+		if bOutsideSystem or tTrait.NoMagicalGirls == true or tTrait.NoMagicalGirls == 1 then
 			Controls.GriefSeedString:SetText("");
 			return
 		end

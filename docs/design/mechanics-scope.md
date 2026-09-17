@@ -128,8 +128,13 @@ Three options:
 - **C. Hybrid.** Vanilla civs get the leader girl only (one unit, respawning, no Great Person conversion). Keeps the
   flavor, removes most of the babysitting for non-MG players.
 
-Recommendation: **B for multiplayer, C for single player**, switchable by one GameDefine, defaulting to C. This is
-the question to answer first, because it decides how much of each civ's power budget the shared package may claim.
+**Decided 2026-09-17: B, exclusive to the MG civs.** Implemented the same day: `Traits.HasMagicalGirls` (set for the
+ten traits in `SQL/Shared/MGCivilizations.sql`), the define `MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS` (1; 0 restores the
+old global behaviour), the helper `PlayerHasMagicalGirls`, and gates at Great Person conversion, leader-girl creation,
+city-state Grief Seeds, Hidden Witch Barriers and the Grief Seed counter. Witches still replace Barbarians for
+everyone. Consequence for the rest of this document: the shared MG package now counts toward each MG civ's power
+budget, so after the section 4a.2 tuning it should be worth roughly 30 to 40% of the Lekmod A-tier curve, with the
+kit supplying the rest.
 
 ### 4a.2 Constants (pure DB, `WFTWGameDefines.xml` and `SQL/Shared/MGMoods.sql`)
 

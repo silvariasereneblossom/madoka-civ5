@@ -436,7 +436,9 @@ function HiddenWitchSpawn(iPlayer)
 		if PMMM.IsSpawningHiddenWitches then
 			--Find out how many hidden witches they already have, and compare it to the maximum they should have.
 			local iMaximumHWs = 0;
-			if not pPlayer:IsMinorCiv() and iPlayer ~= GameDefines.MAX_CIV_PLAYERS then
+			if not PlayerHasMagicalGirls(iPlayer) then
+				iMaximumHWs = 0	-- [port] no Magical Girls means nothing could ever find the barrier
+			elseif not pPlayer:IsMinorCiv() and iPlayer ~= GameDefines.MAX_CIV_PLAYERS then
 				if MapModData.gPMMMTraits[iPlayer].NoWitches == true or MapModData.gPMMMTraits[iPlayer].NoWitches == 1 or MapModData.gPMMMTraits[iPlayer].NoWitches == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 then
 					iMaximumHWs = 0
 				else
