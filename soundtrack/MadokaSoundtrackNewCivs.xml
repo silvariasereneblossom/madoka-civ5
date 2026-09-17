@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 6/25/2014 11:55:20 PM -->
+<GameData>
+	<!-- For the WOTW Civs, kept in a separate file to maintain Rebellion Civpack compatibility -->
+	<Civilizations>
+		<Update>
+			<Where Type="CIVILIZATION_KAORU_UMIKA"/>
+			<Set SoundtrackTag="MADOKA"/>
+		</Update>
+		<Update>
+			<Where Type="CIVILIZATION_ORIKO_KIRIKA"/>
+			<Set SoundtrackTag="MADOKA"/>
+		</Update>
+	</Civilizations>
+	<Audio_2DSounds>
+		<Row>
+			<ScriptID>AS2D_LEADER_MUSIC_KAORU_UMIKA_PEACE</ScriptID>
+			<SoundID>SND_MADOKA_PEACE_4</SoundID>
+			<SoundType>GAME_MUSIC</SoundType>
+			<MaxVolume>40</MaxVolume>
+			<MinVolume>40</MinVolume>
+			<IsMusic>1</IsMusic>
+		</Row>
+		<Row>
+			<ScriptID>AS2D_LEADER_MUSIC_KAORU_UMIKA_WAR</ScriptID>
+			<SoundID>SND_MADOKA_WAR_3</SoundID>
+			<SoundType>GAME_MUSIC</SoundType>
+			<MaxVolume>40</MaxVolume>
+			<MinVolume>40</MinVolume>
+			<IsMusic>1</IsMusic>
+		</Row>
+		<Row>
+			<ScriptID>AS2D_LEADER_MUSIC_ORIKO_KIRIKA_PEACE</ScriptID>
+			<SoundID>SND_MADOKA_PEACE_36</SoundID>
+			<SoundType>GAME_MUSIC</SoundType>
+			<MaxVolume>40</MaxVolume>
+			<MinVolume>40</MinVolume>
+			<IsMusic>1</IsMusic>
+		</Row>
+		<Row>
+			<ScriptID>AS2D_LEADER_MUSIC_ORIKO_KIRIKA_WAR</ScriptID>
+			<SoundID>SND_MADOKA_WAR_9</SoundID>
+			<SoundType>GAME_MUSIC</SoundType>
+			<MaxVolume>40</MaxVolume>
+			<MinVolume>40</MinVolume>
+			<IsMusic>1</IsMusic>
+		</Row>
+	</Audio_2DSounds>
+</GameData>

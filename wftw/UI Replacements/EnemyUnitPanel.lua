@@ -1202,23 +1202,13 @@ function UpdateCombatOddsUnitVsUnit(pMyUnit, pTheirUnit)
 			end
 
 			-- CapitalDefenseModifier
-			iModifier = pMyUnit:CapitalDefenseModifier();
-			if (iModifier > 0) then
-
-				-- Compute distance to capital
-				local pCapital = pMyPlayer:GetCapitalCity();
-
-				if (pCapital ~= nil) then
-
-					local plotDistance = Map.PlotDistance(pCapital:GetX(), pCapital:GetY(), pMyUnit:GetX(), pMyUnit:GetY());
-					iModifier = iModifier + (plotDistance * pMyUnit:CapitalDefenseFalloff());
-
-					if (iModifier > 0) then
-						controlTable = g_MyCombatDataIM:GetInstance();
-						controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
-						controlTable.Value:SetText( GetFormattedText(strText, iModifier, true, true) );
-					end
-				end
+			-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
+			-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
+			iModifier = pMyUnit:GetCombatModifierFromCapitalDistance(pMyUnit:GetPlot());
+			if (iModifier ~= 0) then
+				controlTable = g_MyCombatDataIM:GetInstance();
+				controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
+				controlTable.Value:SetText( GetFormattedText(strText, iModifier, true, true) );
 			end
 
 			-- Bonus for fighting outside one's lands
@@ -1808,23 +1798,13 @@ end
 				end
 								
 				-- CapitalDefenseModifier
-				iModifier = pTheirUnit:CapitalDefenseModifier();
-				if (iModifier > 0) then
-				
-					-- Compute distance to capital
-					local pCapital = pTheirPlayer:GetCapitalCity();
-					
-					if (pCapital ~= nil) then
-
-						local plotDistance = Map.PlotDistance(pCapital:GetX(), pCapital:GetY(), pTheirUnit:GetX(), pTheirUnit:GetY());
-						iModifier = iModifier + (plotDistance * pTheirUnit:CapitalDefenseFalloff());
-
-						if (iModifier > 0) then
-							controlTable = g_TheirCombatDataIM:GetInstance();
-							controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
-							controlTable.Value:SetText( GetFormattedText(strText, iModifier, false, true) );
-						end
-					end
+				-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
+				-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
+				iModifier = pTheirUnit:GetCombatModifierFromCapitalDistance(pTheirUnit:GetPlot());
+				if (iModifier ~= 0) then
+					controlTable = g_TheirCombatDataIM:GetInstance();
+					controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
+					controlTable.Value:SetText( GetFormattedText(strText, iModifier, false, true) );
 				end
 		
 				if (pToPlot:GetFeatureType() ~= -1) then
@@ -2202,22 +2182,13 @@ if (not isBNW) then
 end
 
 		-- CapitalDefenseModifier
-		iModifier = theirUnit:CapitalDefenseModifier();
-		if (iModifier > 0) then
-
-			-- Compute distance to capital
-			local pCapital = theirPlayer:GetCapitalCity();
-
-			if (pCapital ~= nil) then
-				local plotDistance = Map.PlotDistance(pCapital:GetX(), pCapital:GetY(), theirUnit:GetX(), theirUnit:GetY());
-				iModifier = iModifier + (plotDistance * theirUnit:CapitalDefenseFalloff());
-
-				if (iModifier > 0) then
-					controlTable = g_TheirCombatDataIM:GetInstance();
-					controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
-					controlTable.Value:SetText( GetFormattedText(strText, iModifier, false, true) );
-				end
-			end
+		-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
+		-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
+		iModifier = theirUnit:GetCombatModifierFromCapitalDistance(theirUnit:GetPlot());
+		if (iModifier ~= 0) then
+			controlTable = g_TheirCombatDataIM:GetInstance();
+			controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
+			controlTable.Value:SetText( GetFormattedText(strText, iModifier, false, true) );
 		end
 
 		if (theirPlot:GetFeatureType() ~= -1) then

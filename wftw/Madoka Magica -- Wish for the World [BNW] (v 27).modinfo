@@ -574,7 +574,7 @@
     <File md5="BC8670313F6A8772452885B77C40F3A6" import="0">SQL/WonderChanges/PMMMChangeHalicarnassus.sql</File>
     <File md5="FBEE0B5423AF6031598D45BB28B5DD4B" import="1">UI Replacements/BarbarianCampPopup.lua</File>
     <File md5="B1BF7CDC8EC3EA4E47304AF8D0703116" import="1">UI Replacements/CivilopediaScreen.lua</File>
-    <File md5="101414130E4C29F4C3471AC99834461B" import="1">UI Replacements/EnemyUnitPanel.lua</File>
+    <File md5="8E1DAA32EE567811CCF769882B1E06BF" import="1">UI Replacements/EnemyUnitPanel.lua</File>
     <File md5="288ACF3886BECFF049C31ECF62F46224" import="1">UI Replacements/EnemyUnitPanel.xml</File>
     <File md5="636263FA3D8368404004E89413D2D114" import="1">UI Replacements/EnemyUnitPanel_small.xml</File>
     <File md5="B44375739958889F526DAEEEA4D43245" import="1">UI Replacements/SetUnitName.lua</File>

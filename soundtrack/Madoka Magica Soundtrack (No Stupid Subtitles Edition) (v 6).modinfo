@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mod id="d58f9739-b51a-401d-b2ff-c0c480840fce" version="6">
+  <Properties>
+    <Name>Madoka Magica Soundtrack (No Stupid Subtitles Edition)</Name>
+    <Teaser>Adds game music for all of the Madoka Magica mods.</Teaser>
+    <Description>Adds game music for all of the Madoka Magica mods.</Description>
+    <Authors>Vicevirtuoso</Authors>
+    <HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>0</AffectsSavedGames>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>1</SupportsMultiplayer>
+    <SupportsHotSeat>1</SupportsHotSeat>
+    <SupportsMac>1</SupportsMac>
+    <ReloadAudioSystem>1</ReloadAudioSystem>
+    <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>0</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>0</ReloadUnitSystem>
+  </Properties>
+  <Dependencies />
+  <References>
+    <Mod id="6938dbeb-84c4-4a08-8bc0-51fca6135175" minversion="1" maxversion="999" title="Madoka Magica -- Wish for the World" />
+  </References>
+  <Blocks />
+  <Files>
+    <File md5="BBD30CF012CAED79B9BC8995659F52AD" import="0">MadokaSoundtrack.sql</File>
+    <File md5="325C842D2BC439758D83262E1F18C927" import="0">MadokaSoundtrack.xml</File>
+    <File md5="C8AE277084AD72F57031B4B97EB21242" import="0">MadokaSoundtrackNewCivs.xml</File>
+    <File md5="8B6A63C6B2BEE4B863D49238BE504441" import="1">Music/Either/MadokaCiv-Either1.mp3</File>
+    <File md5="7A004A01CA6ED4F38CC6070573026988" import="1">Music/Either/MadokaCiv-Either10.mp3</File>
+    <File md5="6DF5D1D312572DD17D2EDA8223D773C6" import="1">Music/Either/MadokaCiv-Either11.mp3</File>
+    <File md5="A27F24894E63F612B374DE46E7286C30" import="1">Music/Either/MadokaCiv-Either12.mp3</File>
+    <File md5="9345CE2C777E060938F0E0650F321A83" import="1">Music/Either/MadokaCiv-Either13.mp3</File>
+    <File md5="14BFC68669750F543C3E5CB71CF228F6" import="1">Music/Either/MadokaCiv-Either14.mp3</File>
+    <File md5="72E4E9D50145E0CA511016B62D657992" import="1">Music/Either/MadokaCiv-Either15.mp3</File>
+    <File md5="24EC01014F95BDFF99102003B57DD83A" import="1">Music/Either/MadokaCiv-Either16.mp3</File>
+    <File md5="21BF4A35D96A74510B4722E7CCE7873E" import="1">Music/Either/MadokaCiv-Either17.mp3</File>
+    <File md5="7C58111A27D3F420DF6849E006EEFDDA" import="1">Music/Either/MadokaCiv-Either18.mp3</File>
+    <File md5="2993A4982CCC0E1C359163CBE839B139" import="1">Music/Either/MadokaCiv-Either19.mp3</File>
+    <File md5="C1432481CC92FCDA92DEED17C73141FD" import="1">Music/Either/MadokaCiv-Either2.mp3</File>
+    <File md5="E584030C02F97308D68C42530573CA79" import="1">Music/Either/MadokaCiv-Either20.mp3</File>
+    <File md5="8E7D7570BD54C5B8A9F523DCF9C08B3B" import="1">Music/Either/MadokaCiv-Either21.mp3</File>
+    <File md5="9916AF50E51DB971FA91AF5F3E2FE317" import="1">Music/Either/MadokaCiv-Either22.mp3</File>
+    <File md5="8B50CE2FCD415FFD7D1E4263E5369FC6" import="1">Music/Either/MadokaCiv-Either23.mp3</File>
+    <File md5="7DCD189122D148DDCEE0C6A9536A41EF" import="1">Music/Either/MadokaCiv-Either24.mp3</File>
+    <File md5="DDD78002C25394FC1F5EB9C535A8D4E0" import="1">Music/Either/MadokaCiv-Either25.mp3</File>
+    <File md5="C0880E1FE98CC03D8691B201ABFF7A2B" import="1">Music/Either/MadokaCiv-Either26.mp3</File>
+    <File md5="5C43A9FF8FD289F7892984D44DD5EC83" import="1">Music/Either/MadokaCiv-Either27.mp3</File>
+    <File md5="AAAEB35BE390BE7D870CDACF6F685B9F" import="1">Music/Either/MadokaCiv-Either28.mp3</File>
+    <File md5="E3E5AC213556001426A7B4A3E6E8ACB8" import="1">Music/Either/MadokaCiv-Either29.mp3</File>
+    <File md5="501A2D176BF257D898889B64E3BA7EAA" import="1">Music/Either/MadokaCiv-Either3.mp3</File>
+    <File md5="5210E249F75F1DC51959E6F8EA167DF0" import="1">Music/Either/MadokaCiv-Either30.mp3</File>
+    <File md5="606EEF6FB0674A113152183470CDA0B6" import="1">Music/Either/MadokaCiv-Either31.mp3</File>
+    <File md5="354AD104D0CEF389FFAB7675CDE2C2F6" import="1">Music/Either/MadokaCiv-Either32.mp3</File>
+    <File md5="59F582EEF8C66FE518FB8803BE3E74C7" import="1">Music/Either/MadokaCiv-Either33.mp3</File>
+    <File md5="13684D09DB55B67849747095D1D12B61" import="1">Music/Either/MadokaCiv-Either34.mp3</File>
+    <File md5="94E85D30993CB67753044C1930EE2A5E" import="1">Music/Either/MadokaCiv-Either35.mp3</File>
+    <File md5="B2E85DC3266C79EFBD4713FD55309EE5" import="1">Music/Either/MadokaCiv-Either36.mp3</File>
+    <File md5="AB7722289FDDD80ED5A9D8B9209A1A27" import="1">Music/Either/MadokaCiv-Either37.mp3</File>
+    <File md5="5D261F63B12033B6F995CC075D7807E2" import="1">Music/Either/MadokaCiv-Either38.mp3</File>
+    <File md5="456D661E2FCA58EE962775071C508072" import="1">Music/Either/MadokaCiv-Either39.mp3</File>
+    <File md5="B0FF9639DC282A34E835C54C000CC962" import="1">Music/Either/MadokaCiv-Either4.mp3</File>
+    <File md5="BC15A0B6F2FCE426E57F8272E6818A63" import="1">Music/Either/MadokaCiv-Either40.mp3</File>
+    <File md5="262E49B6DC22E1D605615053AF50C96F" import="1">Music/Either/MadokaCiv-Either41.mp3</File>
+    <File md5="648E545999BB8DA213990FB245143410" import="1">Music/Either/MadokaCiv-Either42.mp3</File>
+    <File md5="7AF5742B38785F4C3354C590FD167281" import="1">Music/Either/MadokaCiv-Either43.mp3</File>
+    <File md5="8977CF63EC191F4258851E0B40BD191D" import="1">Music/Either/MadokaCiv-Either44.mp3</File>
+    <File md5="BE20041946B2357F92ACA22451142135" import="1">Music/Either/MadokaCiv-Either45.mp3</File>
+    <File md5="EF34070D4763D5D228CF0F253EA4D729" import="1">Music/Either/MadokaCiv-Either46.mp3</File>
+    <File md5="9FE0A7050A2D513AA878BBCE075BE2C1" import="1">Music/Either/MadokaCiv-Either47.mp3</File>
+    <File md5="9F0AC750165B6541D475C3793FEA150E" import="1">Music/Either/MadokaCiv-Either48.mp3</File>
+    <File md5="E1D60B71D4C44A7CE1FAF495A1E3BBCD" import="1">Music/Either/MadokaCiv-Either49.mp3</File>
+    <File md5="42D8C470BF8BC4C542012AADC7C24D5D" import="1">Music/Either/MadokaCiv-Either5.mp3</File>
+    <File md5="AC19AB2FEE2A824A1ED93683DB1359D2" import="1">Music/Either/MadokaCiv-Either50.mp3</File>
+    <File md5="1EF8164792A95EB5EBF840C2B38AC64D" import="1">Music/Either/MadokaCiv-Either51.mp3</File>
+    <File md5="78E25C81B50299CA84A546BE25CDAE6A" import="1">Music/Either/MadokaCiv-Either6.mp3</File>
+    <File md5="C7ECF74ED7DB8B14A40C76361A24430A" import="1">Music/Either/MadokaCiv-Either7.mp3</File>
+    <File md5="139CEAD6BF5BCC794743994B05855DA9" import="1">Music/Either/MadokaCiv-Either8.mp3</File>
+    <File md5="AC7095835122A5414ECCA613C672ECEE" import="1">Music/Either/MadokaCiv-Either9.mp3</File>
+    <File md5="81D9543B83384E13379FB84B583AB350" import="1">Music/Peace/MadokaCiv-Peace1.mp3</File>
+    <File md5="1B4CA65931A9F9C39E1DDAF6E225A537" import="1">Music/Peace/MadokaCiv-Peace10.mp3</File>
+    <File md5="6E7F617AADA2F47AA0611BEE73054124" import="1">Music/Peace/MadokaCiv-Peace11.mp3</File>
+    <File md5="24255C875B856A51EFF66D69DA82F458" import="1">Music/Peace/MadokaCiv-Peace12.mp3</File>
+    <File md5="029940E765089EA8B36E9B24CC8630BA" import="1">Music/Peace/MadokaCiv-Peace13.mp3</File>
+    <File md5="41DCDCAB3A0E3557EE333ECF8949BF0E" import="1">Music/Peace/MadokaCiv-Peace14.mp3</File>
+    <File md5="107110EE6D7169535ACBBBDC970DA64A" import="1">Music/Peace/MadokaCiv-Peace15.mp3</File>
+    <File md5="55D614A3B9D3878D95CC089F561B1D9C" import="1">Music/Peace/MadokaCiv-Peace16.mp3</File>
+    <File md5="604ACC37AA0AE8EEA5F7BA571711F324" import="1">Music/Peace/MadokaCiv-Peace17.mp3</File>
+    <File md5="8219054BD2C6E39E83CF6B9F98D62F57" import="1">Music/Peace/MadokaCiv-Peace18.mp3</File>
+    <File md5="0272669C6CE1A3EE1447F5B892667ACB" import="1">Music/Peace/MadokaCiv-Peace19.mp3</File>
+    <File md5="81143600EEC8129785B7CD4D301A6462" import="1">Music/Peace/MadokaCiv-Peace2.mp3</File>
+    <File md5="E5D9BF47DCEDCDEA0451197B9703CD59" import="1">Music/Peace/MadokaCiv-Peace20.mp3</File>
+    <File md5="35F9828CD9886C8FA7105A075DE100F7" import="1">Music/Peace/MadokaCiv-Peace21.mp3</File>
+    <File md5="4D7F2558140BC2E0ECF4F14439B0C574" import="1">Music/Peace/MadokaCiv-Peace22.mp3</File>
+    <File md5="A195D76D73945D3E51799BB8DF1B8699" import="1">Music/Peace/MadokaCiv-Peace23.mp3</File>
+    <File md5="BA2E6861E15871B7988A45B73AD3952A" import="1">Music/Peace/MadokaCiv-Peace24.mp3</File>
+    <File md5="1DF8260D3CDBA5597AFE33AC0017E0E5" import="1">Music/Peace/MadokaCiv-Peace25.mp3</File>
+    <File md5="B383F4EB4412178FA0E70CC7577C6F4B" import="1">Music/Peace/MadokaCiv-Peace26.mp3</File>
+    <File md5="159F5BEE6E89F27B03848F4A4B027CB3" import="1">Music/Peace/MadokaCiv-Peace27.mp3</File>
+    <File md5="49E16890D1A87E44947CA593C0BF0600" import="1">Music/Peace/MadokaCiv-Peace28.mp3</File>
+    <File md5="0A24A5507F4DE2117B782F9508660944" import="1">Music/Peace/MadokaCiv-Peace29.mp3</File>
+    <File md5="91D788B9918DABA5199C68A2B140AD7A" import="1">Music/Peace/MadokaCiv-Peace3.mp3</File>
+    <File md5="D11099DC56273EAC9064E10C95473C0B" import="1">Music/Peace/MadokaCiv-Peace30.mp3</File>
+    <File md5="3DF82E1AC2E41CFB7E566D3AC2C7929A" import="1">Music/Peace/MadokaCiv-Peace31.mp3</File>
+    <File md5="AC27B879FD9C862D9D2F21121D51091D" import="1">Music/Peace/MadokaCiv-Peace32.mp3</File>
+    <File md5="0AA5CCF576D76D841CF81557B363F99A" import="1">Music/Peace/MadokaCiv-Peace33.mp3</File>
+    <File md5="BA05BB4131D263D905668C1780A6FD08" import="1">Music/Peace/MadokaCiv-Peace34.mp3</File>
+    <File md5="222E24B25E0596241C81327C47B62EF8" import="1">Music/Peace/MadokaCiv-Peace35.mp3</File>
+    <File md5="FFB2D2CD97ABFA2DD44469798D24023D" import="1">Music/Peace/MadokaCiv-Peace36.mp3</File>
+    <File md5="39CABE0C5D2EB231AE51FA5BF1D30E70" import="1">Music/Peace/MadokaCiv-Peace37.mp3</File>
+    <File md5="98DD4425A0D81C84A2C81DA5F387B55E" import="1">Music/Peace/MadokaCiv-Peace38.mp3</File>
+    <File md5="40CDACAB8E9CE5256A49D5B5C9022F9A" import="1">Music/Peace/MadokaCiv-Peace39.mp3</File>
+    <File md5="70B2892466B90A1418BB3EDE56D70618" import="1">Music/Peace/MadokaCiv-Peace4.mp3</File>
+    <File md5="B0B7181A16080720949091165D6F71A8" import="1">Music/Peace/MadokaCiv-Peace40.mp3</File>
+    <File md5="C6A8015122AECA9F941A2D4BFE5319E2" import="1">Music/Peace/MadokaCiv-Peace41.mp3</File>
+    <File md5="FB9958F8993D719041904C935804A5B6" import="1">Music/Peace/MadokaCiv-Peace42.mp3</File>
+    <File md5="42ED0860D0B0F8DF614D5551F9F819A5" import="1">Music/Peace/MadokaCiv-Peace43.mp3</File>
+    <File md5="42210A6D86AE38993F6346782C87BE9D" import="1">Music/Peace/MadokaCiv-Peace44.mp3</File>
+    <File md5="FB75A31D5E0E84BD1DC20A477C5FED46" import="1">Music/Peace/MadokaCiv-Peace45.mp3</File>
+    <File md5="6B9CF901927CB44D8CFB00F4E8C61E2C" import="1">Music/Peace/MadokaCiv-Peace46.mp3</File>
+    <File md5="6E47A087F160D4D7A4761708A889357C" import="1">Music/Peace/MadokaCiv-Peace47.mp3</File>
+    <File md5="EE7858A6750A14E9469EEA540B0E601D" import="1">Music/Peace/MadokaCiv-Peace48.mp3</File>
+    <File md5="89391990022D4DC8D158984FEF78D116" import="1">Music/Peace/MadokaCiv-Peace5.mp3</File>
+    <File md5="6332B67FC21009D8479342F6CF842555" import="1">Music/Peace/MadokaCiv-Peace6.mp3</File>
+    <File md5="0CB1E6F0ADD62570DF754ACC8DC34FBC" import="1">Music/Peace/MadokaCiv-Peace7.mp3</File>
+    <File md5="62CD4C1B647DBDB4E725D552C9631F3D" import="1">Music/Peace/MadokaCiv-Peace8.mp3</File>
+    <File md5="E713BC36B30283265408B0653B3558B8" import="1">Music/Peace/MadokaCiv-Peace9.mp3</File>
+    <File md5="9147A11AE6BE06405DED7B7EE30A9262" import="1">Music/War/MadokaCiv-War1.mp3</File>
+    <File md5="D7DD798D30704D01D1F385EE350D4BAC" import="1">Music/War/MadokaCiv-War10.mp3</File>
+    <File md5="A47714CAC7E776675001BB7021519BCA" import="1">Music/War/MadokaCiv-War11.mp3</File>
+    <File md5="AE6FC688F9DF0288D4B0B8B7819A4F87" import="1">Music/War/MadokaCiv-War12.mp3</File>
+    <File md5="4D69B7BE985DB187EFCF6819D6341A59" import="1">Music/War/MadokaCiv-War13.mp3</File>
+    <File md5="0E1F2D70EB2FDD0B863B19B39BADBA7B" import="1">Music/War/MadokaCiv-War14.mp3</File>
+    <File md5="38B284F8E7B26232394A232C627ADBCA" import="1">Music/War/MadokaCiv-War15.mp3</File>
+    <File md5="00508C955A501DA959DB46BAECE56176" import="1">Music/War/MadokaCiv-War16.mp3</File>
+    <File md5="577168F7334938AAE5F8ED9E7F1AE1B3" import="1">Music/War/MadokaCiv-War17.mp3</File>
+    <File md5="C44853F1D9B4FC2CB595E0975BD9EE78" import="1">Music/War/MadokaCiv-War18.mp3</File>
+    <File md5="5A524208753F85AFB6918E71B29E3AC1" import="1">Music/War/MadokaCiv-War19.mp3</File>
+    <File md5="FD4962F44D523815F9B43F02781E5694" import="1">Music/War/MadokaCiv-War2.mp3</File>
+    <File md5="30BAFCB957965FE271DF569DDE14B040" import="1">Music/War/MadokaCiv-War20.mp3</File>
+    <File md5="69C3278059CEC19172ED72373B065E8B" import="1">Music/War/MadokaCiv-War21.mp3</File>
+    <File md5="448A94FF4BAB6C1DE044A112BDBD3D8B" import="1">Music/War/MadokaCiv-War22.mp3</File>
+    <File md5="9F8A57875A51DB9A9E323C2975C76856" import="1">Music/War/MadokaCiv-War23.mp3</File>
+    <File md5="8336630885C6CFD46487A16B5D14E743" import="1">Music/War/MadokaCiv-War24.mp3</File>
+    <File md5="13D2C9ACDC079CA4BD3198E77B2C5029" import="1">Music/War/MadokaCiv-War25.mp3</File>
+    <File md5="DDAFB9E5E49B55FE3F38D741BE899C2D" import="1">Music/War/MadokaCiv-War26.mp3</File>
+    <File md5="DC68C6CD5309EBFFBC32A8CD0638CF9A" import="1">Music/War/MadokaCiv-War27.mp3</File>
+    <File md5="7AFF1C6EC53AEFC4D89BFAEA00219F3E" import="1">Music/War/MadokaCiv-War28.mp3</File>
+    <File md5="4B650B5A5307EC6AE86EED14F0BFEF00" import="1">Music/War/MadokaCiv-War29.mp3</File>
+    <File md5="40A26C5ED437B51727A81C55A5A83AE6" import="1">Music/War/MadokaCiv-War3.mp3</File>
+    <File md5="ED3E7C108E62D0A1CDA4C9C117C98873" import="1">Music/War/MadokaCiv-War30.mp3</File>
+    <File md5="E584030C02F97308D68C42530573CA79" import="1">Music/War/MadokaCiv-War31.mp3</File>
+    <File md5="2B803C89F571383250FB223C10B6D91A" import="1">Music/War/MadokaCiv-War32.mp3</File>
+    <File md5="25C5B57898FE9B6D3B9E3F5605BD167D" import="1">Music/War/MadokaCiv-War33.mp3</File>
+    <File md5="28DEBF179BFCF9A03209C6D2C42F6587" import="1">Music/War/MadokaCiv-War34.mp3</File>
+    <File md5="580282425ACC63E9DC0740CE70FA9252" import="1">Music/War/MadokaCiv-War35.mp3</File>
+    <File md5="F6E808A2F91B44B3438B086B3F2BEB6C" import="1">Music/War/MadokaCiv-War36.mp3</File>
+    <File md5="BBAB5CF0174489788EDCF5B2E01A74F4" import="1">Music/War/MadokaCiv-War37.mp3</File>
+    <File md5="7F17A2B9DC09D53ACD04AC9B2D71EB3C" import="1">Music/War/MadokaCiv-War38.mp3</File>
+    <File md5="B83E81FF87ADEFED5252B11E3922D668" import="1">Music/War/MadokaCiv-War39.mp3</File>
+    <File md5="2C0E345624D8D7F7B83D567865DA1CA9" import="1">Music/War/MadokaCiv-War4.mp3</File>
+    <File md5="8F6AD8C0C3A801E2BCC6974A1596439C" import="1">Music/War/MadokaCiv-War40.mp3</File>
+    <File md5="E76E7634A43200320FC91447EABE34C1" import="1">Music/War/MadokaCiv-War41.mp3</File>
+    <File md5="4B94943E6757027132F5D8CF1134AD1D" import="1">Music/War/MadokaCiv-War42.mp3</File>
+    <File md5="56628049E37490BBD3A95C695E925EDC" import="1">Music/War/MadokaCiv-War5.mp3</File>
+    <File md5="726671BDE40ACA2C9646ABA1ABEEEADB" import="1">Music/War/MadokaCiv-War6.mp3</File>
+    <File md5="8A31938D4FB6D0468898C6CB49EE9F97" import="1">Music/War/MadokaCiv-War7.mp3</File>
+    <File md5="461EA23290232696E3948ECA9EAC1F56" import="1">Music/War/MadokaCiv-War8.mp3</File>
+    <File md5="557AA28CF60BF8889A5005C33067CAE6" import="1">Music/War/MadokaCiv-War9.mp3</File>
+  </Files>
+  <Actions>
+    <OnModActivated>
+      <UpdateDatabase>MadokaSoundtrack.xml</UpdateDatabase>
+      <UpdateDatabase>MadokaSoundtrackNewCivs.xml</UpdateDatabase>
+    </OnModActivated>
+  </Actions>
+</Mod>

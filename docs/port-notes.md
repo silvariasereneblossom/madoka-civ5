@@ -190,3 +190,33 @@ and `LoadType Streamed`.
 
 To hear the Madoka soundtrack: tick the soundtrack mod in the Mods menu together with (1) Community Patch and WFTW
 (it only *References* WFTW, so it is not enabled automatically).
+
+### Follow-up: soundtrack plays one song, then silence (2026-09-16, later)
+
+With the pack enabled the first Madoka track played and nothing followed. All 192 `SONG_MADOKA_*` rows in
+`MadokaSoundtrack.xml` lacked `IsMusic` (default 0); vanilla civ songs carry `bIsMusic=True` and the pack's own
+`AS2D_LEADER_MUSIC_*` rows carry `IsMusic=1`. Only music-flagged scripts are managed by the music player, so the
+opening song (which the engine triggers directly) played and the rotation never started. Fixed in the installed pack
+and mirrored under `soundtrack/` (see its README). Pack data is otherwise consistent: 157 sound rows all resolve to
+files on disk, no dangling script rows, PEACE 1..99 and WAR 1..93 without gaps (zero-padded numbers would also break
+rotation, per CivFanatics), all MP3s `import="1"`, `LoadType Streamed`.
+
+Open question: whether the engine mixes `Era_Soundtracks` tracks (vanilla ambient/era music) into a civ's rotation.
+The CP DLL never reads `Era_Soundtracks` (the exe does), so if non-Madoka tracks show up for Madoka civs the only
+levers are (a) the pack's `SisPuellaMagicaOmnis` option (all civs use MADOKA) or (b) a client-side Lua/DB.Query
+rewrite of `Era_Soundtracks` when the local player's civ is MADOKA-tagged. Wait for the user's report first.
+
+### EnemyUnitPanel under CP: capital-defense methods
+
+`UI Replacements/EnemyUnitPanel.lua` called `Unit:CapitalDefenseModifier()` / `CapitalDefenseFalloff()`, which CP's
+`CvLuaUnit` no longer binds (it exposes `GetCombatModifierFromCapitalDistance(plot)` instead). Every hover over an
+enemy unit raised a Lua error and truncated the combat preview. The three blocks now use the CP call, matching CP's
+own `Core Files/Overrides/EnemyUnitPanel.lua`. A scan of every unit method WFTW's Lua calls against CP's 538 bound
+methods found no other gaps. The full Phase 3 rebase onto CP's panel is still pending.
+
+### Despair test result
+
+A Leader Magical Girl at 0% Soul Gem fires the "became a Witch" notification but no Witch unit appears: this is the
+mod's v19 rule in `TurnIntoWitch` (leaders are killed and respawn after `LEADER_MG_RESPAWN_TURNS`, scaled by game
+speed and `LeaderMGRespawnTimeModifier`). Only non-leader girls spawn a barbarian Witch. Not a bug; a Phase 4 design
+question if the user wants leaders to witch out for real.
