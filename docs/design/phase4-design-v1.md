@@ -134,6 +134,8 @@ Despair penalties and can never become a Witch. UU Clara Doll replaces the Sword
 Magical Girl promotions from XP. UB Half-Moon Garden replaces the Garden: +10% Prodigy rate, +5% to all yields in the
 city. Incubator Slave removed.
 
+Ai Yo has five clauses after the rulings: no unhappiness penalties; yields and combat scaling with unhappiness from cities and population; halved Prodigy rate; never a Golden Age and immune to ideology pressure; gold from Witch kills and Labyrinth clears. The tooltip must carry all five.
+
 **Implementation.** Removing unhappiness penalties is DLL-side logic keyed on excess happiness; there is no trait
 column for it in CP. Two routes: (a) [DLL] two trait columns, `IgnoreUnhappinessPenalties` and
 `YieldPercentPerUnhappiness`, checked where the penalties and the yield modifiers are computed (small, contained);
@@ -296,7 +298,7 @@ Implementation proceeds on these defaults unless the maintainer overrides them.
 | Ultimate Madoka, Led Away bonus promotion | One free promotion of the player's choice (promotion-ready flag), after XP is restored. |
 | Kazumi | Section 9 proposal stands until the maintainer amends it. |
 | Devil Homura | Whole kit provisional pending Walpurgisnacht Rising; build the DLL columns so the numbers stay data. |
-| Devil Homura, Witch kills | **Ruled:** gold replaces the Golden Age points. A Witch kill pays 10 gold plus 3 per era; clearing a Witch's Labyrinth pays 25 gold plus 10 per era. Ancient era: 10 and 25. Information era: 31 and 95. Assumed Devil Homura only; say so if every civ should get it. Implemented in `GetGriefSeed` and `CheckDestroyWitchBarrier`, which also fixes the Labyrinth clear currently removing 1 gold. |
+| Devil Homura, Witch kills | **Ruled:** gold replaces the Golden Age points. A Witch kill pays 10 gold plus 3 per era; clearing a Witch's Labyrinth pays 25 gold plus 10 per era. Ancient era: 10 and 25. Information era: 31 and 95. **Devil Homura only, and part of Ai Yo**, so it belongs in the trait tooltip and Civilopedia rather than the shared Witch rules. Implemented in `GetGriefSeed` and `CheckDestroyWitchBarrier`, which also fixes the Labyrinth clear currently removing 1 gold. |
 
 ## 13. Build order
 
