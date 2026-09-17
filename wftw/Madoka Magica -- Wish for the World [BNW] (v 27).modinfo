@@ -402,7 +402,7 @@
     <File md5="A1675148224C7DB58BEF0F70ACCD6B59" import="1">DecisionsMod/Lua/PMMMMamiDecisions.lua</File>
     <File md5="2364AE34603342A3527F33D1CDD8809A" import="1">DecisionsMod/Lua/PMMMNagisaDecisions.lua</File>
     <File md5="EA0155E8EC71FFFC422126595320690C" import="1">DecisionsMod/Lua/PMMMOrikoKirikaDecisions.lua</File>
-    <File md5="6DFDBDEBF49C661104AF84113AE46FF5" import="1">DecisionsMod/Lua/PMMMSayakaDecisions.lua</File>
+    <File md5="9E1AFC9A03F9107F923E01C459A40B31" import="1">DecisionsMod/Lua/PMMMSayakaDecisions.lua</File>
     <File md5="2676AA246D7261DBE45E0383A21AA1D6" import="1">DecisionsMod/Lua/PMMMUltimateMadokaDecisions.lua</File>
     <File md5="60761AF21F30651A57E5FD472F3A95B3" import="0">DecisionsMod/SQL/DemonHomuraDecisionData.sql</File>
     <File md5="0A2F7C401A6E410570EF96D80DEEDDA6" import="0">DecisionsMod/SQL/HomuraDecisionData.sql</File>
@@ -447,7 +447,7 @@
     <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
     <File md5="256F1D92A4F28CB19FD2E3DB13B23DD4" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
-    <File md5="2B752B097943BA1F1705B32CCF80E706" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
+    <File md5="AA0B561899C74FDEF90D5922F798A0B8" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
     <File md5="20089693576C66CF07DFC6AB0FCFB172" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
     <File md5="3706F4617A15C2F91C6DC5EDA3A6FE39" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
     <File md5="D275A6ADB29A1CE691A3E49D2D4A1EFA" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
@@ -456,7 +456,7 @@
     <File md5="4329D05FC48CEB6A334ED225318C6E2D" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
     <File md5="322DE6C82681F565BC0C8A034A597461" import="1">Lua/Gameplay/Traits/PMMMMamiTrait.lua</File>
     <File md5="92B0D7551312CEF3FD4B780DFB606CEF" import="1">Lua/Gameplay/Traits/PMMMNagisaTrait.lua</File>
-    <File md5="6C0979AD5760868F01F89B91D634402F" import="1">Lua/Gameplay/Traits/PMMMPleiadesTrait.lua</File>
+    <File md5="5CD628E3CA3BF827F482AC5201EC85FF" import="1">Lua/Gameplay/Traits/PMMMPleiadesTrait.lua</File>
     <File md5="38DA64AAF12FFE0CDBF90F63AC03F9A9" import="1">Lua/Gameplay/Traits/PMMMSayakaTrait.lua</File>
     <File md5="DE77E01D13903C0D3A06E1EA82EDDF97" import="1">Lua/Gameplay/Traits/PMMMShiromeTrait.lua</File>
     <File md5="DC44BE1978CF85BEF1C5A0E57C961350" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>

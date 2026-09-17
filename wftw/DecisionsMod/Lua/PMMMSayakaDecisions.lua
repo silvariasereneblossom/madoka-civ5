@@ -146,7 +146,9 @@ local Decisions_OktaviaDanceQueen = {}
 				bDanceQueen = (iTurnDifference % iTurns ~= 0)
 			end
 			local bAllyOfJustice = (load(pPlayer, "Decisions_AllyOfJustice") == true)
-			if bDanceQueen or bAllyOfJustice then
+			--[port] also sweep once either decision has ever been enacted, so the dummy is removed
+			--when the Dance Queen timer runs out (the first consolidation left it in place forever)
+			if bDanceQueen or bAllyOfJustice or iEnactedTurn or load(pPlayer, "Decisions_AllyOfJustice") ~= nil then
 				for pCity in pPlayer:Cities() do
 					local bWantsDummy = false
 					if pCity:IsCapital() then

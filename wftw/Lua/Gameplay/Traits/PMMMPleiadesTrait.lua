@@ -334,21 +334,23 @@ end
 local iTurnsBetween = GameDefines.FREEZER_TURNS_BETWEEN_SG_DECAY
 
 function OnPleiadesDoTurn(iPlayer)
+	--[port] this loop indexed the girl with an undefined iMGKey and used pPlayer before it was declared,
+	--so a frozen girl reaching 0 Soul Gem raised a Lua error instead of witching out
 	if MapModData.gPMMMTraits[iPlayer].EnableFreezerSystem == true or MapModData.gPMMMTraits[iPlayer].EnableFreezerSystem == 1 then
 		if Game:GetGameTurn() % iTurnsBetween == 0 then
 			for k, v in pairs(MagicalGirls) do
 				if v.FreezerPlayer == iPlayer then
 					v.SoulGem =	v.SoulGem - 1
 					if v.SoulGem <= 0 then
-						local sName = Locale.ConvertTextKey(MagicalGirls[iMGKey].Name)
-						local pCapital = pPlayer:GetCapitalCity()
+						local sName = Locale.ConvertTextKey(v.Name)
+						local pCapital = Players[iPlayer]:GetCapitalCity()
 						local pSpawnPlot;
 						for pAreaPlot in PlotAreaSpiralIterator(pCapital:Plot(), 1, 1, false, false, false) do
 							if pAreaPlot and not pAreaPlot:IsCity() then
 								pSpawnPlot = pAreaPlot
 							end
 						end
-						TurnIntoWitch(iMGKey, pSpawnPlot)
+						TurnIntoWitch(k, pSpawnPlot)
 						if iPlayer == Game:GetActivePlayer() then
 							Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_FREEZER_SG_ZERO", sName))
 						end
@@ -378,6 +380,7 @@ end
 --25% chance the girl Witches out.
 
 function OnPleiadesCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
+	--[port] the revive and witch branches used undefined iMGKey/pPlayer globals
 	if iCapturingPlayer < iMaxCivs and iCapturedPlayer < iMaxCivs then
 		if (MapModData.gPMMMTraits[iCapturedPlayer].EnableFreezerSystem == true or MapModData.gPMMMTraits[iCapturedPlayer].EnableFreezerSystem == 1) and bCapital and bConquest then
 			for k, v in pairs(MagicalGirls) do
@@ -385,11 +388,11 @@ function OnPleiadesCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlay
 					local iChance = Game.Rand(100, "Pleiades Capital Capture Event") + 1
 					if iChance <= 25 then
 						--Revive as MG
-						local sName = Locale.ConvertTextKey(MagicalGirls[iMGKey].Name)
+						local sName = Locale.ConvertTextKey(v.Name)
 						v.Owner = iCapturingPlayer
-						tMagicalGirlSpawnTable["ID"] = iMGKey -- this is the shared table used by OnCreatedMagicalGirl
+						tMagicalGirlSpawnTable["ID"] = k -- this is the shared table used by OnCreatedMagicalGirl
 						local pPlot = Map.GetPlot(iX, iY)
-						local eRevivedGirl = pPlayer:InitUnit(iMagicalGirlType, pPlot:GetX(), pPlot:GetY(), UNITAI_ATTACK)
+						local eRevivedGirl = Players[iCapturingPlayer]:InitUnit(iMagicalGirlType, pPlot:GetX(), pPlot:GetY(), UNITAI_ATTACK)
 						SetMagicalGirlStrength(iCapturingPlayer, eRevivedGirl:GetID())
 						eRevivedGirl:JumpToNearestValidPlot()
 						eRevivedGirl:SetMoves(0)
@@ -402,7 +405,7 @@ function OnPleiadesCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlay
 						v.FreezerPlayer = nil
 					else
 						--Witch!
-						local sName = Locale.ConvertTextKey(MagicalGirls[iMGKey].Name)
+						local sName = Locale.ConvertTextKey(v.Name)
 						local pPlot = Map.GetPlot(iX, iY)
 						local pSpawnPlot;
 						for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, false, false, false) do
