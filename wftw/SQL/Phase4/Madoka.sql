@@ -136,3 +136,21 @@ WHERE Tag = 'TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL_HELP';
 UPDATE Language_en_US
 SET Text = 'The Middle School is the unique National Wonder for Mitakihara, replacing the National College. It raises this City [ICON_RESEARCH] Science output by 40% rather than the National College 50%, and pays the difference back in devotion: +2 [ICON_PEACE] Faith and +20% [ICON_PEACE] Faith. It is also a great place for Magical Girls to gather, providing +25% [ICON_GREAT_PEOPLE] Prodigy birth rate. A Library must be built in every City before it can be constructed. It now arrives with Philosophy rather than Scientific Theory, so it no longer competes with the Mitakihara Middle School World Wonder.'
 WHERE Tag = 'TXT_KEY_BUILDING_PMMM_MIDDLE_SCHOOL_STRATEGY';
+
+--------------------------------------------------------------------------------------------------------------
+-- Free Magical Girl on completion: notification text (the hook itself is PMMMMadokaBuilding.lua)
+--------------------------------------------------------------------------------------------------------------
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+VALUES ('TXT_KEY_PMMM_NOTIFICATION_MIDDLE_SCHOOL_MG_TITLE', 'A New Magical Girl');
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+VALUES ('TXT_KEY_PMMM_NOTIFICATION_MIDDLE_SCHOOL_MG_TEXT', 'A student of the Middle School in {1_CityName} has made her wish. A Magical Girl has joined your civilization.');
+
+--------------------------------------------------------------------------------------------------------------
+-- AI build weighting: the Middle School is a national wonder now, so weight it like the National College
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Building_Flavors WHERE BuildingType = 'BUILDING_PMMM_MIDDLE_SCHOOL';
+
+INSERT INTO Building_Flavors (BuildingType, FlavorType, Flavor)
+SELECT 'BUILDING_PMMM_MIDDLE_SCHOOL', FlavorType, Flavor
+FROM Building_Flavors WHERE BuildingType = 'BUILDING_NATIONAL_COLLEGE';

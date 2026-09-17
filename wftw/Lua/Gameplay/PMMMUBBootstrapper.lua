@@ -30,13 +30,7 @@ for iPlayer, pTrait in pairs(MapModData.gPMMMUniqueBuildings) do
 			bIsMami = true;
 		end
 	end
-	if not bIsKyouko then
-		if MapModData.gPMMMUniqueBuildings[iPlayer] == GameInfoTypes.BUILDING_PMMM_SAKURA_CHURCH then
-			print("Loading Kyouko's building script.")
-			include('PMMMKyoukoBuilding.lua');
-			bIsKyouko = true;
-		end
-	end
+	--[port] Phase 4: the Sakura Church keeps Food through Buildings.FoodKept now, so its script is retired.
 	if not bIsNagisa then
 		if MapModData.gPMMMUniqueBuildings[iPlayer] == GameInfoTypes.BUILDING_PMMM_MAGICAL_DAIRY then
 			print("Loading Nagisa's building script.")
@@ -55,9 +49,6 @@ end
 
 function RunUBScripts(iPlayer)
 	if iPlayer < iMaxCivs then
-		if bIsKyouko then
-			CheckSakuraChurch(iPlayer)
-		end
 		if bIsMami then
 			CheckMamiFriendship(iPlayer)
 		end

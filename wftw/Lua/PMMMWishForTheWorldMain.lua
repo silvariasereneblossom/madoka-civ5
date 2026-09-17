@@ -130,6 +130,7 @@ include("PMMMGeneralFunctions.lua")
 include("PMMMUUBootstrapper.lua")
 include("PMMMUBBootstrapper.lua")
 include("PMMMTraitBootstrapper.lua")
+include("PMMMMadokaBuilding.lua")	--[port] Phase 4: free Magical Girl from the Middle School
 include("PMMMLeaderAbilities.lua")	--[port] Phase 4 Leader Magical Girl ability framework
 include("PMMMFarsightOracle.lua")
 include("PMMMLeaveMapFunctions.lua")
@@ -151,6 +152,7 @@ include("PMMMCityConnectionBuildings.lua")
 
 ---------PlayerDoTurn------------------------------------------------------------------------------
 GameEvents.PlayerDoTurn.Add(PMMMLeaderAbilityDoTurn)	--[port] Phase 4: ability cooldowns, timed promotions, AI use
+GameEvents.CityConstructed.Add(MadokaMiddleSchoolConstructed)	--[port] Phase 4
 GameEvents.PlayerDoTurn.Add(DoActionStateTurnUpkeep)
 GameEvents.PlayerDoTurn.Add(MagicalGirlUpkeep)
 GameEvents.PlayerDoTurn.Add(RunUBScripts)

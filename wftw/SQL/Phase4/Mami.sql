@@ -164,3 +164,27 @@ WHERE Tag = 'TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_STRATEGY';
 UPDATE Language_en_US
 SET Text = 'A platoon of Magical Girls who have trained diligently in mimicking Mami Tomoe''s Magic, so much so that even their outfits are identical to hers.[NEWLINE][NEWLINE]Not only have they trained in the use of her beautiful firearms, but they have also adopted her flair for the stylish and dramatic in combat. During a regular skirmish, they fight on par with a trained regiment of musketmen. However, once they feel it is their time to shine, they can unleash Mami''s signature attack: the Tiro Finale, a gargantuan flintlock weapon which lays waste to everything in the area. This, however, leaves them quite vulnerable to a counterattack from any survivors.'
 WHERE Tag = 'TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_TEXT';
+
+--------------------------------------------------------------------------------------------------------------
+-- Teahouse friendship bonus: one stacking dummy, driven by PMMMMamiBuilding.lua.
+-- Each copy is one Declaration of Friendship or one protected city-state: +2 Gold and +10% Gold in that city.
+--------------------------------------------------------------------------------------------------------------
+INSERT OR REPLACE INTO BuildingClasses (Type, Description, DefaultBuilding, NoLimit)
+VALUES ('BUILDINGCLASS_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 'TXT_KEY_BUILDING_PMMM_TEAHOUSE', 'BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 1);
+
+INSERT OR REPLACE INTO Buildings (Type, BuildingClass, Description, Help, Cost, FaithCost, GoldMaintenance, PrereqTech, NeverCapture, ArtDefineTag, MinAreaSize, ConquestProb, IconAtlas, PortraitIndex)
+VALUES ('BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 'BUILDINGCLASS_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 'TXT_KEY_BUILDING_PMMM_TEAHOUSE', 'TXT_KEY_BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY_HELP', -1, -1, 0, NULL, 1, 'ART_DEF_BUILDING_CARAVANSARY', -1, 0, 'CIV_COLOR_ATLAS_MAMI', 0);
+
+DELETE FROM Building_YieldChanges WHERE BuildingType = 'BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY';
+INSERT INTO Building_YieldChanges (BuildingType, YieldType, Yield)
+VALUES ('BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 'YIELD_GOLD', 2);
+
+DELETE FROM Building_YieldModifiers WHERE BuildingType = 'BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY';
+INSERT INTO Building_YieldModifiers (BuildingType, YieldType, Yield)
+VALUES ('BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY', 'YIELD_GOLD', 10);
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+VALUES ('TXT_KEY_BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY_HELP', '+2 [ICON_GOLD] Gold and +10% [ICON_GOLD] Gold in this City for each Declaration of Friendship and each City-State you have pledged to protect.');
+
+-- How many friends a Teahouse city may count (keeps a long diplomatic game bounded)
+INSERT OR REPLACE INTO Defines (Name, Value) VALUES ('MAMI_TEAHOUSE_MAX_FRIENDS', 5);
