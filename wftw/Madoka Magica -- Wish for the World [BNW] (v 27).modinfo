@@ -431,7 +431,7 @@
     <File md5="4B8C198C1B0107CAB90ACECC4F50E760" import="0">EventsMod/PMMMEvents.xml</File>
     <File md5="7901F4BEA8EF1438383A2B9A995B7458" import="1">Lua/Gameplay/Buildings/PMMMKyoukoBuilding.lua</File>
     <File md5="9C66C9B442A47943BD850507AAA3FBBD" import="1">Lua/Gameplay/Buildings/PMMMMamiBuilding.lua</File>
-    <File md5="539B5C8929BB4B51F91AE2CFF3E6DC39" import="1">Lua/Gameplay/Buildings/PMMMNagisaBuilding.lua</File>
+    <File md5="BA8AF5D2DBDA6EF617D4B93AC315B899" import="1">Lua/Gameplay/Buildings/PMMMNagisaBuilding.lua</File>
     <File md5="C2CA51723710A9A97DC0B2564F69AEA8" import="1">Lua/Gameplay/Buildings/PMMMSayakaBuilding.lua</File>
     <File md5="F5FEF9CD061ED73016A49A09F03F132C" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
     <File md5="CC70F0002A43E73EDE2CB2C411CA1E0E" import="1">Lua/Gameplay/Improvements/PMMMFarsightOracle.lua</File>
@@ -552,11 +552,11 @@
     <File md5="0C6A93EC71639C1D64A3A24860666C31" import="0">SQL/Shared/MGActionStates.sql</File>
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
-    <File md5="A0AD93DC1109D5DA04C5D6F1E0F018A9" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="96A8CF25417E72FE41CA94A95AE7A007" import="0">SQL/Phase4/Nagisa.sql</File>
-    <File md5="5C28D975A80F41FF22EEBFCBA2BC2CA1" import="0">SQL/Phase4/OrikoKirika.sql</File>
-    <File md5="FE1A9FBEAA91C22BDC1DCED77D7FA047" import="0">SQL/Phase4/Kyouko.sql</File>
-    <File md5="257BA71351AAE7A3437510A4D38CC481" import="0">SQL/Phase4/Mami.sql</File>
+    <File md5="6FDC5B63D8EE887121DBB44E62F07F95" import="0">SQL/Phase4/Madoka.sql</File>
+    <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
+    <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
+    <File md5="B30B7719DD8F618ED80C1685AE55F935" import="0">SQL/Phase4/Kyouko.sql</File>
+    <File md5="28AE4836F047C673121CC0CC529EEE53" import="0">SQL/Phase4/Mami.sql</File>
     <File md5="08FDC21D172E18B05E0F937BC0E001E7" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="BCF680E2D7E177423DB68A6B173FD16F" import="0">SQL/Phase4/Homura.sql</File>
     <File md5="3018BAEE8C641479D17BB336579D65C6" import="0">SQL/Phase4/DemonHomura.sql</File>

@@ -7,7 +7,8 @@
 include('PMMMGeneralFunctions.lua');
 local iBuilding = GameInfoTypes.BUILDING_PMMM_MAGICAL_DAIRY
 local iPrereq = GameInfo.Technologies("Type ='" ..GameInfo.Buildings[iBuilding].PrereqTech.. "'")().ID
-local iDummy = GameInfoTypes.BUILDING_PMMM_MAGICAL_DAIRY_DUMMY
+--[port] Phase 4: the stacking dummy is gone. The Magical Dairy now replaces the Granary and pays its
+--Cattle/Sheep yields through Building_ResourceYieldChanges, which the city screen shows on the tile.
 
 local iCow = GameInfoTypes.RESOURCE_COW
 local iSheep = GameInfoTypes.RESOURCE_SHEEP
@@ -18,25 +19,6 @@ function NagisaCitiesBonusTrade(iPlayer)
 	local pPlayer = Players[iPlayer]
 	if iPlayer < iMaxCivs and pPlayer:IsAlive() then
 		if MapModData.gPMMMUniqueBuildings[iPlayer] == iBuilding and Teams[pPlayer:GetTeam()]:IsHasTech(iPrereq) then
-			for pCity in pPlayer:Cities() do
-				if pCity:IsHasBuilding(iBuilding) then
-					local iNumPlots = pCity:GetNumCityPlots()
-					local iNumResourcesWorked = 0;
-					for iPlot = 0, iNumPlots - 1 do
-						local pPlot = pCity:GetCityIndexPlot(iPlot)
-						if pPlot then
-							if pPlot:GetResourceType() == iCow or pPlot:GetResourceType() == iSheep then
-								if pCity:IsWorkingPlot(pPlot) then
-									iNumResourcesWorked = iNumResourcesWorked + 1
-								end
-							end
-						end
-					end
-					pCity:SetNumRealBuilding(iDummy, iNumResourcesWorked)
-				else
-					pCity:SetNumRealBuilding(iDummy, 0)
-				end
-			end
 			local iTotalGoldenAgePointsBase = 0
 			if pPlayer:IsGoldenAge() then
 				dprint("Player is in Golden Age. Do not add Golden Age points.")
