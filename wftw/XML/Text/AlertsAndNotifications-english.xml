@@ -150,6 +150,9 @@
 				You killed the Witch and recovered a [ICON_PMMM_GRIEF_SEED] Grief Seed from it!
 			</Text>
 		</Row>
+		<Row Tag="TXT_KEY_PMMM_ALERT_KILLED_WITCH_DENIED">
+			<Text>You destroyed a Witch. Its Grief Seed is lost, denying it to the Magical Girls of other civilizations.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA">
 			<Text>
 				You killed the Witch and crushed its [ICON_PMMM_GRIEF_SEED] Grief Seed, absorbing its energy into your Dark Orb and earning {1_Num} points towards a [ICON_GOLDEN_AGE] Golden Age.

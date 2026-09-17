@@ -288,6 +288,9 @@ function GetGriefSeed(iKillerPlayer, iKilledPlayer, iKilledUnitType)
 			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA", GameDefines.GOLDEN_AGE_POINTS_FROM_NO_WITCH_TRAIT_KILLING_WITCH))
 			
 			
+		elseif not PlayerHasMagicalGirls(iKillerPlayer) then
+			--[port] a civilization outside the Magical Girl system has no use for the seed; the kill denies it to those who do
+			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DENIED"))
 		else
 			if PMMM.GriefSeeds[iKillerPlayer] then
 				PMMM.GriefSeeds[iKillerPlayer] = PMMM.GriefSeeds[iKillerPlayer] + 1

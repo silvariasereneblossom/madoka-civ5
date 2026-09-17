@@ -442,7 +442,7 @@
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="955E177D3FEFC4E738C91149473650FC" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
-    <File md5="3B9878308590CE3D99EB99F515291856" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
+    <File md5="9CD926C04AAE536D7FEFEF23F5BD4EED" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
     <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
@@ -632,7 +632,7 @@
     <File md5="FB014D0C2FC48DF22F7C553B6CD8A627" import="0">XML/CIV5Religions-Madoka.xml</File>
     <File md5="8807217A13A308FB20D1EBBEF6D95498" import="0">XML/CIV5UnitPromotions-Madoka.xml</File>
     <File md5="A4FC2D9D867B10BC209D41C0D3FF035D" import="0">XML/MadokaNewTables.xml</File>
-    <File md5="A12DB9ABF9F1D889E46609D54297E90E" import="0">XML/Text/AlertsAndNotifications-english.xml</File>
+    <File md5="32764EE6C4569EE353E0E2969DB21522" import="0">XML/Text/AlertsAndNotifications-english.xml</File>
     <File md5="EF40753EA64AA6981082DA3F18D5DE23" import="0">XML/Text/Buildings-english.xml</File>
     <File md5="03497AAB8BFBFC244326728D7B167FBA" import="0">XML/Text/Cities-english.xml</File>
     <File md5="AC1537E4DF81956CD3F6BC041BA4BF23" import="0">XML/Text/CivilizationCivilopedia-english.xml</File>
