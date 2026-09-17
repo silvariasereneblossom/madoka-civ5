@@ -1,12 +1,15 @@
 --*******************************************************************
 -- Demon Homura's Civilization (uses Assyria as a baseline)
 --*******************************************************************
+--[port] SoundtrackTag used to be copied from the base civ, but vanilla civs leave it NULL (the engine
+--derives their music from the civ type), so the copy was NULL and the game never left the menu theme.
+--Fall back to the base civ's songs (SONG_ASSYRIA_PEACE_n / _WAR_n); the companion soundtrack mod overrides this with 'MADOKA'.
 INSERT INTO Civilizations (Type, Description, ShortDescription,	Adjective, Civilopedia, CivilopediaTag, DefaultPlayerColor,
 ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, IconAtlas, PortraitIndex, AlphaIconAtlas, SoundtrackTag, MapImage,
 DawnOfManQuote,	DawnOfManImage)
 
 SELECT ('CIVILIZATION_DEMON_HOMURA'), ('TXT_KEY_CIV_DEMON_HOMURA_DESC'), ('TXT_KEY_CIV_DEMON_HOMURA_SHORT_DESC'), ('TXT_KEY_CIV_DEMON_HOMURA_ADJECTIVE'), Civilopedia, ('TXT_KEY_CIV_DEMON_HOMURA'), ('PLAYERCOLOR_DEMON_HOMURA'),
-ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_DEMON_HOMURA'), 0, ('CIV_ALPHA_ATLAS_DEMON_HOMURA'), SoundtrackTag, ('HomuraRebellionSelectImage.dds'),
+ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_DEMON_HOMURA'), 0, ('CIV_ALPHA_ATLAS_DEMON_HOMURA'), ('ASSYRIA'), ('HomuraRebellionSelectImage.dds'),
 ('TXT_KEY_CIV5_DAWN_DEMON_HOMURA_TEXT'), ('DOM_HomuraRebellion.dds')
 
 FROM Civilizations WHERE (Type = 'CIVILIZATION_ASSYRIA');

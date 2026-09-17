@@ -4,12 +4,15 @@
 --*******************************************************************
 -- Oriko and Kirika's Civilization (uses Japan as a baseline)
 --*******************************************************************
+--[port] SoundtrackTag used to be copied from the base civ, but vanilla civs leave it NULL (the engine
+--derives their music from the civ type), so the copy was NULL and the game never left the menu theme.
+--Fall back to the base civ's songs (SONG_JAPAN_PEACE_n / _WAR_n); the companion soundtrack mod overrides this with 'MADOKA'.
 INSERT INTO Civilizations (Type, Description, ShortDescription,	Adjective, Civilopedia, CivilopediaTag, DefaultPlayerColor,
 ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, IconAtlas, PortraitIndex, AlphaIconAtlas, SoundtrackTag, MapImage,
 DawnOfManQuote,	DawnOfManImage)
 
 SELECT ('CIVILIZATION_ORIKO_KIRIKA'), ('TXT_KEY_CIV_ORIKO_KIRIKA_DESC'), ('TXT_KEY_CIV_ORIKO_KIRIKA_SHORT_DESC'), ('TXT_KEY_CIV_ORIKO_KIRIKA_ADJECTIVE'), Civilopedia, ('TXT_KEY_CIV_ORIKO_KIRIKA'), ('PLAYERCOLOR_ORIKO_KIRIKA'),
-ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_ORIKO_KIRIKA'), 0, ('CIV_ALPHA_ATLAS_ORIKO_KIRIKA'), SoundtrackTag, ('ShiromeSelectImage.dds'),
+ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_ORIKO_KIRIKA'), 0, ('CIV_ALPHA_ATLAS_ORIKO_KIRIKA'), ('JAPAN'), ('ShiromeSelectImage.dds'),
 ('TXT_KEY_CIV5_DAWN_ORIKO_KIRIKA_TEXT'), ('DOM_Shirome.dds')
 
 FROM Civilizations WHERE (Type = 'CIVILIZATION_JAPAN');

@@ -4,12 +4,15 @@
 --*******************************************************************
 -- Kazumi's Civilization (uses Japan as a baseline)
 --*******************************************************************
+--[port] SoundtrackTag used to be copied from the base civ, but vanilla civs leave it NULL (the engine
+--derives their music from the civ type), so the copy was NULL and the game never left the menu theme.
+--Fall back to the base civ's songs (SONG_JAPAN_PEACE_n / _WAR_n); the companion soundtrack mod overrides this with 'MADOKA'.
 INSERT INTO Civilizations (Type, Description, ShortDescription,	Adjective, Civilopedia, CivilopediaTag, DefaultPlayerColor,
 ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, IconAtlas, PortraitIndex, AlphaIconAtlas, SoundtrackTag, MapImage,
 DawnOfManQuote,	DawnOfManImage)
 
 SELECT ('CIVILIZATION_KAORU_UMIKA'), ('TXT_KEY_CIV_KAORU_UMIKA_DESC'), ('TXT_KEY_CIV_KAORU_UMIKA_SHORT_DESC'), ('TXT_KEY_CIV_KAORU_UMIKA_ADJECTIVE'), Civilopedia, ('TXT_KEY_CIV_KAORU_UMIKA'), ('PLAYERCOLOR_KAORU_UMIKA'),
-ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_KAORU_UMIKA'), 0, ('CIV_ALPHA_ATLAS_KAORU_UMIKA'), SoundtrackTag, ('PleiadesSelectImage.dds'),
+ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_KAORU_UMIKA'), 0, ('CIV_ALPHA_ATLAS_KAORU_UMIKA'), ('JAPAN'), ('PleiadesSelectImage.dds'),
 ('TXT_KEY_CIV5_DAWN_KAORU_UMIKA_TEXT'), ('DOM_Pleiades.dds')
 
 FROM Civilizations WHERE (Type = 'CIVILIZATION_JAPAN');

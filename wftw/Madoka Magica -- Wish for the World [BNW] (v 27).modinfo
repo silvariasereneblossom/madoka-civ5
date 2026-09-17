@@ -504,46 +504,46 @@
     <File md5="F3341DAF06575877DFEF220F4236E72D" import="0">ModCompatibility/PMMMOtherModSupport.sql</File>
     <File md5="2E7E926BE535FDA050B236C0E9C865B7" import="0">ModCompatibility/Superpower Modpack/PMMMSuperpower.sql</File>
     <File md5="717CB315D54CF569E12108AC5735565C" import="1">Sound/HomuraTimeStop.mp3</File>
-    <File md5="4FCDC194F791630BEA0DA9B325515987" import="0">SQL/DemonHomura/DemonHomuraCivilization.sql</File>
+    <File md5="C2C99D7365DFBD283FEB2EB796FC9029" import="0">SQL/DemonHomura/DemonHomuraCivilization.sql</File>
     <File md5="4196D34861B66EEFDB3CDDB80A07ECF2" import="0">SQL/DemonHomura/DemonHomuraLeaderAndTrait.sql</File>
     <File md5="D22F8896C838A411E7C93F75FFA23E2F" import="0">SQL/DemonHomura/DemonHomuraUnit.sql</File>
     <File md5="94649F7831C6A8FAAE4B18826F4164C0" import="0">SQL/Germany/BismarckTrait.sql</File>
     <File md5="D75A304806AD8D39D244DC268EAD767B" import="0">SQL/Homura/HomuraBuilding.sql</File>
-    <File md5="79BC5610E318903354E7840D01982150" import="0">SQL/Homura/HomuraCivilization.sql</File>
+    <File md5="495BCA7082E0F4FB4E3570F0CAF33176" import="0">SQL/Homura/HomuraCivilization.sql</File>
     <File md5="0B07EC77DCEB1B7BE3CD8BEE74C525B9" import="0">SQL/Homura/HomuraLeaderAndTrait.sql</File>
     <File md5="290FE5E9F73F1BFA0D8510227F0DB9AE" import="0">SQL/Homura/HomuraUnit.sql</File>
     <File md5="3ED0AD1304554BDCD410CACF1A94FFBD" import="0">SQL/KaoruUmika/KaoruUmikaBuilding.sql</File>
     <File md5="6321BA6607D9AEED6996922DB0507C23" import="0">SQL/KaoruUmika/KaoruUmikaMissions.sql</File>
     <File md5="3D7A3D79EED9E9E6AA87BDC6BCCF0C90" import="0">SQL/KaoruUmika/KaoruUmikaResource.sql</File>
     <File md5="E85AC2A27A75E6FEBA4367FFF4CC9ABB" import="0">SQL/KaoruUmika/KaoruUmikaUnit.sql</File>
-    <File md5="D95419C8DD097EB0B520588BA1809623" import="0">SQL/KaoruUmika/KaoruUmikaCivilization.sql</File>
+    <File md5="B0ADDDDC4160845DB5141213AA49F337" import="0">SQL/KaoruUmika/KaoruUmikaCivilization.sql</File>
     <File md5="8CDB257E49E718C4EB1EE9B043F69A5F" import="0">SQL/KaoruUmika/KaoruUmikaLeaderAndTrait.sql</File>
     <File md5="EB3060F954F17E6CA3EF92AA2918A0AB" import="0">SQL/Kyouko/KyoukoBuilding.sql</File>
     <File md5="A73D742BEF2FA14C26BC61A7C9135DB4" import="0">SQL/Kyouko/KyoukoMissions.sql</File>
     <File md5="07086EA0743F8795D4943990DC0ABC8A" import="0">SQL/Kyouko/KyoukoUnit.sql</File>
-    <File md5="93CBA85D34AB675128AFD600902B6F89" import="0">SQL/Kyouko/KyoukoCivilization.sql</File>
+    <File md5="E9CFB9AFF56F777DBE13AC5D3D230A30" import="0">SQL/Kyouko/KyoukoCivilization.sql</File>
     <File md5="1C8D9E494BB0D438A9933D86919C51A9" import="0">SQL/Kyouko/KyoukoLeaderAndTrait.sql</File>
     <File md5="9A24C953A95DBB1D04527401C6B3C8B6" import="0">SQL/Madoka/MadokaBuilding.sql</File>
-    <File md5="FC8FBA3D5F36E5F67890208F96C44499" import="0">SQL/Madoka/MadokaCivilization.sql</File>
+    <File md5="835F672E92043CA8C087FA7BC4AACE1A" import="0">SQL/Madoka/MadokaCivilization.sql</File>
     <File md5="45985B1E3E154DBD0EECBBB77EBD7390" import="0">SQL/Madoka/MadokaLeaderAndTrait.sql</File>
     <File md5="78665A7AEB524A62443C15229678E589" import="0">SQL/Madoka/MadokaUnit.sql</File>
     <File md5="EF51B554772FA64C937097DF72A99B83" import="0">SQL/Mami/MamiBuilding.sql</File>
     <File md5="6380FA0EE0C9BF90FD33909B59F5B9F8" import="0">SQL/Mami/MamiMissions.sql</File>
     <File md5="7C2649B8D9E06BB9051ADE1725794255" import="0">SQL/Mami/MamiUnit.sql</File>
     <File md5="98E45AAF0F142CCD8359779E7304F105" import="0">SQL/Mami/MamiLeaderAndTrait.sql</File>
-    <File md5="0E1E94A4398317A7CB870D3134EFCF39" import="0">SQL/Mami/MamiCivilization.sql</File>
+    <File md5="CF975668AF41EBA9C6C7997BD4EEDC08" import="0">SQL/Mami/MamiCivilization.sql</File>
     <File md5="32515DB45CF9FFADB56038E26132BFB7" import="0">SQL/Nagisa/NagisaBuilding.sql</File>
     <File md5="E3DFA26322ACAD7ECF6D6A068C26CA4D" import="0">SQL/Nagisa/NagisaUnit.sql</File>
     <File md5="DD78F6F61E61638B0F5848CD418D2D04" import="0">SQL/Nagisa/NagisaLeaderAndTrait.sql</File>
-    <File md5="3F45B752B200C8275E1FF05602BAC3B9" import="0">SQL/Nagisa/NagisaCivilization.sql</File>
+    <File md5="FC5D6C0C04B2217E96E9D105A6A064F5" import="0">SQL/Nagisa/NagisaCivilization.sql</File>
     <File md5="78B82F11948E3DDB4D5ADE93328E2320" import="0">SQL/OrikoKirika/OrikoKirikaImprovement.sql</File>
     <File md5="797805EB420DB61C162862013723B294" import="0">SQL/OrikoKirika/OrikoKirikaUnit.sql</File>
     <File md5="A0167CE03825BEFC6058CE1FB4F50595" import="0">SQL/OrikoKirika/OrikoKirikaLeaderAndTrait.sql</File>
-    <File md5="ECFDCAA9A8B26DFFA8CBFDA5B5365CF1" import="0">SQL/OrikoKirika/OrikoKirikaCivilization.sql</File>
+    <File md5="B457F41188DF6A8191A54E0A22C9DA85" import="0">SQL/OrikoKirika/OrikoKirikaCivilization.sql</File>
     <File md5="934524071AA3A59DEC548891DC8E9C20" import="0">SQL/Sayaka/SayakaBuilding.sql</File>
     <File md5="F02D465737A41C6DC08097D24ED48783" import="0">SQL/Sayaka/SayakaUnit.sql</File>
     <File md5="0A626C7F9DA051875290A5D44B908AF8" import="0">SQL/Sayaka/SayakaLeaderAndTrait.sql</File>
-    <File md5="4BFCB61C10201E0315DA672FA4E39D9A" import="0">SQL/Sayaka/SayakaCivilization.sql</File>
+    <File md5="BDFE187DF73E02C832FF9ED481FC7214" import="0">SQL/Sayaka/SayakaCivilization.sql</File>
     <File md5="C68072565AC0B6367D6193415D3ACD03" import="0">SQL/Shared/Dialog.sql</File>
     <File md5="B9DDFF1A22B2E3C182AB5F91851B2FFC" import="0">SQL/Shared/EntertainmentYield.sql</File>
     <File md5="6A002E4637DD226863D6BF59B7A99865" import="0">SQL/Shared/Feminizer.sql</File>
@@ -570,7 +570,7 @@
     <File md5="D7CE4D7AF6D6572387C69AB427FC52F4" import="0">SQL/UltimateMadoka/UltimateMadokaMissions.sql</File>
     <File md5="386D50D2E3A65A5316BE7630B224B6A9" import="0">SQL/UltimateMadoka/UltimateMadokaUnit.sql</File>
     <File md5="743F120DF947CC6C5EC71DF5CB0916BF" import="0">SQL/UltimateMadoka/UltimateMadokaLeaderAndTrait.sql</File>
-    <File md5="E893B0C21B718C8FD07C69BDC96543C0" import="0">SQL/UltimateMadoka/UltimateMadokaCivilization.sql</File>
+    <File md5="ADFA48EE74D3B5480951725E1C4FA8B1" import="0">SQL/UltimateMadoka/UltimateMadokaCivilization.sql</File>
     <File md5="BC8670313F6A8772452885B77C40F3A6" import="0">SQL/WonderChanges/PMMMChangeHalicarnassus.sql</File>
     <File md5="FBEE0B5423AF6031598D45BB28B5DD4B" import="1">UI Replacements/BarbarianCampPopup.lua</File>
     <File md5="B1BF7CDC8EC3EA4E47304AF8D0703116" import="1">UI Replacements/CivilopediaScreen.lua</File>

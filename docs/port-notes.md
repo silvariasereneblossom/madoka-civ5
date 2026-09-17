@@ -163,3 +163,30 @@ Side effects of the investigation, all reversible: `config.ini` gained
 (a running OOTP 27 session re-attached fine); Debugging Tools for Windows
 were extracted to `tools/sdk/dbg` (not installed); `build/dbg/` holds the
 cdb logs.
+
+## In-game music stuck on the menu theme (2026-09-16)
+
+Symptom: after loading a WFTW civ the main-menu theme keeps looping; civ peace/war music never starts.
+
+How the engine picks civ music: `Civilizations.SoundtrackTag` names a family of 2D audio scripts
+`SONG_<TAG>_PEACE_n` / `SONG_<TAG>_WAR_n` (vanilla: `SONG_JAPAN_PEACE_1` ... in `Assets/Sounds/XML`,
+BNW civs in `DLC/Expansion2/Sounds/XML/<Civ>Audio2DScripts.xml`). Vanilla civs leave the column NULL and the
+engine derives the tag from the civ type. If the family does not exist, the music system never leaves the menu track.
+
+Cause in WFTW: every civ is inserted with `INSERT ... SELECT ... SoundtrackTag ... FROM Civilizations WHERE Type =
+'CIVILIZATION_JAPAN'` (or ROME / GERMANY / ASSYRIA), which copies that NULL, so the engine looked for
+`SONG_ORIGINAL_MADOKA_PEACE_1` and friends. Those scripts only exist when the companion mod
+"Madoka Magica Soundtrack (No Stupid Subtitles Edition) (v 6)" (GUID d58f9739-b51a-401d-b2ff-c0c480840fce) is
+enabled: it sets `SoundtrackTag = 'MADOKA'` for all ten civs (UPDATE plus an AFTER INSERT trigger, so load order
+does not matter) and defines `SONG_MADOKA_PEACE_1..99` / `SONG_MADOKA_WAR_1..93` plus per-leader diplomacy music.
+`Civ5ModsDatabase.db` showed the pack with Enabled = 0 during the test run, so nothing supplied the scripts.
+
+Fix (committed): each `SQL/<Civ>/<Civ>Civilization.sql` now writes the base civ's tag literally
+(`'JAPAN'`, `'ROME'` for Mami, `'GERMANY'` for Sayaka, `'ASSYRIA'` for Ultimate Madoka and Demon Homura), so WFTW has
+working music on its own; the soundtrack pack still overrides it with `'MADOKA'`. Verified with the simulator
+(`build/sim_cp_wftw.db` = base tags, `build/sim_cp_wftw_ost.db` with the pack as a third `--mod` = all `MADOKA`,
+same 300 ok / 15 expected failures). The pack's SQL/XML load cleanly on CP + WFTW; its 141 MP3s are `import="1"`
+and `LoadType Streamed`.
+
+To hear the Madoka soundtrack: tick the soundtrack mod in the Mods menu together with (1) Community Patch and WFTW
+(it only *References* WFTW, so it is not enabled automatically).

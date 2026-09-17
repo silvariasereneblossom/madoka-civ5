@@ -4,12 +4,15 @@
 --*******************************************************************
 -- Mami's Civilization (uses Rome as a baseline)
 --*******************************************************************
+--[port] SoundtrackTag used to be copied from the base civ, but vanilla civs leave it NULL (the engine
+--derives their music from the civ type), so the copy was NULL and the game never left the menu theme.
+--Fall back to the base civ's songs (SONG_ROME_PEACE_n / _WAR_n); the companion soundtrack mod overrides this with 'MADOKA'.
 INSERT INTO Civilizations (Type, Description, ShortDescription,	Adjective, Civilopedia, CivilopediaTag, DefaultPlayerColor,
 ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, IconAtlas, PortraitIndex, AlphaIconAtlas, SoundtrackTag, MapImage,
 DawnOfManQuote,	DawnOfManImage)
 
 SELECT ('CIVILIZATION_MAMI'), ('TXT_KEY_CIV_MAMI_DESC'), ('TXT_KEY_CIV_MAMI_SHORT_DESC'), ('TXT_KEY_CIV_MAMI_ADJECTIVE'), Civilopedia, ('TXT_KEY_CIV_MAMI'), ('PLAYERCOLOR_MAMI'),
-ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_MAMI'), 0, ('CIV_ALPHA_ATLAS_MAMI'), SoundtrackTag, ('MamiSelectImage.dds'),
+ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_MAMI'), 0, ('CIV_ALPHA_ATLAS_MAMI'), ('ROME'), ('MamiSelectImage.dds'),
 ('TXT_KEY_CIV5_DAWN_MAMI_TEXT'), ('DOM_Mami.dds')
 
 FROM Civilizations WHERE (Type = 'CIVILIZATION_ROME');

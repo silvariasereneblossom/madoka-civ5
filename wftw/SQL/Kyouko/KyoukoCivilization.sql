@@ -4,12 +4,15 @@
 --*******************************************************************
 -- Kyouko's Civilization (uses Japan as a baseline)
 --*******************************************************************
+--[port] SoundtrackTag used to be copied from the base civ, but vanilla civs leave it NULL (the engine
+--derives their music from the civ type), so the copy was NULL and the game never left the menu theme.
+--Fall back to the base civ's songs (SONG_JAPAN_PEACE_n / _WAR_n); the companion soundtrack mod overrides this with 'MADOKA'.
 INSERT INTO Civilizations (Type, Description, ShortDescription,	Adjective, Civilopedia, CivilopediaTag, DefaultPlayerColor,
 ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, IconAtlas, PortraitIndex, AlphaIconAtlas, SoundtrackTag, MapImage,
 DawnOfManQuote,	DawnOfManImage)
 
 SELECT ('CIVILIZATION_KYOUKO'), ('TXT_KEY_CIV_KYOUKO_DESC'), ('TXT_KEY_CIV_KYOUKO_SHORT_DESC'), ('TXT_KEY_CIV_KYOUKO_ADJECTIVE'), Civilopedia, ('TXT_KEY_CIV_KYOUKO'), ('PLAYERCOLOR_KYOUKO'),
-ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_KYOUKO'), 0, ('CIV_ALPHA_ATLAS_KYOUKO'), SoundtrackTag, ('KyoukoSelectImage.dds'),
+ArtDefineTag, ArtStyleType, ArtStyleSuffix, ArtStylePrefix, ('CIV_COLOR_ATLAS_KYOUKO'), 0, ('CIV_ALPHA_ATLAS_KYOUKO'), ('JAPAN'), ('KyoukoSelectImage.dds'),
 ('TXT_KEY_CIV5_DAWN_KYOUKO_TEXT'), ('DOM_Kyouko.dds')
 
 FROM Civilizations WHERE (Type = 'CIVILIZATION_JAPAN');
