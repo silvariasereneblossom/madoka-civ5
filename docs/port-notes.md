@@ -240,3 +240,23 @@ player. Implementation:
 
 Simulator: define present, exactly 10 traits flagged. Demon Homura keeps `NoMagicalGirls` on top of the flag, so her
 subjugation-on-Prodigy branch still runs.
+
+## Leader Magical Girl ability framework (2026-09-17)
+
+Phase 4 gives every Magical Girl civilization an active ability on its Leader Magical Girl.
+`Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua` holds everything the abilities share: a registry
+(`RegisterLeaderAbility`), the three `CustomMission*` hooks, per-girl cooldowns stored as
+`MagicalGirls[key].AbilityCooldown` and ticked on `PlayerDoTurn`, timed promotions
+(`PMMMApplyTimedPromotion`, persisted in `PMMM.TimedPromotions`), virtual-attack helpers and a generic
+AI driver that fires an ability at the best plot its own scorer picks. A civ's ability is bound to it by
+the existing trait columns `LeaderMGUniqueMission` / `ExtraLeaderMGUniqueMission`.
+
+**CP 5.4.6 binds `Unit:GetCombatDamage` but its body is commented out and it always returns 0**
+(`CvGameCoreDLL_Expansion2/Lua/CvLuaUnit.cpp:1176-1190`). Tiro Finale used it, so the mod's only
+existing damage ability has been dealing no damage at all. The working bindings are
+`GetMeleeCombatDamage(iStrength, iOpponentStrength, bIncludeRand, pOtherUnit)` and
+`GetMeleeCombatDamageCity(iStrength, pCity, bIncludeRand)`, both of which return damage and the
+attacker's own damage. Tiro Finale now uses the melee one, and the framework's helpers are built on it.
+
+Phase 4 per-civ data changes live in `wftw/SQL/Phase4/<Civ>.sql`, which load after every other SQL file
+so they can update rows the base civ files inserted.

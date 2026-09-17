@@ -130,6 +130,7 @@ include("PMMMGeneralFunctions.lua")
 include("PMMMUUBootstrapper.lua")
 include("PMMMUBBootstrapper.lua")
 include("PMMMTraitBootstrapper.lua")
+include("PMMMLeaderAbilities.lua")	--[port] Phase 4 Leader Magical Girl ability framework
 include("PMMMFarsightOracle.lua")
 include("PMMMLeaveMapFunctions.lua")
 include("PMMMReturnMapFunctions.lua")
@@ -149,6 +150,7 @@ include("PMMMCityConnectionBuildings.lua")
 --All GameEvents/Events calls should be run here.
 
 ---------PlayerDoTurn------------------------------------------------------------------------------
+GameEvents.PlayerDoTurn.Add(PMMMLeaderAbilityDoTurn)	--[port] Phase 4: ability cooldowns, timed promotions, AI use
 GameEvents.PlayerDoTurn.Add(DoActionStateTurnUpkeep)
 GameEvents.PlayerDoTurn.Add(MagicalGirlUpkeep)
 GameEvents.PlayerDoTurn.Add(RunUBScripts)
@@ -240,6 +242,7 @@ GameEvents.TileImprovementChanged.Add(OnFamiliarPillagedImprovement)
 GameEvents.TeamSetEra.Add(UpdateMGStrengthOnEra)
 
 --------CustomMissionPossible (added by DVMC)--------------------------------------------------------
+GameEvents.CustomMissionPossible.Add(LeaderAbilityCustomMissionPossible)
 GameEvents.CustomMissionPossible.Add(OnCustomMissionPossibleRunTraitScripts)
 GameEvents.CustomMissionPossible.Add(OnCustomMissionPossibleUUFunctions)
 GameEvents.CustomMissionPossible.Add(WitchHuntCustomMissionPossible)
@@ -253,6 +256,7 @@ GameEvents.CustomMissionPossible.Add(VacationCustomMissionPossible)
 GameEvents.CustomMissionPossible.Add(ContactHomeCustomMissionPossible)
 GameEvents.CustomMissionPossible.Add(SparringCustomMissionPossible)
 --------CustomMissionStart (added by DVMC)--------------------------------------------------------
+GameEvents.CustomMissionStart.Add(LeaderAbilityCustomMissionStart)
 GameEvents.CustomMissionStart.Add(OnCustomMissionStartRunTraitScripts)
 GameEvents.CustomMissionStart.Add(OnCustomMissionStartUUFunctions)
 GameEvents.CustomMissionStart.Add(WitchHuntCustomMissionStart)
@@ -266,6 +270,7 @@ GameEvents.CustomMissionStart.Add(VacationCustomMissionStart)
 GameEvents.CustomMissionStart.Add(ContactHomeCustomMissionStart)
 GameEvents.CustomMissionStart.Add(SparringCustomMissionStart)
 --------CustomMissionCompleted (added by DVMC)--------------------------------------------------------
+GameEvents.CustomMissionCompleted.Add(LeaderAbilityCustomMissionCompleted)
 GameEvents.CustomMissionCompleted.Add(OnCustomMissionCompletedRunTraitScripts)
 GameEvents.CustomMissionCompleted.Add(OnCustomMissionCompletedUUFunctions)
 GameEvents.CustomMissionCompleted.Add(WitchHuntCustomMissionCompleted)

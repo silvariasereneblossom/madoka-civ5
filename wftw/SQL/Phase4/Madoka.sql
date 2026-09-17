@@ -1,0 +1,5 @@
+--------------------------------------------------------------------------------------------------------------
+-- Phase 4 kit changes for Madoka
+-- Loaded after every civilization file, so it may UPDATE rows the base files inserted.
+-- Design: docs/design/phase4-design-v1.md
+--------------------------------------------------------------------------------------------------------------

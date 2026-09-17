@@ -148,7 +148,9 @@ function InflictTiroFinaleDamage(pHeadUnit, pUnit, pPlot, iMyStrength)
 		print("iTheirStrength: " ..iTheirStrength)
 	end
 	
-	local iDamage = pHeadUnit:GetCombatDamage(iMyStrength, iTheirStrength, pHeadUnit:GetDamage(), true, false, false)
+	--[port] CP 5.4.6 binds GetCombatDamage but its body is commented out and it always returns 0
+	--(CvLuaUnit.cpp:1176-1190), so Tiro Finale did no damage at all. GetMeleeCombatDamage is the real one.
+	local iDamage = pHeadUnit:GetMeleeCombatDamage(iMyStrength, iTheirStrength, true, pUnit)
 	print("iDamage: " ..iDamage)
 	if iDamage > 100 then
 		iDamage = 100

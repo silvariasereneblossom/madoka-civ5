@@ -441,6 +441,7 @@
     <File md5="ECC4CFE4673E34D88493ABD5A063B1CE" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="955E177D3FEFC4E738C91149473650FC" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
+    <File md5="3C20FC3FAE4F1EA850B0BBDE2B9D27EA" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="9CD926C04AAE536D7FEFEF23F5BD4EED" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
@@ -468,11 +469,11 @@
     <File md5="74C6AF1C697572E1D4A3406EB48B1F35" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
     <File md5="F1979632BB637781FF17F503CCF544A1" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
-    <File md5="6B9425B01E18D7CE93821E8A021FE0C6" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
+    <File md5="AD2E4E773055BDB5FE308061939CB8E0" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
     <File md5="602783B3660CEC55BB1BF96856936B7B" import="1">Lua/PMMMDataStorage.lua</File>
-    <File md5="EBCE98E71C6984CFB4F522C15488138F" import="1">Lua/PMMMDefines.lua</File>
+    <File md5="074B90C4ADB1CC1912733893D3C57847" import="1">Lua/PMMMDefines.lua</File>
     <File md5="89E26F85B37B9E3FD0E8C7F402063DE1" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="48F176D58302B9022477955845FC0340" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="078001911FE0B2E8CC6212F7F360D50F" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
     <File md5="A29208355FDEB9E5CF6855A3A68F499F" import="0">Lua/UI/PleiadesFreezer.lua</File>
@@ -551,6 +552,16 @@
     <File md5="0C6A93EC71639C1D64A3A24860666C31" import="0">SQL/Shared/MGActionStates.sql</File>
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
+    <File md5="A0AD93DC1109D5DA04C5D6F1E0F018A9" import="0">SQL/Phase4/Madoka.sql</File>
+    <File md5="96A8CF25417E72FE41CA94A95AE7A007" import="0">SQL/Phase4/Nagisa.sql</File>
+    <File md5="5C28D975A80F41FF22EEBFCBA2BC2CA1" import="0">SQL/Phase4/OrikoKirika.sql</File>
+    <File md5="FE1A9FBEAA91C22BDC1DCED77D7FA047" import="0">SQL/Phase4/Kyouko.sql</File>
+    <File md5="257BA71351AAE7A3437510A4D38CC481" import="0">SQL/Phase4/Mami.sql</File>
+    <File md5="08FDC21D172E18B05E0F937BC0E001E7" import="0">SQL/Phase4/UltimateMadoka.sql</File>
+    <File md5="BCF680E2D7E177423DB68A6B173FD16F" import="0">SQL/Phase4/Homura.sql</File>
+    <File md5="3018BAEE8C641479D17BB336579D65C6" import="0">SQL/Phase4/DemonHomura.sql</File>
+    <File md5="2AEE2148BAB1E5A6D2366971CE086DA9" import="0">SQL/Phase4/Sayaka.sql</File>
+    <File md5="917A67F5BD8241D90364283794FE4029" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
     <File md5="7B2B72CF6A4B1EFF92A35179F0D8832D" import="0">SQL/Shared/MGMissions.sql</File>
     <File md5="410E6A46F02A3D8159200D0D0E403B1D" import="0">SQL/Shared/MGMoods.sql</File>
@@ -806,6 +817,16 @@
       <UpdateDatabase>XML/Text/ModCompatibility/CivilizationNamesByPolicies.xml</UpdateDatabase>
       <UpdateDatabase>EventsMod/PMMMEvents.xml</UpdateDatabase>
       <UpdateDatabase>EventsMod/PMMMEvents.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Madoka.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Nagisa.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/OrikoKirika.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Kyouko.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Mami.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/UltimateMadoka.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Homura.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/DemonHomura.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Sayaka.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/KaoruUmika.sql</UpdateDatabase>
       <UpdateDatabase>XML/CBPReligiousWonder.xml</UpdateDatabase>
       <UpdateDatabase>XML/Text/ModCompatibility/DecisionsModTextUpdate-english.xml</UpdateDatabase>
       <UpdateDatabase>ModCompatibility/PMMMOtherModSupport.sql</UpdateDatabase>
