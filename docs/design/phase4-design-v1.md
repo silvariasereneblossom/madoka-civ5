@@ -267,6 +267,7 @@ start-location reveal and the extra leader girl.
 | 2 | Ability damage | Virtual attacks via `GetCombatDamage`. The strength numbers in the spec were reference points, not HP values. |
 | 3 | AI and text | Every UMG ships with an AI rule and tooltip text. Part of the definition of done. |
 | 4 | Devil Homura, Ai Yo | **Kept as specified.** Intent: a steamroll-early-or-fall-behind civ. Civ V favours tall play; going wide without the economy still costs heavily, the halved Prodigy rate compounds that, and her power depends on running up unhappiness through settlement and conquest, which opponents can block. Implementation route (a), DLL trait columns. |
+| 4b | Devil Homura, counterplay | Reaffirmed: the counter is stopping the snowball before it starts. Late game she faces empires with stronger science and economic tools; her only economic engine is the Half-Moon Garden, and her percentage bonuses multiply a small base. Playtest in a Lekmod-style lobby before tuning. |
 | 5 | Time Stop | **Mission on Homura's leader girl.** The free turn **includes** Great Person points, tourism and healing, not only city yields and builds. |
 | 6 | Mami, Teahouse | Mami earns +2 Gold and +10% Gold per Declaration of Friendship partner or protected city-state. |
 | 7 | Nagisa, Farms | **Kept at +1 Production on every Farm.** She was the weakest civ and her UU arrives very late, so the strong early line is deliberate. |
@@ -291,6 +292,9 @@ Implementation proceeds on these defaults unless the maintainer overrides them.
 | Ultimate Madoka, Led Away bonus promotion | One free promotion of the player's choice (promotion-ready flag), after XP is restored. |
 | Kazumi | Section 9 proposal stands until the maintainer amends it. |
 | Devil Homura | Whole kit provisional pending Walpurgisnacht Rising; build the DLL columns so the numbers stay data. |
+| Devil Homura, Ai Yo measure | Scale the bonus on **total** unhappiness from cities and population, not the net deficit, so selling luxuries does not also raise the bonus. |
+| Devil Homura, Ai Yo in the DLL | Implemented as "the engine treats her as never unhappy", so the AI's settling and war planning sees the freedom; leader flavours high on expansion and offense. |
+| Devil Homura, Ai Yo scope | Golden Age points from surplus happiness are lost (stated in the tooltip). Ideology public-opinion revolutions: **undecided**, maintainer to rule. |
 
 ## 13. Build order
 
