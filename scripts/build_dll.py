@@ -51,6 +51,8 @@ def write_commit_id(repo: Path) -> None:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--config", default="debug", choices=["debug", "release"])
+    ap.add_argument("--no-lto", action="store_true",
+                    help="release without link-time optimisation (-flto); isolates LTO-related startup failures")
     ap.add_argument("--repo", default=str(DEFAULT_REPO), help="Community-Patch-DLL checkout (or your fork)")
     ap.add_argument("--llvm-bin", default=os.environ.get("LLVM_BIN", str(LLVM_BIN)),
                     help="folder containing clang-cl.exe and lld-link.exe (env LLVM_BIN)")
@@ -73,7 +75,7 @@ def main(argv=None) -> int:
 
     src = script.read_text(encoding="utf-8")
     try:
-        patched = patch_upstream(src, repo, llvm_bin)
+        patched = patch_upstream(src, repo, llvm_bin, no_lto=args.no_lto)
     except PatchError as e:
         print(f"upstream build script changed; refusing to build with a half-applied patch:\n  {e}",
               file=sys.stderr)
@@ -108,7 +110,7 @@ def _patch(text: str, anchor: str, replacement: str) -> str:
     return text.replace(anchor, replacement)
 
 
-def patch_upstream(src: str, repo: Path, llvm_bin: Path) -> str:
+def patch_upstream(src: str, repo: Path, llvm_bin: Path, no_lto: bool = False) -> str:
     """Rewrite upstream's hard-coded system paths and toolchain assumptions.
     Every anchor must match exactly once, so upstream drift fails loudly."""
     p = src
@@ -136,6 +138,8 @@ def patch_upstream(src: str, repo: Path, llvm_bin: Path) -> str:
     #    and TLS initialisation the game's VC9 CRT does not provide. A DLL built that way, with those
     #    features patched out by hand, linked but failed to initialise in the game (error 1114).
     extra.append("'-fms-compatibility-version=15.00.30729'")
+    if no_lto:
+        p = _patch(p, "        args.append('-flto')\n", "        pass  # -flto removed by build_dll.py --no-lto\n")
     if extra:
         p = _patch(p, "args = ['-m32', '-msse3', '/c',",
                    "args = ['-m32', '-msse3', " + ", ".join(extra) + ", '/c',")
