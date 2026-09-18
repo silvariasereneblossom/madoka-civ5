@@ -131,7 +131,8 @@ include("PMMMUUBootstrapper.lua")
 include("PMMMUBBootstrapper.lua")
 include("PMMMTraitBootstrapper.lua")
 include("PMMMMadokaBuilding.lua")	--[port] Phase 4: free Magical Girl from the Middle School
-include("PMMMLeaderAbilities.lua")	--[port] Phase 4 Leader Magical Girl ability framework
+include("PMMMLeaderAbilities.lua")
+include("PMMMLeaderAbilityDefs.lua")	--[port] Phase 4: the individual abilities	--[port] Phase 4 Leader Magical Girl ability framework
 include("PMMMFarsightOracle.lua")
 include("PMMMLeaveMapFunctions.lua")
 include("PMMMReturnMapFunctions.lua")

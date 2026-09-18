@@ -79,10 +79,11 @@ for iPlayer, pTrait in pairs(MapModData.gPMMMTraits) do
 		end
 	end
 	if not bIsShirome then
-		--[port] the script was gated on LeaderMGUniqueMission, which no trait sets, so Shirome's reveal and
-		--intrigue effects never ran. Gate on the columns the trait actually uses.
+		--[port] the script was gated on LeaderMGUniqueMission, which no trait set at the time, so Shirome's reveal and
+		--intrigue effects never ran. Gate on the columns this trait actually uses: Phase 4 gives every civ a
+	--LeaderMGUniqueMission for its Leader Magical Girl ability, so that column no longer identifies Shirome.
 		local tShiromeTrait = MapModData.gPMMMTraits[iPlayer]
-		if tShiromeTrait.LeaderMGUniqueMission or (tShiromeTrait.LeaderMGIntrigueTurns or 0) > 0 or tShiromeTrait.RevealCivLocations == 1 then
+		if (tShiromeTrait.LeaderMGIntrigueTurns or 0) > 0 or tShiromeTrait.RevealCivLocations == 1 then
 			print("Loading Shirome's trait script.")
 			include('PMMMShiromeTrait.lua');
 			bIsShirome = true;

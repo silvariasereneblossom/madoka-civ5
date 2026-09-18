@@ -442,13 +442,14 @@
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="955E177D3FEFC4E738C91149473650FC" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="3C20FC3FAE4F1EA850B0BBDE2B9D27EA" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
+    <File md5="F46B2EE6003A1B5DE0AB2E51740CA057" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="9CD926C04AAE536D7FEFEF23F5BD4EED" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
     <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
     <File md5="256F1D92A4F28CB19FD2E3DB13B23DD4" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
-    <File md5="AA0B561899C74FDEF90D5922F798A0B8" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
+    <File md5="D15D5E4692FA1CC375483019BCEE2A77" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
     <File md5="897A683ECF90A26F897A2CEF6FFE647D" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
     <File md5="3706F4617A15C2F91C6DC5EDA3A6FE39" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
     <File md5="D275A6ADB29A1CE691A3E49D2D4A1EFA" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
@@ -473,7 +474,7 @@
     <File md5="602783B3660CEC55BB1BF96856936B7B" import="1">Lua/PMMMDataStorage.lua</File>
     <File md5="074B90C4ADB1CC1912733893D3C57847" import="1">Lua/PMMMDefines.lua</File>
     <File md5="89E26F85B37B9E3FD0E8C7F402063DE1" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="016456C05209306995A9E1CDB7DE9430" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="901F7D838A9A365BDC7B35D8F2AAA2C7" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
     <File md5="A29208355FDEB9E5CF6855A3A68F499F" import="0">Lua/UI/PleiadesFreezer.lua</File>
@@ -553,6 +554,7 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
+    <File md5="C6F707397D748897F607810FC5375E8E" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
     <File md5="B30B7719DD8F618ED80C1685AE55F935" import="0">SQL/Phase4/Kyouko.sql</File>
@@ -827,6 +829,7 @@
       <UpdateDatabase>SQL/Phase4/DemonHomura.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Phase4/Sayaka.sql</UpdateDatabase>
       <UpdateDatabase>SQL/Phase4/KaoruUmika.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase4/Abilities.sql</UpdateDatabase>
       <UpdateDatabase>XML/CBPReligiousWonder.xml</UpdateDatabase>
       <UpdateDatabase>XML/Text/ModCompatibility/DecisionsModTextUpdate-english.xml</UpdateDatabase>
       <UpdateDatabase>ModCompatibility/PMMMOtherModSupport.sql</UpdateDatabase>
