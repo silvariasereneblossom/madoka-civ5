@@ -64,6 +64,23 @@ function FreezerTipHandler(control)
 
 		local sText = Locale.ConvertTextKey("TXT_KEY_PMMM_UI_TOPPANEL_FREEZER_TT", iCurFreezer, iMaxFreezer)
 
+		--[port] Phase 4: one line per stored girl with the turns left before she revives (read-only round trip).
+		local tGirls = MapModData.PMMM and MapModData.PMMM.MagicalGirls
+		if tGirls then
+			local tKeys = {}
+			for k, v in pairs(tGirls) do
+				if v.FreezerPlayer == iPlayer then
+					tKeys[#tKeys + 1] = k
+				end
+			end
+			table.sort(tKeys)
+			for _, k in ipairs(tKeys) do
+				ttable[0] = nil
+				LuaEvents.PMMMGetFreezerRevivalTurns(iPlayer, k, ttable)
+				sText = sText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PMMM_UI_TOPPANEL_FREEZER_GIRL_TT", Locale.ConvertTextKey(tGirls[k].Name), ttable[0] or 0)
+			end
+		end
+
 		tipControlTable.TopPanelMouseover:SetHide(false)
 		tipControlTable.TooltipLabel:SetText( sText )
 		tipControlTable.TopPanelMouseover:DoAutoSize()
@@ -94,6 +111,8 @@ end
 LuaEvents.SRTTRefreshFreezerDisplay.Add(RefreshFreezerDisplay)
 
 Events.SerialEventUnitInfoDirty.Add(RefreshFreezerDisplay)
+--[port] Phase 4: gameplay fires this after a Grief Seed, a revival or a Capital capture.
+LuaEvents.PMMMRefreshFreezerPopup.Add(RefreshFreezerDisplay)
 
 -- [port] A23: hotseat -- the active player can change to (or away from) Pleiades after load
 function OnGameplaySetActivePlayer()

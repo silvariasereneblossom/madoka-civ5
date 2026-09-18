@@ -16,7 +16,8 @@
 					<Image ID="SubIconHighlight" Size="32.32" Anchor="C,C" Offset="0,0" TextureOffset="0,0" Texture="CivIconBGSizes_Highlight.dds"/>
 				</Image>
 				<Label ID="MagicalGirlNameLabel" Anchor="L,C" Offset="36,0" Font="TwCenMT16" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="Test" />
-				<Label ID="MagicalGirlSGLabel" Anchor="R,C" Offset="4,0" Font="TwCenMT16" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="Test" />
+				<!-- [port] Phase 4: turns left before she revives (was her Soul Gem percentage) -->
+				<Label ID="MagicalGirlTurnsLabel" Anchor="R,C" Offset="4,0" Font="TwCenMT16" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="Test" />
 			</Button>
 			<Image Anchor="L,B" Offset="0,0" Texture="BlueBar500x3.dds" Size="432,1" />
 		</Box>
@@ -49,23 +50,15 @@
 			<Image Anchor="R,C" Offset="0,-1" Texture="VerticalTrim.dds" Size="5.465"/>
 		</Box>
 
-		<!-- Result and Science Slider Box -->
+		<!-- Selected girl: revival timer and Grief Seed ([port] Phase 4) -->
 		<Box Offset="20,98" Anchor="R,B" Size="470,400" Color="0.0.0.5" ID="ResultBox">
 			<Label ID="SelectedMGNameLabel" Anchor="L,T" Offset="4,4" Font="TwCenMT24" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION"/>
-			<Label ID="ScienceDivertLabel" Anchor="L,T" Offset="4,34" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_SCIENCE_DIVERT_LABEL"/>
-			<Box Anchor="R,T" Offset="4,34" Size="70,22" Color="0.146.222.255">
-				<Box Anchor="C,C" Size="68,20" Color="Black,255" >
-					<EditBox ID="ScienceValue" EditMode="1" CallOnChar="1" Size="66,18" Anchor="C,C" Font="TwCenMT18" NumberInput="1" MaxLength="6" />
-				</Box>
-			</Box>
-			<Slider ID="ScienceSlider" Style="Slider" Length="440" Anchor="L,T" Offset="4,54" />
-			<Label ID="NumAcademiesLabel" Anchor="L,T" Offset="4,88" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES"/>
-			<Label ID="PreviousSuccessesLabel" Anchor="L,T" Offset="4,106" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES"/>
-			<Label ID="ResultPrediction" Anchor="L,T" Offset="3,134" Font="TwCenMT24" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION"/>
-			<Label ID="ResultPredictionDesc" Anchor="L,T" Offset="4,164" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="440" String="TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION_DESC"/>
-			<GridButton ID="BeginButton" Size="110,24" Anchor="R,B" Offset="10,15" Style="BaseButton">
-				<Label Anchor="C,C" Offset="0,0" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_BEGIN_BUTTON" />
-			</GridButton>
+			<!-- [port] Phase 4: the science slider, prediction readout and Begin button are retired; the box shows the
+			     girl's revival timer, how it is computed, and the Grief Seed button. -->
+			<Label ID="RevivalTurnsLabel" Anchor="L,T" Offset="3,40" Font="TwCenMT24" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_REVIVAL_TURNS"/>
+			<Label ID="NumAcademiesLabel" Anchor="L,T" Offset="4,76" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES"/>
+			<Label ID="RevivalDurationLabel" Anchor="L,T" Offset="4,96" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="440" String="TXT_KEY_PMMM_UI_FREEZER_REVIVAL_DURATION"/>
+			<Label ID="RevivalDescLabel" Anchor="L,T" Offset="4,150" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="440" String="TXT_KEY_PMMM_UI_FREEZER_REVIVAL_DESC"/>
 			<GridButton ID="GriefSeedButton" Size="160,24" Anchor="L,B" Offset="2,13" Style="BaseButton">
 				<Label Anchor="C,C" Offset="0,0" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_PMMM_UI_FREEZER_GRIEF_SEED_BUTTON" />
 			</GridButton>

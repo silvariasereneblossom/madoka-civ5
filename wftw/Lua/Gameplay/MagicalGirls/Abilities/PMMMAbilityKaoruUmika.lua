@@ -67,3 +67,24 @@ RegisterLeaderAbility("MISSION_PMMM_RULE_BREAK", {
 		return 100 + pTarget:GetDamage()
 	end,
 })
+
+
+--------------------------------------------------------------
+-- [port] Phase 4: the Freezer's Grief Seed (design section 9).
+-- The Freezer panel pushes MISSION_PMMM_PLEIADES_FREEZER_GRIEF_SEED on one of the player's own units with
+-- iData1 = the stored girl's key. The mission is hidden, so HiddenCustomMissionPossible already allows it and
+-- HiddenCustomMissionCompleted ends it at once. The work is in DoFreezerGriefSeed (Traits/PMMMPleiadesTrait.lua),
+-- which exists only when a Freezer civilization is in the game, hence the check. Registered here because this
+-- file is always loaded into the gameplay context, and it runs in single player as well as multiplayer (the
+-- bootstrapper's multiplayer-only route is now a no-op).
+--------------------------------------------------------------
+local iFreezerGriefSeedMission = GameInfoTypes.MISSION_PMMM_PLEIADES_FREEZER_GRIEF_SEED
+
+function KazumiFreezerGriefSeedMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
+	if iFreezerGriefSeedMission and iMission == iFreezerGriefSeedMission and DoFreezerGriefSeed then
+		DoFreezerGriefSeed(iPlayer, iData1)
+	end
+	return 0
+end
+
+GameEvents.CustomMissionStart.Add(KazumiFreezerGriefSeedMissionStart)

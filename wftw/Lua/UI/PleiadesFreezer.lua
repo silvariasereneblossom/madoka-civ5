@@ -2,6 +2,14 @@
 -- Author: Vicevirtuoso
 -- DateCreated: 8/14/2014 5:57:28 PM
 --------------------------------------------------------------
+--[port] Phase 4: the Freezer is deterministic (docs/design/phase4-design-v1.md section 9). This panel only
+--displays and pushes a mission: it lists the stored girls with the turns left before each revives, and its one
+--button pushes MISSION_PMMM_PLEIADES_FREEZER_GRIEF_SEED (iData1 = the girl's key). All game state changes happen
+--in gameplay Lua (Traits/PMMMPleiadesTrait.lua, hook in Abilities/PMMMAbilityKaoruUmika.lua). The prediction
+--readout, the science-diversion slider and the "Begin" experiment button are retired, along with the old
+--single-player path that called gameplay functions straight from here and the multiplayer path that created a
+--Warrior from UI code.
+--------------------------------------------------------------
 
 include("IconSupport")
 include("InstanceManager")
@@ -12,27 +20,16 @@ ContextPtr:SetHide(true)
 
 include("PMMMDefines.lua");
 
-local iScience = 0;
-local iNumAcademies = 0;
-local iNumSuccesses = 0;
-
 local iCurrentMG = -1;
-local iCurrentPrediction = -1;
 
 local ttable = {}
+
+local iGriefSeedMission = GameInfoTypes.MISSION_PMMM_PLEIADES_FREEZER_GRIEF_SEED
 
 IconHookup(4, 64, "CIV_COLOR_ATLAS_KAORU_UMIKA", Controls.TitleIcon)
 
 Controls.NoMGsLabel:SetHide(true)
 Controls.ResultBox:SetHide(true)
-
-Controls.ResultPrediction:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION", "[COLOR_WARNING_TEXT]SUPER BAD[ENDCOLOR]")
-Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", 0)
-Controls.PreviousSuccessesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES", 0)
-
-
---v21: Flag for whether or not this is a MP game
-local bMulti = Game.IsNetworkMultiPlayer()
 
 
 function Show()
@@ -46,22 +43,59 @@ function OnCloseButtonClicked()
 end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, OnCloseButtonClicked)
 
+local function ActivePlayerHasFreezer()
+	local iActivePlayer = Game.GetActivePlayer()
+	local tTrait = MapModData.gPMMMTraits and MapModData.gPMMMTraits[iActivePlayer]
+	return tTrait ~= nil and (tTrait.EnableFreezerSystem == true or tTrait.EnableFreezerSystem == 1)
+end
+
+--[port] Phase 4: read-only round trips to the gameplay script. Each clears the answer first, so a missing
+--gameplay script (no Freezer civ in the game) leaves a default instead of a stale value.
+local function GetNumAcademies(iPlayer)
+	ttable[0] = nil
+	LuaEvents.PMMMGetNumAcademies(iPlayer, ttable)
+	return ttable[0] or 0
+end
+
+local function GetRevivalTurns(iPlayer, iMGKey)
+	ttable[0] = nil
+	ttable[1] = nil
+	LuaEvents.PMMMGetFreezerRevivalTurns(iPlayer, iMGKey, ttable)
+	return ttable[0] or 0, ttable[1] or 0
+end
+
+local function GetGriefSeeds(iPlayer)
+	return (MapModData.PMMM and MapModData.PMMM.GriefSeeds and MapModData.PMMM.GriefSeeds[iPlayer]) or 0
+end
+
+--[port] Phase 4: the unit that carries the Grief Seed mission. A mission needs a unit that can still move this
+--turn; the mission itself costs that unit nothing, but pushing it replaces the unit's current orders, so prefer
+--the unit already selected, then an idle one, then any that can move.
+local function FindMissionUnit(pPlayer)
+	local pHead = UI.GetHeadSelectedUnit()
+	if pHead and pHead:GetOwner() == pPlayer:GetID() and pHead:CanMove() and not pHead:IsDelayedDeath() then
+		return pHead
+	end
+	local pFallback
+	for pUnit in pPlayer:Units() do
+		if pUnit:CanMove() and not pUnit:IsDelayedDeath() and not pUnit:IsTrade() then
+			if pUnit:GetFortifyTurns() == 0 and not pUnit:IsAutomated() then
+				return pUnit
+			end
+			pFallback = pFallback or pUnit
+		end
+	end
+	return pFallback
+end
+
 function OnShowHide(bHide, bInit)
 	if (not bHide) then
-		local iActivePlayer = Game:GetActivePlayer()
-		if MapModData.gPMMMTraits then
-			if MapModData.gPMMMTraits[iActivePlayer].EnableFreezerSystem == true or MapModData.gPMMMTraits[iActivePlayer].EnableFreezerSystem == 1 then
-				Controls.MagicalGirlBox:SetHide(false)
-				Controls.ExplanationBox:SetHide(false)
-				Controls.NoMGsLabel:SetHide(true)
-				Init()
-				LuaEvents.PMMMGetNumAcademies(iActivePlayer, ttable)
-				iNumAcademies = ttable[0]
-				Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", iNumAcademies)
-				iNumSuccesses = MapModData.PMMM.FreezerSuccesses[iActivePlayer] or 0 -- [port] A21: bare PMMM global
-				Controls.PreviousSuccessesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES", iNumSuccesses)
-				return
-			end
+		if MapModData.gPMMMTraits and ActivePlayerHasFreezer() then
+			Controls.MagicalGirlBox:SetHide(false)
+			Controls.ExplanationBox:SetHide(false)
+			Controls.NoMGsLabel:SetHide(true)
+			Init()
+			return
 		end
 	end
 	LuaEvents.PMMMRefreshGriefSeedDisplay()
@@ -72,88 +106,58 @@ end
 ContextPtr:SetShowHideHandler(OnShowHide)
 
 function OnMagicalGirlClicked(iMGKey)
-	local iPlayer = Game:GetActivePlayer()
+	local iPlayer = Game.GetActivePlayer()
+	local pPlayer = Players[iPlayer]
+	local tGirl = MapModData.PMMM and MapModData.PMMM.MagicalGirls and MapModData.PMMM.MagicalGirls[iMGKey]
+	if not tGirl or tGirl.FreezerPlayer ~= iPlayer then
+		Controls.ResultBox:SetHide(true)
+		return
+	end
 	iCurrentMG = iMGKey
-	local sNameCaps = string.upper(Locale.ConvertTextKey(MapModData.PMMM.MagicalGirls[iMGKey].Name))
+	local sNameCaps = string.upper(Locale.ConvertTextKey(tGirl.Name))
 	Controls.SelectedMGNameLabel:SetText(sNameCaps)
-	
-	--Prediction
-	LuaEvents.PMMMGetPleiadesPrediction(iPlayer, iMGKey, iScience, ttable)
-	iCurrentPrediction = ttable[0]
-	Controls.ResultPrediction:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION", ttable[1])
-	Controls.ResultPredictionDesc:LocalizeAndSetText(ttable[2])
 
+	local iAcademies = GetNumAcademies(iPlayer)
+	local iLeft, iDuration = GetRevivalTurns(iPlayer, iMGKey)
+	Controls.RevivalTurnsLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_REVIVAL_TURNS", iLeft)
+	Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", iAcademies)
+	Controls.RevivalDurationLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_REVIVAL_DURATION", iDuration)
+	Controls.RevivalDescLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_REVIVAL_DESC", Locale.ConvertTextKey(tGirl.Name), tGirl.Level or 1, tGirl.SoulGem or 0)
 
 	--Grief Seed Button
-	if MapModData.PMMM.MagicalGirls[iMGKey].SoulGem < 100 then
-		if (MapModData.PMMM.GriefSeeds[Game:GetActivePlayer()] or 0) > 0 then -- [port] A21: bare PMMM global; nil seed count
-			Controls.GriefSeedButton:SetDisabled(false)
-			Controls.GriefSeedButton:SetVoid1(iMGKey)
-			Controls.GriefSeedButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_TT"))
-		else
-			Controls.GriefSeedButton:SetDisabled(true)
-			Controls.GriefSeedButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_TT") .."[NEWLINE][NEWLINE]"..Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_NO_SEEDS_TT"))
-		end
-	else
+	local sTip = Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_TT")
+	if GetGriefSeeds(iPlayer) <= 0 then
 		Controls.GriefSeedButton:SetDisabled(true)
-		Controls.GriefSeedButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_TT") .."[NEWLINE][NEWLINE]"..Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_SOUL_GEM_FULL_TT"))
+		sTip = sTip .. "[NEWLINE][NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_NO_SEEDS_TT")
+	elseif not pPlayer:IsTurnActive() or not FindMissionUnit(pPlayer) then
+		Controls.GriefSeedButton:SetDisabled(true)
+		sTip = sTip .. "[NEWLINE][NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_USE_GRIEF_SEED_NO_UNIT_TT")
+	else
+		Controls.GriefSeedButton:SetDisabled(false)
+		Controls.GriefSeedButton:SetVoid1(iMGKey)
 	end
-	
-	
+	Controls.GriefSeedButton:SetToolTipString(sTip)
+
 	Controls.ResultBox:SetHide(false)
 end
 
+--[port] Phase 4: push the Freezer Grief Seed mission on one of our own units. The gameplay hook spends the
+--seed and moves the timer; this panel refreshes when gameplay fires PMMMRefreshFreezerPopup.
 function OnGriefSeedButtonClicked(iMGKey)
-	if not bMulti then
-		LuaEvents.PMMMUseGriefSeed(iMGKey, Game:GetActivePlayer(), true)
-		LuaEvents.PMMMRefreshGriefSeedDisplay()  -- for some reason this isn't working, but i'll fix it later
-		ContextPtr:SetHide(true)
-	else
-		--in multiplayer, we will spawn a dummy unit and push a mission to it
-		local pPlayer = Players[Game:GetActivePlayer()]
-		local unit = pPlayer:InitUnit(GameInfoTypes.UNIT_WARRIOR, pPlayer:GetCapitalCity():GetX(), pPlayer:GetCapitalCity():GetY())
-		UI.SelectUnit(unit)
-		Game.SelectionListGameNetMessage(GameMessageTypes.GAMEMESSAGE_PUSH_MISSION, MissionTypes.MISSION_PMMM_PLEIADES_FREEZER_GRIEF_SEED, iMGKey, 0, 0, false, false)
-		LuaEvents.PMMMRefreshGriefSeedDisplay() -- for some reason this isn't working, but i'll fix it later
-		ContextPtr:SetHide(true)
-		unit:Kill(true)
+	local pPlayer = Players[Game.GetActivePlayer()]
+	if not pPlayer or not iGriefSeedMission then return end
+	local pUnit = FindMissionUnit(pPlayer)
+	if not pUnit then return end
+	local pPrevious = UI.GetHeadSelectedUnit()
+	UI.SelectUnit(pUnit)
+	Game.SelectionListGameNetMessage(GameMessageTypes.GAMEMESSAGE_PUSH_MISSION, iGriefSeedMission, iMGKey, 0, 0, false, false)
+	if pPrevious and pPrevious ~= pUnit then
+		UI.SelectUnit(pPrevious)
 	end
+	Controls.GriefSeedButton:SetDisabled(true)
 end
 
 Controls.GriefSeedButton:RegisterCallback(Mouse.eLClick, OnGriefSeedButtonClicked)
-
-function OnBeginButtonClicked()
-	local iPlayer = Game:GetActivePlayer()
-	if iCurrentMG > 0 and iCurrentPrediction > 0 then
-		if not bMulti then
-			LuaEvents.PMMMDoPleiadesRevival(iPlayer, iCurrentMG, iCurrentPrediction, iScience)
-		else
-			--in multiplayer, we will spawn a dummy unit and push a mission to it
-			local pPlayer = Players[Game:GetActivePlayer()]
-			local table = {
-				["iCurrentMG"] = iCurrentMG,
-				["iCurrentPrediction"] = iCurrentPrediction,
-				["iScience"] = iScience
-			}
-			local unit = pPlayer:InitUnit(GameInfoTypes.UNIT_WARRIOR, pPlayer:GetCapitalCity():GetX(), pPlayer:GetCapitalCity():GetY())
-			UI.SelectUnit(unit)
-			Game.SelectionListGameNetMessage(GameMessageTypes.GAMEMESSAGE_PUSH_MISSION, MissionTypes.MISSION_PMMM_PLEIADES_FREEZER, iCurrentMG, iCurrentPrediction, iScience, false, false)
-			unit:Kill(true)
-		end
-		Init()
-		LuaEvents.PMMMGetNumAcademies(iPlayer, ttable)
-		iNumAcademies = ttable[0]
-		Controls.NumAcademiesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_NUM_ACADEMIES", iNumAcademies)
-		iNumSuccesses = MapModData.PMMM.FreezerSuccesses[iPlayer] or 0 -- [port] A21: bare PMMM global
-		Controls.PreviousSuccessesLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_PREVIOUS_SUCCESSES", iNumSuccesses)
-		iScience = 0;
-		Controls.ScienceValue:SetText(tostring(iScience))
-		Controls.ScienceSlider:SetValue(iScience)
-		ContextPtr:SetHide(true)
-	end
-end
-
-Controls.BeginButton:RegisterCallback(Mouse.eLClick, OnBeginButtonClicked)
 
 function Init()
 	-- [port] A23: this runs at file load, before the gameplay state has populated MapModData.PMMM
@@ -161,46 +165,56 @@ function Init()
 		return
 	end
 	g_InstanceManager:ResetInstances()
+	local iPlayer = Game.GetActivePlayer()
+	local iKeepSelected = iCurrentMG
 	iCurrentMG = -1;
-	iCurrentPrediction = -1;
 
 	local bAnyMagicalGirls;
-	
+	local bKeepSelected = false
+
 	if MapModData.PMMM.MagicalGirls then
+		--[port] Phase 4: list the girls in key order so the list does not reshuffle between refreshes.
+		local tKeys = {}
 		for k, v in pairs(MapModData.PMMM.MagicalGirls) do
-			if v.FreezerPlayer == Game:GetActivePlayer() then
-				bAnyMagicalGirls = true
-				local instance = g_InstanceManager:GetInstance()
-				instance.MagicalGirlNameLabel:LocalizeAndSetText(v.Name)
-				instance.MagicalGirlSGLabel:SetText("[ICON_PMMM_SOUL_GEM] "..v.SoulGem.."%")
-				instance.MagicalGirlSGLabel:EnableToolTip(true)
-				instance.MagicalGirlSGLabel:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_SOUL_GEM_TT", Locale.ConvertTextKey(v.Name)))
-				
-				
-				instance.SubIconFrame:SetHide(true);
-				if (v.OriginalOwner) then
-					CivIconHookup(v.OriginalOwner, 32, instance.SubIcon, instance.SubIconBG, instance.SubIconShadow, true, true);
-					instance.SubIconFrame:SetHide(false);
-				end
-				
-				instance.SubIconFrame:EnableToolTip(true)
-				instance.SubIcon:EnableToolTip(true)
-				instance.SubIconBG:EnableToolTip(true)
-				instance.SubIconShadow:EnableToolTip(true)
-				
-				-- [port] A23: Players[nil] -- only build the owner tooltip when there is an OriginalOwner
-				if (v.OriginalOwner) then
-					local sOwnerString = Players[v.OriginalOwner]:GetCivilizationAdjective()
-
-					instance.SubIconFrame:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-					instance.SubIcon:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-					instance.SubIconBG:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-					instance.SubIconShadow:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
-				end
-
-				instance.MagicalGirlButton:SetVoid1(k)
-				instance.MagicalGirlButton:RegisterCallback(Mouse.eLClick, OnMagicalGirlClicked)
+			if v.FreezerPlayer == iPlayer then
+				tKeys[#tKeys + 1] = k
 			end
+		end
+		table.sort(tKeys)
+		for _, k in ipairs(tKeys) do
+			local v = MapModData.PMMM.MagicalGirls[k]
+			bAnyMagicalGirls = true
+			if k == iKeepSelected then bKeepSelected = true end
+			local instance = g_InstanceManager:GetInstance()
+			instance.MagicalGirlNameLabel:LocalizeAndSetText(v.Name)
+			local iLeft = GetRevivalTurns(iPlayer, k)
+			instance.MagicalGirlTurnsLabel:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_LIST_TURNS", iLeft)
+			instance.MagicalGirlTurnsLabel:EnableToolTip(true)
+			instance.MagicalGirlTurnsLabel:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_LIST_TURNS_TT", Locale.ConvertTextKey(v.Name), iLeft, v.Level or 1, v.SoulGem or 0))
+
+			instance.SubIconFrame:SetHide(true);
+			if (v.OriginalOwner) then
+				CivIconHookup(v.OriginalOwner, 32, instance.SubIcon, instance.SubIconBG, instance.SubIconShadow, true, true);
+				instance.SubIconFrame:SetHide(false);
+			end
+
+			instance.SubIconFrame:EnableToolTip(true)
+			instance.SubIcon:EnableToolTip(true)
+			instance.SubIconBG:EnableToolTip(true)
+			instance.SubIconShadow:EnableToolTip(true)
+
+			-- [port] A23: Players[nil] -- only build the owner tooltip when there is an OriginalOwner
+			if (v.OriginalOwner) then
+				local sOwnerString = Players[v.OriginalOwner]:GetCivilizationAdjective()
+
+				instance.SubIconFrame:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+				instance.SubIcon:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+				instance.SubIconBG:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+				instance.SubIconShadow:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_UI_FREEZER_ORIGINAL_OWNER_TT", Locale.ConvertTextKey(v.Name), sOwnerString))
+			end
+
+			instance.MagicalGirlButton:SetVoid1(k)
+			instance.MagicalGirlButton:RegisterCallback(Mouse.eLClick, OnMagicalGirlClicked)
 		end
 		Controls.MGListStack:CalculateSize()
 		Controls.MGListStack:ReprocessAnchoring()
@@ -212,7 +226,12 @@ function Init()
 	if not bAnyMagicalGirls then
 		Controls.MGListLabel:SetHide(false)
 	end
-	Controls.ResultBox:SetHide(true)
+	--Keep the details of the girl being looked at, so a Grief Seed shows its effect in place.
+	if bKeepSelected then
+		OnMagicalGirlClicked(iKeepSelected)
+	else
+		Controls.ResultBox:SetHide(true)
+	end
 end
 
 Init()
@@ -223,66 +242,19 @@ function OnLoadScreenCloseInit()
 end
 Events.LoadScreenClose.Add(OnLoadScreenCloseInit)
 
-
-
-function GetAvailableDivertScience()
-	local pPlayer = Players[Game:GetActivePlayer()]
-	local pTeamTechs = Teams[pPlayer:GetTeam()]:GetTeamTechs()
-	local iProgressThisTech = pTeamTechs:GetResearchProgress(pPlayer:GetCurrentResearch())
-	
-	return iProgressThisTech
-end
-
-
-function OnScienceSliderValueChanged(fValue)
-	local iProgressThisTech = GetAvailableDivertScience()
-	iScience = math.floor(fValue * iProgressThisTech)
-
-	local iPlayer = Game:GetActivePlayer()
-	LuaEvents.PMMMGetPleiadesPrediction(iPlayer, iCurrentMG, iScience, ttable)
-	iCurrentPrediction = ttable[0]
-	Controls.ResultPrediction:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION", ttable[1])
-	Controls.ResultPredictionDesc:LocalizeAndSetText(ttable[2])
-	
-	Controls.ScienceValue:SetText(iScience)
-end
-
-Controls.ScienceSlider:RegisterSliderCallback(OnScienceSliderValueChanged)
-
-function OnScienceValueChanged(sValue, control, bFire)
-	if bFire then
-		local iValue = tonumber(sValue) or 0 -- [port] A23: tonumber is nil for non-numeric text
-		local iProgressThisTech = GetAvailableDivertScience()
-
-		if iValue < 0 then
-			iValue = 0
-		elseif iValue > iProgressThisTech then
-			iValue = iProgressThisTech
-		end
-		
-		iScience = iValue
-		
-		-- [port] A23: was a missing-local global, and divided by zero with no research progress
-		local iSliderSetValue = 0
-		if iProgressThisTech > 0 then
-			iSliderSetValue = iValue / iProgressThisTech
-		end
-
-		local iPlayer = Game:GetActivePlayer()
-		LuaEvents.PMMMGetPleiadesPrediction(iPlayer, iCurrentMG, iScience, ttable)
-		iCurrentPrediction = ttable[0]
-		Controls.ResultPrediction:LocalizeAndSetText("TXT_KEY_PMMM_UI_FREEZER_RESULTPREDICTION", ttable[1])
-		Controls.ResultPredictionDesc:LocalizeAndSetText(ttable[2])
-		
-		Controls.ScienceValue:SetText(tostring(iScience))
-		Controls.ScienceSlider:SetValue(iSliderSetValue)
+--[port] Phase 4: gameplay fires this after a Grief Seed, a revival or a Capital capture; redraw if open.
+function OnRefreshFreezerPopup()
+	if not ContextPtr:IsHidden() and ActivePlayerHasFreezer() then
+		Init()
 	end
-end	
+end
+LuaEvents.PMMMRefreshFreezerPopup.Add(OnRefreshFreezerPopup)
 
-Controls.ScienceValue:RegisterCallback(OnScienceValueChanged)
-
-Controls.ScienceValue:SetText(tostring(0))
-Controls.ScienceSlider:SetValue(0)
+--Timers move at every turn change.
+function OnActivePlayerTurnStart()
+	OnRefreshFreezerPopup()
+end
+Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStart)
 
 
 --Add option to open this in the DiploCorner
@@ -293,14 +265,14 @@ end
 
 function OnAdditionalInformationDropdownGatherEntries(additionalEntries)
   table.insert(additionalEntries, {
-    text=Locale.ConvertTextKey("TXT_KEY_PMMM_UI_DIPLOCORNER_FREEZER"), 
+    text=Locale.ConvertTextKey("TXT_KEY_PMMM_UI_DIPLOCORNER_FREEZER"),
     call=OnDiploCornerPopup
   })
 end
 
 --Don't use the cached trait table since it has issues when first loading -- find it directly from the DB
 -- [port] A23: every step of this chain can be nil in observer/autoplay
-local pActivePlayer = Players[Game:GetActivePlayer()]
+local pActivePlayer = Players[Game.GetActivePlayer()]
 local leaderInfo = pActivePlayer and GameInfo.Leaders[pActivePlayer:GetLeaderType()]
 local leaderTraitRow = leaderInfo and GameInfo.Leader_Traits("LeaderType ='" .. leaderInfo.Type .. "'")()
 local trait = leaderTraitRow and GameInfo.Traits[leaderTraitRow.TraitType]
