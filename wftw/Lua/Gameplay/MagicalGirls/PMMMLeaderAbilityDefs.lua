@@ -6,6 +6,14 @@
 
 include("PMMMLeaderAbilities.lua")
 
+--Per-civ abilities, one file each
+include("PMMMAbilityUltimateMadoka.lua")
+include("PMMMAbilityHomura.lua")
+include("PMMMAbilityDemonHomura.lua")
+include("PMMMAbilitySayaka.lua")
+include("PMMMAbilityKyouko.lua")
+include("PMMMAbilityKaoruUmika.lua")
+
 local iPluviaVulnerable = GameInfoTypes.PROMOTION_PMMM_PLUVIA_VULNERABLE
 local iTiroRecoil = GameInfoTypes.PROMOTION_PMMM_TIRO_FINALE_RECOIL
 
