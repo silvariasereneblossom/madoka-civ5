@@ -356,3 +356,16 @@ been exercised in a real game yet.
 
 **Known approximations.** Time Stop's free turn under-counts healing, city-state and deal income, and border growth;
 Kyouko's luxury rule treats city-state luxuries as her own. All are commented where they live.
+
+## 15. Rulings, round 3 (2026-09-18)
+
+| # | Topic | Ruling |
+|---|---|---|
+| 1 | Sayaka, wonders | Every wonder she has built gives +5% Tourism in **all** her cities. Replaces the per-city +100% policy. |
+| 2 | Kazumi, Great Works | Creating a Great Work grants a random bonus of Gold, Faith, Science or Culture, pending a full rework of the civ. |
+| 3 | Ultimate Madoka | Keeps Witch Form, renamed **Summon Herald of the Cycle** for her. The old Summon Witch (spawning a Witch unit) is removed. |
+| 4 | Ultimate Madoka, Devil Homura | The free starting Archer is removed. |
+| 5 | Homura | The conquest steal is dropped for good; the Thief of Time Scout fills that role. |
+| 6 | Mami | **Cannot annex, raze or puppet.** A city she captures becomes a new city-state of a random type, keeping the original city's name, at maximum influence with her. |
+| 7 | Nagisa | Leader ability **Magic Cake Dish**: adjacent friendly units heal 25% of their HP and gain +10% Combat Strength for 3 turns. |
+| 8 | Oriko and Kirika | Oriko: **Oracle Ray**, 5 random hits at 60% strength spread across the enemy units in an area around an enemy unit, 5-turn cooldown. Kirika: **Vampire Fang**, 150% against one enemy unit, -25% Combat Strength on it for 2 turns, and she heals half the damage dealt. |

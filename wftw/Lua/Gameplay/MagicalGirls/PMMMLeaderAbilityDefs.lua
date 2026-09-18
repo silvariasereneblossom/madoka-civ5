@@ -13,6 +13,8 @@ include("PMMMAbilityDemonHomura.lua")
 include("PMMMAbilitySayaka.lua")
 include("PMMMAbilityKyouko.lua")
 include("PMMMAbilityKaoruUmika.lua")
+include("PMMMAbilityNagisa.lua")
+include("PMMMAbilityOrikoKirika.lua")
 
 local iPluviaVulnerable = GameInfoTypes.PROMOTION_PMMM_PLUVIA_VULNERABLE
 local iTiroRecoil = GameInfoTypes.PROMOTION_PMMM_TIRO_FINALE_RECOIL

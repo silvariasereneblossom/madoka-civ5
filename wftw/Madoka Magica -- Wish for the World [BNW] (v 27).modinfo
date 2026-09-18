@@ -441,14 +441,16 @@
     <File md5="381076438FFA47A6CC6597F5FD057805" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="A3293EEFA7621E5770A97A067B882193" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
-    <File md5="16939A2DBEF32CDB10C092CB33AD39F5" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
-    <File md5="A835FD4FC01B4A950260A76FC3E2BAB7" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
+    <File md5="D7463881572476F2A05B60A560823AED" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
+    <File md5="857E924EB484F440D4A5C9D0A8084019" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
     <File md5="0CA10F25288206C70FBC6244415B9018" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
     <File md5="B4AD852237C76EFC073DEFECE626784C" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityHomura.lua</File>
     <File md5="603BE463F068804A497006296465EB76" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua</File>
     <File md5="05EC74F3E49E82A9BA7BF2321035A7E4" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilitySayaka.lua</File>
     <File md5="FBE48FD0223D62D14B48DF2C4BE7B498" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKyouko.lua</File>
     <File md5="0426D5D7B3AE26382E005E867F455353" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
+    <File md5="52660C7DEC874258937865173AFA1C9C" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityNagisa.lua</File>
+    <File md5="6ADC9966282704E35018358F2277A7E6" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityOrikoKirika.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="1CE4632C96FAACBE073AC2F1AB328B58" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>

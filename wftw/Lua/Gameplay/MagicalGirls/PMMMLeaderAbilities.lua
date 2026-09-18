@@ -239,6 +239,10 @@ function GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
 	--its trait directly with TraitType (Homura has both Concentrated Missile Fire and Time Stop).
 	local bByTrait = tDef.TraitType ~= nil and tDef.TraitType == tTrait.Type
 	if tDef.MissionType ~= sOwn and tDef.MissionType ~= sExtra and not bByTrait then return nil end
+	--A civ with two leader girls (Oriko and Kirika) names one mission for each. Each leader girl records
+	--the mission she was born with in MagicalGirls[key].ExtraMission, so she may use that one only; abilities
+	--bound by TraitType (Homura's Time Stop) are open to every leader girl of the civ.
+	if not bByTrait and tGirl.ExtraMission and tGirl.ExtraMission ~= tDef.MissionID then return nil end
 	return tDef, iMGKey
 end
 
