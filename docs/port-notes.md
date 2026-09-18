@@ -273,3 +273,8 @@ off and faking `__std_terminate`) let it link but not initialise. `scripts/build
 one does. LLVM version was not the issue (an LLVM 18.1.8 package was tried; its 32-bit tools run out of memory
 linking, and the 64-bit LLVM 23 works). Visual Studio 2022 Build Tools were installed while investigating and turned
 out not to be needed.
+
+Follow-up, same day: with the VC9 target fixed the release DLL still failed (1114) while the debug DLL loaded.
+The difference was link-time optimisation: a release build without `-flto` loads and runs. `build_dll.py` now
+builds release without LTO by default (`--lto` restores upstream's setting for experiments). Root cause of the
+LTO failure is not known; a 64-bit LLVM matching upstream CI's version would be the next thing to try.
