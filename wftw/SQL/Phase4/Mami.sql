@@ -11,18 +11,16 @@
 --------------------------------------------------------------------------------------------------------------
 -- 1. Turn-one value from city-states. Both tables are (TraitType, YieldType, Yield) in CP 5.4.6; there is no
 --    era-scaling column because the DLL already scales them: CvCity::UpdateYieldsFromExistingFriendsAndAllies
---    applies Yield x number of allies/friends x max(1, current era) to the CAPITAL only. So +2 Production per
---    ally reads as +2 in the Ancient era and grows one step per era.
+--    applies Yield x number of allies/friends x max(1, current era) to the CAPITAL only. So +1 Production per
+--    ally reads as +1 in the Ancient era and grows one step per era; Science works the same per Friend.
 --------------------------------------------------------------------------------------------------------------
 DELETE FROM Trait_YieldFromCSAlly   WHERE TraitType = 'TRAIT_FRIENDSHIP_PRODUCTION_BONUS';
 DELETE FROM Trait_YieldFromCSFriend WHERE TraitType = 'TRAIT_FRIENDSHIP_PRODUCTION_BONUS';
 
 INSERT INTO Trait_YieldFromCSAlly (TraitType, YieldType, Yield)
-VALUES ('TRAIT_FRIENDSHIP_PRODUCTION_BONUS', 'YIELD_PRODUCTION', 2);
-INSERT INTO Trait_YieldFromCSAlly (TraitType, YieldType, Yield)
-VALUES ('TRAIT_FRIENDSHIP_PRODUCTION_BONUS', 'YIELD_SCIENCE', 1);
-INSERT INTO Trait_YieldFromCSFriend (TraitType, YieldType, Yield)
 VALUES ('TRAIT_FRIENDSHIP_PRODUCTION_BONUS', 'YIELD_PRODUCTION', 1);
+INSERT INTO Trait_YieldFromCSFriend (TraitType, YieldType, Yield)
+VALUES ('TRAIT_FRIENDSHIP_PRODUCTION_BONUS', 'YIELD_SCIENCE', 1);
 
 
 --------------------------------------------------------------------------------------------------------------
