@@ -119,3 +119,29 @@ WHERE Tag = 'TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH_HELP';
 UPDATE Language_en_US
 SET Text = 'The Sakura Church is the unique building for Kazamino, replacing the Temple. It increases the religious pressure of the city, allowing nearby cities to be converted to your Religion more quickly. It also feeds the city that builds it: +2 [ICON_FOOD] Food every turn, and a permanent Aqueduct-like effect that keeps 15% of the [ICON_FOOD] Food when a new Citizen is born.'
 WHERE Tag = 'TXT_KEY_BUILDING_PMMM_SAKURA_CHURCH_STRATEGY';
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 8. UMG "Kugatachi": the Leader Magical Girl ability (data half).
+--    A spear thrust in a line -- the target tile plus the two tiles directly beyond it along the same hex
+--    direction, each struck at 200% of her Combat Strength. Range 2, cooldown 4, no Soul Gem cost.
+--    Handler: Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKyouko.lua. It needs no promotion of its own,
+--    so this block is the mission row, the trait link and the text.
+--    Design: docs/design/phase4-design-v1.md section 6 and the section 12 default for Kugatachi.
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Missions WHERE Type = 'MISSION_PMMM_KUGATACHI';
+
+INSERT INTO Missions
+			(Type, Description, Help, DisabledHelp, EntityEventType, Time, OrderPriority, Visible, IconIndex, IconAtlas,
+			PMMMMissionRange, PMMMTargetType)
+SELECT		('MISSION_PMMM_KUGATACHI'), ('TXT_KEY_MISSION_PMMM_KUGATACHI'), ('TXT_KEY_MISSION_PMMM_KUGATACHI_HELP'), ('TXT_KEY_MISSION_PMMM_KUGATACHI_DISABLED'), EntityEventType, Time, 200, 1, 17, ('UNIT_ACTION_ATLAS'),
+			2, ('ENEMY')
+FROM Missions WHERE Type = 'MISSION_RANGE_ATTACK';
+
+UPDATE Traits SET LeaderMGUniqueMission = 'MISSION_PMMM_KUGATACHI'
+WHERE Type = 'TRAIT_GROWTH_SPEED_FROM_RELIGION';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_MISSION_PMMM_KUGATACHI', 'Kugatachi'),
+	('TXT_KEY_MISSION_PMMM_KUGATACHI_HELP', 'Kyouko drives her spear straight through the enemy line. The target tile and the two tiles directly beyond it, along the same direction, are each struck for damage equal to an attack at 200% of her [ICON_STRENGTH] Combat Strength. An enemy City in the line is damaged as well.[NEWLINE][NEWLINE]The thrust only carries on past the target when the target lies on a straight line of tiles from her. A target reached only by turning a corner, such as the diagonal tiles at Range 2, is struck on its own.[NEWLINE][NEWLINE]Costs no [ICON_PMMM_SOUL_GEM] Soul Gem. Range 2. Cooldown 4 turns.'),
+	('TXT_KEY_MISSION_PMMM_KUGATACHI_DISABLED', 'Kugatachi is recovering, or there is no enemy in range.');

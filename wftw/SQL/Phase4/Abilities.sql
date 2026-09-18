@@ -88,7 +88,7 @@ UPDATE Traits SET LeaderMGUniquePromotion = 'PROMOTION_PMMM_NEVER_DESPAIR'  WHER
 UPDATE Traits SET LeaderMGUniquePromotion = 'PROMOTION_PMMM_ALWAYS_DESPAIR' WHERE Type = 'TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS';
 
 INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
-	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR', 'Nothing To Despair, Ever'),
+	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR', 'Law of Cycles Incarnate'),
 	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR_HELP', 'Her Mood is always Ecstatic, her Soul Gem never clouds, and she can never become a Witch.'),
 	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR', 'Meikyuu no Homura'),
 	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR_HELP', 'She is always in Despair, but suffers none of its penalties, her Soul Gem never clouds, and she can never become a Witch.');

@@ -129,6 +129,19 @@ function FindValidTargets(pPlayer, pUnit, sTargetType)
 						end
 					end
 				end
+			elseif sTargetType == "NON_CITY_ENEMY" then --Enemy Units, but never a tile holding a city
+				--[port] Phase 4: abilities that cannot hit cities need the highlight to say so, otherwise the
+				--player clicks a lit tile and nothing happens.
+				if k:IsUnit() and not k:IsCity() then
+					local pTeam = Teams[pPlayer:GetTeam()]
+					for i = 0, k:GetNumUnits() - 1 do
+						local pEnemyUnit = k:GetUnit(i)
+						if pTeam:IsAtWar(Players[pEnemyUnit:GetOwner()]:GetTeam()) then
+							tTable[k] = true
+							break
+						end
+					end
+				end
 			elseif sTargetType == "FRIENDLY_NOT_SELF" then --Friendly units other than the unit itself
 				if k:IsUnit() then
 					for i = 0, k:GetNumUnits() - 1 do

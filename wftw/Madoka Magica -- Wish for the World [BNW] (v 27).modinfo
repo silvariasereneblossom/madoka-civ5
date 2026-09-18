@@ -436,19 +436,19 @@
     <File md5="F5FEF9CD061ED73016A49A09F03F132C" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
     <File md5="CC70F0002A43E73EDE2CB2C411CA1E0E" import="1">Lua/Gameplay/Improvements/PMMMFarsightOracle.lua</File>
     <File md5="F30334E7C8505CE586C29E90809F3E0E" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
-    <File md5="B0F9E95DE7DA0D433445C24B238F07FB" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
+    <File md5="008E633023F2E3DA2F2743D7A5AF53C2" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
     <File md5="0052B69A92403AABDE630DDD86E40DB2" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
     <File md5="381076438FFA47A6CC6597F5FD057805" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="EFEAEA382EA43AC78CB418F0B9F592C7" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="3C20FC3FAE4F1EA850B0BBDE2B9D27EA" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
     <File md5="31FA428D0A435D8460E158E06597FBBD" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
-    <File md5="36234CE92F8B356AD785F3F6E034CBB6" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
-    <File md5="D6B795434810EBAC0618A4B569DADD83" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityHomura.lua</File>
-    <File md5="4DA485C745CABC25B32F067A40693768" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua</File>
+    <File md5="CDF38828FE6D36E486ECAAB822E4FD73" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
+    <File md5="56CFBE2380427E3CE08E1A522408AE9E" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityHomura.lua</File>
+    <File md5="E105995DC1F590D02AC8EBCAF9105379" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua</File>
     <File md5="3A997456C45DD864913CAEF8493B2F6B" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilitySayaka.lua</File>
-    <File md5="80FEEFC2FE6B7BD9B6F3B74EF2247EA4" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKyouko.lua</File>
-    <File md5="798DE9B88A1ABF6F274BB2A4223EAA35" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
+    <File md5="FBE48FD0223D62D14B48DF2C4BE7B498" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKyouko.lua</File>
+    <File md5="4A2E1158C89D2898D785F6A9D6742ABD" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="9CD926C04AAE536D7FEFEF23F5BD4EED" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
@@ -560,16 +560,16 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="5DF391C1484CB80A3B088E5753EBEFEA" import="0">SQL/Phase4/Abilities.sql</File>
+    <File md5="7CB71232BF836D92F8DDE9FE03F897B2" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
-    <File md5="B30B7719DD8F618ED80C1685AE55F935" import="0">SQL/Phase4/Kyouko.sql</File>
+    <File md5="B4604A96A8D576178414DCAFA2A3E1C2" import="0">SQL/Phase4/Kyouko.sql</File>
     <File md5="6B6185494389070600278EE4CF474DB0" import="0">SQL/Phase4/Mami.sql</File>
-    <File md5="08FDC21D172E18B05E0F937BC0E001E7" import="0">SQL/Phase4/UltimateMadoka.sql</File>
+    <File md5="F1599370D528D5AD16D0F215CE60D3C3" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="BCF680E2D7E177423DB68A6B173FD16F" import="0">SQL/Phase4/Homura.sql</File>
-    <File md5="3018BAEE8C641479D17BB336579D65C6" import="0">SQL/Phase4/DemonHomura.sql</File>
+    <File md5="CAD769FE1DB6F3AF89AF9832CF5F5CE8" import="0">SQL/Phase4/DemonHomura.sql</File>
     <File md5="2AEE2148BAB1E5A6D2366971CE086DA9" import="0">SQL/Phase4/Sayaka.sql</File>
-    <File md5="917A67F5BD8241D90364283794FE4029" import="0">SQL/Phase4/KaoruUmika.sql</File>
+    <File md5="4C301E29E055E62484597D1993D3157C" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
     <File md5="7B2B72CF6A4B1EFF92A35179F0D8832D" import="0">SQL/Shared/MGMissions.sql</File>
     <File md5="410E6A46F02A3D8159200D0D0E403B1D" import="0">SQL/Shared/MGMoods.sql</File>
