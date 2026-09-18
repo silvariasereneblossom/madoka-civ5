@@ -243,6 +243,7 @@ What a Lekmod version takes:
 4. Multiplayer safety: synced state instead of client-local saves, deterministic iteration for random choices,
    no state changes from UI code.
 
-**The immediate next task** is a scoping pass: inventory every Community Patch dependency in WFTW (GameEvents,
+**The immediate next task** is a scoping pass (started and paused on 2026-09-18 with no output yet; the three
+briefs are in `docs/design/lekmod-scoping-plan.md`): inventory every Community Patch dependency in WFTW (GameEvents,
 Lua methods, tables, columns, defines) against Lekmod's DLL and schema, and produce a port list with effort
 estimates, plus a recommendation on forking versus upstreaming.
