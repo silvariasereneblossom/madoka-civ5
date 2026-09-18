@@ -315,3 +315,30 @@ Implementation proceeds on these defaults unless the maintainer overrides them.
 4. Lua-heavy mechanics: Time Stop free turn, Thief of Time, Law of Cycles return, Tiro Siege, Sayaka tourism conversion, Kazumi Freezer.
 5. DLL: Ai Yo columns in the bundled build.
 6. Text and Civilopedia pass for every renamed civ, city list and ability.
+
+
+---
+
+## 14. Build log (2026-09-17)
+
+**Done and verified in the simulator.**
+
+- Exclusivity: the Magical Girl system belongs to the ten MG civs; Witch kills by outsiders deny the Grief Seed.
+- `MAGICAL_GIRL_STRENGTH_PERCENT` is 100, and the era strength curve no longer dips entering the Atomic era.
+- Leader-ability framework: registry, cooldowns per girl, timed promotions, virtual-attack helpers, AI driver,
+  and a `NON_CITY_ENEMY` target type so highlights match what an ability accepts.
+- All eight specified abilities: Pluvia Magica, Nothing To Despair Ever, Concentrated Missile Fire, Falsified
+  Phenomena, Baldamente Fortissimo, Kugatachi, Tiro Finale, Rule Break. Each has help text and an AI rule.
+- Data kits: Nagisa, Madoka, Oriko/Kirika, Kyouko, Mami.
+- Ultimate Madoka and Devil Homura now get Leader Magical Girls, with fixed Mood and Soul Gem states.
+
+**Bugs found and fixed on the way.** CP's `Unit:GetCombatDamage` is a stub returning 0, so Tiro Finale had been
+dealing no damage since the port. Pluvia Magica skipped its own target (the plot iterator's centre flag). A timed
+promotion re-applied before it expired was stripped early. The Shirome trait gate keyed on a column every civ now
+uses. Kyouko's and Mami's dummy-driven building scripts were retired or rewritten after their dummies were deleted.
+
+**Still to build.** Homura's Time Stop, Thief of Time and Dimensional Armory; Sayaka's wonder tourism, Palace music
+slots, Cutlass Conductor and tourism-to-Prodigy; Kyouko's religion block and luxury happiness; Mami's Teahouse gold
+percentage and Tiro Siege; Kazumi's deterministic Freezer; Ultimate Madoka's Law of Cycles return, Witch Form and
+Lead Away changes; Nagisa's Golden Age package; the Ai Yo and Mami city-cap DLL columns; the text and Civilopedia
+pass. Nagisa and Oriko/Kirika have no leader-girl ability specified.
