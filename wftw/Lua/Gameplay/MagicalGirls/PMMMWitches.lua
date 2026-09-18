@@ -283,11 +283,13 @@ function GetGriefSeed(iKillerPlayer, iKilledPlayer, iKilledUnitType)
 	if (iKilledUnitType == iWitchType or iKilledUnitType == iSeaWitchType) and iKillerPlayer < iMaxCivsAndCS then
 		local pPlayer = Players[iKillerPlayer]
 		--Demon Homura gets Golden Age points instead of Grief Seeds
+		--[port] Phase 4: Ai Yo (ruling "Devil Homura, Witch kills"): gold replaces the Golden Age points, which she
+		--can no longer use (ruling 4e). 10 Gold + 3 per era, era = her current era index (Ancient 0). The amounts
+		--are Defines rows from SQL/Phase4/DemonHomura.sql; the fallbacks only guard a missing row.
 		if MapModData.gPMMMTraits[iKillerPlayer] and (MapModData.gPMMMTraits[iKillerPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iKillerPlayer].NoMagicalGirls == 1) then
-			pPlayer:ChangeGoldenAgeProgressMeter(GameDefines.GOLDEN_AGE_POINTS_FROM_NO_WITCH_TRAIT_KILLING_WITCH)
-			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA", GameDefines.GOLDEN_AGE_POINTS_FROM_NO_WITCH_TRAIT_KILLING_WITCH))
-			
-			
+			local iWitchGold = (GameDefines.PMMM_AI_YO_WITCH_KILL_GOLD or 10) + (GameDefines.PMMM_AI_YO_WITCH_KILL_GOLD_PER_ERA or 3) * pPlayer:GetCurrentEra()
+			pPlayer:ChangeGold(iWitchGold)
+			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA", iWitchGold))
 		elseif not PlayerHasMagicalGirls(iKillerPlayer) then
 			--[port] a civilization outside the Magical Girl system has no use for the seed; the kill denies it to those who do
 			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DENIED"))
@@ -325,7 +327,18 @@ function CheckDestroyWitchBarrier(iPlayer, iUnit, iX, iY)
 			end
 			pUnit:ChangeExperience(iXPGained)
 			--v23: Remove the Gold gained from clearing the Labyrinth. Can't set the gold to 0 in the DB, because that causes CTDs! :/
-			pPlayer:ChangeGold(-1)
+			if MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 then
+				--[port] Phase 4: Ai Yo (ruling "Devil Homura, Witch kills"): a Labyrinth clear pays Devil Homura
+				--25 Gold + 10 per era (era = her current era index, Ancient 0; amounts are Defines rows). The camp
+				--itself already paid its 1 Gold (HandicapInfos.BarbarianCampGold = 1, the value the -1 below
+				--cancels for everyone else), so she is credited the payout minus that 1 and nets the payout exactly,
+				--instead of the flat -1 that left her the same zero as every other civ.
+				local iLabyrinthGold = (GameDefines.PMMM_AI_YO_LABYRINTH_GOLD or 25) + (GameDefines.PMMM_AI_YO_LABYRINTH_GOLD_PER_ERA or 10) * pPlayer:GetCurrentEra()
+				pPlayer:ChangeGold(iLabyrinthGold - 1)
+				pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_LABYRINTH_GOLD_DEMON_HOMURA", iLabyrinthGold))
+			else
+				pPlayer:ChangeGold(-1)
+			end
 			--Bismarck trait
 			if MapModData.gPMMMTraits[iPlayer].ConvertNearbyFamiliarRadius > 0 then
 				local pPlot = pUnit:GetPlot()

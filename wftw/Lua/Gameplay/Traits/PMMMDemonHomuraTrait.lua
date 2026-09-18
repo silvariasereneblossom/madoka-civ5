@@ -3,222 +3,68 @@
 -- DateCreated: 7/2/2014 12:57:46 PM
 --------------------------------------------------------------
 
+--[port] Phase 4: the old UA "Lovevil" is retired. Its subjugation ledger (the nine
+--BUILDING_PMMM_DEMON_HOMURA_DUMMY_* Palace-yield buildings), the Magical Girl attrition in her
+--territory, the level-5 immunity promotion, the capital city-view addin, the Golden Age points from
+--Witch kills and from global Mood, and the Prodigy-to-subjugation credit are all gone, together with
+--their data (SQL/Phase4/DemonHomura.sql deletes the rows and zeroes CapitalBonusPerKilledMagicalGirl
+--and MagicalGirlAttrition).
+--
+--The new UA "Ai Yo" (docs/design/phase4-design-v1.md section 4, rulings 4 to 4f) has five clauses:
+--  1. No unhappiness penalties at all (the engine treats her as never unhappy).          [DLL column]
+--  2. +1% yields and combat strength per 5 unhappiness from cities and population, max +25%. [DLL column]
+--  3. Base Prodigy rate halved: Traits.GreatPeopleRateModifier = -50.                   [data, done]
+--  4. Never a Golden Age from any source; immune to ideology pressure.                  [DLL columns]
+--  5. Gold from Witch kills (10 + 3 per era) and Labyrinth clears (25 + 10 per era).    [Lua, done]
+--     Lives in the Devil Homura branches of GetGriefSeed and CheckDestroyWitchBarrier
+--     (Lua/Gameplay/MagicalGirls/PMMMWitches.lua); the amounts are Defines rows.
+--
+--Clauses 1, 2 and 4 are DLL trait columns the maintainer is adding in parallel. Nothing in Lua
+--emulates them; there is deliberately no per-turn happiness or yield dummy here.
+--
+--PMMMTraitBootstrapper.lua (not editable from this pass) still loads this file for her, calls the
+--hooks below and registers SetNumDemonHomuraBuildings / DHCityInfoStack* with LuaEvents, and
+--PMMMMagicalGirls.lua still calls OnDemonHomuraKillMG when a girl spawns for her. So every one of
+--those names stays defined, as a no-op. Nothing here reads or writes PMMM.Subjugations any more.
+--------------------------------------------------------------
 
 
-
-local iImmunePromo = GameInfoTypes.PROMOTION_IMMUNE_TO_DEMON_HOMURA_TRAIT --earned by a MG getting to level 5 or higher
-
-local iDummy = GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY
-
-local iMagicalGirlType = GameInfoTypes.UNIT_PMMM_MAGICAL_GIRL
-local iMagicalGirlClassType = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
-
-local iMoodPolicyID = GameInfo.MG_MoodModifiers["MGMOODMOD_POLICIES"].ID
-local iMoodBeliefsID = GameInfo.MG_MoodModifiers["MGMOODMOD_BELIEFS"].ID
-local iMoodBuildingsID = GameInfo.MG_MoodModifiers["MGMOODMOD_BUILDINGS"].ID
-
-local iMoodModMultiplierBase = 0.1   --will be pushed out to Defines or Traits later
-
---[port] write the subjugation dummy bit set into one city; 0 clears it
-function SetDemonHomuraBuildingsInCity(pCity, iSubjugations)
-	local tBuildingTable = toBits(iSubjugations)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_1, tBuildingTable[1] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_2, tBuildingTable[2] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_4, tBuildingTable[3] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_8, tBuildingTable[4] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_16, tBuildingTable[5] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_32, tBuildingTable[6] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_64, tBuildingTable[7] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_128, tBuildingTable[8] or 0)
-	pCity:SetNumRealBuilding(GameInfoTypes.BUILDING_PMMM_DEMON_HOMURA_DUMMY_256, tBuildingTable[9] or 0)
-end
-
+--[port] Phase 4: the subjugation dummies are deleted; kept only because the bootstrapper registers
+--it with LuaEvents.PMMMSetNumDemonHomuraBuildings. No-op.
 function SetNumDemonHomuraBuildings(iPlayer)
-	local pPlayer = Players[iPlayer]
-	local pCapital = pPlayer:GetCapitalCity()
-	if not PMMM.Subjugations[iPlayer] then PMMM.Subjugations[iPlayer] = 0 end
-	local iSubjugations = math.floor(PMMM.Subjugations[iPlayer])
-	--[port] the dummies used to be written only to the current capital and were left behind
-	--when the capital moved; clear every city first, then write the current capital
-	for pCity in pPlayer:Cities() do
-		SetDemonHomuraBuildingsInCity(pCity, 0)
-	end
-	if pCapital then
-		SetDemonHomuraBuildingsInCity(pCapital, iSubjugations)
-	end
 end
 
-
---Called by other functions, do not use directly with GameEvents
+--[port] Phase 4: no more subjugation credit. PMMMMagicalGirls.lua still calls this when a Magical
+--Girl is created for her (it then removes the girl itself). No-op.
 function OnDemonHomuraKillMG(iPlayer, iX, iY, iMGKey)
-	--[port] the same death can reach this from both UnitPrekill and CombatEnded (and the
-	--attrition path credits it before the killing ChangeDamage), so credit each MG once.
-	--Callers that cannot supply a key keep the old, undeduplicated behaviour.
-	if iMGKey then
-		PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}
-		if PMMM.DemonHomuraCreditedMGKills[iMGKey] then return end
-		PMMM.DemonHomuraCreditedMGKills[iMGKey] = true
-	end
-	if not PMMM.Subjugations[iPlayer] then
-		PMMM.Subjugations[iPlayer] = 1
-	else
-		PMMM.Subjugations[iPlayer] = PMMM.Subjugations[iPlayer] + 1
-	end
-	SetNumDemonHomuraBuildings(iPlayer)
-	if iX > 0 and iY > 0 then
-		Players[iPlayer]:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_DHOMURA_MGKILL_TEXT"), Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_DHOMURA_MGKILL_TITLE"), iX, iY)
-	end
 end
 
-
+--[port] Phase 4: the CombatEnded / UnitPrekill / city-capture / promotion hooks the bootstrapper
+--still calls. Their only job was the subjugation ledger and the attrition immunity. No-ops.
 function DemonHomuraDirectKill(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
-	local pEnemyUnit;
-	local pPlayer;
-	local pEnemyPlayer;
-
-	--Determines which player's unit died, if any, and bases the rest of the code off of that. In case that two DHomura players are attacking each other.
-	if MapModData.gPMMMTraits[iAttackingPlayer] and MapModData.gPMMMTraits[iAttackingPlayer].CapitalBonusPerKilledMagicalGirl > 0 then
-		pEnemyPlayer = Players[iDefendingPlayer]
-		if pEnemyPlayer then
-			pEnemyUnit = pEnemyPlayer:GetUnitByID(iDefendingUnit)
-			if pEnemyUnit and pEnemyUnit:GetCurrHitPoints() == 0 then
-				pPlayer = Players[iAttackingPlayer]
-			else
-				pEnemyUnit = nil
-				pEnemyPlayer = nil
-			end
-		end
-	end
-	if not pEnemyUnit then
-		if MapModData.gPMMMTraits[iDefendingPlayer] and MapModData.gPMMMTraits[iDefendingPlayer].CapitalBonusPerKilledMagicalGirl > 0 then
-			pEnemyPlayer = Players[iAttackingPlayer]
-			if pEnemyPlayer then
-				pEnemyUnit = pEnemyPlayer:GetUnitByID(iAttackingUnit)
-				--[port] same nil guard the attacking branch above already has
-				if pEnemyUnit and pEnemyUnit:GetCurrHitPoints() == 0 then
-					pPlayer = Players[iDefendingPlayer]
-				else
-					pEnemyUnit = nil
-					pEnemyPlayer = nil
-				end
-			end
-		end
-	end
-	if pEnemyUnit then
-		--If we've gotten this far, we can ascertain that there's a dead unit detected and the killer was a DHomura player.
-		if pEnemyUnit:GetUnitType() == iMagicalGirlType then
-			local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
-			--[port] GetMagicalGirlKey returns false on a miss
-			if iMGKey and not MagicalGirls[iMGKey].IsLeader then
-				OnDemonHomuraKillMG(pPlayer:GetID(), plotX, plotY, iMGKey)
-			end
-		end
-	end
 end
 
---[port] DemonHomuraDirectKill takes the CombatEnded parameter list; the UnitPrekill hook was
---handed prekill's instead, which silently did nothing. This is the prekill path's own adapter.
 function DemonHomuraPrekill(iPlayer, iUnit, iUnitType, iX, iY, bDelay, iKiller)
-	if not iKiller or iKiller < 0 or iKiller == iPlayer then return end
-	if iUnitType ~= iMagicalGirlType then return end
-	if not MapModData.gPMMMTraits[iKiller] or MapModData.gPMMMTraits[iKiller].CapitalBonusPerKilledMagicalGirl <= 0 then return end
-	local iMGKey = GetMagicalGirlKey(iPlayer, iUnit)
-	if iMGKey and not MagicalGirls[iMGKey].IsLeader then
-		OnDemonHomuraKillMG(iKiller, iX, iY, iMGKey)
-	end
 end
 
---[port] a captured city keeps the dummy buildings it carried under its previous owner
 function DemonHomuraOnCityCapture(iCapturedPlayer, bCapital, iX, iY, iCapturingPlayer, bConquest)
-	local pPlot = Map.GetPlot(iX, iY)
-	if pPlot then
-		local pCity = pPlot:GetPlotCity()
-		if pCity then
-			SetDemonHomuraBuildingsInCity(pCity, 0)
-		end
-	end
-end
-
-function DemonHomuraOnTurnFunctions(iPlayer)
-	if iPlayer < GameDefines.MAX_CIV_PLAYERS then
-		local pPlayer = Players[iPlayer]
-		--v21: DH gets a multiplier to the subjugation palace bonuses based on certain global mood mods.
-		--Included mood mods are: Beliefs, Policies, Buildings.
-		if MapModData.gPMMMTraits[iPlayer] and MapModData.gPMMMTraits[iPlayer].CapitalBonusPerKilledMagicalGirl > 0 then
-			SetNumDemonHomuraBuildings(iPlayer)
-			--v23: Golden Age Points from Global Mood
-			if not pPlayer:IsGoldenAge() then
-				pPlayer:ChangeGoldenAgeProgressMeter(GetGoldenAgePointsFromMood(iPlayer))
-			end
-		end
-		for pUnit in pPlayer:Units() do
-			if pUnit:GetUnitType() == iMagicalGirlType and not pUnit:IsHasPromotion(iImmunePromo) then
-				local pPlot = pUnit:GetPlot()
-				local iOwner = pPlot:GetOwner()
-				if iOwner > -1 and iOwner < iMaxCivs then
-					if MapModData.gPMMMTraits[iOwner].MagicalGirlAttrition > 0 then
-						local pOwner = Players[iOwner]
-						local pTeam = Teams[pPlayer:GetTeam()]
-						local iOwnerTeam = pOwner:GetTeam()
-						if pTeam:IsAtWar(iOwnerTeam) then
-							local iCurHP = pUnit:GetCurrHitPoints()
-							if iCurHP <= MapModData.gPMMMTraits[iOwner].MagicalGirlAttrition then
-								--[port] pass the MG key so the UnitPrekill that the ChangeDamage below may raise is deduplicated
-								OnDemonHomuraKillMG(iOwner, pUnit:GetX(), pUnit:GetY(), GetMagicalGirlKey(iPlayer, pUnit:GetID()))
-							end
-							pUnit:ChangeDamage(MapModData.gPMMMTraits[iOwner].MagicalGirlAttrition, iOwner)
-						end
-					end
-				end
-			end
-		end
-	end
-end
-
-function GetGoldenAgePointsFromMood(iPlayer)
-	local iPoints = 0 
-	local pPlayer = Players[iPlayer]
-	iPoints = iPoints + t_MoodMods[iMoodBuildingsID].Func(_, pPlayer, _)
-	iPoints = iPoints + t_MoodMods[iMoodBeliefsID].Func(_, pPlayer, _)
-	iPoints = iPoints + t_MoodMods[iMoodPolicyID].Func(_, pPlayer, _)
-	return math.floor(iPoints * iMoodModMultiplierBase)
 end
 
 function OnPromotedToLevel5(iPlayer, iUnit)
-	local pPlayer = Players[iPlayer]
-	local pUnit = pPlayer:GetUnitByID(iUnit)
-	if pUnit:GetUnitType() == iMagicalGirlType and pUnit:GetLevel() >= 5 then
-		pUnit:SetHasPromotion(iImmunePromo, true)
-	else
-		pUnit:SetHasPromotion(iImmunePromo, false)
-	end
 end
 
+--[port] Phase 4: per-turn hook. It used to refresh the Palace dummies, add Golden Age points from
+--Mood and deal attrition damage to enemy Magical Girls in her territory; all three are retired.
+--Ai Yo clauses 1, 2 and 4 (no unhappiness penalties, yield/combat scaling with unhappiness, no
+--Golden Age, ideology immunity) are applied by the DLL trait columns, not here. No-op.
+function DemonHomuraOnTurnFunctions(iPlayer)
+end
 
-
+--[port] Phase 4: the capital city-view addin ("Stolen Magical Energy") is retired. The bootstrapper
+--still registers these two with LuaEvents.CityInfoStack*; not inserting the addin key means the
+--Dirty handler is never asked to draw anything.
 function DHCityInfoStackDataRefresh(tCityInfoAddins, tEventsToHook)
-	table.insert(tCityInfoAddins, {["Key"] = "PMMM_DemonHomura", ["SortOrder"] = 1})
 end
 
 function DHCityInfoStackDirty(sKey, pInstance)
-	if sKey ~= "PMMM_DemonHomura" then return end
-	local iPlayer = Game:GetActivePlayer()
-	if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1) then
-		local pPlayer = Players[iPlayer]
-		local pCity = UI.GetHeadSelectedCity()
-		if pCity and pCity:IsCapital() and pCity:GetOwner() == iPlayer then
-			if not PMMM.Subjugations[iPlayer] then PMMM.Subjugations[iPlayer] = 0 end
-			local iSubj = PMMM.Subjugations[iPlayer]
-			local iSubjRound = math.floor(PMMM.Subjugations[iPlayer])
-			local iGAPoints = GetGoldenAgePointsFromMood(iPlayer)
-			IconHookup(0, 64, "CIV_COLOR_ATLAS_DEMON_HOMURA", pInstance.IconImage)
-			pInstance.IconImage:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_PMMM_CITYVIEW_DEMON_HOMURA_TOOLTIP", iSubj, iGAPoints))
-		else
-			pInstance.IconFrame:SetHide(true)
-			return
-		end
-	else
-		pInstance.IconFrame:SetHide(true)
-		return
-	end
 end

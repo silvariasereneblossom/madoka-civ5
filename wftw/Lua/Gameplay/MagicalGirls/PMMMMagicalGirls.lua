@@ -67,7 +67,8 @@ function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
 			local iMGKey = tMagicalGirlSpawnTable["ID"]
 
 			--if Demon Homura is getting this spawn, just set it to "returned to normal" state, kill, and do nothing else with it
-			if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true) then
+			--[port] Phase 4: her Leader Magical Girl is the one girl a no-girls civ keeps
+			if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true) and not MagicalGirls[iMGKey].IsLeader then
 				MagicalGirls[iMGKey].Status = GameInfoTypes.MGACTIONSTATE_RETURNED_NORMAL
 				OnDemonHomuraKillMG(iPlayer, pUnit:GetX(), pUnit:GetY())
 				pUnit:Kill(true)
@@ -153,7 +154,8 @@ function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
 			--She did not exist, so initialize them in the MG table. Start by giving them base values
 
 			--Don't do any of this for DH
-			if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true) then
+			--[port] Phase 4: likewise when her Leader Magical Girl is first created
+			if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1 or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true) and not tMagicalGirlSpawnTable["IsLeader"] then
 				OnDemonHomuraKillMG(iPlayer, pUnit:GetX(), pUnit:GetY())
 				pUnit:Kill(true)
 				tMagicalGirlSpawnTable = {}	-- [port] this early return skipped the reset at the end of the function
@@ -377,10 +379,8 @@ function MadokaInitMagicalGirl(iPlayer, iUnitID, iUnitType, iX, iY)
 
 		--Demon Homura is a bitch and steals the MG's power as soon as she's gotten what she wanted out of her
 		if MapModData.gPMMMTraits[iPlayer] and (MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iPlayer].NoMagicalGirls == 1) then
-			print("Demon Homura spawned a MG")
-			if bIsDHomura and MapModData.gPMMMTraits[iPlayer].CapitalBonusPerKilledMagicalGirl > 0 then
-				OnDemonHomuraKillMG(iPlayer, iX, iY)
-			end
+			--[port] Phase 4: Lovevil is retired, so an expended Prodigy no longer credits a subjugation to her
+			--Palace. Ai Yo keeps only the first half: her Prodigies never become Magical Girls.
 			return
 		end
 
