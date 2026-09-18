@@ -70,3 +70,25 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_HELP', 'Fires her finishing shot. The target takes damage equal to an attack at 150% of her [ICON_STRENGTH] Combat Strength, and every enemy within one tile of it takes half as much.[NEWLINE][NEWLINE]She fights at -50% [ICON_STRENGTH] Defense until her next turn. Range 2. Cooldown 4 turns.'),
 	('TXT_KEY_PROMOTION_PMMM_TIRO_FINALE_RECOIL', 'Tiro Finale Recoil'),
 	('TXT_KEY_PROMOTION_PMMM_TIRO_FINALE_RECOIL_HELP', '-50% [ICON_STRENGTH] Defense until the start of her next turn, after firing Tiro Finale.');
+
+--------------------------------------------------------------------------------------------------------------
+-- Two Leader Magical Girls whose state never changes.
+-- Ultimate Madoka's can never lose Mood or Soul Gem and can never become a Witch.
+-- Devil Homura's is always in Despair, takes none of its penalties, and can never become a Witch.
+-- The Lua that reads these lives in PMMMMagicalGirls.lua (corruption) and Moods/PMMMCoreMoods.lua (mood).
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM UnitPromotions WHERE Type IN ('PROMOTION_PMMM_NEVER_DESPAIR', 'PROMOTION_PMMM_ALWAYS_DESPAIR');
+
+INSERT INTO UnitPromotions
+			(Type, Description, Help, Sound, CannotBeChosen, PortraitIndex, IconAtlas, PediaType, PediaEntry)
+VALUES	('PROMOTION_PMMM_NEVER_DESPAIR', 'TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR', 'TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR_HELP', 'AS2D_IF_LEVELUP', 1, 58, 'ABILITY_ATLAS', 'PEDIA_ATTRIBUTES', 'TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR'),
+		('PROMOTION_PMMM_ALWAYS_DESPAIR', 'TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR', 'TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR_HELP', 'AS2D_IF_LEVELUP', 1, 58, 'ABILITY_ATLAS', 'PEDIA_ATTRIBUTES', 'TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR');
+
+UPDATE Traits SET LeaderMGUniquePromotion = 'PROMOTION_PMMM_NEVER_DESPAIR'  WHERE Type = 'TRAIT_NO_WITCHES';
+UPDATE Traits SET LeaderMGUniquePromotion = 'PROMOTION_PMMM_ALWAYS_DESPAIR' WHERE Type = 'TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR', 'Nothing To Despair, Ever'),
+	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR_HELP', 'Her Mood is always Ecstatic, her Soul Gem never clouds, and she can never become a Witch.'),
+	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR', 'Meikyuu no Homura'),
+	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR_HELP', 'She is always in Despair, but suffers none of its penalties, her Soul Gem never clouds, and she can never become a Witch.');

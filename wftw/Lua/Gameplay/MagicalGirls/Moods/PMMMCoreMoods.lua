@@ -85,13 +85,24 @@ function RefreshMGMood(iMGKey, pPlayer, pUnit, bGetText, bAccumulators)
 		iTotalMood = GameDefines.MG_MOOD_MAXIMUM
 	end
 
+	--[port] Phase 4: Ultimate Madoka's Leader Magical Girl can never lose Mood, so hers is pinned at the top.
+	--Devil Homura's is always in Despair for flavour, but takes none of Despair's penalties, so her mood level
+	--is pinned at the bottom and the level's promotion is not applied.
+	local bNeverDespair = pUnit:IsHasPromotion(GameInfoTypes.PROMOTION_PMMM_NEVER_DESPAIR)
+	local bAlwaysDespair = pUnit:IsHasPromotion(GameInfoTypes.PROMOTION_PMMM_ALWAYS_DESPAIR)
+	if bNeverDespair then
+		iTotalMood = GameDefines.MG_MOOD_MAXIMUM
+	elseif bAlwaysDespair then
+		iTotalMood = GameDefines.MG_MOOD_MINIMUM
+	end
+
 	MagicalGirls[iMGKey].Mood = iTotalMood
 	MagicalGirls[iMGKey].MoodMods = tMoodInfos
 
 	for row in GameInfo.MG_Moods() do
 		if iTotalMood >= row.MinValue and iTotalMood <= row.MaxValue then
 			MagicalGirls[iMGKey].MoodLevel = row.ID
-			if row.Promotion then
+			if row.Promotion and not bAlwaysDespair then
 				pUnit:SetHasPromotion(GameInfo.UnitPromotions[row.Promotion].ID, true)
 			end
 		else

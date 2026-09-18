@@ -425,8 +425,8 @@ function CreateFirstLeaderMagicalGirl(iPlayer, iX, iY)
 				local iLeaderType = pPlayer:GetLeaderType()
 				local sLeaderKey = GameInfo.Leaders[iLeaderType].Description
 				
-				--UM and DH don't get them, since they're up in lesbian space doing lesbian space things
-				if iCivType == GameInfoTypes.CIVILIZATION_MADOKA or iCivType == GameInfoTypes.CIVILIZATION_DEMON_HOMURA then return end
+				--[port] Phase 4: both of them now have a Leader Magical Girl of their own. Ultimate Madoka's can
+				--never despair and Devil Homura's is always in despair; both carry it as a trait promotion.
 		
 				--Determine name. First, check if there is a Civ-specific override. If not, then if the leader is female, use her name directly.
 				--Finally, if neither of those work, she'll just get a generic MG list name.
@@ -801,8 +801,12 @@ function MagicalGirlUpkeep(iPlayer)
 						end
 					end
 					
+					--[port] Phase 4: a girl who can never despair loses no Soul Gem, and a girl who is always in
+					--despair is not allowed to decay into a Witch either. Both skip the whole corruption pass.
+					local bSoulGemImmune = pUnit and (pUnit:IsHasPromotion(GameInfoTypes.PROMOTION_PMMM_NEVER_DESPAIR)
+						or pUnit:IsHasPromotion(GameInfoTypes.PROMOTION_PMMM_ALWAYS_DESPAIR))
 					--Find out the corruption amount.
-					if pUnit and not bLeftMap then	-- [port] she has just left the map, her unit is gone
+					if pUnit and not bLeftMap and not bSoulGemImmune then	-- [port] she has just left the map, her unit is gone
 						local iTotalCorruption = iCorruptionPerTurnBase
 						local iCurrentDamage = pUnit:GetDamage()
 						local iHealAmount = 0

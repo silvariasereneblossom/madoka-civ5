@@ -438,9 +438,9 @@
     <File md5="F30334E7C8505CE586C29E90809F3E0E" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
     <File md5="B0F9E95DE7DA0D433445C24B238F07FB" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
     <File md5="0052B69A92403AABDE630DDD86E40DB2" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
-    <File md5="ECC4CFE4673E34D88493ABD5A063B1CE" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
+    <File md5="381076438FFA47A6CC6597F5FD057805" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
-    <File md5="955E177D3FEFC4E738C91149473650FC" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
+    <File md5="EFEAEA382EA43AC78CB418F0B9F592C7" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="3C20FC3FAE4F1EA850B0BBDE2B9D27EA" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
     <File md5="31FA428D0A435D8460E158E06597FBBD" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
     <File md5="36234CE92F8B356AD785F3F6E034CBB6" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
@@ -560,7 +560,7 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="C6F707397D748897F607810FC5375E8E" import="0">SQL/Phase4/Abilities.sql</File>
+    <File md5="5DF391C1484CB80A3B088E5753EBEFEA" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
     <File md5="B30B7719DD8F618ED80C1685AE55F935" import="0">SQL/Phase4/Kyouko.sql</File>
