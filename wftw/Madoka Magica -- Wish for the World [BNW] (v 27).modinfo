@@ -441,7 +441,7 @@
     <File md5="381076438FFA47A6CC6597F5FD057805" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="EFEAEA382EA43AC78CB418F0B9F592C7" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
-    <File md5="3C20FC3FAE4F1EA850B0BBDE2B9D27EA" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
+    <File md5="C70D50876A7752779AAB5EBDE489038A" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
     <File md5="A835FD4FC01B4A950260A76FC3E2BAB7" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
     <File md5="CDF38828FE6D36E486ECAAB822E4FD73" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
     <File md5="56CFBE2380427E3CE08E1A522408AE9E" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityHomura.lua</File>
@@ -477,7 +477,7 @@
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
     <File md5="F1979632BB637781FF17F503CCF544A1" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
     <File md5="AD2E4E773055BDB5FE308061939CB8E0" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
-    <File md5="602783B3660CEC55BB1BF96856936B7B" import="1">Lua/PMMMDataStorage.lua</File>
+    <File md5="A3FFA7E8922EF500CE049E02A20913B4" import="1">Lua/PMMMDataStorage.lua</File>
     <File md5="074B90C4ADB1CC1912733893D3C57847" import="1">Lua/PMMMDefines.lua</File>
     <File md5="89E26F85B37B9E3FD0E8C7F402063DE1" import="1">Lua/PMMMGeneralFunctions.lua</File>
     <File md5="901F7D838A9A365BDC7B35D8F2AAA2C7" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
@@ -640,7 +640,7 @@
     <File md5="4E7851F313A026E41F8AA9263EB30F68" import="1">UnitArt/Wraith_E.dds</File>
     <File md5="9DD28C8CB11DCAFA64ED659965E8E98B" import="1">UnitArt/Wraith_E.fxsxml</File>
     <File md5="8630D001B13B4113D3ADA8E00C1A670A" import="1">UnitArt/Wraith_E.gr2</File>
-    <File md5="4E8FE8E1C00EBF36AE135E00DD2B5549" import="0">WFTWGameDefines.xml</File>
+    <File md5="A299AF529A8A82753D7240637457A5AF" import="0">WFTWGameDefines.xml</File>
     <File md5="42F9EDD38245686545A567FB15AA4332" import="0">WishForTheWorldOptions.sql</File>
     <File md5="46342BE1A01426247FE19A85756BE5F4" import="0">XML/CBPReligiousWonder.xml</File>
     <File md5="A8D22E533C09F664732F28C6F7C835E9" import="0">XML/CIV5ArtDefines-MadokaUnits.xml</File>

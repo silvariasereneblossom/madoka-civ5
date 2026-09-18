@@ -324,6 +324,10 @@ end
 	MapModData.gPMMMIncubatorEraStrengths = {}
 
 
+	--[port] Phase 4: an era whose best Melee/Gunpowder unit is weaker than the previous era's (the Atomic
+	--era, whose best is the Mobile SAM) used to make every Magical Girl weaker on entering it. Carry the
+	--running maximum forward so the curve never goes backwards.
+	local iPreviousEraStrength = 1
 	for era in GameInfo.Eras() do
 		local iHighestStrength = 1
 		for unit in GameInfo.Units() do
@@ -350,6 +354,9 @@ end
 				end
 			end
 		end
+		if iHighestStrength < iPreviousEraStrength then iHighestStrength = iPreviousEraStrength end
+		iPreviousEraStrength = iHighestStrength
+
 		MapModData.gPMMMMagicalGirlEraStrengths[era.ID] = math.floor(iHighestStrength * (GameDefines.MAGICAL_GIRL_STRENGTH_PERCENT / 100))
 		MapModData.gPMMMWitchEraStrengths[era.ID] = math.floor(iHighestStrength * (GameDefines.WITCH_STRENGTH_PERCENT / 100))
 		MapModData.gPMMMFamiliarEraStrengths[era.ID] = math.floor(iHighestStrength * (GameDefines.FAMILIAR_STRENGTH_PERCENT / 100))

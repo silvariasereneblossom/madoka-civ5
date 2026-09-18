@@ -161,10 +161,20 @@ function PMMMApplyTimedPromotion(pUnit, iPromotion, iTurns)
 	local iPlayer = pUnit:GetOwner()
 	PMMM.TimedPromotions[iPlayer] = PMMM.TimedPromotions[iPlayer] or {}
 	pUnit:SetHasPromotion(iPromotion, true)
+	local iExpire = Game:GetGameTurn() + math.max(iTurns, 1)
+	local iUnitID = pUnit:GetID()
+	--[port] re-applying the same promotion must push the expiry out, not add a second entry: the earlier
+	--entry would otherwise strip the promotion while the later one still considers it live.
+	for _, v in ipairs(PMMM.TimedPromotions[iPlayer]) do
+		if v.UnitID == iUnitID and v.Promotion == iPromotion then
+			if iExpire > v.Expire then v.Expire = iExpire end
+			return
+		end
+	end
 	table.insert(PMMM.TimedPromotions[iPlayer], {
-		UnitID = pUnit:GetID(),
+		UnitID = iUnitID,
 		Promotion = iPromotion,
-		Expire = Game:GetGameTurn() + math.max(iTurns, 1),
+		Expire = iExpire,
 	})
 end
 
@@ -305,12 +315,18 @@ function RunLeaderAbilityAI(iPlayer)
 				local tCheck, iMGKey = GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
 				if tCheck and IsLeaderAbilityReady(iMGKey) and tDef.AIScorePlot then
 					local pBestPlot, iBestScore
-					for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), tDef.Range, 1, false, false, true) do
-						if pAreaPlot then
-							local iScore = tDef.AIScorePlot(pPlayer, pUnit, pAreaPlot)
-							if iScore and (not iBestScore or iScore > iBestScore) then
-								iBestScore = iScore
-								pBestPlot = pAreaPlot
+					--[port] a self-centred ability is always aimed at her own tile, as on the human path.
+					if not tDef.NeedsTarget then
+						local pOwnPlot = pUnit:GetPlot()
+						if tDef.AIScorePlot(pPlayer, pUnit, pOwnPlot) then pBestPlot = pOwnPlot end
+					else
+						for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), tDef.Range, 1, false, false, true) do
+							if pAreaPlot then
+								local iScore = tDef.AIScorePlot(pPlayer, pUnit, pAreaPlot)
+								if iScore and (not iBestScore or iScore > iBestScore) then
+									iBestScore = iScore
+									pBestPlot = pAreaPlot
+								end
 							end
 						end
 					end

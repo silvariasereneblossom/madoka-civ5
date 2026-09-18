@@ -57,7 +57,7 @@
 		<!--What percentage of the strongest Melee/Gun unit of the Era each of these units gets-->
 		<Row Name="MAGICAL_GIRL_STRENGTH_PERCENT">
 			<Value>
-				70
+				100
 			</Value>
 		</Row>
 		<Row Name="WITCH_STRENGTH_PERCENT">
