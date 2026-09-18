@@ -186,3 +186,152 @@ VALUES ('TXT_KEY_BUILDING_PMMM_TEAHOUSE_FRIENDSHIP_DUMMY_HELP', '+2 [ICON_GOLD] 
 
 -- How many friends a Teahouse city may count (keeps a long diplomatic game bounded)
 INSERT OR REPLACE INTO Defines (Name, Value) VALUES ('MAMI_TEAHOUSE_MAX_FRIENDS', 5);
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 6. Traded resources (landed 2026-09-18; replaces the "omits" note in block 5).
+--    wftw/Lua/Gameplay/Traits/PMMMMamiTrait.lua recounts every turn the resource types Mami imports through
+--    trade deals with other civilizations and puts one copy per type of the matching dummy in her capital,
+--    clearing any copies left in a former capital:
+--      BUILDING_PMMM_MAMI_TRADED_STRATEGIC  +1 Production  (Building_YieldChanges)
+--      BUILDING_PMMM_MAMI_TRADED_LUXURY     +1 Happiness   (UnmoddedHappiness: a flat, unmodified add to the
+--                                                           city's local happiness in CP)
+--    Reading: "traded" = imported through deals (the section 12 ruling for Kyouko); city-state resources are not
+--    traded; a type counts once however many copies arrive.
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Building_YieldChanges WHERE BuildingType IN ('BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'BUILDING_PMMM_MAMI_TRADED_LUXURY');
+DELETE FROM Buildings       WHERE Type IN ('BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'BUILDING_PMMM_MAMI_TRADED_LUXURY');
+DELETE FROM BuildingClasses WHERE Type IN ('BUILDINGCLASS_PMMM_MAMI_TRADED_STRATEGIC', 'BUILDINGCLASS_PMMM_MAMI_TRADED_LUXURY');
+
+INSERT INTO BuildingClasses (Type, Description, DefaultBuilding, NoLimit)
+VALUES ('BUILDINGCLASS_PMMM_MAMI_TRADED_STRATEGIC', 'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 1);
+INSERT INTO BuildingClasses (Type, Description, DefaultBuilding, NoLimit)
+VALUES ('BUILDINGCLASS_PMMM_MAMI_TRADED_LUXURY', 'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_LUXURY', 'BUILDING_PMMM_MAMI_TRADED_LUXURY', 1);
+
+INSERT INTO Buildings
+			(Type, BuildingClass, Description, Help, Cost, FaithCost, GreatWorkCount, PrereqTech,
+			NeverCapture, NukeImmune, ConquestProb, IsDummy, ShowInPedia, UnmoddedHappiness,
+			IconAtlas, PortraitIndex)
+VALUES		('BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'BUILDINGCLASS_PMMM_MAMI_TRADED_STRATEGIC',
+			'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_STRATEGIC_HELP', -1, -1, -1, NULL,
+			1, 1, 0, 1, 0, 0,
+			'CIV_COLOR_ATLAS_MAMI', 3);
+
+INSERT INTO Buildings
+			(Type, BuildingClass, Description, Help, Cost, FaithCost, GreatWorkCount, PrereqTech,
+			NeverCapture, NukeImmune, ConquestProb, IsDummy, ShowInPedia, UnmoddedHappiness,
+			IconAtlas, PortraitIndex)
+VALUES		('BUILDING_PMMM_MAMI_TRADED_LUXURY', 'BUILDINGCLASS_PMMM_MAMI_TRADED_LUXURY',
+			'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_LUXURY', 'TXT_KEY_BUILDING_PMMM_MAMI_TRADED_LUXURY_HELP', -1, -1, -1, NULL,
+			1, 1, 0, 1, 0, 1,
+			'CIV_COLOR_ATLAS_MAMI', 3);
+
+INSERT INTO Building_YieldChanges (BuildingType, YieldType, Yield)
+VALUES ('BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'YIELD_PRODUCTION', 1);
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 7. Tiro Siege replaces the unit's Tiro Finale (landed 2026-09-18; replaces the [Lua PENDING] notes in block 4).
+--    Handler: wftw/Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua. The 150% area shot now belongs to Mami's
+--    Leader Magical Girl only (MISSION_PMMM_TIRO_FINALE_MG, SQL/Phase4/Abilities.sql, untouched here).
+--
+--    * The unit mission row MISSION_PMMM_TIRO_FINALE is repurposed in place as Tiro Siege rather than deleted and
+--      re-added, so no Missions ID shifts. It targets ENEMY_CITY at range 2 and drops the dead PMMMMissionExec.
+--      It gets its own text keys; TXT_KEY_MISSION_PMMM_TIRO_FINALE(_DISABLED) stay with the leader girl's mission.
+--    * TiroFinaleStrength on PROMOTION_PMMM_TIRO_MUSKETEER now means "percent of a Cannon's shot at a City".
+--      100 = a full Cannon: UNIT_CANNON RangedCombat 20 raised by the CityAttack of its free promotions
+--      (PROMOTION_CITY_SIEGE, +200%) = 60. Block 4's 150 is overridden; nothing else reads the column.
+--    * PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF (the old -20% Defense) is repurposed as the "fired this turn" marker:
+--      DefenseMod 0, cleared at the start of the owner's next turn. The shot costs nothing else.
+--    Reading of "roughly a Cannon": exactly a Cannon's strength against Cities, fed to GetMeleeCombatDamageCity,
+--    no promotions or terrain on either side, no counter-damage, cannot take a City below 1 HP. The unit must
+--    still have movement left (the DLL only starts missions for units that can move), so it fires before it
+--    attacks. Units that upgrade keep PROMOTION_PMMM_TIRO_MUSKETEER (LostWithUpgrade 0), and with it Tiro Siege.
+--------------------------------------------------------------------------------------------------------------
+UPDATE Missions
+SET Description      = 'TXT_KEY_MISSION_PMMM_TIRO_SIEGE',
+    Help             = 'TXT_KEY_MISSION_PMMM_TIRO_SIEGE_HELP',
+    DisabledHelp     = 'TXT_KEY_MISSION_PMMM_TIRO_SIEGE_DISABLED',
+    PMMMMissionRange = 2,
+    PMMMTargetType   = 'ENEMY_CITY',
+    PMMMMissionExec  = NULL
+WHERE Type = 'MISSION_PMMM_TIRO_FINALE';
+
+UPDATE UnitPromotions
+SET TiroFinaleStrength = 100
+WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER';
+
+UPDATE UnitPromotions
+SET DefenseMod = 0,
+    IsVisibleAboveFlag = 0
+WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF';
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 8. Text for blocks 1, 6 and 7. The Tiro Siege strength is computed from the same rows the Lua reads, so the
+--    tooltips follow the data: Cannon RangedCombat x (100 + summed CityAttack of its free promotions) / 100,
+--    times TiroFinaleStrength / 100, floored.
+--    Block 5's trait line said "+2 Production per Ally"; the data (block 1, ruling 5a) is +1, fixed here.
+--------------------------------------------------------------------------------------------------------------
+UPDATE Language_en_US
+SET Text = 'Gunpowder units receive +1 [ICON_STRENGTH] Combat Strength for every City-State Ally you have.[NEWLINE]Your [ICON_CAPITAL] Capital gets +1 [ICON_PRODUCTION] Production for each City-State Ally and +1 [ICON_RESEARCH] Science for each City-State Friend, multiplied by the current Era (x1 in the Ancient and Classical Eras, x2 Medieval, x3 Renaissance, x4 Industrial, and so on).[NEWLINE]Your [ICON_CAPITAL] Capital gets +1 [ICON_PRODUCTION] Production for each different Strategic resource, and you gain +1 [ICON_HAPPINESS_1] Happiness for each different Luxury resource, that you import through trade deals with other civilizations.'
+WHERE Tag = 'TXT_KEY_TRAIT_FRIENDSHIP_PRODUCTION_BONUS';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_BUILDING_PMMM_MAMI_TRADED_STRATEGIC', 'Imported Strategic Resources'),
+	('TXT_KEY_BUILDING_PMMM_MAMI_TRADED_STRATEGIC_HELP', '+1 [ICON_PRODUCTION] Production. Your Capital holds one of these for each different Strategic resource you import through trade deals.'),
+	('TXT_KEY_BUILDING_PMMM_MAMI_TRADED_LUXURY', 'Imported Luxuries'),
+	('TXT_KEY_BUILDING_PMMM_MAMI_TRADED_LUXURY_HELP', '+1 [ICON_HAPPINESS_1] Happiness. Your Capital holds one of these for each different Luxury resource you import through trade deals.'),
+	('TXT_KEY_MISSION_PMMM_TIRO_SIEGE', 'Tiro Siege'),
+	('TXT_KEY_MISSION_PMMM_TIRO_SIEGE_DISABLED', 'Tiro Siege has already been fired this turn, the Unit has no [ICON_MOVES] Movement left, or there is no enemy City within 2 tiles that can still be damaged.'),
+	('TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER', 'Tiro Siege'),
+	('TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF', 'Tiro Siege Fired'),
+	('TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF_HELP', 'This Unit has already fired Tiro Siege this turn. It may fire again next turn.'),
+	('TXT_KEY_ALERT_PMMM_TIRO_SIEGE', 'Your {1_Str} fired Tiro Siege at {2_Str}, dealing {3_Num} damage!');
+
+--Tiro Siege help, with the live numbers.
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+SELECT 'TXT_KEY_MISSION_PMMM_TIRO_SIEGE_HELP',
+	'[COLOR:31:236:224:255]Cost[ENDCOLOR]: none, once per turn[NEWLINE][NEWLINE]Fires a free siege shot at an enemy City within 2 tiles, with the strength of a Cannon attacking a City: '
+	|| (u.RangedCombat * (100 + p.CityAttack) * t.TiroFinaleStrength / 10000) || ' [ICON_STRENGTH] (a Cannon''s '
+	|| u.RangedCombat || ' [ICON_RANGE_STRENGTH] Ranged Strength with its +' || p.CityAttack || '% bonus against Cities). '
+	|| 'It uses no [ICON_MOVES] Movement and does not count as the Unit''s attack, but the Unit must have Movement left, so fire it before attacking. '
+	|| 'The City cannot strike back at it and cannot be taken below 1 HP. Only Cities you are at war with.'
+FROM Units u,
+	(SELECT SUM(up.CityAttack) AS CityAttack FROM Unit_FreePromotions f, UnitPromotions up WHERE f.UnitType = 'UNIT_CANNON' AND up.Type = f.PromotionType) p,
+	(SELECT TiroFinaleStrength FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER') t
+WHERE u.Type = 'UNIT_CANNON';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+SELECT 'TXT_KEY_PROMOTION_PMMM_TIRO_MUSKETEER_HELP',
+	'Once per turn, may fire [COLOR_POSITIVE_TEXT]Tiro Siege[ENDCOLOR]: a free '
+	|| (u.RangedCombat * (100 + p.CityAttack) * t.TiroFinaleStrength / 10000)
+	|| ' [ICON_STRENGTH] shot at an enemy City within 2 tiles, as strong as a Cannon attacking a City. It uses no Movement and does not count as the Unit''s attack.'
+FROM Units u,
+	(SELECT SUM(up.CityAttack) AS CityAttack FROM Unit_FreePromotions f, UnitPromotions up WHERE f.UnitType = 'UNIT_CANNON' AND up.Type = f.PromotionType) p,
+	(SELECT TiroFinaleStrength FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER') t
+WHERE u.Type = 'UNIT_CANNON';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+SELECT 'TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_HELP',
+	'Unique replacement for the Musketman, which only Mami Tomoe can train. Once per turn it may fire Tiro Siege: a free shot at an enemy City within 2 tiles with the strength of a Cannon attacking a City ('
+	|| (u.RangedCombat * (100 + p.CityAttack) * t.TiroFinaleStrength / 10000)
+	|| ' [ICON_STRENGTH]). Tiro Siege uses no [ICON_MOVES] Movement and does not count as its attack, so it can still move and attack normally afterwards.'
+FROM Units u,
+	(SELECT SUM(up.CityAttack) AS CityAttack FROM Unit_FreePromotions f, UnitPromotions up WHERE f.UnitType = 'UNIT_CANNON' AND up.Type = f.PromotionType) p,
+	(SELECT TiroFinaleStrength FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER') t
+WHERE u.Type = 'UNIT_CANNON';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text)
+SELECT 'TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_STRATEGY',
+	'The Tiro Musketeer is the Unique Unit for Nazione di Tiro, replacing the Musketman. In ordinary combat it fights exactly like a Musketman, but every turn it may also fire Tiro Siege at an enemy City up to 2 tiles away: a free shot as strong as a Cannon attacking a City ('
+	|| (u.RangedCombat * (100 + p.CityAttack) * t.TiroFinaleStrength / 10000)
+	|| ' [ICON_STRENGTH]), which takes no counterattack and cannot bring a City below 1 HP. The shot costs neither Movement nor the Unit''s attack, but the Unit needs Movement left to fire, so shell first, then move or attack. A line of Musketeers can wear down a City''s defences before a single Cannon arrives.'
+FROM Units u,
+	(SELECT SUM(up.CityAttack) AS CityAttack FROM Unit_FreePromotions f, UnitPromotions up WHERE f.UnitType = 'UNIT_CANNON' AND up.Type = f.PromotionType) p,
+	(SELECT TiroFinaleStrength FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER') t
+WHERE u.Type = 'UNIT_CANNON';
+
+UPDATE Language_en_US
+SET Text = 'A platoon of Magical Girls who have trained diligently in mimicking Mami Tomoe''s Magic, so much so that even their outfits are identical to hers.[NEWLINE][NEWLINE]Not only have they trained in the use of her beautiful firearms, but they have also adopted her flair for the stylish and dramatic in combat. During a regular skirmish, they fight on par with a trained regiment of musketmen. Before a siege, though, they conjure oversized flintlocks of their own and pour shot into the enemy''s walls. Only Mami herself can unleash the true Tiro Finale.'
+WHERE Tag = 'TXT_KEY_UNIT_PMMM_TIRO_MUSKETEER_TEXT';

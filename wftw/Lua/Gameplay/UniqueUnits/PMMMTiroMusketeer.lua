@@ -2,24 +2,122 @@
 -- Author: Vicevirtuoso
 -- DateCreated: 6/19/2014 7:06:29 PM
 --------------------------------------------------------------
+--[port] Phase 4: Tiro Siege replaces the unit's old Tiro Finale (spec section 7, section 12 default).
+-- Data half: SQL/Phase4/Mami.sql block 7.
+--
+-- Every unit carrying PROMOTION_PMMM_TIRO_MUSKETEER may, once per turn, fire a free shot at an enemy City within
+-- 2 tiles. It is a virtual attack at a Cannon's strength against Cities (UNIT_CANNON's RangedCombat raised by the
+-- CityAttack of its free promotions: 20 x (100 + 200)% = 60 in CP 5.4.6), scaled by the promotion's
+-- TiroFinaleStrength, which now means "percent of that Cannon shot" (100). Damage comes from
+-- GetMeleeCombatDamageCity (GetCombatDamage is a stub in this DLL). It spends no movement and does not use the
+-- unit's attack, takes no counter-damage, and cannot take a City below 1 HP. The unit needs movement left to act
+-- at all (the DLL only starts missions for units that can move), so fire before attacking.
+--
+-- The 150% area shot (Tiro Finale) now belongs to Mami's Leader Magical Girl alone, as
+-- MISSION_PMMM_TIRO_FINALE_MG in PMMMLeaderAbilityDefs.lua. The unit mission row MISSION_PMMM_TIRO_FINALE is
+-- repurposed as Tiro Siege (kept, not replaced, so no Missions ID moves) and nothing here can hit units any more.
+-- PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF is repurposed as the "already fired this turn" marker (DefenseMod 0).
+--------------------------------------------------------------
 
 local iPromotion = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER
-local iRangePromotion = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER_READY
-local iDefenseReduction = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF
-local iMissionType = MissionTypes.MISSION_PMMM_TIRO_FINALE
+local iSpentPromotion = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF
+local iMissionType = GameInfoTypes.MISSION_PMMM_TIRO_FINALE
 
-function TiroFinaleCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)
-	if iPlayer < iMaxCivs then
-		local pPlayer = Players[iPlayer]
-		local pUnit = pPlayer:GetUnitByID(iUnit)
-		--lazy and specifying one promotion for now
-		if pUnit:IsHasPromotion(iPromotion) and iMission == iMissionType then
-			return true
+local pSiegeMission = GameInfo.Missions.MISSION_PMMM_TIRO_FINALE
+local iSiegeRange = (pSiegeMission and pSiegeMission.PMMMMissionRange) or 2
+
+--A Cannon's ranged strength against a City, times 100 (the scale GetMeleeCombatDamageCity and city strength use).
+local function GetTiroSiegeStrengthTimes100()
+	local pCannon = GameInfo.Units.UNIT_CANNON
+	if not pCannon then return 0 end
+	local iCityAttack = 0
+	for row in GameInfo.Unit_FreePromotions("UnitType = 'UNIT_CANNON'") do
+		local pPromo = GameInfo.UnitPromotions[row.PromotionType]
+		if pPromo and pPromo.CityAttack then
+			iCityAttack = iCityAttack + pPromo.CityAttack
 		end
 	end
-	return false
+	local iPercent = 100
+	local pTiroPromo = GameInfo.UnitPromotions.PROMOTION_PMMM_TIRO_MUSKETEER
+	if pTiroPromo and pTiroPromo.TiroFinaleStrength and pTiroPromo.TiroFinaleStrength > 0 then
+		iPercent = pTiroPromo.TiroFinaleStrength
+	end
+	return math.floor(pCannon.RangedCombat * (100 + iCityAttack) * iPercent / 100)
+end
+local iSiegeStrengthTimes100 = GetTiroSiegeStrengthTimes100()
+
+--Is pPlot a City this unit may shell right now? Returns the City or nil.
+--Distance only, no line of sight: the target is a City, which is always a revealed tile of its own.
+local function GetTiroSiegeTarget(pUnit, pPlot)
+	if not pUnit or not pPlot or not pPlot:IsCity() then return nil end
+	local pCity = pPlot:GetPlotCity()
+	if not pCity then return nil end
+	local pOwner = Players[pUnit:GetOwner()]
+	local iTeam = pOwner:GetTeam()
+	if not Teams[iTeam]:IsAtWar(Players[pCity:GetOwner()]:GetTeam()) then return nil end
+	if not pPlot:IsVisible(iTeam, false) then return nil end
+	if Map.PlotDistance(pUnit:GetX(), pUnit:GetY(), pPlot:GetX(), pPlot:GetY()) > iSiegeRange then return nil end
+	--Nothing left to knock off: the shot can never take a City below 1 HP.
+	if pCity:GetDamage() >= pCity:GetMaxHitPoints() - 1 then return nil end
+	return pCity
 end
 
+local function CanFireTiroSiege(pUnit)
+	return pUnit ~= nil and iPromotion ~= nil and iSpentPromotion ~= nil
+		and pUnit:IsHasPromotion(iPromotion) and not pUnit:IsHasPromotion(iSpentPromotion)
+end
+
+--Every enemy City this unit could shell from where it stands, in a fixed spiral order.
+local function GetTiroSiegeTargets(pUnit)
+	local tCities = {}
+	for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), iSiegeRange, 1, false, false, false) do
+		local pCity = GetTiroSiegeTarget(pUnit, pAreaPlot)
+		if pCity then tCities[#tCities + 1] = pCity end
+	end
+	return tCities
+end
+
+--The shot itself. Returns the damage dealt (0 if the shot was not allowed).
+function DoTiroSiege(iPlayer, pUnit, pPlot)
+	if not pUnit or pUnit:GetOwner() ~= iPlayer or not CanFireTiroSiege(pUnit) then return 0 end
+	local pCity = GetTiroSiegeTarget(pUnit, pPlot)
+	if not pCity then return 0 end
+
+	local iDamage = pUnit:GetMeleeCombatDamageCity(iSiegeStrengthTimes100, pCity, true)
+	if not iDamage or iDamage < 0 then iDamage = 0 end
+	local iRoom = pCity:GetMaxHitPoints() - pCity:GetDamage() - 1
+	if iDamage > iRoom then iDamage = math.max(iRoom, 0) end
+	if iDamage > 0 then
+		pCity:ChangeDamage(iDamage)
+	end
+
+	--Once per turn: the marker is cleared at the start of the owner's next turn (RemoveDefenseDebuff below).
+	pUnit:SetHasPromotion(iSpentPromotion, true)
+
+	if iPlayer == Game:GetActivePlayer() then
+		Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_TIRO_SIEGE", pUnit:GetName(), pCity:GetName(), iDamage))
+	end
+	return iDamage
+end
+
+--Kept for MagicalGirlMissionHandler.ExecuteMapClickCustomMission, a deprecated path nothing calls any more.
+--It now fires Tiro Siege, with all of Tiro Siege's checks; the old 150% area shot is gone from this unit.
+function DoTiroFinale(iPlayer, pUnit, pPlot)
+	return DoTiroSiege(iPlayer, pUnit, pPlot)
+end
+
+function TiroFinaleCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)
+	if iMission ~= iMissionType then return false end
+	local pPlayer = Players[iPlayer]
+	local pUnit = pPlayer and pPlayer:GetUnitByID(iUnit)
+	if not pUnit or not pUnit:IsHasPromotion(iPromotion) then return false end
+	if bTestVisible then return true end
+	if not CanFireTiroSiege(pUnit) then return false end
+	if pUnit:GetMoves() <= 0 then return false end
+	--The DLL passes the unit's own plot here, not the target, so enable the button when any target is in range;
+	--the start handler checks the chosen target.
+	return #GetTiroSiegeTargets(pUnit) > 0
+end
 
 function TiroFinaleCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
 	if iMission == iMissionType then
@@ -30,7 +128,7 @@ function TiroFinaleCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, 
 			local pPlot = Map.GetPlot(iX, iY)
 			local pUnit = Players[iPlayer]:GetUnitByID(iUnit)
 			if pPlot and pUnit then
-				DoTiroFinale(iPlayer, pUnit, pPlot)
+				DoTiroSiege(iPlayer, pUnit, pPlot)
 			end
 		end
 	end
@@ -44,185 +142,36 @@ function TiroFinaleCustomMissionCompleted(iPlayer, iUnit, iMission, iData1, iDat
 	return false
 end
 
-function DoTiroFinale(iPlayer, pHeadUnit, pPlot)
-	print("Tiro Finale called")
-	local pPlayer = Players[iPlayer]
-	local pTeam = Teams[pPlayer:GetTeam()]
-	--[port] iTeam was an undefined global; derive the owner's real team id
-	local iTeam = pPlayer:GetTeam()
-	local iNumUnits = pPlot:GetNumUnits();
-	local pThisPlot = pHeadUnit:GetPlot()
-	
-	--We currently (and likely will only have) one Tiro Finale promotion since I'm lazy.
-	local iMultiplier = GameInfo.UnitPromotions[iPromotion].TiroFinaleStrength / 100
-	print("Tiro Finale strength: " ..iMultiplier)
-	local iStrength;
-
-	local bThisPlotDamaged = false
-	-- Loop through Units to find the first Combat unit. If no Combat unit is found, loop again and do the damage to the first non-combat unit.
-	for i = 0, iNumUnits do
-		pUnit = pPlot:GetUnit(i);
-		if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-			 if (pUnit:GetBaseCombatStrength() > 0 or pHeadUnit:IsRanged()) then
-				--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
-				if pTeam:IsAtWar(pUnit:GetTeam()) then
-					print("Found valid target")
-					iStrength = math.floor(pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier)
-					print("iStrength: " ..iStrength)
-					InflictTiroFinaleDamage(pHeadUnit, pUnit, pPlot, iStrength)
-					bThisPlotDamaged = true
-					break
-				end
-			end
+--AI rule: fire at the enemy City in range that is closest to falling (most damage already taken), first found
+--on ties. The shot is free, so there is no reason to hold it.
+local function RunTiroSiegeAI(iPlayer, pUnit)
+	local pBest, iBestDamage
+	for _, pCity in ipairs(GetTiroSiegeTargets(pUnit)) do
+		local iCityDamage = pCity:GetDamage()
+		if not iBestDamage or iCityDamage > iBestDamage then
+			pBest, iBestDamage = pCity, iCityDamage
 		end
 	end
-	if not bThisPlotDamaged then
-		for i = 0, iNumUnits do
-			pUnit = pPlot:GetUnit(i);
-			if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-				--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
-				if pTeam:IsAtWar(pUnit:GetTeam()) then
-				print("Found valid target")
-					iStrength = math.floor(pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier)
-					print("iStrength: " ..iStrength)
-					InflictTiroFinaleDamage(pHeadUnit, pUnit, pPlot, iStrength)
-					break
-				end
-			end
-		end
+	if pBest then
+		DoTiroSiege(iPlayer, pUnit, pBest:Plot())
 	end
-	
-	--Now do the same for all adjacent plots. Adjacent plots are attacked with only half of the strength which hit the focal plot.
-	for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, true, true, false) do
-		bThisPlotDamaged = false
-		iNumUnits = pAreaPlot:GetNumUnits()
-		for i = 0, iNumUnits do
-			pUnit = pAreaPlot:GetUnit(i);
-			if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-				 if (pUnit:GetBaseCombatStrength() > 0 or pHeadUnit:IsRanged()) then
-					--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
-					if pTeam:IsAtWar(pUnit:GetTeam()) then
-					print("Found valid target")
-						iStrength = math.floor((pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier) / 2)
-						print("iStrength: " ..iStrength)
-						InflictTiroFinaleDamage(pHeadUnit, pUnit, pAreaPlot, iStrength)
-						bThisPlotDamaged = true
-						break
-					end
-				end
-			end
-		end
-		if not bThisPlotDamaged then
-			for i = 0, iNumUnits do
-				pUnit = pAreaPlot:GetUnit(i);
-				if (pUnit ~= nil and not pUnit:IsInvisible(iTeam, false)) then
-					--[port] dropped the UIManager:GetAlt() clause: client-local input state in a gameplay path
-					if pTeam:IsAtWar(pUnit:GetTeam()) then
-					print("Found valid target")
-						iStrength = math.floor((pHeadUnit:GetMaxAttackStrength(pThisPlot, pPlot, pUnit) * iMultiplier) / 2)
-						print("iStrength: " ..iStrength)
-						InflictTiroFinaleDamage(pHeadUnit, pUnit, pAreaPlot, iStrength)
-						break
-					end
-				end
-			end
-		end
-	end
-	
-	pHeadUnit:ChangeExperience(5)
-	pHeadUnit:SetMoves(0)
-	pHeadUnit:SetHasPromotion(iDefenseReduction, true)
-	CleanMissionInfo()
-	ClearAllHighlights()
 end
 
-
-function InflictTiroFinaleDamage(pHeadUnit, pUnit, pPlot, iMyStrength)
-	print("Tiro Finale damage called")
-	local iTheirStrength = 0;
-	if (pUnit:IsEmbarked()) then
-		iTheirStrength = pUnit:GetEmbarkedUnitDefense();
-		print("iTheirStrength: " ..iTheirStrength)
-	else
-		iTheirStrength = pUnit:GetMaxDefenseStrength(pPlot, pHeadUnit);
-		print("iTheirStrength: " ..iTheirStrength)
-	end
-	
-	--[port] CP 5.4.6 binds GetCombatDamage but its body is commented out and it always returns 0
-	--(CvLuaUnit.cpp:1176-1190), so Tiro Finale did no damage at all. GetMeleeCombatDamage is the real one.
-	local iDamage = pHeadUnit:GetMeleeCombatDamage(iMyStrength, iTheirStrength, true, pUnit)
-	print("iDamage: " ..iDamage)
-	if iDamage > 100 then
-		iDamage = 100
-	end
-	pUnit:ChangeDamage(iDamage, pHeadUnit:GetOwner())
-end
-
-
--- Also handles AI logic for using Tiro Finale
+--Runs at the start of each player's turn (PMMMUUBootstrapper.OnDoTurnUUFunctions). The name is kept for that
+--caller. It clears last turn's "fired" marker, then lets AI Musketeers fire.
+--[port] Phase 4: the old AI fired the area shot here and then set the unit's moves to 0, freezing it for the
+--whole turn. Tiro Siege never touches movement, so the unit goes on to move and attack normally.
 function RemoveDefenseDebuff(iPlayer)
 	if iPlayer < iMaxCivsAndCS then
 		local pPlayer = Players[iPlayer]
-		local bAIAtWar;
-		--only run the AI logic if it's at war with a major
-		if not pPlayer:IsHuman() then
-			for i = 0, GameDefines.MAX_MAJOR_CIVS - 1, 1 do
-				if i ~= iPlayer and pPlayer:IsAtWarWith(i) then
-					bAIAtWar = true
-					break
-				end
-			end
-		end
+		if not pPlayer or not pPlayer:IsAlive() then return end
+		local bAI = not pPlayer:IsHuman()
 		for pUnit in pPlayer:Units() do
-			if pUnit:IsHasPromotion(iDefenseReduction) then
-				pUnit:SetHasPromotion(iDefenseReduction, false)
+			if iSpentPromotion and pUnit:IsHasPromotion(iSpentPromotion) then
+				pUnit:SetHasPromotion(iSpentPromotion, false)
 			end
-			if bAIAtWar and pUnit:IsHasPromotion(iPromotion) then
-				-- Do not use if at less than 40 HP due to the defense debuff
-				if pUnit:GetCurrHitPoints() >= 40 then
-					-- Look through plots in range.
-					-- If there is no enemy City in range, always use Tiro Finale if there is a target.
-					-- If there IS an enemy City in range, only use Tiro Finale if there are 3 or more nearby enemy Units to take care of first. Otherwise it should act normally and go after the City.
-					local bIsCity;
-					local iNumEnemyUnits = 0
-					local tRange = FindMissionRange(iMissionType, iPlayer, pUnit:GetPlot(), pUnit)
-					local iLowestHP = 100
-					local pLowestHPUnit;
-					for k, v in pairs(tRange) do
-						if v.ValidAttackTarget == true then
-							local pAreaPlot = Map.GetPlot(v.X, v.Y)
-							if pAreaPlot then
-								if pAreaPlot:IsCity() then
-									if pAreaPlot:GetPlotCity():GetOwner() ~= iPlayer then
-										bIsCity = true
-									end
-								elseif pAreaPlot:IsUnit() then
-									for c = 0, pAreaPlot:GetNumUnits() - 1 do
-										local pTestUnit = pAreaPlot:GetUnit(c)
-										if pTestUnit then
-											if pTestUnit:GetOwner() ~= iPlayer and pTestUnit:IsCombatUnit() then
-												local iTestUnitHP = pTestUnit:GetCurrHitPoints()
-												iNumEnemyUnits = iNumEnemyUnits + 1
-												if iTestUnitHP < iLowestHP then
-													iLowestHP = iTestUnitHP
-													pLowestHPUnit = pTestUnit
-													break
-												end
-											end
-										end
-									end
-								end
-							end
-						end
-					end
-					if pLowestHPUnit then
-						if not bIsCity then
-							DoTiroFinale(iPlayer, pUnit, pLowestHPUnit:GetPlot())
-						elseif iNumEnemyUnits >= 3 then
-							DoTiroFinale(iPlayer, pUnit, pLowestHPUnit:GetPlot())
-						end
-					end
-				end
+			if bAI and CanFireTiroSiege(pUnit) then
+				RunTiroSiegeAI(iPlayer, pUnit)
 			end
 		end
 	end

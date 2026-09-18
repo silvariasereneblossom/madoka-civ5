@@ -213,7 +213,8 @@ function FindValidTargets(pPlayer, pUnit, sTargetType)
 			elseif sTargetType == "ENEMY_CITY" then --Enemy cities within range
 				if k:IsCity() then
 					local pCity = k:GetPlotCity()
-					if pCity:GetOwner() ~= pUnit:GetOwner() then
+					--[port] Phase 4: only cities of civilizations we are at war with; the shot refuses the rest
+					if pCity:GetOwner() ~= pUnit:GetOwner() and Teams[pPlayer:GetTeam()]:IsAtWar(Players[pCity:GetOwner()]:GetTeam()) then
 						tTable[k] = true
 					end
 				end

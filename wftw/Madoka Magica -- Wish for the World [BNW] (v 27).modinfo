@@ -436,7 +436,7 @@
     <File md5="50AEB5D54EFB7F5D22C8E92ACEDA8340" import="1">Lua/Gameplay/Buildings/PMMMUltimateMadokaBuilding.lua</File>
     <File md5="CC70F0002A43E73EDE2CB2C411CA1E0E" import="1">Lua/Gameplay/Improvements/PMMMFarsightOracle.lua</File>
     <File md5="F30334E7C8505CE586C29E90809F3E0E" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
-    <File md5="008E633023F2E3DA2F2743D7A5AF53C2" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
+    <File md5="19801051F817D26437DB80C62D159822" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
     <File md5="0052B69A92403AABDE630DDD86E40DB2" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
     <File md5="381076438FFA47A6CC6597F5FD057805" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
@@ -560,14 +560,14 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="09365D16BB63A2444402AE43A10C9027" import="0">SQL/Phase4/Abilities.sql</File>
+    <File md5="D31470712C6EDAF3405E1DC48577C85B" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
     <File md5="ED81892B558783E5BFDBF82D0AC23907" import="0">SQL/Phase4/Kyouko.sql</File>
     <File md5="4BAF184C1178AB2D33FAEBCE414BBBC3" import="0">SQL/Phase4/Mami.sql</File>
-    <File md5="F1599370D528D5AD16D0F215CE60D3C3" import="0">SQL/Phase4/UltimateMadoka.sql</File>
+    <File md5="4B8C74D9E4F184CFDC93389748452FCB" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="43A0259ABD8B8467C62A387498F4D4FE" import="0">SQL/Phase4/Homura.sql</File>
-    <File md5="FDD69D0E29E4F1CE52BB55EFB42D98F1" import="0">SQL/Phase4/DemonHomura.sql</File>
+    <File md5="FD4BA16DA23BF6CE82BD32145E07CAEC" import="0">SQL/Phase4/DemonHomura.sql</File>
     <File md5="2D2EDA226AD17D20B331844B38832AFA" import="0">SQL/Phase4/Sayaka.sql</File>
     <File md5="A0E9C24EF8DDED174BD1DC9B6C4DAA45" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>

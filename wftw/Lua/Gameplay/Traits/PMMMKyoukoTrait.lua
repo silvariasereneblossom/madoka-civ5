@@ -9,13 +9,13 @@ include('PMMMGeneralFunctions.lua');
 local iMissionType1 = GameInfoTypes.MISSION_PMMM_KYOUKO_GIVE_FOOD
 local iMissionType2 = GameInfoTypes.MISSION_PMMM_KYOUKO_FOOD_HEAL
 
-local iMelee = GameInfoTypes.UNITCOMBAT_MELEE
-local iGun = GameInfoTypes.UNITCOMBAT_GUN
-local iMounted = GameInfoTypes.UNITCOMBAT_MOUNTED
-local iNavalMelee = GameInfoTypes.UNITCOMBAT_NAVALMELEE
--- Upstream referenced UNITCLASS_MAGICAL_GIRL, which does not exist (resolved to nil, so the
--- "not a Magical Girl" exclusion below never applied). The real class is UNITCLASS_PMMM_MAGICAL_GIRL.
-local iMGClass = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
+--[port] Phase 4: Stolen Food is the Chain Lancer's own ability now, not the trait's. The amounts and the cap still
+--live on the trait rows (MaxStolenFood, CaravanPillageStolenFood, Trait_PMMM_StolenFoodFromImprovement).
+local iChainLancer = GameInfoTypes.UNIT_PMMM_CHAIN_LANCER
+
+local function IsStolenFoodUnit(pUnit)
+	return pUnit ~= nil and pUnit:GetUnitType() == iChainLancer
+end
 
 function AddStolenFoodFromImprovement(iPlotX, iPlotY, iOwner, iOldImprovement, iNewImprovement, bPillaged)
 	if not bPillaged then return end
@@ -28,8 +28,8 @@ function AddStolenFoodFromImprovement(iPlotX, iPlotY, iOwner, iOldImprovement, i
 			local bBreak
 			dprint("Looping through " ..pPlot:GetNumUnits().. " units.")
 			local pUnit = pPlot:GetUnit(i)
-			--[port] precedence: the Magical Girl exclusion only bound to the naval branch
-			if (pUnit:GetUnitCombatType() == iMelee or pUnit:GetUnitCombatType() == iGun or pUnit:GetUnitCombatType() == iMounted or pUnit:GetUnitCombatType() == iNavalMelee) and pUnit:GetUnitClassType() ~= iMGClass then
+			--[port] Phase 4: only a Chain Lancer steals Food (was any Melee, Gunpowder, Mounted or Naval Melee unit).
+			if IsStolenFoodUnit(pUnit) then
 				dprint("Checking a " ..pUnit:GetName().. ".")
 				local iUnitOwner = pUnit:GetOwner()
 				for k, v in pairs(PMMM.StolenFoodPlots) do
@@ -83,6 +83,8 @@ function OnKyoukoCustomMission1Possible(iPlayer, iUnit, iMission, iData1, iData2
 		if MapModData.gPMMMTraits[iPlayer].MaxStolenFood > 0 then
 			local pPlayer = Players[iPlayer]
 			local pUnit = pPlayer:GetUnitByID(iUnit)
+			--[port] Phase 4: the two Stolen Food missions belong to the Chain Lancer only.
+			if not IsStolenFoodUnit(pUnit) then return false end
 			local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
 			if PMMM.StolenFood[iSpecialID] then
 				if PMMM.StolenFood[iSpecialID] > 0 and iMission == iMissionType1 then
@@ -105,11 +107,13 @@ function OnKyoukoCustomMission1Start(iPlayer, iUnit, iMission, iData1, iData2, i
 		if MapModData.gPMMMTraits[iPlayer].MaxStolenFood > 0 then
 			local pPlayer = Players[iPlayer]
 			local pUnit = pPlayer:GetUnitByID(iUnit)
+			--[port] Phase 4: the two Stolen Food missions belong to the Chain Lancer only.
+			if not IsStolenFoodUnit(pUnit) then return 0 end
 			local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
 			if PMMM.StolenFood[iSpecialID] then
 				if PMMM.StolenFood[iSpecialID] > 0 and iMission == iMissionType1 then
 					if pUnit:GetPlot():GetPlotCity() then
-						pCity = pUnit:GetPlot():GetPlotCity()
+						local pCity = pUnit:GetPlot():GetPlotCity()
 						pUnit:AddMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_GIVE_FOOD", pUnit:GetName(), pCity:GetName(), PMMM.StolenFood[iSpecialID]), iPlayer)
 						pCity:ChangeFood(PMMM.StolenFood[iSpecialID])
 						PMMM.StolenFood[iSpecialID] = 0
@@ -147,6 +151,8 @@ function AddStolenFoodFromSacking(iPlayer, iUnit)
 		dprint("A trade route was pillaged by a Civ which gets Stolen Food from doing so.")
 		local pPlayer = Players[iPlayer]
 		local pUnit = pPlayer:GetUnitByID(iUnit)
+		--[port] Phase 4: only a Chain Lancer steals Food from a plundered Trade Route.
+		if not IsStolenFoodUnit(pUnit) then return end
 		local iCurFood;
 		local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
 		if PMMM.StolenFood[iSpecialID] then
@@ -164,31 +170,37 @@ end
 function AIStolenFoodCheck(iPlayer)
 	local pPlayer = Players[iPlayer]
 	for pUnit in pPlayer:Units() do
-		local iUnit = pUnit:GetID()
-		local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
-		if PMMM.StolenFood[iSpecialID] then
-			--Use it only if the unit is at half health or lower. This will be prioritized over dropping the food in the City.
-			if pUnit:GetDamage() >= 50 then
-				local iCurDamage = pUnit:GetDamage()
-				local iMaxHeal = math.floor(PMMM.StolenFood[iSpecialID] / 2)
-				local iActualHeal = math.min(iCurDamage, iMaxHeal)
-				local iRemovedFood = iActualHeal * 2
-				PMMM.StolenFood[iSpecialID] = math.max(PMMM.StolenFood[iSpecialID] - iRemovedFood, 0)
-				pUnit:ChangeDamage(-1 * iActualHeal)
-				pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
-			--If unit is above half health and in a city, dump the food in it
-			elseif pUnit:GetPlot():GetPlotCity() then
-				pCity = pUnit:GetPlot():GetPlotCity()
-				pCity:ChangeFood(PMMM.StolenFood[iSpecialID])
-				PMMM.StolenFood[iSpecialID] = 0
-				pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
+		--[port] Phase 4: Stolen Food and the forced pillage are Chain Lancer behaviour only; every other unit is left
+		--to the normal AI (the old override popped the missions of any damaged Kyouko unit that could pillage).
+		if IsStolenFoodUnit(pUnit) then
+			local iSpecialID = GetUnitSpecialID(iPlayer, pUnit:GetID())
+			local iFood = PMMM.StolenFood[iSpecialID] or 0
+			--[port] Phase 4: both uses now need Food in the bag; an empty entry used to cost the unit a move every turn.
+			if iFood > 0 then
+				--Use it only if the unit is at half health or lower. This will be prioritized over dropping the food in the City.
+				if pUnit:GetDamage() >= 50 and iFood > 1 then
+					local iCurDamage = pUnit:GetDamage()
+					local iMaxHeal = math.floor(iFood / 2)
+					local iActualHeal = math.min(iCurDamage, iMaxHeal)
+					local iRemovedFood = iActualHeal * 2
+					PMMM.StolenFood[iSpecialID] = math.max(iFood - iRemovedFood, 0)
+					pUnit:ChangeDamage(-1 * iActualHeal)
+					pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
+				--If unit is above half health and in one of its own cities, dump the food in it
+				elseif pUnit:GetPlot():GetPlotCity() and pUnit:GetPlot():GetPlotCity():GetOwner() == iPlayer then
+					local pCity = pUnit:GetPlot():GetPlotCity()
+					pCity:ChangeFood(iFood)
+					PMMM.StolenFood[iSpecialID] = 0
+					pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
+				end
 			end
-		end
 
-		--v19: Force Kyouko's AI to pillage if it has sustained at least 25 damage
-		if pPlayer:GetCivilizationType() == GameInfoTypes.CIVILIZATION_KYOUKO and pUnit:CanStartMission(GameInfoTypes.MISSION_PILLAGE) and pUnit:GetDamage() >= 25 then
-			pUnit:PopMission()
-			pUnit:PushMission(GameInfoTypes.MISSION_PILLAGE)
+			--v19: Force Kyouko's AI to pillage if it has sustained at least 25 damage
+			--[port] Phase 4: Chain Lancers only.
+			if pUnit:CanStartMission(GameInfoTypes.MISSION_PILLAGE) and pUnit:GetDamage() >= 25 then
+				pUnit:PopMission()
+				pUnit:PushMission(GameInfoTypes.MISSION_PILLAGE)
+			end
 		end
 	end
 end
@@ -221,3 +233,87 @@ function OnDoTurnStolenFoodPillageUpkeep(iPlayer)
 		end
 	end
 end
+
+
+--------------------------------------------------------------
+--[port] Phase 4: "I Live Only For Myself", the Lua halves.
+-- Data half: SQL/Phase4/Kyouko.sql blocks 2, 7 and 9. Both parts key on the trait, not the civilization, so the
+-- rules follow TRAIT_GROWTH_SPEED_FROM_RELIGION wherever it is attached.
+--------------------------------------------------------------
+local sKyoukoTrait = "TRAIT_GROWTH_SPEED_FROM_RELIGION"
+local iKyoukoLuxuryPolicy = GameInfoTypes.POLICY_PMMM_KYOUKO_LUXURIES
+local iKyoukoTradedLuxuryDummy = GameInfoTypes.BUILDING_PMMM_KYOUKO_TRADED_LUXURY
+--The policy's bonus is read from its row so the cancellation below cannot drift from the data.
+local iKyoukoPolicyBonus = (GameInfo.Policies.POLICY_PMMM_KYOUKO_LUXURIES and GameInfo.Policies.POLICY_PMMM_KYOUKO_LUXURIES.ExtraHappinessPerLuxury) or 0
+--The ruling itself: a luxury she only has through a trade deal gives 1 less Happiness than usual.
+local iKyoukoTradedLuxuryPenalty = 1
+
+local function IsKyoukoTraitPlayer(iPlayer)
+	local tTrait = MapModData.gPMMMTraits and MapModData.gPMMMTraits[iPlayer]
+	return tTrait ~= nil and tTrait.Type == sKyoukoTrait
+end
+
+--[port] Phase 4: she can never found a religion. CvUnit::CanFoundReligion asks this event (TestAll) before any
+--Great Prophet may found one, for the human UI and the AI alike, so refusing here blocks every founding path.
+--Her free pantheon (Traits.StartsWithPantheon) is untouched: pantheons are not founded through this check.
+function KyoukoCanFoundReligion(iPlayer, iCity)
+	if IsKyoukoTraitPlayer(iPlayer) then
+		return false
+	end
+	return true
+end
+GameEvents.PlayerCanFoundReligion.Add(KyoukoCanFoundReligion)
+
+--Put exactly iCount copies of a stacking dummy in the capital, and none anywhere else (the capital can move).
+local function SetKyoukoCapitalDummy(pPlayer, iBuilding, iCount)
+	local pCapital = pPlayer:GetCapitalCity()
+	local iCapitalID = pCapital and pCapital:GetID() or -1
+	for pCity in pPlayer:Cities() do
+		if pCity:GetID() ~= iCapitalID and pCity:GetNumRealBuilding(iBuilding) > 0 then
+			pCity:SetNumRealBuilding(iBuilding, 0)
+		end
+	end
+	if pCapital and pCapital:GetNumRealBuilding(iBuilding) ~= iCount then
+		pCapital:SetNumRealBuilding(iBuilding, iCount)
+	end
+end
+
+--How many luxuries does she hold only through deals with other civilizations?
+--  deal copies = GetResourceImport (deals + city-states + siphoned) minus GetResourceFromMinors.
+--  "only through trade" = the luxury currently gives Happiness, and would not without those deal copies.
+--Reading (spec section 12): "traded" means imported through deals; exports are unaffected and city-state
+--luxuries count as her own. Siphoned copies cannot be separated from Lua and count as deal copies; no civ in
+--this mod siphons resources.
+local function CountKyoukoDealOnlyLuxuries(pPlayer)
+	local iCount = 0
+	for pResource in GameInfo.Resources() do
+		if pResource.ResourceUsage == 2 then --RESOURCEUSAGE_LUXURY
+			local iResource = pResource.ID
+			local iDeal = pPlayer:GetResourceImport(iResource) - pPlayer:GetResourceFromMinors(iResource)
+			if iDeal > 0 and pPlayer:GetHappinessFromLuxury(iResource) > 0 then
+				if pPlayer:GetNumResourceAvailable(iResource, true) - iDeal <= 0 then
+					iCount = iCount + 1
+				end
+			end
+		end
+	end
+	return iCount
+end
+
+--[port] Phase 4: once per turn. Grants the hidden +2-per-luxury policy (free, first turn, idempotent) and
+--recounts deal-only luxuries into the capital dummy: 3 copies each, -2 to cancel the policy's bonus on that
+--luxury (the DLL adds ExtraHappinessPerLuxury to imports too) and -1 for the penalty. Net: owned 4+2 = 6,
+--deal-only 4+2-3 = 3.
+function KyoukoLuxuryDoTurn(iPlayer)
+	if not IsKyoukoTraitPlayer(iPlayer) then return end
+	local pPlayer = Players[iPlayer]
+	if not pPlayer or not pPlayer:IsAlive() then return end
+	if iKyoukoLuxuryPolicy and not pPlayer:HasPolicy(iKyoukoLuxuryPolicy) then
+		pPlayer:SetHasPolicy(iKyoukoLuxuryPolicy, true, true)
+	end
+	if iKyoukoTradedLuxuryDummy then
+		local iCopies = CountKyoukoDealOnlyLuxuries(pPlayer) * (iKyoukoPolicyBonus + iKyoukoTradedLuxuryPenalty)
+		SetKyoukoCapitalDummy(pPlayer, iKyoukoTradedLuxuryDummy, iCopies)
+	end
+end
+GameEvents.PlayerDoTurn.Add(KyoukoLuxuryDoTurn)

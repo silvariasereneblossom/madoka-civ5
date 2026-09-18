@@ -43,7 +43,7 @@ DELETE FROM Missions WHERE Type = 'MISSION_PMMM_TIRO_FINALE_MG';
 INSERT INTO Missions
 			(Type, Description, Help, DisabledHelp, EntityEventType, Time, OrderPriority, Visible, IconIndex, IconAtlas,
 			PMMMMissionRange, PMMMTargetType)
-SELECT		('MISSION_PMMM_TIRO_FINALE_MG'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_HELP'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE_DISABLED'), EntityEventType, Time, 200, 1, 17, ('UNIT_ACTION_ATLAS'),
+SELECT		('MISSION_PMMM_TIRO_FINALE_MG'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_HELP'), ('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_DISABLED'), EntityEventType, Time, 200, 1, 17, ('UNIT_ACTION_ATLAS'),
 			2, ('ENEMY')
 FROM Missions WHERE Type = 'MISSION_RANGE_ATTACK';
 
@@ -68,6 +68,7 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_PROMOTION_PMMM_PLUVIA_VULNERABLE', 'Pierced by Hope'),
 	('TXT_KEY_PROMOTION_PMMM_PLUVIA_VULNERABLE_HELP', 'Takes 15% more damage from all sources until the end of the turn.'),
 	('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_HELP', 'Fires her finishing shot. The target takes damage equal to an attack at 150% of her [ICON_STRENGTH] Combat Strength, and every enemy within one tile of it takes half as much.[NEWLINE][NEWLINE]She fights at -50% [ICON_STRENGTH] Defense until her next turn. Range 2. Cooldown 4 turns.'),
+	('TXT_KEY_MISSION_PMMM_TIRO_FINALE_MG_DISABLED', 'Tiro Finale is recovering, or there is no enemy within 2 tiles.'),
 	('TXT_KEY_PROMOTION_PMMM_TIRO_FINALE_RECOIL', 'Tiro Finale Recoil'),
 	('TXT_KEY_PROMOTION_PMMM_TIRO_FINALE_RECOIL_HELP', '-50% [ICON_STRENGTH] Defense until the start of her next turn, after firing Tiro Finale.');
 
