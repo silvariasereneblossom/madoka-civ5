@@ -217,6 +217,11 @@ with the new multipliers and `DefenseMod -50` for one turn [Lua + DB].
 **Notes.** Please confirm the Teahouse direction. A free Cannon-class city hit every turn from every Musketeer is a
 strong Renaissance siege package; consider once per 2 turns or -33% of a Cannon.
 
+**Added 2026-09-17.** Cities past the fourth add extra unhappiness (DLL trait columns for threshold and
+penalty). Her yields concentrate in the capital, and the cap is what keeps that concentration honest; raise the
+per-ally yields if the cap proves too harsh in play. The Teahouse gold also multiplies per city, so the cap pushes
+that bonus toward the capital as well. Watch the two together.
+
 ---
 
 ## 8. Nagisa Momoe (Land des Kaeses)
@@ -274,6 +279,8 @@ start-location reveal and the extra leader girl.
 | 4d | Devil Homura, DLL and AI | **Ruled:** the engine treats her as never unhappy, so AI planning sees it. AI is very aggressive: a civ bordering her should face a high chance of a declaration of war. Leader personality (Boldness, war approach bias, low friendship willingness) plus a DLL-side bias toward declaring on neighbours. |
 | 4e | Devil Homura, Golden Ages | **Ruled, hardened:** she can never have a Golden Age from any source, including Great Artists, wonders, policies and surplus happiness. DLL trait column; tooltip states it. |
 | 4f | Devil Homura, ideology | **Ruled:** immune to ideology pressure, so no public-opinion unhappiness and no forced revolutions. DLL trait column (CP 5.4 has no data column for this). |
+| 5a | Mami, city-state yields | **Ruled:** +1 Production per city-state ally, +1 Science per Friend. Both are multiplied by count and by era index in the DLL (`CvCity.cpp:29229`) and land in the capital only. At Industrial with 3 allies and 6 friends that is +12 Production and +24 Science. |
+| 5b | Mami, city soft cap | **Ruled in principle:** she is Venice-shaped. Cities past the fourth carry extra unhappiness, steep enough that a fifth city is a deliberate sacrifice. A DLL trait column pair (threshold, penalty) beside the Ai Yo columns keeps both numbers as data. **Arithmetic to confirm:** the example "6 cities is +16" is quadratic, `4 x (n-4)^2`; the linear reading `4 x (n-4)` gives +8 at six cities. Linear reaches +16 at eight cities, quadratic +64. |
 | 5 | Time Stop | **Mission on Homura's leader girl.** The free turn **includes** Great Person points, tourism and healing, not only city yields and builds. |
 | 6 | Mami, Teahouse | Mami earns +2 Gold and +10% Gold per Declaration of Friendship partner or protected city-state. |
 | 7 | Nagisa, Farms | **Kept at +1 Production on every Farm.** She was the weakest civ and her UU arrives very late, so the strong early line is deliberate. |
