@@ -226,7 +226,8 @@ function FindValidTargets(pPlayer, pUnit, sTargetType)
 						if pTeam:IsAtWar(Players[pEnemyUnit:GetOwner()]:GetTeam()) and pEnemyUnit:GetUnitClassType() == GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL then
 							local iMGKey = GetMagicalGirlKey(pEnemyUnit:GetOwner(), pEnemyUnit:GetID())
 							if iMGKey then
-								if MagicalGirls[iMGKey].SoulGemState == GameInfoTypes.PMMM_SGSTATE_CRITICAL then
+								--[port] Phase 4: leader girls can never be led away, so they are never highlighted
+								if MagicalGirls[iMGKey].SoulGemState == GameInfoTypes.PMMM_SGSTATE_CRITICAL and not MagicalGirls[iMGKey].IsLeader then
 									tTable[k] = true
 									break
 								end

@@ -349,17 +349,81 @@ end
 
 
 --Ultimate Madoka Law of Cycles
-function DoLawOfCyclesTakeaway(iMGKey, iNewPlayer)
+--[port] Phase 4: the promotions a girl "applied" herself, counted when the Cycle takes her. Design section 2 and
+--ruling 8: she returns with 100 XP for each of them. Applied means earned or chosen: a promotion from the pool her
+--unit can pick at a level-up (UnitPromotions_UnitCombats rows for the Magical Girl's PromotionClass that can be
+--chosen). Everything she was born with or carries as a state stays out: her unit's and her Great Person's free
+--promotions, the leader promotion, Mood and Soul Gem state promotions, and the framework's timed promotions.
+local tCyclePromotionPool
+
+local function GetCyclePromotionPool()
+	if tCyclePromotionPool then return tCyclePromotionPool end
+	tCyclePromotionPool = {}
+	local pMGUnit = GameInfo.Units.UNIT_PMMM_MAGICAL_GIRL
+	local sClass = (pMGUnit and pMGUnit.PromotionClass) or "UNITCOMBAT_MAGICALGIRL"
+	for row in GameInfo.UnitPromotions_UnitCombats() do
+		if row.UnitCombatType == sClass then
+			local pPromo = GameInfo.UnitPromotions[row.PromotionType]
+			if pPromo and not (pPromo.CannotBeChosen == 1 or pPromo.CannotBeChosen == true) then
+				tCyclePromotionPool[pPromo.ID] = true
+			end
+		end
+	end
+	return tCyclePromotionPool
+end
+
+local function CountCycleAppliedPromotions(iMGKey, pUnit)
+	if not pUnit then return 0 end
+	local tPool = GetCyclePromotionPool()
+	local tExclude = {}
+	--Free promotions of her own unit type and of the Great Person she came from.
+	local sOriginClass = MagicalGirls[iMGKey].Class
+	local pOriginClass = sOriginClass and GameInfo.UnitClasses[sOriginClass]
+	for row in GameInfo.Unit_FreePromotions() do
+		local pFreeUnit = GameInfo.Units[row.UnitType]
+		if pFreeUnit and (pFreeUnit.ID == pUnit:GetUnitType() or (pOriginClass and pFreeUnit.Class == pOriginClass.Type)) then
+			local pPromo = GameInfo.UnitPromotions[row.PromotionType]
+			if pPromo then tExclude[pPromo.ID] = true end
+		end
+	end
+	--Timed promotions the ability framework is holding on her.
+	local tTimed = PMMM.TimedPromotions and PMMM.TimedPromotions[pUnit:GetOwner()]
+	if tTimed then
+		for _, v in ipairs(tTimed) do
+			if v.UnitID == pUnit:GetID() then tExclude[v.Promotion] = true end
+		end
+	end
+	local iCount = 0
+	for iPromo in pairs(tPool) do
+		if not tExclude[iPromo] and pUnit:IsHasPromotion(iPromo) then
+			iCount = iCount + 1
+		end
+	end
+	return iCount
+end
+
+--[port] Phase 4: iTurns is how long she stays in the Cycle (default MapModData.gPMMMLawOfCyclesTurns, 10 at Standard);
+--the Herald of Madoka's Lead Away passes its own shorter stay. bLedAway marks a girl who is owed a free promotion.
+function DoLawOfCyclesTakeaway(iMGKey, iNewPlayer, iTurns, bLedAway)
 	local pPlayer, pUnit = RetrieveMGPointers(iMGKey)
 	local iX = pUnit:GetX()
 	local iY = pUnit:GetY()
 	local iMG = GameInfoTypes.UNIT_PMMM_MAGICAL_GIRL
+	--[port] Phase 4: count what she earned before the list is wiped; ReturnFromLawOfCycles pays it back as XP.
+	MagicalGirls[iMGKey].CycleAppliedPromotions = CountCycleAppliedPromotions(iMGKey, pUnit)
+	MagicalGirls[iMGKey].CycleTurns = iTurns or MapModData.gPMMMLawOfCyclesTurns
+	if bLedAway then
+		MagicalGirls[iMGKey].CycleLedAway = true
+	else
+		MagicalGirls[iMGKey].CycleLedAway = nil
+	end
+	local iCycleTurns = MagicalGirls[iMGKey].CycleTurns
 	MagicalGirls[iMGKey].Status = GameInfoTypes.MGACTIONSTATE_CYCLING
 	MagicalGirls[iMGKey].CycleStartTurn = Game:GetGameTurn()
 	if MagicalGirls[iMGKey].SummonedWitch then
 		local _, iUnit = ReturnPlayerAndUnitIDsFromSpecialID(MagicalGirls[iMGKey].SummonedWitch)
 		local pWitchUnit = Players[_]:GetUnitByID(iUnit)
-		pWitchUnit:Kill(true)
+		if pWitchUnit then pWitchUnit:Kill(true) end	--[port] Phase 4: the Witch may already be gone
 		MagicalGirls[iMGKey].SummonedWitch = nil
 	end
 	MagicalGirls[iMGKey].SummonedWitchCooldown = nil
@@ -370,7 +434,7 @@ function DoLawOfCyclesTakeaway(iMGKey, iNewPlayer)
 	if iNewPlayer then
 		local iOldPlayer = MagicalGirls[iMGKey].Owner
 		MagicalGirls[iMGKey].Owner = iNewPlayer
-		sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TOOK_ENEMY_MG_LOC_TEXT", MagicalGirls[iMGKey].Name, MapModData.gPMMMLawOfCyclesTurns)
+		sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TOOK_ENEMY_MG_LOC_TEXT", MagicalGirls[iMGKey].Name, iCycleTurns)
 		sTitle = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TOOK_ENEMY_MG_LOC_TITLE")
 		iNotiType = NotificationTypes.NOTIFICATION_GENERIC
 
@@ -379,7 +443,7 @@ function DoLawOfCyclesTakeaway(iMGKey, iNewPlayer)
 		pPlayer:AddNotification(NotificationTypes.NOTIFICATION_UNIT_DIED, sTheirText, sTheirTitle, iX, iY, iMG)
 		Players[iNewPlayer]:AddNotification(iNotiType, sText, sTitle, iX, iY, iMG)
 	else
-		sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TAKEN_BY_LOC_TEXT", MagicalGirls[iMGKey].Name, MapModData.gPMMMLawOfCyclesTurns)
+		sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TAKEN_BY_LOC_TEXT", MagicalGirls[iMGKey].Name, iCycleTurns)
 		sTitle = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_TAKEN_BY_LOC_TITLE")
 		iNotiType = NotificationTypes.NOTIFICATION_UNIT_DIED
 		pPlayer:AddNotification(iNotiType, sText, sTitle, iX, iY, iMG)
@@ -389,27 +453,84 @@ function DoLawOfCyclesTakeaway(iMGKey, iNewPlayer)
 end
 
 
+--[port] Phase 4: the XP the engine asks for at a given level, the same sum CvUnit::experienceNeeded makes
+--(EXPERIENCE_PER_LEVEL x (1+2+..+L), the player's level modifier rounded up, then the game speed's ExperiencePercent).
+local function CycleExperienceNeeded(pPlayer, iLevel)
+	local iNeeded = GameDefines.EXPERIENCE_PER_LEVEL * iLevel * (iLevel + 1) / 2
+	local iModifier = pPlayer:GetLevelExperienceModifier()
+	if iModifier ~= 0 then
+		iNeeded = math.ceil(iNeeded * (100 + iModifier) / 100)
+	end
+	local pSpeed = GameInfo.GameSpeeds[Game.GetGameSpeedType()]
+	local iSpeedPercent = (pSpeed and pSpeed.ExperiencePercent) or 100
+	return math.floor(iNeeded * iSpeedPercent / 100)
+end
+
+--[port] Phase 4: returns true when she came back, false when there is nowhere to put her yet (no capital); she then
+--stays in the Cycle and CheckLOCMagicalGirls tries again next turn.
 function ReturnFromLawOfCycles(iMGKey)
 	local pPlayer = (RetrieveMGPointers(iMGKey))
 	local pCapital = pPlayer:GetCapitalCity()
+	if not pCapital then return false end
 	local iX = pCapital:GetX()
 	local iY = pCapital:GetY()
 	local iMG = GameInfoTypes.UNIT_PMMM_MAGICAL_GIRL
+	--[port] Phase 4: the respawn in OnCreatedMagicalGirl copies Level, XP, HP and Promotions from the table while
+	--InitUnit is still running, so the fresh values have to be in place before it, not after.
+	MagicalGirls[iMGKey].SoulGem = 100
+	MagicalGirls[iMGKey].Level = 1
+	MagicalGirls[iMGKey].XP = 0
+	MagicalGirls[iMGKey].HP = GameDefines.MAX_HIT_POINTS
+	MagicalGirls[iMGKey].Promotions = {}
+	MagicalGirls[iMGKey].Loyalty = 100
 	tMagicalGirlSpawnTable["ID"] = iMGKey
 	local eMagicalGirl = pPlayer:InitUnit(iMG, iX, iY, UNITAI_ATTACK)
 	eMagicalGirl:SetName(MagicalGirls[iMGKey].Name)
 	SetMagicalGirlStrength(pPlayer:GetID(), eMagicalGirl:GetID())
 	MagicalGirls[iMGKey].UnitID = eMagicalGirl:GetID()
-	MagicalGirls[iMGKey].SoulGem = 100
-	MagicalGirls[iMGKey].Level = 1
-	MagicalGirls[iMGKey].XP = 0
-	MagicalGirls[iMGKey].HP = 100
-	MagicalGirls[iMGKey].Loyalty = 100
 	MagicalGirls[iMGKey].Status = GameInfoTypes.MGACTIONSTATE_ACTIVE
+
+	--[port] Phase 4 (design section 2, ruling 8): 100 XP for every promotion she had applied, uncapped. The figure is
+	--the Standard-speed one, scaled by the game speed's ExperiencePercent as the engine scales non-combat XP.
+	local pSpeed = GameInfo.GameSpeeds[Game.GetGameSpeedType()]
+	local iSpeedPercent = (pSpeed and pSpeed.ExperiencePercent) or 100
+	local iApplied = MagicalGirls[iMGKey].CycleAppliedPromotions or 0
+	local iXP = math.floor(100 * iApplied * iSpeedPercent / 100)
+	local iBaseXP = iXP
+	local bFreePromotion = MagicalGirls[iMGKey].CycleLedAway
+	if bFreePromotion then
+		--Lead Away's bonus promotion, of the player's choice, on top of what the XP buys. The bare promotion-ready
+		--flag cannot carry it: she is reborn inside PlayerDoTurn, CvPlayer::doTurnUnits runs straight after it, and
+		--CvUnit::doTurn -> testPromotionReady clears any flag her XP does not cover (CvPlayer.cpp:10571-10580,
+		--CvUnit.cpp:3160). So her XP is raised to exactly the threshold of one level beyond what it already buys.
+		local iLevel = 1
+		while CycleExperienceNeeded(pPlayer, iLevel) <= iXP do
+			iLevel = iLevel + 1
+		end
+		iXP = CycleExperienceNeeded(pPlayer, iLevel)
+	end
+	eMagicalGirl:SetExperience(iXP)
+	MagicalGirls[iMGKey].XP = iXP
+	MagicalGirls[iMGKey].CycleLockedXP = iXP
+	--She earns nothing more: ExperiencePercent -100 on this promotion zeroes combat XP (CvUnit.cpp:22002-22012), and
+	--the ability file clamps her XP back to CycleLockedXP each turn against any other source.
+	eMagicalGirl:SetHasPromotion(GameInfoTypes.PROMOTION_PMMM_CYCLE_RETURNED, true)
+	if iXP > 0 and iXP >= eMagicalGirl:ExperienceNeeded() then
+		eMagicalGirl:SetPromotionReady(true)
+	end
+	MagicalGirls[iMGKey].CycleAppliedPromotions = nil
+	MagicalGirls[iMGKey].CycleLedAway = nil
+	MagicalGirls[iMGKey].CycleTurns = nil
+
 	SetSoulGemState(iMGKey)
-	sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_TEXT", MagicalGirls[iMGKey].Name)
-	sTitle = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_TITLE")
+	local sText = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_TEXT", MagicalGirls[iMGKey].Name)
+	sText = sText .. "[NEWLINE][NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_XP", iBaseXP, iApplied)
+	if bFreePromotion then
+		sText = sText .. " " .. Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_FREE_PROMOTION")
+	end
+	local sTitle = Locale.ConvertTextKey("TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_TITLE")
 	pPlayer:AddNotification(NotificationTypes.NOTIFICATION_GREAT_PERSON_ACTIVE_PLAYER, sText, sTitle, iX, iY, iMG)
+	return true
 end
 
 

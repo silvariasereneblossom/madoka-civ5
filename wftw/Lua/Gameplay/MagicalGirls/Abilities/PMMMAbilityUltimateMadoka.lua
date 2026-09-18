@@ -93,3 +93,98 @@ RegisterLeaderAbility("MISSION_PMMM_NOTHING_TO_DESPAIR", {
 		return iScore
 	end,
 })
+
+
+--------------------------------------------------------------
+-- [port] Phase 4: the rest of Ultimate Madoka's kit (design section 2, rulings 8 and 9).
+--
+--  * Summon Witch Form: any girl reborn from the Law of Cycles (PROMOTION_PMMM_CYCLE_RETURNED, granted in
+--    ReturnFromLawOfCycles) can take on or put away her Witch Form, +20% Combat Strength, as often as she likes.
+--    No target, no cost, and it does not end her turn. Not a leader ability, so it has its own mission hooks.
+--  * The returned girl's XP lock: the promotion's ExperiencePercent -100 zeroes combat XP; this clamps her back to
+--    the XP she returned with against anything else that adds XP (area-effect XP promotions, handicap bonuses, Lua).
+--  * Expending a Great Person grants Golden Age points: 50 per era (Ancient 50 ... Information 400), scaled by the
+--    game speed's GoldenAgePercent (Quick 40, Epic 62, Marathon 100 in the Ancient Era).
+--  * The Herald of Madoka's AI rule, which lives in UniqueUnits/PMMMHeraldOfMadoka.lua.
+--------------------------------------------------------------
+
+local iWitchFormMission = GameInfoTypes.MISSION_PMMM_SUMMON_WITCH_FORM
+local iWitchFormPromotion = GameInfoTypes.PROMOTION_PMMM_WITCH_FORM
+local iCycleReturnedPromotion = GameInfoTypes.PROMOTION_PMMM_CYCLE_RETURNED
+local sUltimateMadokaTrait = "TRAIT_NO_WITCHES"
+local iGoldenAgePointsPerEra = 50
+
+local function IsReturnedGirl(pUnit)
+	return pUnit ~= nil and iCycleReturnedPromotion ~= nil
+		and pUnit:GetUnitClassType() == iMagicalGirlClass
+		and pUnit:IsHasPromotion(iCycleReturnedPromotion)
+end
+
+function UMadokaWitchFormMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn, iPlotX, iPlotY, bTestVisible)
+	if not iWitchFormMission or iMission ~= iWitchFormMission then return false end
+	local pPlayer = Players[iPlayer]
+	if not pPlayer then return false end
+	return IsReturnedGirl(pPlayer:GetUnitByID(iUnit))
+end
+
+function UMadokaWitchFormMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
+	if not iWitchFormMission or iMission ~= iWitchFormMission then return 0 end
+	local pUnit = Players[iPlayer]:GetUnitByID(iUnit)
+	if IsReturnedGirl(pUnit) then
+		--A toggle: on if she is not in Witch Form, off if she is. Her moves are left alone.
+		pUnit:SetHasPromotion(iWitchFormPromotion, not pUnit:IsHasPromotion(iWitchFormPromotion))
+	end
+	return 0
+end
+
+function UMadokaWitchFormMissionCompleted(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
+	return iWitchFormMission ~= nil and iMission == iWitchFormMission
+end
+
+GameEvents.CustomMissionPossible.Add(UMadokaWitchFormMissionPossible)
+GameEvents.CustomMissionStart.Add(UMadokaWitchFormMissionStart)
+GameEvents.CustomMissionCompleted.Add(UMadokaWitchFormMissionCompleted)
+
+--Once per turn: hold every returned girl at the XP she came back with, and let the AI use Witch Form (it has no
+--drawback, so an AI girl simply keeps it on) and its Heralds.
+function UMadokaCycleDoTurn(iPlayer)
+	local pPlayer = Players[iPlayer]
+	if not pPlayer or not pPlayer:IsAlive() or iPlayer >= GameDefines.MAX_MAJOR_CIVS then return end
+	local bAI = not pPlayer:IsHuman()
+	for pUnit in pPlayer:Units() do
+		if IsReturnedGirl(pUnit) then
+			local iMGKey = GetMagicalGirlKey(iPlayer, pUnit:GetID())
+			local iLocked = iMGKey and MagicalGirls[iMGKey].CycleLockedXP
+			if iLocked and pUnit:GetExperience() > iLocked then
+				pUnit:SetExperience(iLocked)
+			end
+			if bAI and iWitchFormPromotion and not pUnit:IsHasPromotion(iWitchFormPromotion) then
+				pUnit:SetHasPromotion(iWitchFormPromotion, true)
+			end
+		end
+	end
+	if bAI and HeraldAILeadAway then
+		HeraldAILeadAway(iPlayer)
+	end
+end
+
+GameEvents.PlayerDoTurn.Add(UMadokaCycleDoTurn)
+
+--Ruling 9: every Great Person she expends is also a push toward a Golden Age.
+function UMadokaGreatPersonExpended(iPlayer, iUnit, iUnitType, iX, iY)
+	local tTrait = MapModData.gPMMMTraits and MapModData.gPMMMTraits[iPlayer]
+	if not tTrait or tTrait.Type ~= sUltimateMadokaTrait then return end
+	local pPlayer = Players[iPlayer]
+	if not pPlayer or not pPlayer:IsAlive() then return end
+	local pSpeed = GameInfo.GameSpeeds[Game.GetGameSpeedType()]
+	local iSpeedPercent = (pSpeed and pSpeed.GoldenAgePercent) or 100
+	local iPoints = math.floor(iGoldenAgePointsPerEra * (pPlayer:GetCurrentEra() + 1) * iSpeedPercent / 100)
+	if iPoints > 0 then
+		pPlayer:ChangeGoldenAgeProgressMeter(iPoints)
+		if iPlayer == Game:GetActivePlayer() then
+			Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_UMADOKA_GP_GOLDEN_AGE", iPoints))
+		end
+	end
+end
+
+GameEvents.GreatPersonExpended.Add(UMadokaGreatPersonExpended)
