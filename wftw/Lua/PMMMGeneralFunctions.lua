@@ -339,6 +339,10 @@ end
 function DoConsumeGriefSeed(iMGKey, iPlayer)
 	PMMM.GriefSeeds[iPlayer] = math.max(0, PMMM.GriefSeeds[iPlayer] - 1)
 	DoChangeCorruption(-MapModData.gPMMMGriefSeedRecoverAmount, iMGKey)
+	--[port] Phase 4: listeners (Homura's Time Stop cooldown) react to a seed being used.
+	if tPMMMGriefSeedUsedHooks then
+		for _, fHook in ipairs(tPMMMGriefSeedUsedHooks) do fHook(iPlayer, iMGKey) end
+	end
 	local pPlayer, pUnit = RetrieveMGPointers(iMGKey)
 	pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_USED_GRIEF_SEED", MagicalGirls[iMGKey].Name, MapModData.gPMMMGriefSeedRecoverAmount))
 end

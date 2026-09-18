@@ -28,6 +28,10 @@ local iMagicalGirlClass = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
 --Registry: [mission ID] = definition. Definitions are added by the per-civ scripts.
 tPMMMLeaderAbilities = tPMMMLeaderAbilities or {}
 
+--Hooks other scripts can join. Each entry is a function; see the call sites for arguments.
+--  tPMMMGriefSeedUsedHooks: (iPlayer, iMGKey), called from DoConsumeGriefSeed in PMMMGeneralFunctions.lua
+tPMMMGriefSeedUsedHooks = tPMMMGriefSeedUsedHooks or {}
+
 -- Definition fields:
 --   Cooldown       (int)      turns before it may be used again, scaled by game speed
 --   SoulGemCost    (int)      percent of Soul Gem spent on use (optional)
@@ -36,6 +40,7 @@ tPMMMLeaderAbilities = tPMMMLeaderAbilities or {}
 --   CanUseHere     (function) (pPlayer, pUnit, pPlot, iMGKey) -> bool, extra validity test (optional)
 --   Execute        (function) (iPlayer, pUnit, pPlot, iMGKey) -> does the work
 --   AIScorePlot    (function) (pPlayer, pUnit, pPlot) -> number or nil; AI fires at the best-scoring plot
+--   TraitType      (string)   optional: also grant this ability to leader girls of the civ with this trait
 function RegisterLeaderAbility(sMission, tDef)
 	local pMission = GameInfo.Missions[sMission]
 	if not pMission then
@@ -219,7 +224,10 @@ function GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
 	if not tTrait then return nil end
 	local sOwn = tTrait.LeaderMGUniqueMission
 	local sExtra = tTrait.ExtraLeaderMGUniqueMission
-	if tDef.MissionType ~= sOwn and tDef.MissionType ~= sExtra then return nil end
+	--A civ may own more than one ability: the trait column names one, and a definition may also name
+	--its trait directly with TraitType (Homura has both Concentrated Missile Fire and Time Stop).
+	local bByTrait = tDef.TraitType ~= nil and tDef.TraitType == tTrait.Type
+	if tDef.MissionType ~= sOwn and tDef.MissionType ~= sExtra and not bByTrait then return nil end
 	return tDef, iMGKey
 end
 
