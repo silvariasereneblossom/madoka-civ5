@@ -369,3 +369,12 @@ Kyouko's luxury rule treats city-state luxuries as her own. All are commented wh
 | 6 | Mami | **Cannot annex, raze or puppet.** A city she captures becomes a new city-state of a random type, keeping the original city's name, at maximum influence with her. |
 | 7 | Nagisa | Leader ability **Magic Cake Dish**: adjacent friendly units heal 25% of their HP and gain +10% Combat Strength for 3 turns. |
 | 8 | Oriko and Kirika | Oriko: **Oracle Ray**, 5 random hits at 60% strength spread across the enemy units in an area around an enemy unit, 5-turn cooldown. Kirika: **Vampire Fang**, 150% against one enemy unit, -25% Combat Strength on it for 2 turns, and she heals half the damage dealt. |
+
+**Tabled 2026-09-18: ruling 6 (Mami cannot annex, raze or puppet; captures become city-states).** Not implemented. Notes
+for when it resumes:
+- The city must not change hands inside `GameEvents.CityCaptureComplete`: `CvPlayer::acquireCity` keeps using the
+  city after that hook (`CvPlayer.cpp` ~4349-4420), so transferring it there is a use-after-free crash.
+- A safe point is after `acquireCity` returns, e.g. the capturing unit's `UnitSetXY` (`CvUnit.cpp` 20739 then 21272).
+- CP's capture popup (`PuppetCityPopup.lua`) returns without showing if the active player no longer owns the city.
+- `Player:AcquireCity(city, bConquest, bGift)` and `ChangeMinorCivFriendshipWithMajor` are bound; influence cap is
+  `FRIENDSHIP_THRESHOLD_MAX` (120). A genuinely new city-state needs a free minor slot and is DLL research.
