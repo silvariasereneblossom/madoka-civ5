@@ -24,7 +24,7 @@ SDK_DIR = SDK_EXT / "Microsoft SDKs" / "Windows" / "v7.0"
 VC9_DIR = SDK_EXT / "Microsoft Visual Studio 9.0" / "Vc7"
 # 64-bit LLVM (winget). The toolchain version was not the cause of the 2026-09-18 startup crash; targeting
 # the VC9 runtime (-fms-compatibility-version, patch 8 below) was. A 32-bit LLVM runs out of memory linking.
-LLVM_BIN = Path(r"C:\Program Files\LLVMin")
+LLVM_BIN = Path(r"C:\Program Files\LLVM\bin")
 
 
 def write_commit_id(repo: Path) -> None:
