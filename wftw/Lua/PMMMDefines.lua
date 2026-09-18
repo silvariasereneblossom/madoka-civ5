@@ -49,6 +49,7 @@ PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}			--[por
 PMMM.StolenFoodPlotsLastSweptTurn = PMMM.StolenFoodPlotsLastSweptTurn or nil	--[port] Kyouko pillage-cooldown sweep runs once per game turn
 PMMM.MamiFriendDummiesCleared = PMMM.MamiFriendDummiesCleared or false			--[port] one-shot sweep of Teahouse friend dummies once no Mami civ is alive
 PMMM.TimedPromotions = PMMM.TimedPromotions or {}							--[port] Phase 4: promotions applied by Leader MG abilities that expire after N turns
+PMMM.HomuraThiefOfTimeTurns = PMMM.HomuraThiefOfTimeTurns or {}				--[port] Phase 4: turns each Thief of Time has spent in foreign land, per player and unit
 
 --v21: Are hidden witches spawning? Used to use the root of MapModData, but that was an oversight and is now properly in the gT
 --This clause is for previous versions' savegame compatibility
@@ -97,6 +98,7 @@ function RefreshAllPMMMDefines()
 	PMMM.DemonHomuraCreditedMGKills = PMMM.DemonHomuraCreditedMGKills or {}
 	PMMM.MamiFriendDummiesCleared = PMMM.MamiFriendDummiesCleared or false
 	PMMM.TimedPromotions = PMMM.TimedPromotions or {}
+	PMMM.HomuraThiefOfTimeTurns = PMMM.HomuraThiefOfTimeTurns or {}
 
 
 	--v21: Are hidden witches spawning? Used to use the root of MapModData, but that was an oversight and is now properly in the gT

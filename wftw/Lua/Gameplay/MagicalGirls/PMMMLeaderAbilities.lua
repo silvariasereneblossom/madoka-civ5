@@ -60,26 +60,37 @@ end
 -- Cooldowns
 --------------------------------------------------------------
 
---Cooldowns are stored per girl so a civilization with two leader girls tracks them separately.
-function GetLeaderAbilityCooldown(iMGKey)
+--Cooldowns are stored per girl and per ability, so a civilization with two leader girls tracks them
+--separately and a girl with two abilities (Homura) can use one while the other recovers.
+--Stored as MagicalGirls[key].AbilityCooldowns[missionID] = turns remaining.
+function GetLeaderAbilityCooldown(iMGKey, iMission)
 	if not iMGKey or not MagicalGirls[iMGKey] then return 0 end
-	return MagicalGirls[iMGKey].AbilityCooldown or 0
+	local t = MagicalGirls[iMGKey].AbilityCooldowns
+	if not t or not iMission then return 0 end
+	return t[iMission] or 0
 end
 
-function SetLeaderAbilityCooldown(iMGKey, iTurns)
-	if not iMGKey or not MagicalGirls[iMGKey] then return end
-	MagicalGirls[iMGKey].AbilityCooldown = math.max(iTurns, 0)
+function SetLeaderAbilityCooldown(iMGKey, iTurns, iMission)
+	if not iMGKey or not MagicalGirls[iMGKey] or not iMission then return end
+	MagicalGirls[iMGKey].AbilityCooldowns = MagicalGirls[iMGKey].AbilityCooldowns or {}
+	if iTurns > 0 then
+		MagicalGirls[iMGKey].AbilityCooldowns[iMission] = iTurns
+	else
+		MagicalGirls[iMGKey].AbilityCooldowns[iMission] = nil
+	end
 end
 
---Game speed scaling, the same rule the rest of the mod uses for turn counts.
+--Game speed scaling, the same rule the rest of the mod uses for turn counts. Zero stays zero, so an
+--ability that manages its own recovery (Homura's) can register Cooldown = 0.
 function GetScaledAbilityCooldown(iTurns)
+	if not iTurns or iTurns <= 0 then return 0 end
 	local pSpeed = GameInfo.GameSpeeds[PreGame.GetGameSpeed()]
 	if not pSpeed then return iTurns end
 	return math.max(math.ceil(iTurns * pSpeed.DealDuration / 30), 1)
 end
 
-function IsLeaderAbilityReady(iMGKey)
-	return GetLeaderAbilityCooldown(iMGKey) <= 0
+function IsLeaderAbilityReady(iMGKey, iMission)
+	return GetLeaderAbilityCooldown(iMGKey, iMission) <= 0
 end
 
 --------------------------------------------------------------
@@ -237,7 +248,7 @@ function LeaderAbilityCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iD
 	local pUnit = pPlayer:GetUnitByID(iUnit)
 	local tDef, iMGKey = GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
 	if not tDef then return false end
-	if not IsLeaderAbilityReady(iMGKey) then return false end
+	if not IsLeaderAbilityReady(iMGKey, iMission) then return false end
 	if tDef.SoulGemCost and MagicalGirls[iMGKey].SoulGem and MagicalGirls[iMGKey].SoulGem <= tDef.SoulGemCost then
 		return false
 	end
@@ -259,7 +270,7 @@ function LeaderAbilityCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData
 	local pPlayer = Players[iPlayer]
 	local pUnit = pPlayer:GetUnitByID(iUnit)
 	local tDef2, iMGKey = GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
-	if not tDef2 or not IsLeaderAbilityReady(iMGKey) then return 0 end
+	if not tDef2 or not IsLeaderAbilityReady(iMGKey, iMission) then return 0 end
 
 	local pPlot
 	if tDef.NeedsTarget then
@@ -276,7 +287,7 @@ function LeaderAbilityCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData
 
 	tDef.Execute(iPlayer, pUnit, pPlot, iMGKey)
 
-	SetLeaderAbilityCooldown(iMGKey, GetScaledAbilityCooldown(tDef.Cooldown or 1))
+	SetLeaderAbilityCooldown(iMGKey, GetScaledAbilityCooldown(tDef.Cooldown or 1), iMission)
 	if tDef.SoulGemCost and tDef.SoulGemCost > 0 then
 		DoChangeCorruption(tDef.SoulGemCost, iMGKey)
 	end
@@ -302,8 +313,14 @@ function PMMMLeaderAbilityDoTurn(iPlayer)
 	if not pPlayer or not pPlayer:IsAlive() then return end
 
 	for k, v in pairs(MagicalGirls) do
-		if v.Owner == iPlayer and v.AbilityCooldown and v.AbilityCooldown > 0 then
-			v.AbilityCooldown = v.AbilityCooldown - 1
+		if v.Owner == iPlayer and v.AbilityCooldowns then
+			for iMission, iTurns in pairs(v.AbilityCooldowns) do
+				if iTurns <= 1 then
+					v.AbilityCooldowns[iMission] = nil
+				else
+					v.AbilityCooldowns[iMission] = iTurns - 1
+				end
+			end
 		end
 	end
 
@@ -321,7 +338,7 @@ function RunLeaderAbilityAI(iPlayer)
 		if pUnit:GetUnitClassType() == iMagicalGirlClass and pUnit:GetMoves() > 0 then
 			for iMission, tDef in pairs(tPMMMLeaderAbilities) do
 				local tCheck, iMGKey = GetLeaderAbilityForUnit(iPlayer, pUnit, iMission)
-				if tCheck and IsLeaderAbilityReady(iMGKey) and tDef.AIScorePlot then
+				if tCheck and IsLeaderAbilityReady(iMGKey, iMission) and tDef.AIScorePlot then
 					local pBestPlot, iBestScore
 					--[port] a self-centred ability is always aimed at her own tile, as on the human path.
 					if not tDef.NeedsTarget then
@@ -340,7 +357,7 @@ function RunLeaderAbilityAI(iPlayer)
 					end
 					if pBestPlot then
 						tDef.Execute(iPlayer, pUnit, pBestPlot, iMGKey)
-						SetLeaderAbilityCooldown(iMGKey, GetScaledAbilityCooldown(tDef.Cooldown or 1))
+						SetLeaderAbilityCooldown(iMGKey, GetScaledAbilityCooldown(tDef.Cooldown or 1), iMission)
 						if tDef.SoulGemCost and tDef.SoulGemCost > 0 then
 							DoChangeCorruption(tDef.SoulGemCost, iMGKey)
 						end
