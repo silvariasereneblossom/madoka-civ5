@@ -15,14 +15,10 @@
 --    Handler: Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua. It needs no promotion of its
 --    own, so this block is the mission row, the trait link and the text.
 --
---    [Lua PENDING, elsewhere] The rest of the spec's Leader Magical Girl clauses -- she is always in Despair,
---    takes no Despair penalties, and can never become a Witch -- are states of the girl rather than of the
---    ability, and live in the Magical Girl upkeep and Witch code. Not implemented here, and the help text
---    below therefore describes the attack only.
---
---    [BLOCKER, elsewhere] CreateFirstLeaderMagicalGirl in Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua
---    still returns early for CIVILIZATION_DEMON_HOMURA, so this civilization has no Leader Magical Girl and
---    the mission below can never appear in play. Design section 0.3 removes that hard-code.
+--    The rest of the spec's Leader Magical Girl clauses -- she is always in Despair, takes no Despair
+--    penalties, and can never become a Witch -- are states of the girl rather than of the ability. They ride
+--    on PROMOTION_PMMM_ALWAYS_DESPAIR, set up in Abilities.sql and read by the girl-state code, so the help
+--    text below describes the attack only.
 --
 --    Design: docs/design/phase4-design-v1.md section 4 and ruling 4 in section 11.
 --------------------------------------------------------------------------------------------------------------

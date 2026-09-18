@@ -2,15 +2,14 @@
 -- [port] Phase 4: Devil Homura's Leader Magical Girl ability.
 -- Shared machinery: PMMMLeaderAbilities.lua. Data half: SQL/Phase4/DemonHomura.sql.
 --------------------------------------------------------------
--- Design note (docs/design/phase4-design-v1.md section 4): the spec gives her girl three permanent
--- properties besides the attack -- she is always in Despair, she takes no Despair penalties, and she
--- can never become a Witch. Those are states of the girl, not of the ability, so they belong in the
--- Magical Girl upkeep and Witch code and are the maintainer's to place. Nothing here implements them
--- and PMMMMagicalGirls.lua is deliberately untouched.
+-- Falsified Phenomena, the active half. Design: docs/design/phase4-design-v1.md section 4 and
+-- ruling 4 in section 11: an area hit at 150% of her strength on the target tile and the ring around
+-- it, no Soul Gem cost, five-turn cooldown.
 --
--- Also outstanding, and blocking this ability in play: CreateFirstLeaderMagicalGirl in
--- PMMMMagicalGirls.lua still returns early for CIVILIZATION_DEMON_HOMURA, so she has no Leader
--- Magical Girl to carry the mission. Section 0.3 of the design removes that hard-code.
+-- The three permanent properties the spec gives her girl -- always in Despair, no Despair penalties,
+-- and never a Witch -- are the passive half. They are carried by PROMOTION_PMMM_ALWAYS_DESPAIR in
+-- SQL/Phase4/Abilities.sql, read by the girl-state code. Nothing here touches them and
+-- PMMMMagicalGirls.lua is deliberately untouched.
 --------------------------------------------------------------
 
 --Is there an enemy of this player anywhere on the plot?

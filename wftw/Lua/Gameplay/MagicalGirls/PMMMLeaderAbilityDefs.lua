@@ -52,8 +52,9 @@ RegisterLeaderAbility("MISSION_PMMM_PLUVIA_MAGICA", {
 		local pPlayer = Players[iPlayer]
 		local pTeam = Teams[pPlayer:GetTeam()]
 		local iTeam = pPlayer:GetTeam()
-		--The target tile and its six neighbours, each hit once.
-		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, false, false, false) do
+		--The target tile and its six neighbours, each hit once. The last argument to the iterator is
+		--'include the centre': without it the primary target was skipped entirely.
+		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, false, false, true) do
 			if pAreaPlot then
 				for i = 0, pAreaPlot:GetNumUnits() - 1 do
 					local pTarget = pAreaPlot:GetUnit(i)
@@ -74,7 +75,7 @@ RegisterLeaderAbility("MISSION_PMMM_PLUVIA_MAGICA", {
 	AIScorePlot = function(pPlayer, pUnit, pPlot)
 		if not PlotHasEnemy(pPlayer, pUnit, pPlot) then return nil end
 		local iScore = 0
-		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, false, false, false) do
+		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1, 1, false, false, true) do
 			local iPlotScore = PMMMScoreEnemyPlot(pPlayer, pUnit, pAreaPlot)
 			if iPlotScore then iScore = iScore + iPlotScore end
 		end
