@@ -51,8 +51,8 @@ def write_commit_id(repo: Path) -> None:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--config", default="debug", choices=["debug", "release"])
-    ap.add_argument("--no-lto", action="store_true",
-                    help="release without link-time optimisation (-flto); isolates LTO-related startup failures")
+    ap.add_argument("--lto", action="store_true",
+                    help="release WITH link-time optimisation (-flto), as upstream does. Off by default: with our LLVM the LTO release DLL fails to initialise in the game (LoadLibrary error 1114, 2026-09-18)")
     ap.add_argument("--repo", default=str(DEFAULT_REPO), help="Community-Patch-DLL checkout (or your fork)")
     ap.add_argument("--llvm-bin", default=os.environ.get("LLVM_BIN", str(LLVM_BIN)),
                     help="folder containing clang-cl.exe and lld-link.exe (env LLVM_BIN)")
@@ -75,7 +75,7 @@ def main(argv=None) -> int:
 
     src = script.read_text(encoding="utf-8")
     try:
-        patched = patch_upstream(src, repo, llvm_bin, no_lto=args.no_lto)
+        patched = patch_upstream(src, repo, llvm_bin, no_lto=not args.lto)
     except PatchError as e:
         print(f"upstream build script changed; refusing to build with a half-applied patch:\n  {e}",
               file=sys.stderr)
