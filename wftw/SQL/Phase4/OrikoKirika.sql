@@ -89,3 +89,56 @@ WHERE Tag = 'TXT_KEY_IMPROVEMENT_PMMM_FARSIGHT_ORACLE_HELP';
 UPDATE Language_en_US
 SET Text = '+1 [ICON_RESEARCH] Science for each adjacent Luxury Resource, and +1 [ICON_CULTURE] Culture for each Era that has passed.[NEWLINE][NEWLINE]Friendly units stationed on this tile gain Farsight, a Promotion which allows them to have the equivalent sight of an Air Unit and Indirect Fire.[NEWLINE][NEWLINE]Must be built adjacent to a Luxury Resource, and no two may be adjacent to each other. Cannot be built on a tile that contains a Resource, and may only be built on Grassland, Plains, Desert, Tundra or Snow.'
 WHERE Tag = 'TXT_KEY_BUILD_PMMM_FARSIGHT_ORACLE_HELP';
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 5. Leader Magical Girl abilities (design section 15, ruling 8). One for each of the civ's two leader girls:
+--      Oriko  (first leader girl, LeaderMGUniqueMission):      Oracle Ray
+--      Kirika (extra leader girl, ExtraLeaderMGUniqueMission): Vampire Fang
+--    Each girl stores the mission she was born with (MagicalGirls[key].ExtraMission, PMMMMagicalGirls.lua) and
+--    the framework lets her use that one only. Kirika's ExtraLeaderMGUniquePromotion (PROMOTION_PMMM_MAGICLAW)
+--    is left as it is.
+--    Handler: Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityOrikoKirika.lua
+--
+--    Oracle Ray: range 2, target an enemy unit (never a city tile). 5 hits at 60% of her strength, each on an
+--    enemy unit picked at random among those within 1 tile of the target, the target included. Cooldown 5.
+--    Vampire Fang: range 1, target an enemy unit (never a city tile). One hit at 150%, the victim fights at -25%
+--    Combat Strength for 2 turns, and Kirika heals half the damage dealt. Cooldown 4 (the ruling gives none).
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Missions WHERE Type IN ('MISSION_PMMM_ORACLE_RAY', 'MISSION_PMMM_VAMPIRE_FANG');
+
+INSERT INTO Missions
+			(Type, Description, Help, DisabledHelp, EntityEventType, Time, OrderPriority, Visible, IconIndex, IconAtlas,
+			PMMMMissionRange, PMMMTargetType)
+SELECT		('MISSION_PMMM_ORACLE_RAY'), ('TXT_KEY_MISSION_PMMM_ORACLE_RAY'), ('TXT_KEY_MISSION_PMMM_ORACLE_RAY_HELP'), ('TXT_KEY_MISSION_PMMM_ORACLE_RAY_DISABLED'), EntityEventType, Time, 200, 1, 17, ('UNIT_ACTION_ATLAS'),
+			2, ('NON_CITY_ENEMY')
+FROM Missions WHERE Type = 'MISSION_RANGE_ATTACK';
+
+INSERT INTO Missions
+			(Type, Description, Help, DisabledHelp, EntityEventType, Time, OrderPriority, Visible, IconIndex, IconAtlas,
+			PMMMMissionRange, PMMMTargetType)
+SELECT		('MISSION_PMMM_VAMPIRE_FANG'), ('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG'), ('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG_HELP'), ('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG_DISABLED'), EntityEventType, Time, 200, 1, 17, ('UNIT_ACTION_ATLAS'),
+			1, ('NON_CITY_ENEMY')
+FROM Missions WHERE Type = 'MISSION_RANGE_ATTACK';
+
+--The bite's weakness: cleared by the framework two of the victim's owner's turns later.
+DELETE FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS';
+
+INSERT INTO UnitPromotions
+			(Type, Description, Help, Sound, CannotBeChosen, PortraitIndex, IconAtlas, PediaType, PediaEntry, CombatPercent)
+VALUES		('PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS', 'TXT_KEY_PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS', 'TXT_KEY_PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS_HELP', 'AS2D_IF_LEVELUP', 1, 58, 'ABILITY_ATLAS', 'PEDIA_ATTRIBUTES', 'TXT_KEY_PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS', -25);
+
+UPDATE Traits
+SET		LeaderMGUniqueMission		= 'MISSION_PMMM_ORACLE_RAY',
+		ExtraLeaderMGUniqueMission	= 'MISSION_PMMM_VAMPIRE_FANG'
+WHERE Type = 'TRAIT_FREE_SPIES_IMMUNE_TO_TRUTH';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_MISSION_PMMM_ORACLE_RAY', 'Oracle Ray'),
+	('TXT_KEY_MISSION_PMMM_ORACLE_RAY_HELP', 'Oriko''s foresight rains down around an enemy unit. 5 rays strike, each dealing damage equal to an attack at 60% of her [ICON_STRENGTH] Combat Strength to an enemy unit chosen at random on the target tile or next to it. The same unit can be struck more than once; a unit that falls is not struck again. Units inside a City are never struck, and a City tile cannot be targeted.[NEWLINE][NEWLINE]Only Oriko can use it. Range 2. Cooldown 5 turns.'),
+	('TXT_KEY_MISSION_PMMM_ORACLE_RAY_DISABLED', 'Oracle Ray is recovering, or there is no enemy unit within 2 tiles outside a City. Only Oriko can use it.'),
+	('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG', 'Vampire Fang'),
+	('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG_HELP', 'Kirika bites an adjacent enemy unit, dealing damage equal to an attack at 150% of her [ICON_STRENGTH] Combat Strength. The victim fights at -25% [ICON_STRENGTH] Combat Strength for 2 turns, and Kirika recovers Hit Points equal to half the damage dealt. A City tile cannot be targeted.[NEWLINE][NEWLINE]Only Kirika can use it. Range 1. Cooldown 4 turns.'),
+	('TXT_KEY_MISSION_PMMM_VAMPIRE_FANG_DISABLED', 'Vampire Fang is recovering, or there is no adjacent enemy unit outside a City. Only Kirika can use it.'),
+	('TXT_KEY_PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS', 'Vampire Fang'),
+	('TXT_KEY_PROMOTION_PMMM_VAMPIRE_FANG_WEAKNESS_HELP', '-25% [ICON_STRENGTH] Combat Strength for 2 turns, after being bitten by Kirika''s Vampire Fang.');

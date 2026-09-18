@@ -188,3 +188,37 @@ WHERE Tag = 'TXT_KEY_UNIT_PMMM_BUBBLE_BOMBER_STRATEGY';
 UPDATE Language_en_US
 SET Text = 'Trumpet Bubbles are shockingly powerful weapons. As such, this unit gains [COLOR_POSITIVE_TEXT]+50% [ICON_RANGE_STRENGTH] Ranged Strength[ENDCOLOR] vs. [COLOR_POSITIVE_TEXT]Cities and Fortified Units[ENDCOLOR], and its attacks deal [COLOR_POSITIVE_TEXT]25% splash damage[ENDCOLOR] to enemy Units and Cities around the target. The bubbles cushion the girls on the way home, so the unit takes [COLOR_POSITIVE_TEXT]50% less damage[ENDCOLOR] when it is intercepted. The girls are much more willing to fight invaders than to go on conquering sprees, so they also gain [COLOR_POSITIVE_TEXT]+33% [ICON_RANGE_STRENGTH] Ranged Strength[ENDCOLOR] when an enemy Unit is within 2 tiles.'
 WHERE Tag = 'TXT_KEY_PROMOTION_PMMM_BUBBLE_BOMBER_HELP';
+
+
+--------------------------------------------------------------------------------------------------------------
+-- 6. Nagisa Momoe: Magic Cake Dish (design section 15, ruling 7)
+--    No damage. Every friendly Unit on her tile or next to it heals 25% of its maximum hit points and fights at
+--    +10% Combat Strength for 3 turns. Cooldown 5 turns (the ruling gives none; chosen here), no Soul Gem cost.
+--    Handler: Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityNagisa.lua
+--
+--    No target: like MISSION_PMMM_BALDAMENTE_FORTISSIMO the row carries neither PMMMMissionRange nor
+--    PMMMTargetType, so the button fires at once; the radius of 1 lives in the handler.
+--    The buff is a timed promotion with CombatPercent 10, removed by the framework after 3 of her turns.
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Missions WHERE Type = 'MISSION_PMMM_MAGIC_CAKE_DISH';
+
+INSERT INTO Missions
+			(Type, Description, Help, DisabledHelp, EntityEventType, Time, OrderPriority, Visible, IconIndex, IconAtlas)
+SELECT		('MISSION_PMMM_MAGIC_CAKE_DISH'), ('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH'), ('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH_HELP'), ('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH_DISABLED'), EntityEventType, Time, 200, 1, 16, ('UNIT_ACTION_ATLAS')
+FROM Missions WHERE Type = 'MISSION_RANGE_ATTACK';
+
+DELETE FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_MAGIC_CAKE';
+
+INSERT INTO UnitPromotions
+			(Type, Description, Help, Sound, CannotBeChosen, PortraitIndex, IconAtlas, PediaType, PediaEntry, CombatPercent)
+VALUES		('PROMOTION_PMMM_MAGIC_CAKE', 'TXT_KEY_PROMOTION_PMMM_MAGIC_CAKE', 'TXT_KEY_PROMOTION_PMMM_MAGIC_CAKE_HELP', 'AS2D_IF_LEVELUP', 1, 58, 'ABILITY_ATLAS', 'PEDIA_ATTRIBUTES', 'TXT_KEY_PROMOTION_PMMM_MAGIC_CAKE', 10);
+
+UPDATE Traits SET LeaderMGUniqueMission = 'MISSION_PMMM_MAGIC_CAKE_DISH'
+WHERE Type = 'TRAIT_CATTLE_BONUS_MERCHANT_PLANT_CATTLE';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH', 'Magic Cake Dish'),
+	('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH_HELP', 'Nagisa shares out a magic cake. Every friendly Unit on her tile or an adjacent tile, herself included, immediately recovers 25% of its maximum Hit Points and gains +10% [ICON_STRENGTH] Combat Strength for 3 turns.[NEWLINE][NEWLINE]Deals no damage, needs no target, and costs no [ICON_PMMM_SOUL_GEM] Soul Gem. Cooldown 5 turns.'),
+	('TXT_KEY_MISSION_PMMM_MAGIC_CAKE_DISH_DISABLED', 'Magic Cake Dish is recovering. Nagisa must also have movement left to serve it.'),
+	('TXT_KEY_PROMOTION_PMMM_MAGIC_CAKE', 'Magic Cake'),
+	('TXT_KEY_PROMOTION_PMMM_MAGIC_CAKE_HELP', '+10% [ICON_STRENGTH] Combat Strength for 3 turns, after sharing Nagisa''s Magic Cake Dish.');
