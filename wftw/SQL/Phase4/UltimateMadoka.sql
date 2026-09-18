@@ -41,6 +41,8 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 -- is given back once (ReturnFromLawOfCycles in PMMMGeneralFunctions.lua), and ExperiencePercent -100 stops all
 -- combat XP after that (CvUnit::changeExperienceTimes100 adds XP x ExperiencePercent / 100, so -100 cancels it).
 -- She may take or drop her Witch Form at will: PROMOTION_PMMM_WITCH_FORM, +20% Combat Strength.
+-- Ruling 15.3 (2026-09-18): the player-facing name is "Summon Herald of the Cycle" (mission) and "Herald of the
+-- Cycle" (promotion); the row Types keep their WITCH_FORM names. The old Summon Witch is removed at the end.
 -- Handlers: Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua
 --------------------------------------------------------------------------------------------------------------
 DELETE FROM UnitPromotions WHERE Type IN ('PROMOTION_PMMM_CYCLE_RETURNED', 'PROMOTION_PMMM_WITCH_FORM');
@@ -201,18 +203,18 @@ ORDER BY Tag;
 -- UniqueUnits/PMMMHeraldOfMadoka.lua) and the trait (Great Person Golden Age points, ruling 9)
 --------------------------------------------------------------------------------------------------------------
 INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
-	('TXT_KEY_TRAIT_NO_WITCHES', 'Magical Girls cannot become Witches. Instead the Law of Cycles leads them away, and after 10 turns (at Standard speed) they return to the [ICON_CAPITAL] Capital with a full [ICON_PMMM_SOUL_GEM] Soul Gem. They lose their Promotions but come back with 100 XP for every Promotion they had earned, and can never earn XP again. A returned Magical Girl may take on her [COLOR_POSITIVE_TEXT]Witch Form[ENDCOLOR] at will for +20% [ICON_STRENGTH] Combat Strength. Magical Girls may summon Witches to fight alongside them.[NEWLINE][NEWLINE]Expending a [ICON_GREAT_PEOPLE] Great Person grants 50 [ICON_GOLDEN_AGE] Golden Age points per Era (50 in the Ancient Era, 400 in the Information Era, at Standard speed).'),
+	('TXT_KEY_TRAIT_NO_WITCHES', 'Magical Girls cannot become Witches. Instead the Law of Cycles leads them away, and after 10 turns (at Standard speed) they return to the [ICON_CAPITAL] Capital with a full [ICON_PMMM_SOUL_GEM] Soul Gem. They lose their Promotions but come back with 100 XP for every Promotion they had earned, and can never earn XP again. A returned Magical Girl may [COLOR_POSITIVE_TEXT]Summon the Herald of the Cycle[ENDCOLOR] at will for +20% [ICON_STRENGTH] Combat Strength.[NEWLINE][NEWLINE]Expending a [ICON_GREAT_PEOPLE] Great Person grants 50 [ICON_GOLDEN_AGE] Golden Age points per Era (50 in the Ancient Era, 400 in the Information Era, at Standard speed).'),
 
 	('TXT_KEY_PROMOTION_PMMM_CYCLE_RETURNED', 'Returned from the Cycle'),
-	('TXT_KEY_PROMOTION_PMMM_CYCLE_RETURNED_HELP', 'Reborn through the Law of Cycles with 100 XP for every Promotion she had earned. She can never earn XP again (-100% XP). May take on her Witch Form at will for +20% [ICON_STRENGTH] Combat Strength.'),
-	('TXT_KEY_PROMOTION_PMMM_WITCH_FORM', 'Witch Form'),
-	('TXT_KEY_PROMOTION_PMMM_WITCH_FORM_HELP', '+20% [ICON_STRENGTH] Combat Strength. She has taken on her Witch Form, and may put it away again at any time.'),
+	('TXT_KEY_PROMOTION_PMMM_CYCLE_RETURNED_HELP', 'Reborn through the Law of Cycles with 100 XP for every Promotion she had earned. She can never earn XP again (-100% XP). May Summon the Herald of the Cycle at will for +20% [ICON_STRENGTH] Combat Strength.'),
+	('TXT_KEY_PROMOTION_PMMM_WITCH_FORM', 'Herald of the Cycle'),
+	('TXT_KEY_PROMOTION_PMMM_WITCH_FORM_HELP', '+20% [ICON_STRENGTH] Combat Strength. She has summoned the Herald of the Cycle, and may dismiss it again at any time.'),
 
-	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM', 'Summon Witch Form'),
-	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM_HELP', 'Take on or put away this Magical Girl''s Witch Form. In Witch Form she has +20% [ICON_STRENGTH] Combat Strength.[NEWLINE][NEWLINE]No cost, no target, and it does not use her turn. Only Magical Girls reborn from the Law of Cycles have a Witch Form.'),
-	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM_DISABLED', 'Only a Magical Girl reborn from the Law of Cycles can summon her Witch Form.'),
+	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM', 'Summon Herald of the Cycle'),
+	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM_HELP', 'Summon or dismiss this Magical Girl''s Herald of the Cycle. While it is summoned she has +20% [ICON_STRENGTH] Combat Strength.[NEWLINE][NEWLINE]No cost, no target, and it does not use her turn. Only Magical Girls reborn from the Law of Cycles can summon it.'),
+	('TXT_KEY_MISSION_PMMM_SUMMON_WITCH_FORM_DISABLED', 'Only a Magical Girl reborn from the Law of Cycles can summon the Herald of the Cycle.'),
 
-	('TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_XP', 'She returns with {1_Num} XP, 100 for each of the {2_Num} Promotions she had earned, and can never earn XP again. She may take on her Witch Form at will for +20% [ICON_STRENGTH] Combat Strength.'),
+	('TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_XP', 'She returns with {1_Num} XP, 100 for each of the {2_Num} Promotions she had earned, and can never earn XP again. She may Summon the Herald of the Cycle at will for +20% [ICON_STRENGTH] Combat Strength.'),
 	('TXT_KEY_PMMM_NOTIFICATION_LAW_OF_CYCLES_REBORN_FREE_PROMOTION', 'Led away by a Herald of Madoka, she also receives one extra Promotion of your choice.'),
 	('TXT_KEY_PMMM_NOTIFICATION_TAKEN_BY_LOC_TEXT', '{1_Str} was nearly overcome by her despair. Fortunately, you were there to take away her suffering and lead her back to your realm. After {2_Num} turns, she will have recovered from her despair and will rise once again to fight for the salvation of the world''s Magical Girls. She will lose her Promotions, but return with 100 XP for each one she had earned.'),
 	('TXT_KEY_PMMM_ALERT_UMADOKA_GP_GOLDEN_AGE', '+{1_Num} [ICON_GOLDEN_AGE] Golden Age points from expending a Great Person.'),
@@ -226,3 +228,23 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_GRAND_TEMPLE_HELP', '+8 [ICON_HAPPINESS_1] Happiness and +25% [ICON_GREAT_PEOPLE] Prodigy birth rate in this City. Triples religious pressure emanating from this City.[NEWLINE][NEWLINE]While you own it, every one of your Magical Girls recovers 1% of her [ICON_PMMM_SOUL_GEM] Soul Gem luster every turn and has +10 Mood.[NEWLINE][NEWLINE]Must be built in a Holy City. Must have built a Temple in all Cities. The cost goes up the more cities there are in the empire.'),
 	('TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_GRAND_TEMPLE_STRATEGY', 'Ultimate Madoka''s Grand Temple is a second Luminous Garden. On top of the Grand Temple''s [ICON_PEACE] Faith it gives +8 [ICON_HAPPINESS_1] Happiness and +25% [ICON_GREAT_PEOPLE] Prodigy birth rate, triples the religious pressure of the Holy City instead of doubling it, and lets every one of her Magical Girls recover 1% [ICON_PMMM_SOUL_GEM] Soul Gem every turn with a permanent +10 Mood.'),
 	('TXT_KEY_BUILDING_PMMM_LUMINOUS_GARDEN_HELP', '+25% [ICON_GREAT_PEOPLE] Prodigy birth rate in this City.[NEWLINE][NEWLINE]Magical Girls which are stationed in a City containing a Luminous Garden will recover 1% of their [ICON_PMMM_SOUL_GEM] Soul Gem luster every turn.[NEWLINE][NEWLINE]Must be built next to a River or a Lake.[NEWLINE][NEWLINE]Ultimate Madoka''s Grand Temple is also a Luminous Garden: see Luminous Garden (Grand Temple).');
+
+
+--------------------------------------------------------------------------------------------------------------
+-- Ruling 15.3 (2026-09-18): the old Summon Witch is removed.
+-- MISSION_PMMM_SUMMON_WITCH / MISSION_PMMM_DISMISS_WITCH spawned and dismissed a Witch unit. CanSummonWitches = 0
+-- closes every gate in PMMMUltimateMadokaTrait.lua, whose handlers are now inert as well (the missions are never
+-- possible, never started, and the AI never summons). The two Missions rows stay: SQL/UltimateMadoka/
+-- UltimateMadokaMissions.sql inserts them, XML/Text/UserInterface-english.xml carries their text, and
+-- MagicalGirlMissionHandler.lua still names the SUMMON_WITCH exec string. With the gate closed, nothing offers them.
+--------------------------------------------------------------------------------------------------------------
+UPDATE Traits SET CanSummonWitches = 0
+WHERE Type = 'TRAIT_NO_WITCHES';
+
+
+--------------------------------------------------------------------------------------------------------------
+-- Ruling 15.4 (2026-09-18): no free starting Archer. It made up for her having no Leader Magical Girl, which
+-- she has now. The free Settler stays. No text mentioned the Archer.
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Civilization_FreeUnits
+WHERE CivilizationType = 'CIVILIZATION_MADOKA' AND UnitClassType = 'UNITCLASS_ARCHER';

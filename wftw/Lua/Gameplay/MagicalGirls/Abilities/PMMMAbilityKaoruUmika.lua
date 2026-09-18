@@ -88,3 +88,78 @@ function KazumiFreezerGriefSeedMissionStart(iPlayer, iUnit, iMission, iData1, iD
 end
 
 GameEvents.CustomMissionStart.Add(KazumiFreezerGriefSeedMissionStart)
+
+
+--------------------------------------------------------------
+-- [port] Phase 4: ruling 15.2 (2026-09-18), pending a full rework of the civ.
+-- Creating a Great Work grants a random bonus of Gold, Faith, Science or Culture. It replaces
+-- Traits.GreatWorkWLTKD, which KaoruUmika.sql now sets to 0.
+--
+-- Trigger: CP's synced GameEvents.GreatWorkCreated(iPlayer, iUnitID, iGreatWorkType), fired from
+-- CvUnit::createGreatWork, i.e. when a Great Artist, Writer or Musician creates a work. That is the same
+-- place, and so the same set of works, that GreatWorkWLTKD fired for; Archaeology artifacts and works a
+-- building grants for free do not trigger it. The unit is already dead when the event fires, so its ID
+-- is not used.
+--
+-- Amount (not fixed by the ruling; chosen here): 25 x (era index + 1), era index 0 = Ancient, scaled by the
+-- game speed's TrainPercent (the same speed scaling the retired GreatWorkWLTKD used; CP's
+-- InstantYieldPercent is 100 at every speed here). Standard: 25 Ancient ... 200 Information. Quick x0.67,
+-- Epic x1.5, Marathon x3. The yield is picked with Game.Rand, one in four each.
+--------------------------------------------------------------
+local sPleiadesTrait = "TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS"
+local iPleiadesGreatWorkBase = 25
+
+local tIsPleiadesPlayer = {}
+local function IsPleiadesPlayer(iPlayer)
+	if iPlayer < 0 or iPlayer >= GameDefines.MAX_MAJOR_CIVS then return false end
+	if tIsPleiadesPlayer[iPlayer] == nil then
+		local pPlayer = Players[iPlayer]
+		if not pPlayer or not pPlayer:IsEverAlive() then return false end
+		local bHas = false
+		local pLeader = GameInfo.Leaders[pPlayer:GetLeaderType()]
+		if pLeader then
+			for row in GameInfo.Leader_Traits{LeaderType = pLeader.Type} do
+				if row.TraitType == sPleiadesTrait then bHas = true end
+			end
+		end
+		tIsPleiadesPlayer[iPlayer] = bHas
+	end
+	return tIsPleiadesPlayer[iPlayer]
+end
+
+--The four outcomes, in a fixed order so Game.Rand picks the same one on every machine.
+local tPleiadesGreatWorkYields = {
+	{ Icon = "[ICON_GOLD]",     Name = "TXT_KEY_YIELD_GOLD",    Give = function(pPlayer, iAmount) pPlayer:ChangeGold(iAmount) end },
+	{ Icon = "[ICON_PEACE]",    Name = "TXT_KEY_YIELD_FAITH",   Give = function(pPlayer, iAmount) pPlayer:ChangeFaith(iAmount) end },
+	{ Icon = "[ICON_RESEARCH]", Name = "TXT_KEY_YIELD_SCIENCE", Give = function(pPlayer, iAmount)
+		local iTech = pPlayer:GetCurrentResearch()
+		if iTech and iTech >= 0 then
+			Teams[pPlayer:GetTeam()]:GetTeamTechs():ChangeResearchProgress(iTech, iAmount, pPlayer:GetID())
+		else
+			pPlayer:ChangeOverflowResearch(iAmount)
+		end
+	end },
+	{ Icon = "[ICON_CULTURE]",  Name = "TXT_KEY_YIELD_CULTURE", Give = function(pPlayer, iAmount) pPlayer:ChangeJONSCulture(iAmount) end },
+}
+
+function KazumiGreatWorkCreated(iPlayer, iUnitID, iGreatWorkType)
+	if not IsPleiadesPlayer(iPlayer) then return end
+	local pPlayer = Players[iPlayer]
+	if not pPlayer or not pPlayer:IsAlive() then return end
+
+	local iAmount = iPleiadesGreatWorkBase * (pPlayer:GetCurrentEra() + 1)
+	local pSpeed = GameInfo.GameSpeeds[Game.GetGameSpeedType()]
+	if pSpeed and pSpeed.TrainPercent then
+		iAmount = math.floor(iAmount * pSpeed.TrainPercent / 100)
+	end
+	if iAmount <= 0 then return end
+
+	local tPick = tPleiadesGreatWorkYields[Game.Rand(#tPleiadesGreatWorkYields, "Kazumi Great Work bonus") + 1]
+	tPick.Give(pPlayer, iAmount)
+
+	if iPlayer == Game.GetActivePlayer() then
+		Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KAZUMI_GREAT_WORK_BONUS", iAmount, tPick.Icon, Locale.ConvertTextKey(tPick.Name)))
+	end
+end
+
+GameEvents.GreatWorkCreated.Add(KazumiGreatWorkCreated)

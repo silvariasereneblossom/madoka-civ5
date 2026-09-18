@@ -101,6 +101,9 @@ RegisterLeaderAbility("MISSION_PMMM_NOTHING_TO_DESPAIR", {
 --  * Summon Witch Form: any girl reborn from the Law of Cycles (PROMOTION_PMMM_CYCLE_RETURNED, granted in
 --    ReturnFromLawOfCycles) can take on or put away her Witch Form, +20% Combat Strength, as often as she likes.
 --    No target, no cost, and it does not end her turn. Not a leader ability, so it has its own mission hooks.
+--    [port] Phase 4: ruling 15.3 (2026-09-18) names it "Summon Herald of the Cycle" in the text (promotion "Herald
+--    of the Cycle"); the Types keep their WITCH_FORM names. The old Summon Witch, which spawned a Witch unit, is
+--    gone (Traits/PMMMUltimateMadokaTrait.lua).
 --  * The returned girl's XP lock: the promotion's ExperiencePercent -100 zeroes combat XP; this clamps her back to
 --    the XP she returned with against anything else that adds XP (area-effect XP promotions, handicap bonuses, Lua).
 --  * Expending a Great Person grants Golden Age points: 50 per era (Ancient 50 ... Information 400), scaled by the

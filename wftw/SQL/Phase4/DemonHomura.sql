@@ -528,3 +528,11 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 		'The Half-Moon Garden is the Unique Building of Meikyuu no Homura, replacing the Garden. It trades most of the Garden''s Great People bonus for +5% to every yield in the City, and it is her main economic building: with Prodigies born at half speed, the flat percentage is worth more to her than the Garden''s. Build it first in her largest Cities.'),
 	('TXT_KEY_BUILDING_PMMM_HALF_MOON_GARDEN_TEXT',
 		'Under a moon that is never more than half full, Homura keeps a garden for the one person her world was built around. Everything in it is arranged so that Madoka will be happy there and will never think to ask why, and the flowers bloom whether or not anyone else is allowed to see them.');
+
+
+--------------------------------------------------------------------------------------------------------------
+-- Ruling 15.4 (2026-09-18): no free starting Archer. It made up for her having no Leader Magical Girl, which
+-- she has now. The free Settler stays. No text mentioned the Archer.
+--------------------------------------------------------------------------------------------------------------
+DELETE FROM Civilization_FreeUnits
+WHERE CivilizationType = 'CIVILIZATION_DEMON_HOMURA' AND UnitClassType = 'UNITCLASS_ARCHER';

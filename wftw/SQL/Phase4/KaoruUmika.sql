@@ -38,18 +38,18 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 -- Kazumi: Pleiades Saints (design section 9; maintainer: the Freezer never takes Leader Magical Girls)
 --
 -- 1. Writing identity. Great Works of Writing +1 Culture +1 Gold (Trait_LitYieldChanges).
---    Traits.GreatWorkWLTKD is a BOOLEAN in CP 5.4.6 (CvTraitClasses.cpp: GetBool), not a turn count: when the
---    player creates a Great Work, EVERY city starts We Love the King Day for CITY_RESOURCE_WLTKD_TURNS / 3 turns
---    (20 / 3 = 6) scaled by the speed's TrainPercent (Quick 4, Standard 6, Epic 9, Marathon 18). The spec's "5
---    turns in its city" is not expressible as data, so the column is set to 1 and the text states the engine's
---    real rule. An exact "5 turns, that city only" would need Lua or a DLL column.
+--    Ruling 15.2 (2026-09-18), pending a full rework: Traits.GreatWorkWLTKD (a CP boolean that started We Love
+--    the King Day in every city whenever she created a Great Work) is turned off. In its place, creating a Great
+--    Work grants a random one of Gold, Faith, Science or Culture: 25 x (era index + 1), scaled by the speed's
+--    TrainPercent (Standard 25 in the Ancient era up to 200 in the Information era). Lua:
+--    Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua, on GameEvents.GreatWorkCreated.
 --------------------------------------------------------------------------------------------------------------
 DELETE FROM Trait_LitYieldChanges WHERE TraitType = 'TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS';
 INSERT INTO Trait_LitYieldChanges (TraitType, YieldType, Yield) VALUES
 	('TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS', 'YIELD_CULTURE', 1),
 	('TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS', 'YIELD_GOLD', 1);
 
-UPDATE Traits SET GreatWorkWLTKD = 1
+UPDATE Traits SET GreatWorkWLTKD = 0
 WHERE Type = 'TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS';
 
 --------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ WHERE Type = 'RESOURCE_PMMM_TEDDY_BEAR';
 --------------------------------------------------------------------------------------------------------------
 INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS_SHORT', 'Pleiades Saints'),
-	('TXT_KEY_TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS', 'Great Works of Writing provide +1 [ICON_CULTURE] Culture and +1 [ICON_GOLD] Gold. Creating a Great Work starts We Love the King Day in all of your Cities (6 turns at Standard speed).[NEWLINE][NEWLINE][COLOR_POSITIVE_TEXT]The Freezer:[ENDCOLOR] an enemy Magical Girl you defeat in combat is captured into the Freezer in your [ICON_CAPITAL] Capital if it has room (3 girls, +1 for every 5 [ICON_CITIZEN] Population in your Capital). Leader Magical Girls can never be captured. A captured girl revives beside your Capital as [COLOR_POSITIVE_TEXT]your own Magical Girl[ENDCOLOR], keeping her promotions and level, after 15 turns, minus 2 turns for every Academy you own (minimum 5 turns). Each [ICON_PMMM_GRIEF_SEED] Grief Seed used on a stored girl takes 3 turns off her timer. Her Soul Gem does not decay while she is stored. If an enemy conquers your Capital, every stored girl goes to the conqueror as one of their Magical Girls, or is lost if they have none.[NEWLINE][NEWLINE]Begins the game with an Artificial Incubator.'),
+	('TXT_KEY_TRAIT_MG_FROM_WITCHES_STORE_KILLED_MGS', 'Great Works of Writing provide +1 [ICON_CULTURE] Culture and +1 [ICON_GOLD] Gold. When a Great Person creates a Great Work, gain a random one of [ICON_GOLD] Gold, [ICON_PEACE] Faith, [ICON_RESEARCH] Science or [ICON_CULTURE] Culture: 25 in the Ancient Era, +25 for each later era (200 in the Information Era), at Standard speed; scaled by game speed.[NEWLINE][NEWLINE][COLOR_POSITIVE_TEXT]The Freezer:[ENDCOLOR] an enemy Magical Girl you defeat in combat is captured into the Freezer in your [ICON_CAPITAL] Capital if it has room (3 girls, +1 for every 5 [ICON_CITIZEN] Population in your Capital). Leader Magical Girls can never be captured. A captured girl revives beside your Capital as [COLOR_POSITIVE_TEXT]your own Magical Girl[ENDCOLOR], keeping her promotions and level, after 15 turns, minus 2 turns for every Academy you own (minimum 5 turns). Each [ICON_PMMM_GRIEF_SEED] Grief Seed used on a stored girl takes 3 turns off her timer. Her Soul Gem does not decay while she is stored. If an enemy conquers your Capital, every stored girl goes to the conqueror as one of their Magical Girls, or is lost if they have none.[NEWLINE][NEWLINE]Begins the game with an Artificial Incubator.'),
 
 	('TXT_KEY_UNIT_PMMM_ARTIFICIAL_INCUBATOR_HELP', 'Unique unit of the Pleiades Saints, trained in addition to the Scout. Cannot attack, but has an 80% chance to withdraw from melee attacks, and starts with Sentry (+1 sight). May Polish an adjacent Magical Girl''s [ICON_PMMM_SOUL_GEM] Soul Gem by 5%, up to 30%. Only 4 may be owned at a time.'),
 	('TXT_KEY_UNIT_PMMM_ARTIFICIAL_INCUBATOR_STRATEGY', 'The Artificial Incubator is the Unique Unit of the Pleiades Saints. It is trained in addition to the Scout, not instead of it. It cannot attack and has a very low [ICON_STRENGTH] Combat Strength, but it withdraws from melee attacks 80% of the time and starts with Sentry for +1 sight, which makes it a good explorer. Its real value is Polishing a Magical Girl''s Soul Gem: each Polish, which uses all of its movement, adds 5% Polish to an adjacent Magical Girl, up to 30%. Whenever she would take Corruption, half of it (rounded down) goes to the Polish instead. Only four may be owned at a time.'),
@@ -132,4 +132,5 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_PMMM_NOTIFICATION_FREEZER_REVIVED_TEXT', '{1_Str} has been revived from the Freezer. After some loud complaints about being captured, she has agreed to fight by your side, with every promotion she had before.'),
 	('TXT_KEY_PMMM_ALERT_FREEZER_GRIEF_SEED', 'A Grief Seed speeds {1_Str}''s revival by {2_Num} turns. She revives in {3_Num} {3_Num: plural 1?turn; other?turns;}.'),
 	('TXT_KEY_PMMM_ALERT_FREEZER_CAPTURE_GOOD', 'You have released {1_Str} from the captured Freezer! She has joined your side in gratitude.'),
+	('TXT_KEY_PMMM_ALERT_KAZUMI_GREAT_WORK_BONUS', 'Pleiades Saints: the new Great Work brings +{1_Num} {2_Str} {3_Str}.'),
 	('TXT_KEY_PMMM_ALERT_FREEZER_CAPTURE_LOST', 'The Magical Girl {1_Str} was kept in the captured Freezer, but her Soul Gem shattered when the building was breached.');

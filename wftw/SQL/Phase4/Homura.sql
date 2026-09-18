@@ -117,6 +117,16 @@ FROM UnitPromotions WHERE Type = 'PROMOTION_BLITZ';
 UPDATE Civilization_UnitClassOverrides SET UnitClassType = 'UNITCLASS_SCOUT'
 WHERE CivilizationType = 'CIVILIZATION_HOMURA' AND UnitType = 'UNIT_PMMM_CLOCKSTOPPER';
 
+-- Ruling 15.5 (2026-09-18): the conquest steal is dropped for good; the Thief of Time fills that role.
+-- Nothing grants PROMOTION_PMMM_CLOCKSTOPPER any more (no Unit_FreePromotions row, no other table names it, no
+-- Lua grants it). Clearing its ObtainUniqueUnitPromotionOnCityCapture flag also empties
+-- MapModData.gPMMMStealUUPromotions (PMMMDataStorage.lua), so Clockstopper() in PMMMClockstopper.lua finds no
+-- stealing promotion on any capture and returns without effect. The promotion row stays as inert data because
+-- SQL/Shared/PMMMNonMGPromotions.sql inserts it and XML/Text/UniqueUnits-english.xml carries its text; its help
+-- text below no longer describes a steal.
+UPDATE UnitPromotions SET ObtainUniqueUnitPromotionOnCityCapture = 0
+WHERE Type = 'PROMOTION_PMMM_CLOCKSTOPPER';
+
 -- Every gameplay column from the Scout (the base file cloned the Infantry), then the two deliberate changes:
 -- Moves 3 and the Warrior's Combat. The name, the text and the Homura flag atlas are kept; the portrait and
 -- the model become the Scout's, since an Infantry model in the Ancient era would look wrong.
@@ -269,6 +279,7 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 
 	('TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_HELP', 'Unique replacement for the Scout, which only Homura Akemi can train. 3 [ICON_MOVES] Moves and 8 [ICON_STRENGTH] Combat Strength (a Warrior''s), and it may enter rival territory without Open Borders. Every 3rd turn you begin with it inside another major civilization''s borders, you gain [ICON_RESEARCH] Science equal to 10% of the cost of a random technology you can currently research.'),
 	('TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_STRATEGY', 'The Thief of Time is the Unique Unit for Neo-Mitakihara, replacing the Scout. It costs the same as a Scout but moves 3 tiles and fights as well as a Warrior, and it may walk into foreign lands whether or not their owners have opened their borders. Keep it inside another major civilization''s territory: every third turn of yours that begins with it there (the turns need not be consecutive) gives you 10% of the [ICON_RESEARCH] cost of a random technology you can currently research. Like the Scout, it becomes obsolete with Scientific Theory.'),
+	('TXT_KEY_PROMOTION_PMMM_CLOCKSTOPPER_HELP', 'Retired. This promotion no longer has any effect.'),
 	('TXT_KEY_UNIT_PMMM_CLOCKSTOPPER_TEXT', 'Girls who have trained diligently in mimicking Homura Akemi''s magic, so much so that even their outfits are identical to hers. Homura''s magic stops time; her imitators use what little of it they have learned to slip across borders unseen and read other nations'' secrets while the clocks stand still.'),
 
 	('TXT_KEY_BUILDING_PMMM_DIMENSIONAL_ARMORY_HELP', '+15 XP for all Units trained in this City. +1 [ICON_PRODUCTION] Production. Enables Units to be airlifted to other Cities which contain a Dimensional Armory or an Airport, and increases the maximum number of aircraft which can be stationed in this City by 4.[NEWLINE][NEWLINE]City must have a Barracks.'),

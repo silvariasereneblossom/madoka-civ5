@@ -62,7 +62,8 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 -- Sayaka Miki: Kyoshikyoku no Seigi (Rhapsody of Justice)
 -- Replaces the old UA ("Orchestra for Justice") entirely. Design: docs/design/phase4-design-v1.md section 5.
 --
---   1. Wonders: +100% Tourism, through a hidden policy granted once from Lua.
+--   1. Wonders: each World Wonder she built and still holds gives +5% Tourism in all her cities, through a
+--      stacking dummy building in the capital counted from Lua (ruling 15.1).
 --   2. The Palace Music Hall: a capital-only building with 2 Great Work of Music slots; Decretum is
 --      created and placed in its first slot from Lua when her capital first exists.
 --   3. The Cutlass Conductor replaces the Swordsman and yields Culture and Faith on kills.
@@ -82,20 +83,22 @@ WHERE Type = 'TRAIT_TOURISM_HEALING_BONUS';
 
 
 --------------------------------------------------------------------------------------------------------------
--- 1. Wonders: the hidden policy
--- Traits has no Wonder Tourism column, so a policy carries Policy_BuildingClassTourismModifiers 100 for every
--- World Wonder class. World Wonders are the classes with MaxGlobalInstances = 1 (CP's isWorldWonderClass is
--- MaxGlobalInstances != -1, and every such class here has the value 1: 50 base-game Wonders plus the mod's 4).
+-- 1. Wonders: +5% Tourism in every city per World Wonder she built (ruling 15.1, 2026-09-18)
+-- Replaces the old per-wonder +100% city modifier (Policy_BuildingClassTourismModifiers), whose rows are gone.
 --
--- CP semantics, checked in the DLL: CvPolicyEntry reads this table into m_ppiBuildingClassYieldModifiers
--- [class][YIELD_TOURISM], and CvCity::processBuilding adds it with changeYieldRateModifier(YIELD_TOURISM).
--- So the 100 is a +100% modifier on ALL Tourism of the city holding that Wonder, and it adds up per Wonder
--- in the city. The text below says exactly that. (No Wonder has flat Tourism of its own here: a Wonder's
--- Tourism is its Great Works and theming, which this doubles along with the rest of the city.)
+-- No Building, Policy or Trait column gives a player-wide Tourism percentage, but Building_GlobalYieldModifiers
+-- accepts YIELD_TOURISM: CvPlayer::processBuilding adds GetGlobalYieldModifier * iChange to the player's
+-- yield rate modifier, and CvCity::getBaseYieldRateModifier adds the player's modifier to every city's yield,
+-- Tourism included (the same path the old policy's modifier took, one level up). iChange is the change in
+-- the real building count, so a stacked dummy adds 5% per copy.
 --
--- Invisible: no PolicyBranchType, so it sits in no branch of the policy tree, and IsDummy = 1 (a CP column)
--- keeps it out of the policy count and the adoption difficulty bonus. Lua grants it with the bFree flag, so
--- it does not raise the cost of the next policy either.
+-- The dummy stands in her capital; Lua (PMMMAbilitySayaka.lua) sets its count every turn to the number of
+-- World Wonders (classes with MaxGlobalInstances = 1) standing in her cities whose original owner is her,
+-- i.e. wonders she built and still holds, and moves it if the capital moves. NeverCapture: a captured
+-- capital loses it, and the next turn puts it in her new capital.
+--
+-- POLICY_PMMM_SAYAKA_RHAPSODY stays as an empty hidden policy (no modifiers): the Lua uses it, saved by the
+-- engine, as the "Decretum already created" flag.
 --------------------------------------------------------------------------------------------------------------
 DELETE FROM Policy_BuildingClassTourismModifiers WHERE PolicyType = 'POLICY_PMMM_SAYAKA_RHAPSODY';
 DELETE FROM Policies WHERE Type = 'POLICY_PMMM_SAYAKA_RHAPSODY';
@@ -104,10 +107,24 @@ INSERT INTO Policies
 			(Type,								Description,							Help,										IsDummy,	PortraitIndex,	IconAtlas,		IconAtlasAchieved)
 VALUES		('POLICY_PMMM_SAYAKA_RHAPSODY',		'TXT_KEY_POLICY_PMMM_SAYAKA_RHAPSODY',	'TXT_KEY_POLICY_PMMM_SAYAKA_RHAPSODY_HELP',	1,			6,				'POLICY_ATLAS',	'POLICY_A_ATLAS');
 
-INSERT INTO Policy_BuildingClassTourismModifiers
-			(PolicyType,						BuildingClassType,	TourismModifier)
-SELECT		('POLICY_PMMM_SAYAKA_RHAPSODY'),	Type,				100
-FROM BuildingClasses WHERE MaxGlobalInstances = 1;
+DELETE FROM Building_GlobalYieldModifiers WHERE BuildingType = 'BUILDING_PMMM_SAYAKA_WONDER_TOURISM';
+DELETE FROM Buildings       WHERE Type = 'BUILDING_PMMM_SAYAKA_WONDER_TOURISM';
+DELETE FROM BuildingClasses WHERE Type = 'BUILDINGCLASS_PMMM_SAYAKA_WONDER_TOURISM';
+
+INSERT INTO BuildingClasses (Type, Description, DefaultBuilding, NoLimit)
+VALUES ('BUILDINGCLASS_PMMM_SAYAKA_WONDER_TOURISM', 'TXT_KEY_BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 'BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 1);
+
+INSERT INTO Buildings
+			(Type, BuildingClass, Description, Help, Cost, FaithCost, GreatWorkCount, PrereqTech,
+			NeverCapture, NukeImmune, ConquestProb, IsDummy, ShowInPedia,
+			IconAtlas, PortraitIndex)
+VALUES		('BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 'BUILDINGCLASS_PMMM_SAYAKA_WONDER_TOURISM',
+			'TXT_KEY_BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 'TXT_KEY_BUILDING_PMMM_SAYAKA_WONDER_TOURISM_HELP', -1, -1, -1, NULL,
+			1, 1, 0, 1, 0,
+			'BW_ATLAS_1', 19);
+
+INSERT INTO Building_GlobalYieldModifiers (BuildingType, YieldType, Yield)
+VALUES ('BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 'YIELD_TOURISM', 5);
 
 
 --------------------------------------------------------------------------------------------------------------
@@ -259,9 +276,11 @@ DELETE FROM BuildingClasses WHERE Type = 'BUILDINGCLASS_PMMM_CUTLASS_CONDUCTOR_D
 --------------------------------------------------------------------------------------------------------------
 INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_TRAIT_TOURISM_HEALING_BONUS_SHORT', 'Kyoshikyoku no Seigi (Rhapsody of Justice)'),
-	('TXT_KEY_TRAIT_TOURISM_HEALING_BONUS', 'Each World Wonder gives +100% [ICON_TOURISM] Tourism in its city (two Wonders in one city give +200%). The Palace gains 2 Great Work of Music slots, and the first holds [COLOR_POSITIVE_TEXT]Decretum[ENDCOLOR] from the start.[NEWLINE][NEWLINE]Every turn the [ICON_CAPITAL] Capital earns [ICON_GREAT_PEOPLE] Musician Prodigy points equal to 10% of your [ICON_TOURISM] Tourism per turn, and Artist and Writer Prodigy points equal to 5% each. Each type is capped at 20 points per turn.'),
+	('TXT_KEY_TRAIT_TOURISM_HEALING_BONUS', 'Each World Wonder you built and still own gives +5% [ICON_TOURISM] Tourism in all your Cities. The Palace gains 2 Great Work of Music slots, and the first holds [COLOR_POSITIVE_TEXT]Decretum[ENDCOLOR] from the start.[NEWLINE][NEWLINE]Every turn the [ICON_CAPITAL] Capital earns [ICON_GREAT_PEOPLE] Musician Prodigy points equal to 10% of your [ICON_TOURISM] Tourism per turn, and Artist and Writer Prodigy points equal to 5% each. Each type is capped at 20 points per turn.'),
 	('TXT_KEY_POLICY_PMMM_SAYAKA_RHAPSODY', 'Kyoshikyoku no Seigi'),
-	('TXT_KEY_POLICY_PMMM_SAYAKA_RHAPSODY_HELP', 'Each World Wonder gives +100% [ICON_TOURISM] Tourism in its city.'),
+	('TXT_KEY_POLICY_PMMM_SAYAKA_RHAPSODY_HELP', 'Decretum has been composed.'),
+	('TXT_KEY_BUILDING_PMMM_SAYAKA_WONDER_TOURISM', 'Rhapsody of Wonders'),
+	('TXT_KEY_BUILDING_PMMM_SAYAKA_WONDER_TOURISM_HELP', '+5% [ICON_TOURISM] Tourism in all your Cities. Your [ICON_CAPITAL] Capital holds one for each World Wonder you built and still own.'),
 	('TXT_KEY_BUILDING_PMMM_OKTAVIAN_MUSIC_HALL', 'Palace Music Hall'),
 	('TXT_KEY_BUILDING_PMMM_OKTAVIAN_MUSIC_HALL_HELP', 'Part of Sayaka''s Palace: 2 slots for Great Works of Music. The first starts with [COLOR_POSITIVE_TEXT]Decretum[ENDCOLOR]. Always stands in the [ICON_CAPITAL] Capital: if the Palace moves, the Hall and the works in it follow at the start of your next turn. Cannot be built or captured.'),
 	('TXT_KEY_GREAT_WORK_PMMM_DECRETUM', 'Decretum'),

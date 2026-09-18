@@ -107,8 +107,12 @@ RegisterLeaderAbility("MISSION_PMMM_BALDAMENTE_FORTISSIMO", {
 -- loaded, so the new UA registers its own events here.
 --
 --   * Once, as soon as she has a capital: create Decretum and put it in the Palace Music Hall's first
---     slot, then grant the hidden Wonder Tourism policy. The policy doubles as the "already done" flag,
---     because the engine saves it; no new persisted table is needed.
+--     slot, then grant the hidden policy POLICY_PMMM_SAYAKA_RHAPSODY. [port] Phase 4: since ruling 15.1 the
+--     policy carries no modifiers; it is only the "already done" flag, because the engine saves it and no
+--     new persisted table is needed.
+--   * [port] Phase 4 (ruling 15.1): each of her turns, and when she founds a city, the capital's stack of
+--     BUILDING_PMMM_SAYAKA_WONDER_TOURISM (+5% Tourism in all her cities each) is set to the number of World
+--     Wonders she built and still owns, and removed from any former capital.
 --   * When she founds a city and at the start of each of her turns: keep the Music Hall in her current
 --     capital, moving it and its works out of a former capital.
 --   * Each of her turns: 10% of her Tourism per turn becomes Musician Prodigy points in the capital, 5%
@@ -123,6 +127,21 @@ local iMusicHall = GameInfoTypes.BUILDING_PMMM_OKTAVIAN_MUSIC_HALL
 local iMusicHallClass = GameInfoTypes.BUILDINGCLASS_PMMM_OKTAVIAN_MUSIC_HALL
 local iMusicHallSlots = (iMusicHall and GameInfo.Buildings[iMusicHall].GreatWorkCount) or 0
 local iDecretum = GameInfoTypes.GREAT_WORK_PMMM_DECRETUM
+
+--[port] Phase 4: ruling 15.1, +5% Tourism in all her cities per World Wonder (Building_GlobalYieldModifiers
+--on a stacking dummy, see SQL/Phase4/Sayaka.sql).
+local iWonderTourismDummy = GameInfoTypes.BUILDING_PMMM_SAYAKA_WONDER_TOURISM
+
+--[port] Phase 4: every World Wonder building, in ID order. A World Wonder is a building whose class has
+--MaxGlobalInstances = 1 (CP's isWorldWonderClass is MaxGlobalInstances != -1; every such class here is 1).
+local tWorldWonderBuildings = {}
+for row in GameInfo.Buildings() do
+	local pClass = GameInfo.BuildingClasses[row.BuildingClass]
+	if pClass and pClass.MaxGlobalInstances == 1 then
+		table.insert(tWorldWonderBuildings, row.ID)
+	end
+end
+table.sort(tWorldWonderBuildings)
 
 --Tourism to Prodigy points: percent of Tourism per turn, and the cap per type, in whole points.
 --Tourism and the progress call are both in hundredths, so the percentages apply directly.
@@ -190,7 +209,39 @@ local function KeepMusicHallInCapital(pPlayer, pCapital)
 	end
 end
 
---Once per player: Decretum into the Hall's first slot, then the hidden Wonder Tourism policy.
+--[port] Phase 4: ruling 15.1. Reading of "every wonder she has built": a World Wonder standing in one of her
+--cities whose original builder is her (City:GetBuildingOriginalOwner). A wonder she lost does not count; one
+--she captured from someone else does not count; one she built, lost and took back counts again.
+local function CountOwnBuiltWonders(iPlayer, pPlayer)
+	local iCount = 0
+	for pCity in pPlayer:Cities() do
+		if pCity:GetNumWorldWonders() > 0 then
+			for _, iBuilding in ipairs(tWorldWonderBuildings) do
+				if pCity:GetNumRealBuilding(iBuilding) > 0 and pCity:GetBuildingOriginalOwner(iBuilding) == iPlayer then
+					iCount = iCount + 1
+				end
+			end
+		end
+	end
+	return iCount
+end
+
+--[port] Phase 4: ruling 15.1. The capital holds one dummy per wonder; any other city holds none.
+local function SyncWonderTourism(iPlayer, pPlayer, pCapital)
+	if not iWonderTourismDummy or not pCapital then return end
+	local iCapitalID = pCapital:GetID()
+	for pCity in pPlayer:Cities() do
+		if pCity:GetID() ~= iCapitalID and pCity:GetNumRealBuilding(iWonderTourismDummy) > 0 then
+			pCity:SetNumRealBuilding(iWonderTourismDummy, 0)
+		end
+	end
+	local iWonders = CountOwnBuiltWonders(iPlayer, pPlayer)
+	if pCapital:GetNumRealBuilding(iWonderTourismDummy) ~= iWonders then
+		pCapital:SetNumRealBuilding(iWonderTourismDummy, iWonders)
+	end
+end
+
+--Once per player: Decretum into the Hall's first slot, then the hidden flag policy.
 local function RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
 	if not iRhapsodyPolicy or pPlayer:HasPolicy(iRhapsodyPolicy) then return end
 	if iDecretum and iMusicHall and pCapital:IsHasBuilding(iMusicHall)
@@ -229,6 +280,7 @@ function SayakaRhapsodyDoTurn(iPlayer)
 	if not pCapital then return end
 	KeepMusicHallInCapital(pPlayer, pCapital)
 	RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
+	SyncWonderTourism(iPlayer, pPlayer, pCapital)	--[port] Phase 4: ruling 15.1
 	RhapsodyTourismToProdigies(pPlayer, pCapital)
 end
 
@@ -240,7 +292,20 @@ function SayakaRhapsodyCityFounded(iPlayer, iX, iY)
 	if not pCapital then return end
 	KeepMusicHallInCapital(pPlayer, pCapital)
 	RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
+	SyncWonderTourism(iPlayer, pPlayer, pCapital)	--[port] Phase 4: ruling 15.1
+end
+
+--[port] Phase 4: ruling 15.1. A wonder she completes counts at once rather than from her next turn.
+local tIsWorldWonderBuilding = {}
+for _, iBuilding in ipairs(tWorldWonderBuildings) do tIsWorldWonderBuilding[iBuilding] = true end
+function SayakaWonderConstructed(iPlayer, iCity, iBuilding)
+	if not tIsWorldWonderBuilding[iBuilding] or not IsRhapsodyPlayer(iPlayer) then return end
+	local pPlayer = Players[iPlayer]
+	local pCapital = pPlayer and pPlayer:GetCapitalCity()
+	if not pCapital then return end
+	SyncWonderTourism(iPlayer, pPlayer, pCapital)
 end
 
 GameEvents.PlayerDoTurn.Add(SayakaRhapsodyDoTurn)
+GameEvents.CityConstructed.Add(SayakaWonderConstructed)	--[port] Phase 4: ruling 15.1
 GameEvents.PlayerCityFounded.Add(SayakaRhapsodyCityFounded)

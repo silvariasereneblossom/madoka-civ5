@@ -258,8 +258,7 @@ function ExecuteMapClickCustomMission(pPlot)
 		DoTiroFinale(Game:GetActivePlayer(), UI.GetHeadSelectedUnit(), pPlot)
 	elseif tMissionInfo.ExecFunction == 'LAW_OF_CYCLES' then
 		DoLawOfCyclesMission(Game:GetActivePlayer(), UI.GetHeadSelectedUnit(), pPlot)
-	elseif tMissionInfo.ExecFunction == 'SUMMON_WITCH' then
-		DoSummonWitch(Game:GetActivePlayer(), UI.GetHeadSelectedUnit(), pPlot)
+	--[port] Phase 4: Ultimate Madoka's Summon Witch is retired (Summon Herald of the Cycle replaces it)
 	elseif tMissionInfo.ExecFunction == 'POLISH' then
 		DoPolish(Game:GetActivePlayer(), UI.GetHeadSelectedUnit(), pPlot)
 	elseif tMissionInfo.ExecFunction == 'SOCIALIZE' then
