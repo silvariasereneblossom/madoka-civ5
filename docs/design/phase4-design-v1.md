@@ -337,8 +337,22 @@ dealing no damage since the port. Pluvia Magica skipped its own target (the plot
 promotion re-applied before it expired was stripped early. The Shirome trait gate keyed on a column every civ now
 uses. Kyouko's and Mami's dummy-driven building scripts were retired or rewritten after their dummies were deleted.
 
-**Still to build.** Homura's Time Stop, Thief of Time and Dimensional Armory; Sayaka's wonder tourism, Palace music
-slots, Cutlass Conductor and tourism-to-Prodigy; Kyouko's religion block and luxury happiness; Mami's Teahouse gold
-percentage and Tiro Siege; Kazumi's deterministic Freezer; Ultimate Madoka's Law of Cycles return, Witch Form and
-Lead Away changes; Nagisa's Golden Age package; the Ai Yo and Mami city-cap DLL columns; the text and Civilopedia
-pass. Nagisa and Oriko/Kirika have no leader-girl ability specified.
+**Build status, 2026-09-18.** Every civ's specified kit is implemented and verifies offline (82 Lua files parse, the
+simulated database build shows only the 15 long-standing failures). The bundled DLL carries Ai Yo and Mami's city cap and
+is installed in the game's Community Patch folder (`scripts/deploy_dll.py --restore` puts the original back). Nothing has
+been exercised in a real game yet.
+
+**Open rulings.**
+1. Sayaka's wonder Tourism: CP's per-wonder row is +100% of all Tourism in that city and stacks; exact "double each
+   wonder's Tourism" needs a Lua tally.
+2. Kazumi: `GreatWorkWLTKD` is an on/off flag (every city, about 6 turns), and Teddy Bear monopolies only work under Vox
+   Populi's resource-monopoly option.
+3. Ultimate Madoka keeps the old Summon Witch alongside Witch Form: keep or remove?
+4. Ultimate Madoka and Devil Homura still get the free starting Archer that compensated for having no leader girl.
+5. Homura no longer has any conquest steal (the Thief of Time is a Scout now); drop it for good, or give it back to the trait?
+6. Mami's city cap ignores puppets (Venice-style) by default.
+7. Nagisa and Oriko/Kirika have no leader-girl ability.
+8. Tiro Musketeers keep Tiro Siege after upgrading to Riflemen.
+
+**Known approximations.** Time Stop's free turn under-counts healing, city-state and deal income, and border growth;
+Kyouko's luxury rule treats city-state luxuries as her own. All are commented where they live.
