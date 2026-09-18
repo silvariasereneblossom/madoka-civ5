@@ -448,7 +448,7 @@
     <File md5="603BE463F068804A497006296465EB76" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua</File>
     <File md5="48FBE94031A79A255EDD3C36CF01A12A" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilitySayaka.lua</File>
     <File md5="FBE48FD0223D62D14B48DF2C4BE7B498" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKyouko.lua</File>
-    <File md5="4A2E1158C89D2898D785F6A9D6742ABD" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
+    <File md5="0426D5D7B3AE26382E005E867F455353" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
     <File md5="B1350D70D967E35F58F6C91009A04BB8" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="9CD926C04AAE536D7FEFEF23F5BD4EED" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="60A89D33BF5565A25723E4BA149EAC14" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
@@ -464,7 +464,7 @@
     <File md5="4329D05FC48CEB6A334ED225318C6E2D" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
     <File md5="322DE6C82681F565BC0C8A034A597461" import="1">Lua/Gameplay/Traits/PMMMMamiTrait.lua</File>
     <File md5="92B0D7551312CEF3FD4B780DFB606CEF" import="1">Lua/Gameplay/Traits/PMMMNagisaTrait.lua</File>
-    <File md5="5CD628E3CA3BF827F482AC5201EC85FF" import="1">Lua/Gameplay/Traits/PMMMPleiadesTrait.lua</File>
+    <File md5="D1B2B2DBC9A6F3E8EBB2897C91556064" import="1">Lua/Gameplay/Traits/PMMMPleiadesTrait.lua</File>
     <File md5="38DA64AAF12FFE0CDBF90F63AC03F9A9" import="1">Lua/Gameplay/Traits/PMMMSayakaTrait.lua</File>
     <File md5="DE77E01D13903C0D3A06E1EA82EDDF97" import="1">Lua/Gameplay/Traits/PMMMShiromeTrait.lua</File>
     <File md5="DC44BE1978CF85BEF1C5A0E57C961350" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>
@@ -483,8 +483,8 @@
     <File md5="901F7D838A9A365BDC7B35D8F2AAA2C7" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
-    <File md5="A29208355FDEB9E5CF6855A3A68F499F" import="0">Lua/UI/PleiadesFreezer.lua</File>
-    <File md5="1B4E1B082A559BDF0DBB218BE71106D4" import="0">Lua/UI/PleiadesFreezer.xml</File>
+    <File md5="2A53FE602925732FD331B821F698937A" import="0">Lua/UI/PleiadesFreezer.lua</File>
+    <File md5="F61477A5EDA66C9E54614F14D4311F7A" import="0">Lua/UI/PleiadesFreezer.xml</File>
     <File md5="3C4FCC21079FE48507D266CBCD7702B7" import="0">Lua/UI/TopPanelEntertainmentDisplay.lua</File>
     <File md5="25380CA53A73D67D8240DA66579E8B20" import="0">Lua/UI/TopPanelEntertainmentDisplay.xml</File>
     <File md5="9D50A23816F4894DB91C24B4BC55C326" import="0">Lua/UI/TopPanelFreezerDisplay.lua</File>
@@ -560,7 +560,7 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="7CB71232BF836D92F8DDE9FE03F897B2" import="0">SQL/Phase4/Abilities.sql</File>
+    <File md5="09365D16BB63A2444402AE43A10C9027" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="9DB71F5808732218C03D4091DE7EAA96" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="E75FA7DE1417FC0BC0B65F0FBCDA109A" import="0">SQL/Phase4/OrikoKirika.sql</File>
     <File md5="B4604A96A8D576178414DCAFA2A3E1C2" import="0">SQL/Phase4/Kyouko.sql</File>
@@ -580,7 +580,7 @@
     <File md5="8E968CB796E87F10284EBCF8B6E90C0D" import="0">SQL/Shared/NavalOutpost.sql</File>
     <File md5="DB0DF1CE20A39BDE8332889E708ADF79" import="0">SQL/Shared/PlayerColors.sql</File>
     <File md5="DCEB8BE87F29E5E36AFA159E20626EB1" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
-    <File md5="2DF50F84E88303FC61F889234B9A1FDF" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="0B13E729BC76D73CFA438B1A56A8CD96" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
     <File md5="FD01B1194B3EE011A39E86749EBDBF68" import="1">SQL/Shared/UnitArtDefines.sql</File>
     <File md5="5CA12672FE05C265D6C10749CC4510E5" import="0">SQL/Shared/WFTWConcepts.sql</File>
     <File md5="B0BD2983D305AE2DB0AB9CD52B234F36" import="0">SQL/Songhai/AskiaTrait.sql</File>

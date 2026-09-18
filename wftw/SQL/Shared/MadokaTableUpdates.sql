@@ -12,6 +12,17 @@
 ALTER TABLE Traits ADD COLUMN 'MagicalGirlOnGreatPersonUse' BOOLEAN DEFAULT 1 NOT NULL; --now defaults to true! Only Demon Homura will have this as "false."
 -- [port] marks the civilizations that take part in the Magical Girl system when MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS is on
 ALTER TABLE Traits ADD COLUMN 'HasMagicalGirls' BOOLEAN DEFAULT 0 NOT NULL;
+-- [port] Phase 4 trait columns read by the bundled Community Patch DLL (see dll/pmmm-phase4.patch).
+-- Devil Homura's Ai Yo: no unhappiness penalties; +1% yields and combat strength per N unhappiness from cities
+-- and population, capped; never a Golden Age; immune to ideology pressure.
+ALTER TABLE Traits ADD COLUMN 'PMMMIgnoreUnhappinessPenalties' BOOLEAN DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMUnhappinessPerBonusPercent' INTEGER DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMUnhappinessBonusMax' INTEGER DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMNoGoldenAges' BOOLEAN DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMNoIdeologyPressure' BOOLEAN DEFAULT 0 NOT NULL;
+-- Mami's city soft cap: every non-puppet city past the threshold adds Step x (cities over) unhappiness.
+ALTER TABLE Traits ADD COLUMN 'PMMMCityCapThreshold' INTEGER DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMCityCapUnhappinessStep' INTEGER DEFAULT 0 NOT NULL;
 ALTER TABLE Traits ADD COLUMN 'CityStateCombatStrengthModTimes100' INTEGER DEFAULT 0; --Amount of Strength granted to Gun
 ALTER TABLE Traits ADD COLUMN 'GreatPersonProgressFromKills' TEXT DEFAULT NULL REFERENCES Specialists(Type); --Sayaka's trait
 ALTER TABLE Traits ADD COLUMN 'CombatBonusFromTourismInfluence' BOOLEAN DEFAULT 0 NOT NULL; --Sayaka's trait. Is a boolean since it uses specific promotions.

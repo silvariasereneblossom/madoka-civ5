@@ -55,6 +55,10 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     repo = Path(args.repo).resolve()
+    # PMMM Phase 4: the mod's DLL changes (Ai Yo, Mami's city cap) are applied on top of the checkout.
+    # The script is idempotent, so rebuilding an already-patched tree is safe.
+    import subprocess
+    subprocess.run([sys.executable, str(ROOT / 'scripts' / 'dll_patch_phase4.py'), str(repo)], check=True)
     llvm_bin = Path(args.llvm_bin)
     script = repo / "build_vp_clang_sdk.py"
     for p, what in [(script, "upstream build script"), (SDK_DIR / "Include", "SDK include"),

@@ -1,0 +1,298 @@
+#!/usr/bin/env python3
+"""Apply the PMMM Phase 4 changes to a Community-Patch-DLL 5.4.6 checkout (idempotent).
+
+Adds Devil Homura's Ai Yo trait columns and Mami's city soft cap to CvPlayer, CvCity and
+CvPlayerCulture, and the seven trait columns to CvTraitEntry. Usage: python scripts/dll_patch_phase4.py [repo]
+"""
+import io
+import sys
+from pathlib import Path
+
+REPO = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[1] / "upstream" / "Community-Patch-DLL"
+SRC = REPO / "CvGameCoreDLL_Expansion2"
+
+
+def rd(p):
+    return io.open(p, encoding="utf-8", errors="surrogateescape", newline="").read()
+
+
+def wr(p, s):
+    io.open(p, "w", encoding="utf-8", errors="surrogateescape", newline="").write(s)
+
+
+def once(s, old, new, label):
+    if new in s:
+        return s  # already applied
+    n = s.count(old)
+    if n != 1:
+        raise SystemExit(f"anchor '{label}' matched {n} times")
+    return s.replace(old, new, 1)
+
+
+TRAIT_GETTERS = """// PMMM Phase 4: Devil Homura's Ai Yo and Mami's city cap
+bool CvTraitEntry::IsPMMMIgnoreUnhappinessPenalties() const { return m_bPMMMIgnoreUnhappinessPenalties; }
+int CvTraitEntry::GetPMMMUnhappinessPerBonusPercent() const { return m_iPMMMUnhappinessPerBonusPercent; }
+int CvTraitEntry::GetPMMMUnhappinessBonusMax() const { return m_iPMMMUnhappinessBonusMax; }
+bool CvTraitEntry::IsPMMMNoGoldenAges() const { return m_bPMMMNoGoldenAges; }
+bool CvTraitEntry::IsPMMMNoIdeologyPressure() const { return m_bPMMMNoIdeologyPressure; }
+int CvTraitEntry::GetPMMMCityCapThreshold() const { return m_iPMMMCityCapThreshold; }
+int CvTraitEntry::GetPMMMCityCapUnhappinessStep() const { return m_iPMMMCityCapUnhappinessStep; }
+"""
+
+TRAIT_CACHE = """\t// PMMM Phase 4 columns (declared by the mod in SQL/Shared/MadokaTableUpdates.sql)
+\tm_bPMMMIgnoreUnhappinessPenalties = kResults.GetBool("PMMMIgnoreUnhappinessPenalties");
+\tm_iPMMMUnhappinessPerBonusPercent = kResults.GetInt("PMMMUnhappinessPerBonusPercent");
+\tm_iPMMMUnhappinessBonusMax = kResults.GetInt("PMMMUnhappinessBonusMax");
+\tm_bPMMMNoGoldenAges = kResults.GetBool("PMMMNoGoldenAges");
+\tm_bPMMMNoIdeologyPressure = kResults.GetBool("PMMMNoIdeologyPressure");
+\tm_iPMMMCityCapThreshold = kResults.GetInt("PMMMCityCapThreshold");
+\tm_iPMMMCityCapUnhappinessStep = kResults.GetInt("PMMMCityCapUnhappinessStep");
+"""
+
+TRAIT_DECLS = """\t// PMMM (Madoka Magica: Wish for the World) Phase 4 trait columns
+\tbool IsPMMMIgnoreUnhappinessPenalties() const;
+\tint GetPMMMUnhappinessPerBonusPercent() const;
+\tint GetPMMMUnhappinessBonusMax() const;
+\tbool IsPMMMNoGoldenAges() const;
+\tbool IsPMMMNoIdeologyPressure() const;
+\tint GetPMMMCityCapThreshold() const;
+\tint GetPMMMCityCapUnhappinessStep() const;
+"""
+
+TRAIT_MEMBERS = """\tbool m_bPMMMIgnoreUnhappinessPenalties;
+\tint m_iPMMMUnhappinessPerBonusPercent;
+\tint m_iPMMMUnhappinessBonusMax;
+\tbool m_bPMMMNoGoldenAges;
+\tbool m_bPMMMNoIdeologyPressure;
+\tint m_iPMMMCityCapThreshold;
+\tint m_iPMMMCityCapUnhappinessStep;
+"""
+
+
+def patch_traits():
+    p = SRC / "CvTraitClasses.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    if "IsPMMMIgnoreUnhappinessPenalties" not in s:
+        s = once(s, "\tbool IsNoConnectionUnhappiness() const;" + nl,
+                 "\tbool IsNoConnectionUnhappiness() const;" + nl + TRAIT_DECLS.replace("\n", nl), "trait decls")
+        # the member name exists twice (trait entry, then player traits); the entry's is the first
+        key = "\tbool m_bNoConnectionUnhappiness;" + nl
+        i = s.index(key) + len(key)
+        s = s[:i] + TRAIT_MEMBERS.replace("\n", nl) + s[i:]
+        wr(p, s)
+    p = SRC / "CvTraitClasses.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    getter = "bool CvTraitEntry::IsNoConnectionUnhappiness() const" + nl + "{" + nl + "\treturn m_bNoConnectionUnhappiness;" + nl + "}" + nl
+    s = once(s, getter, getter + TRAIT_GETTERS.replace("\n", nl), "trait getters")
+    cache = '\tm_bNoConnectionUnhappiness = kResults.GetBool("NoConnectionUnhappiness");' + nl
+    s = once(s, cache, cache + TRAIT_CACHE.replace("\n", nl), "trait cache")
+    wr(p, s)
+
+
+def patch_player_h():
+    p = SRC / "CvPlayer.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\tbool IsEmpireSuperUnhappy() const;" + nl,
+             "\tbool IsEmpireSuperUnhappy() const;" + nl +
+             "\t// PMMM Phase 4 (Madoka Magica: Wish for the World): Ai Yo and the city soft cap, read from trait columns" + nl +
+             "\tbool IsPMMMIgnoreUnhappinessPenalties() const;" + nl +
+             "\tint GetPMMMUnhappinessBonusPercent() const;" + nl +
+             "\tbool IsPMMMNoGoldenAges() const;" + nl +
+             "\tbool IsPMMMNoIdeologyPressure() const;" + nl +
+             "\tint GetPMMMCityCapUnhappiness() const;" + nl +
+             "\tvoid PMMMRefreshTraitCache() const;" + nl, "h methods")
+    s = once(s, "\tint m_iHappinessTotal;" + nl,
+             "\tint m_iHappinessTotal;" + nl +
+             "\t// PMMM Phase 4: derived from the leader's traits, rebuilt on demand, never serialized" + nl +
+             "\tmutable int m_iPMMMTraitCacheLeader;" + nl +
+             "\tmutable bool m_bPMMMIgnoreUnhappiness;" + nl +
+             "\tmutable int m_iPMMMUnhappinessPerBonusPercent;" + nl +
+             "\tmutable int m_iPMMMUnhappinessBonusMax;" + nl +
+             "\tmutable bool m_bPMMMNoGoldenAges;" + nl +
+             "\tmutable bool m_bPMMMNoIdeologyPressure;" + nl +
+             "\tmutable int m_iPMMMCityCapThreshold;" + nl +
+             "\tmutable int m_iPMMMCityCapStep;" + nl +
+             "\tint m_iPMMMUnhappinessFromCitiesAndPop;" + nl, "h members")
+    wr(p, s)
+
+
+HELPERS = r'''//	--------------------------------------------------------------------------------
+// PMMM Phase 4 (Madoka Magica: Wish for the World)
+// Trait columns are summed over the leader's traits once per leader and cached. The cache is not
+// serialized: it is rebuilt from the database the first time it is read after a load.
+void CvPlayer::PMMMRefreshTraitCache() const
+{
+	const int iLeader = (int)getLeaderType();
+	if (m_iPMMMTraitCacheLeader == iLeader)
+		return;
+
+	m_iPMMMTraitCacheLeader = iLeader;
+	m_bPMMMIgnoreUnhappiness = false;
+	m_iPMMMUnhappinessPerBonusPercent = 0;
+	m_iPMMMUnhappinessBonusMax = 0;
+	m_bPMMMNoGoldenAges = false;
+	m_bPMMMNoIdeologyPressure = false;
+	m_iPMMMCityCapThreshold = 0;
+	m_iPMMMCityCapStep = 0;
+
+	if (iLeader < 0 || !isMajorCiv())
+		return;
+
+	const CvLeaderHeadInfo& kLeader = getLeaderInfo();
+	for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (!kLeader.hasTrait(iI))
+			continue;
+		CvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (pTrait == NULL)
+			continue;
+		if (pTrait->IsPMMMIgnoreUnhappinessPenalties())
+			m_bPMMMIgnoreUnhappiness = true;
+		if (pTrait->IsPMMMNoGoldenAges())
+			m_bPMMMNoGoldenAges = true;
+		if (pTrait->IsPMMMNoIdeologyPressure())
+			m_bPMMMNoIdeologyPressure = true;
+		m_iPMMMUnhappinessPerBonusPercent = max(m_iPMMMUnhappinessPerBonusPercent, pTrait->GetPMMMUnhappinessPerBonusPercent());
+		m_iPMMMUnhappinessBonusMax = max(m_iPMMMUnhappinessBonusMax, pTrait->GetPMMMUnhappinessBonusMax());
+		if (pTrait->GetPMMMCityCapThreshold() > 0)
+		{
+			m_iPMMMCityCapThreshold = pTrait->GetPMMMCityCapThreshold();
+			m_iPMMMCityCapStep = pTrait->GetPMMMCityCapUnhappinessStep();
+		}
+	}
+}
+
+bool CvPlayer::IsPMMMIgnoreUnhappinessPenalties() const
+{
+	PMMMRefreshTraitCache();
+	return m_bPMMMIgnoreUnhappiness;
+}
+
+/// Ai Yo: +1% yields and combat strength per N unhappiness from cities and population, capped
+int CvPlayer::GetPMMMUnhappinessBonusPercent() const
+{
+	PMMMRefreshTraitCache();
+	if (m_iPMMMUnhappinessPerBonusPercent <= 0)
+		return 0;
+	int iBonus = m_iPMMMUnhappinessFromCitiesAndPop / m_iPMMMUnhappinessPerBonusPercent;
+	if (m_iPMMMUnhappinessBonusMax > 0)
+		iBonus = min(iBonus, m_iPMMMUnhappinessBonusMax);
+	return max(iBonus, 0);
+}
+
+bool CvPlayer::IsPMMMNoGoldenAges() const
+{
+	PMMMRefreshTraitCache();
+	return m_bPMMMNoGoldenAges;
+}
+
+bool CvPlayer::IsPMMMNoIdeologyPressure() const
+{
+	PMMMRefreshTraitCache();
+	return m_bPMMMNoIdeologyPressure;
+}
+
+/// Mami's soft cap: every city past the threshold carries Step x (cities over the threshold) unhappiness,
+/// so the total is Step x (over)^2. Puppets are not counted, in the manner of Venice.
+int CvPlayer::GetPMMMCityCapUnhappiness() const
+{
+	PMMMRefreshTraitCache();
+	if (m_iPMMMCityCapThreshold <= 0 || m_iPMMMCityCapStep <= 0)
+		return 0;
+	int iCounted = 0;
+	int iLoop = 0;
+	for (const CvCity* pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		if (!pLoopCity->IsPuppet())
+			iCounted++;
+	}
+	const int iOver = iCounted - m_iPMMMCityCapThreshold;
+	if (iOver <= 0)
+		return 0;
+	return m_iPMMMCityCapStep * iOver * iOver;
+}
+
+'''
+
+
+def patch_player_cpp():
+    p = SRC / "CvPlayer.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\t, m_iHappinessTotal()" + nl,
+             "\t, m_iHappinessTotal()" + nl +
+             "\t, m_iPMMMTraitCacheLeader(-2)" + nl + "\t, m_bPMMMIgnoreUnhappiness(false)" + nl +
+             "\t, m_iPMMMUnhappinessPerBonusPercent(0)" + nl + "\t, m_iPMMMUnhappinessBonusMax(0)" + nl +
+             "\t, m_bPMMMNoGoldenAges(false)" + nl + "\t, m_bPMMMNoIdeologyPressure(false)" + nl +
+             "\t, m_iPMMMCityCapThreshold(0)" + nl + "\t, m_iPMMMCityCapStep(0)" + nl +
+             "\t, m_iPMMMUnhappinessFromCitiesAndPop(0)" + nl, "ctor")
+
+    guard = ("\t// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness" + nl +
+             "\tif (IsPMMMIgnoreUnhappinessPenalties())" + nl + "\t\treturn false;" + nl + nl)
+    for fn in ("bool CvPlayer::IsEmpireUnhappy() const", "bool CvPlayer::IsEmpireVeryUnhappy() const",
+               "bool CvPlayer::IsEmpireSuperUnhappy() const"):
+        s = once(s, fn + nl + "{" + nl, fn + nl + "{" + nl + guard, fn)
+
+    s = once(s, "int CvPlayer::GetUnhappinessCombatStrengthPenalty() const" + nl + "{" + nl,
+             "int CvPlayer::GetUnhappinessCombatStrengthPenalty() const" + nl + "{" + nl +
+             "\t// PMMM Phase 4: Ai Yo turns unhappiness into strength instead (a positive value here is a bonus)" + nl +
+             "\tif (IsPMMMIgnoreUnhappinessPenalties())" + nl + "\t\treturn GetPMMMUnhappinessBonusPercent();" + nl + nl,
+             "combat")
+
+    s = once(s, "\t\tiUnhappiness += GetUnhappinessFromCityPopulation(pAssumeCityAnnexed, pAssumeCityPuppeted);" + nl,
+             "\t\tiUnhappiness += GetUnhappinessFromCityPopulation(pAssumeCityAnnexed, pAssumeCityPuppeted);" + nl +
+             "\t\t// PMMM Phase 4: Ai Yo scales on unhappiness from cities and population (count, captured count, population, occupied)" + nl +
+             "\t\tint iPMMMCitiesAndPopTimes100 = iUnhappiness;" + nl, "pop")
+    s = once(s, "\t\tiUnhappiness += GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);" + nl,
+             "\t\tint iPMMMOccupiedTimes100 = GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);" + nl +
+             "\t\tiUnhappiness += iPMMMOccupiedTimes100;" + nl +
+             "\t\tiPMMMCitiesAndPopTimes100 += iPMMMOccupiedTimes100;" + nl, "occupied")
+    s = once(s, "\t\tiUnhappiness += GetUnhappinessFromUnits();" + nl + nl + "\t\tiUnhappiness /= 100;" + nl,
+             "\t\tiUnhappiness += GetUnhappinessFromUnits();" + nl + nl +
+             "\t\t// PMMM Phase 4: Mami's soft cap on cities" + nl +
+             "\t\tiUnhappiness += GetPMMMCityCapUnhappiness() * 100;" + nl + nl +
+             "\t\t// Only the real state is remembered, never an AI what-if about annexing or puppeting a city" + nl +
+             "\t\tif (pAssumeCityAnnexed == NULL && pAssumeCityPuppeted == NULL)" + nl +
+             "\t\t\tm_iPMMMUnhappinessFromCitiesAndPop = iPMMMCitiesAndPopTimes100 / 100;" + nl + nl +
+             "\t\tiUnhappiness /= 100;" + nl, "cap")
+
+    s = once(s, "void CvPlayer::changeGoldenAgeTurns(int iChange, bool bFree)" + nl + "{" + nl,
+             "void CvPlayer::changeGoldenAgeTurns(int iChange, bool bFree)" + nl + "{" + nl +
+             "\t// PMMM Phase 4: Ai Yo, never a Golden Age from any source" + nl +
+             "\tif (iChange > 0 && IsPMMMNoGoldenAges())" + nl + "\t\treturn;" + nl + nl, "ga turns")
+    s = once(s, "void CvPlayer::ChangeGoldenAgeProgressMeterTimes100(int iChange)" + nl + "{" + nl,
+             "void CvPlayer::ChangeGoldenAgeProgressMeterTimes100(int iChange)" + nl + "{" + nl +
+             "\tif (iChange > 0 && IsPMMMNoGoldenAges())" + nl + "\t\treturn;" + nl + nl, "ga meter")
+
+    anchor = "/// Uprisings pop up if the empire is Very Unhappy" + nl
+    s = once(s, anchor, HELPERS.replace("\n", nl) + anchor, "helpers")
+    wr(p, s)
+
+
+def patch_city_cpp():
+    p = SRC / "CvCity.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    old = ("\tint iModifier = iTempMod;" + nl + "\tif (toolTipSink)" + nl +
+           "\t\tGC.getGame().BuildProdModHelpText(toolTipSink, \"TXT_KEY_YIELD_MOD_BUILDINGS\", iTempMod);" + nl)
+    s = once(s, old, old + nl +
+             "\t// PMMM Phase 4: Ai Yo, yields grow with unhappiness from cities and population" + nl +
+             "\tconst int iPMMMAiYo = kOwner.GetPMMMUnhappinessBonusPercent();" + nl +
+             "\tif (iPMMMAiYo != 0)" + nl + "\t{" + nl + "\t\tiModifier += iPMMMAiYo;" + nl +
+             "\t\tif (toolTipSink)" + nl +
+             "\t\t\tGC.getGame().BuildProdModHelpText(toolTipSink, \"TXT_KEY_PMMM_YIELD_MOD_AI_YO\", iPMMMAiYo);" + nl +
+             "\t}" + nl, "yield")
+    wr(p, s)
+
+
+def patch_culture_cpp():
+    p = SRC / "CvCultureClasses.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    old = "int CvPlayerCulture::GetPublicOpinionUnhappiness() const" + nl + "{" + nl + "\treturn m_iOpinionUnhappiness;"
+    s = once(s, old,
+             "int CvPlayerCulture::GetPublicOpinionUnhappiness() const" + nl + "{" + nl +
+             "\t// PMMM Phase 4: Ai Yo, immune to ideology pressure" + nl +
+             "\tif (m_pPlayer && m_pPlayer->IsPMMMNoIdeologyPressure())" + nl + "\t\treturn 0;" + nl + nl +
+             "\treturn m_iOpinionUnhappiness;", "opinion")
+    wr(p, s)
+
+
+if __name__ == "__main__":
+    patch_traits()
+    patch_player_h()
+    patch_player_cpp()
+    patch_city_cpp()
+    patch_culture_cpp()
+    print("PMMM Phase 4 DLL changes applied to", SRC)

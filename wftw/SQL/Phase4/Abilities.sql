@@ -92,3 +92,34 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_PROMOTION_PMMM_NEVER_DESPAIR_HELP', 'Her Mood is always Ecstatic, her Soul Gem never clouds, and she can never become a Witch.'),
 	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR', 'Meikyuu no Homura'),
 	('TXT_KEY_PROMOTION_PMMM_ALWAYS_DESPAIR_HELP', 'She is always in Despair, but suffers none of its penalties, her Soul Gem never clouds, and she can never become a Witch.');
+
+--------------------------------------------------------------------------------------------------------------
+-- DLL-backed trait values (columns declared in SQL/Shared/MadokaTableUpdates.sql, read by the bundled DLL)
+--------------------------------------------------------------------------------------------------------------
+-- Devil Homura, Ai Yo: +1% per 5 unhappiness from cities and population, up to +25%.
+UPDATE Traits SET PMMMIgnoreUnhappinessPenalties = 1, PMMMUnhappinessPerBonusPercent = 5, PMMMUnhappinessBonusMax = 25,
+	PMMMNoGoldenAges = 1, PMMMNoIdeologyPressure = 1
+WHERE Type = 'TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS';
+
+-- Mami: every city past the fourth adds 4 unhappiness per city over (5 cities +4, 6 +16, 7 +36).
+UPDATE Traits SET PMMMCityCapThreshold = 4, PMMMCityCapUnhappinessStep = 4
+WHERE Type = 'TRAIT_FRIENDSHIP_PRODUCTION_BONUS';
+
+INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
+	('TXT_KEY_PMMM_YIELD_MOD_AI_YO', '[NEWLINE][ICON_BULLET]Ai Yo: {1_Num}%');
+
+--------------------------------------------------------------------------------------------------------------
+-- Devil Homura's AI: a civ that borders her should expect a declaration of war.
+--------------------------------------------------------------------------------------------------------------
+UPDATE Leaders SET Boldness = 10, WarmongerHate = 2, DenounceWillingness = 8, DoFWillingness = 2, Forgiveness = 1
+WHERE Type = 'LEADER_DEMON_HOMURA';
+
+UPDATE Leader_MajorCivApproachBiases SET Bias = 10 WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND MajorCivApproachType = 'MAJOR_CIV_APPROACH_WAR';
+UPDATE Leader_MajorCivApproachBiases SET Bias = 8  WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND MajorCivApproachType = 'MAJOR_CIV_APPROACH_HOSTILE';
+UPDATE Leader_MajorCivApproachBiases SET Bias = 6  WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND MajorCivApproachType = 'MAJOR_CIV_APPROACH_DECEPTIVE';
+UPDATE Leader_MajorCivApproachBiases SET Bias = 1  WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND MajorCivApproachType = 'MAJOR_CIV_APPROACH_FRIENDLY';
+
+UPDATE Leader_Flavors SET Flavor = 10 WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND FlavorType = 'FLAVOR_OFFENSE';
+UPDATE Leader_Flavors SET Flavor = 10 WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND FlavorType = 'FLAVOR_EXPANSION';
+UPDATE Leader_Flavors SET Flavor = 8  WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND FlavorType = 'FLAVOR_MILITARY_TRAINING';
+UPDATE Leader_Flavors SET Flavor = 1  WHERE LeaderType = 'LEADER_DEMON_HOMURA' AND FlavorType = 'FLAVOR_HAPPINESS';

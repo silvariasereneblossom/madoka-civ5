@@ -1,0 +1,354 @@
+diff --git a/CvGameCoreDLL_Expansion2/CvCity.cpp b/CvGameCoreDLL_Expansion2/CvCity.cpp
+index febfb2af..cfe9d3ed 100644
+--- a/CvGameCoreDLL_Expansion2/CvCity.cpp
++++ b/CvGameCoreDLL_Expansion2/CvCity.cpp
+@@ -22555,6 +22555,15 @@ int CvCity::getBaseYieldRateModifier(YieldTypes eIndex, int iAssumedExtraModifie
+ 	if (toolTipSink)
+ 		GC.getGame().BuildProdModHelpText(toolTipSink, "TXT_KEY_YIELD_MOD_BUILDINGS", iTempMod);
+ 
++	// PMMM Phase 4: Ai Yo, yields grow with unhappiness from cities and population
++	const int iPMMMAiYo = kOwner.GetPMMMUnhappinessBonusPercent();
++	if (iPMMMAiYo != 0)
++	{
++		iModifier += iPMMMAiYo;
++		if (toolTipSink)
++			GC.getGame().BuildProdModHelpText(toolTipSink, "TXT_KEY_PMMM_YIELD_MOD_AI_YO", iPMMMAiYo);
++	}
++
+ 	// Special modifiers for border growth
+ 	if (eIndex == YIELD_CULTURE_LOCAL)
+ 	{
+diff --git a/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp b/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp
+index b08be309..963c0e91 100644
+--- a/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp
+@@ -4777,6 +4777,10 @@ CvString CvPlayerCulture::GetPublicOpinionTooltip() const
+ /// Unhappiness generated from public opinion
+ int CvPlayerCulture::GetPublicOpinionUnhappiness() const
+ {
++	// PMMM Phase 4: Ai Yo, immune to ideology pressure
++	if (m_pPlayer && m_pPlayer->IsPMMMNoIdeologyPressure())
++		return 0;
++
+ 	return m_iOpinionUnhappiness;
+ }
+ 
+diff --git a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
+index 47b19f30..c3d83c28 100644
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
+@@ -148,6 +148,15 @@ CvPlayer::CvPlayer() :
+ 	, m_iHappiness()
+ 	, m_iUnhappiness()
+ 	, m_iHappinessTotal()
++	, m_iPMMMTraitCacheLeader(-2)
++	, m_bPMMMIgnoreUnhappiness(false)
++	, m_iPMMMUnhappinessPerBonusPercent(0)
++	, m_iPMMMUnhappinessBonusMax(0)
++	, m_bPMMMNoGoldenAges(false)
++	, m_bPMMMNoIdeologyPressure(false)
++	, m_iPMMMCityCapThreshold(0)
++	, m_iPMMMCityCapStep(0)
++	, m_iPMMMUnhappinessFromCitiesAndPop(0)
+ 	, m_iEmpireSizeModifierReductionGlobal()
+ 	, m_iDistressFlatReductionGlobal()
+ 	, m_iPovertyFlatReductionGlobal()
+@@ -20914,6 +20923,10 @@ int CvPlayer::GetUnhappinessSettlerCostPenalty() const
+ /// Get Global Combat Strength Penalty due to Unhappiness
+ int CvPlayer::GetUnhappinessCombatStrengthPenalty() const
+ {
++	// PMMM Phase 4: Ai Yo turns unhappiness into strength instead (a positive value here is a bonus)
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return GetPMMMUnhappinessBonusPercent();
++
+ 	if (!IsEmpireUnhappy())
+ 		return 0;
+ 
+@@ -20930,6 +20943,10 @@ int CvPlayer::GetUnhappinessCombatStrengthPenalty() const
+ /// Has the player passed the Happiness limit?
+ bool CvPlayer::IsEmpireUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if (MOD_BALANCE_VP)
+ 	{
+ 		return GetExcessHappiness() < /*50*/ GD_INT_GET(UNHAPPY_THRESHOLD);
+@@ -20941,6 +20958,10 @@ bool CvPlayer::IsEmpireUnhappy() const
+ /// Is the empire REALLY unhappy? (other penalties)
+ bool CvPlayer::IsEmpireVeryUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if (MOD_BALANCE_VP)
+ 	{
+ 		return GetExcessHappiness() < /*35*/ GD_INT_GET(VERY_UNHAPPY_THRESHOLD);
+@@ -20952,6 +20973,10 @@ bool CvPlayer::IsEmpireVeryUnhappy() const
+ /// Is the empire SUPER unhappy? (leads to revolts)
+ bool CvPlayer::IsEmpireSuperUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if (MOD_BALANCE_VP)
+ 	{
+ 		return GetExcessHappiness() < /*20*/ GD_INT_GET(SUPER_UNHAPPY_THRESHOLD);
+@@ -20960,6 +20985,102 @@ bool CvPlayer::IsEmpireSuperUnhappy() const
+ 	return GetExcessHappiness() <= /*-20*/ GD_INT_GET(SUPER_UNHAPPY_THRESHOLD);
+ }
+ 
++//	--------------------------------------------------------------------------------
++// PMMM Phase 4 (Madoka Magica: Wish for the World)
++// Trait columns are summed over the leader's traits once per leader and cached. The cache is not
++// serialized: it is rebuilt from the database the first time it is read after a load.
++void CvPlayer::PMMMRefreshTraitCache() const
++{
++	const int iLeader = (int)getLeaderType();
++	if (m_iPMMMTraitCacheLeader == iLeader)
++		return;
++
++	m_iPMMMTraitCacheLeader = iLeader;
++	m_bPMMMIgnoreUnhappiness = false;
++	m_iPMMMUnhappinessPerBonusPercent = 0;
++	m_iPMMMUnhappinessBonusMax = 0;
++	m_bPMMMNoGoldenAges = false;
++	m_bPMMMNoIdeologyPressure = false;
++	m_iPMMMCityCapThreshold = 0;
++	m_iPMMMCityCapStep = 0;
++
++	if (iLeader < 0 || !isMajorCiv())
++		return;
++
++	const CvLeaderHeadInfo& kLeader = getLeaderInfo();
++	for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
++	{
++		if (!kLeader.hasTrait(iI))
++			continue;
++		CvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);
++		if (pTrait == NULL)
++			continue;
++		if (pTrait->IsPMMMIgnoreUnhappinessPenalties())
++			m_bPMMMIgnoreUnhappiness = true;
++		if (pTrait->IsPMMMNoGoldenAges())
++			m_bPMMMNoGoldenAges = true;
++		if (pTrait->IsPMMMNoIdeologyPressure())
++			m_bPMMMNoIdeologyPressure = true;
++		m_iPMMMUnhappinessPerBonusPercent = max(m_iPMMMUnhappinessPerBonusPercent, pTrait->GetPMMMUnhappinessPerBonusPercent());
++		m_iPMMMUnhappinessBonusMax = max(m_iPMMMUnhappinessBonusMax, pTrait->GetPMMMUnhappinessBonusMax());
++		if (pTrait->GetPMMMCityCapThreshold() > 0)
++		{
++			m_iPMMMCityCapThreshold = pTrait->GetPMMMCityCapThreshold();
++			m_iPMMMCityCapStep = pTrait->GetPMMMCityCapUnhappinessStep();
++		}
++	}
++}
++
++bool CvPlayer::IsPMMMIgnoreUnhappinessPenalties() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMIgnoreUnhappiness;
++}
++
++/// Ai Yo: +1% yields and combat strength per N unhappiness from cities and population, capped
++int CvPlayer::GetPMMMUnhappinessBonusPercent() const
++{
++	PMMMRefreshTraitCache();
++	if (m_iPMMMUnhappinessPerBonusPercent <= 0)
++		return 0;
++	int iBonus = m_iPMMMUnhappinessFromCitiesAndPop / m_iPMMMUnhappinessPerBonusPercent;
++	if (m_iPMMMUnhappinessBonusMax > 0)
++		iBonus = min(iBonus, m_iPMMMUnhappinessBonusMax);
++	return max(iBonus, 0);
++}
++
++bool CvPlayer::IsPMMMNoGoldenAges() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMNoGoldenAges;
++}
++
++bool CvPlayer::IsPMMMNoIdeologyPressure() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMNoIdeologyPressure;
++}
++
++/// Mami's soft cap: every city past the threshold carries Step x (cities over the threshold) unhappiness,
++/// so the total is Step x (over)^2. Puppets are not counted, in the manner of Venice.
++int CvPlayer::GetPMMMCityCapUnhappiness() const
++{
++	PMMMRefreshTraitCache();
++	if (m_iPMMMCityCapThreshold <= 0 || m_iPMMMCityCapStep <= 0)
++		return 0;
++	int iCounted = 0;
++	int iLoop = 0;
++	for (const CvCity* pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
++	{
++		if (!pLoopCity->IsPuppet())
++			iCounted++;
++	}
++	const int iOver = iCounted - m_iPMMMCityCapThreshold;
++	if (iOver <= 0)
++		return 0;
++	return m_iPMMMCityCapStep * iOver * iOver;
++}
++
+ /// Uprisings pop up if the empire is Very Unhappy
+ void CvPlayer::DoUpdateUprisings()
+ {
+@@ -22166,16 +22287,27 @@ int CvPlayer::DoUpdateTotalUnhappiness(CvCity* pAssumeCityAnnexed, CvCity* pAssu
+ 
+ 		// City Population Unhappiness
+ 		iUnhappiness += GetUnhappinessFromCityPopulation(pAssumeCityAnnexed, pAssumeCityPuppeted);
++		// PMMM Phase 4: Ai Yo scales on unhappiness from cities and population (count, captured count, population, occupied)
++		int iPMMMCitiesAndPopTimes100 = iUnhappiness;
+ 
+ 		// City Building Unhappiness
+ 		iUnhappiness += GetUnhappinessFromCityBuildings(pAssumeCityAnnexed, pAssumeCityPuppeted);
+ 		
+ 		// Occupied City Population Unhappiness
+-		iUnhappiness += GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);
++		int iPMMMOccupiedTimes100 = GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);
++		iUnhappiness += iPMMMOccupiedTimes100;
++		iPMMMCitiesAndPopTimes100 += iPMMMOccupiedTimes100;
+ 
+ 		// Unit Unhappiness (Builders)
+ 		iUnhappiness += GetUnhappinessFromUnits();
+ 
++		// PMMM Phase 4: Mami's soft cap on cities
++		iUnhappiness += GetPMMMCityCapUnhappiness() * 100;
++
++		// Only the real state is remembered, never an AI what-if about annexing or puppeting a city
++		if (pAssumeCityAnnexed == NULL && pAssumeCityPuppeted == NULL)
++			m_iPMMMUnhappinessFromCitiesAndPop = iPMMMCitiesAndPopTimes100 / 100;
++
+ 		iUnhappiness /= 100;
+ 	}
+ 
+@@ -24962,6 +25094,9 @@ void CvPlayer::SetGoldenAgeProgressMeterTimes100(int iValue)
+ /// Changes what is our progress towards the next GA
+ void CvPlayer::ChangeGoldenAgeProgressMeterTimes100(int iChange)
+ {
++	if (iChange > 0 && IsPMMMNoGoldenAges())
++		return;
++
+ 	if (GC.getGame().isOption(GAMEOPTION_NO_HAPPINESS))
+ 		return;
+ 
+@@ -25056,6 +25191,10 @@ bool CvPlayer::isGoldenAge() const
+ // Adding any positive turns of Golden Age counts as triggering a new Golden Age, even if there's one going on
+ void CvPlayer::changeGoldenAgeTurns(int iChange, bool bFree)
+ {
++	// PMMM Phase 4: Ai Yo, never a Golden Age from any source
++	if (iChange > 0 && IsPMMMNoGoldenAges())
++		return;
++
+ 	if (iChange == 0)
+ 		return;
+ 
+diff --git a/CvGameCoreDLL_Expansion2/CvPlayer.h b/CvGameCoreDLL_Expansion2/CvPlayer.h
+index d486be01..c447d25b 100644
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.h
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.h
+@@ -695,6 +695,13 @@ public:
+ 	bool IsEmpireUnhappy() const;
+ 	bool IsEmpireVeryUnhappy() const;
+ 	bool IsEmpireSuperUnhappy() const;
++	// PMMM Phase 4 (Madoka Magica: Wish for the World): Ai Yo and the city soft cap, read from trait columns
++	bool IsPMMMIgnoreUnhappinessPenalties() const;
++	int GetPMMMUnhappinessBonusPercent() const;
++	bool IsPMMMNoGoldenAges() const;
++	bool IsPMMMNoIdeologyPressure() const;
++	int GetPMMMCityCapUnhappiness() const;
++	void PMMMRefreshTraitCache() const;
+ 
+ 	void DoUpdateUprisings();
+ 	int GetUprisingCounter() const;
+@@ -3045,6 +3052,16 @@ protected:
+ 	int m_iHappiness;
+ 	int m_iUnhappiness;
+ 	int m_iHappinessTotal;
++	// PMMM Phase 4: derived from the leader's traits, rebuilt on demand, never serialized
++	mutable int m_iPMMMTraitCacheLeader;
++	mutable bool m_bPMMMIgnoreUnhappiness;
++	mutable int m_iPMMMUnhappinessPerBonusPercent;
++	mutable int m_iPMMMUnhappinessBonusMax;
++	mutable bool m_bPMMMNoGoldenAges;
++	mutable bool m_bPMMMNoIdeologyPressure;
++	mutable int m_iPMMMCityCapThreshold;
++	mutable int m_iPMMMCityCapStep;
++	int m_iPMMMUnhappinessFromCitiesAndPop;
+ 	int m_iEmpireSizeModifierReductionGlobal;
+ 	int m_iDistressFlatReductionGlobal;
+ 	int m_iPovertyFlatReductionGlobal;
+diff --git a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
+index 1b0c6f33..0512b802 100644
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
+@@ -1403,6 +1403,14 @@ bool CvTraitEntry::IsNoConnectionUnhappiness() const
+ {
+ 	return m_bNoConnectionUnhappiness;
+ }
++// PMMM Phase 4: Devil Homura's Ai Yo and Mami's city cap
++bool CvTraitEntry::IsPMMMIgnoreUnhappinessPenalties() const { return m_bPMMMIgnoreUnhappinessPenalties; }
++int CvTraitEntry::GetPMMMUnhappinessPerBonusPercent() const { return m_iPMMMUnhappinessPerBonusPercent; }
++int CvTraitEntry::GetPMMMUnhappinessBonusMax() const { return m_iPMMMUnhappinessBonusMax; }
++bool CvTraitEntry::IsPMMMNoGoldenAges() const { return m_bPMMMNoGoldenAges; }
++bool CvTraitEntry::IsPMMMNoIdeologyPressure() const { return m_bPMMMNoIdeologyPressure; }
++int CvTraitEntry::GetPMMMCityCapThreshold() const { return m_iPMMMCityCapThreshold; }
++int CvTraitEntry::GetPMMMCityCapUnhappinessStep() const { return m_iPMMMCityCapUnhappinessStep; }
+ bool CvTraitEntry::IsNoReligiousStrife() const
+ {
+ 	return m_bIsNoReligiousStrife;
+@@ -2631,6 +2639,14 @@ bool CvTraitEntry::CacheResults(Database::Results& kResults, CvDatabaseUtility&
+ 	m_iCultureMedianModifier = kResults.GetInt("CultureMedianModifier");
+ 	m_iReligiousUnrestModifier = kResults.GetInt("ReligiousUnrestModifier");
+ 	m_bNoConnectionUnhappiness = kResults.GetBool("NoConnectionUnhappiness");
++	// PMMM Phase 4 columns (declared by the mod in SQL/Shared/MadokaTableUpdates.sql)
++	m_bPMMMIgnoreUnhappinessPenalties = kResults.GetBool("PMMMIgnoreUnhappinessPenalties");
++	m_iPMMMUnhappinessPerBonusPercent = kResults.GetInt("PMMMUnhappinessPerBonusPercent");
++	m_iPMMMUnhappinessBonusMax = kResults.GetInt("PMMMUnhappinessBonusMax");
++	m_bPMMMNoGoldenAges = kResults.GetBool("PMMMNoGoldenAges");
++	m_bPMMMNoIdeologyPressure = kResults.GetBool("PMMMNoIdeologyPressure");
++	m_iPMMMCityCapThreshold = kResults.GetInt("PMMMCityCapThreshold");
++	m_iPMMMCityCapUnhappinessStep = kResults.GetInt("PMMMCityCapUnhappinessStep");
+ 	m_bIsNoReligiousStrife = kResults.GetBool("IsNoReligiousStrife");
+ 	m_bIsEraScaling = kResults.GetBool("IsEraScaling");
+ 	m_bIsOddEraScaler = kResults.GetBool("IsOddEraScaler");
+diff --git a/CvGameCoreDLL_Expansion2/CvTraitClasses.h b/CvGameCoreDLL_Expansion2/CvTraitClasses.h
+index 40cf526b..75ff16a7 100644
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.h
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.h
+@@ -305,6 +305,14 @@ public:
+ 	int GetCultureMedianModifier() const;
+ 	int GetReligiousUnrestModifier() const;
+ 	bool IsNoConnectionUnhappiness() const;
++	// PMMM (Madoka Magica: Wish for the World) Phase 4 trait columns
++	bool IsPMMMIgnoreUnhappinessPenalties() const;
++	int GetPMMMUnhappinessPerBonusPercent() const;
++	int GetPMMMUnhappinessBonusMax() const;
++	bool IsPMMMNoGoldenAges() const;
++	bool IsPMMMNoIdeologyPressure() const;
++	int GetPMMMCityCapThreshold() const;
++	int GetPMMMCityCapUnhappinessStep() const;
+ 	bool IsNoReligiousStrife() const;
+ 	bool IsEraScaling() const;
+ 	bool IsOddEraScaler() const;
+@@ -653,6 +661,13 @@ protected:
+ 	int m_iCultureMedianModifier;
+ 	int m_iReligiousUnrestModifier;
+ 	bool m_bNoConnectionUnhappiness;
++	bool m_bPMMMIgnoreUnhappinessPenalties;
++	int m_iPMMMUnhappinessPerBonusPercent;
++	int m_iPMMMUnhappinessBonusMax;
++	bool m_bPMMMNoGoldenAges;
++	bool m_bPMMMNoIdeologyPressure;
++	int m_iPMMMCityCapThreshold;
++	int m_iPMMMCityCapUnhappinessStep;
+ 	bool m_bIsNoReligiousStrife;
+ 	bool m_bIsEraScaling;
+ 	bool m_bIsOddEraScaler;
