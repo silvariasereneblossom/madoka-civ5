@@ -17,3 +17,6 @@ build/
 
 # companion soundtrack pack: 322 MB of MP3s stay out of git
 soundtrack/Music/
+
+# python caches
+__pycache__/
