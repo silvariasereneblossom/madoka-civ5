@@ -260,3 +260,16 @@ attacker's own damage. Tiro Finale now uses the melee one, and the framework's h
 
 Phase 4 per-civ data changes live in `wftw/SQL/Phase4/<Civ>.sql`, which load after every other SQL file
 so they can update rows the base civ files inserted.
+
+## Bundled DLL startup crash, found and fixed (2026-09-18)
+
+The first in-game test of our own DLL build failed at load: `Gamecore.log` said `LoadLibrary failed with error 1114`
+(a DLL initialisation routine failed). Cause: upstream CI puts the Visual C++ 2008 compiler on PATH, and clang-cl
+reads its version to target the VC9 runtime (`-fms-compatibility-version=15.00`). Our machine has no VC9 compiler, so
+clang-cl assumed a modern runtime and emitted C++11 magic-static guards, sized deallocation, `__std_terminate` and
+TLS initialisation that the game's VC9 CRT does not provide. Our earlier link-time workarounds (switching two of those
+off and faking `__std_terminate`) let it link but not initialise. `scripts/build_dll.py` now passes
+`-fms-compatibility-version=15.00.30729` and needs no workarounds; the resulting DLL imports exactly what the official
+one does. LLVM version was not the issue (an LLVM 18.1.8 package was tried; its 32-bit tools run out of memory
+linking, and the 64-bit LLVM 23 works). Visual Studio 2022 Build Tools were installed while investigating and turned
+out not to be needed.
