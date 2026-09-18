@@ -96,3 +96,151 @@ RegisterLeaderAbility("MISSION_PMMM_BALDAMENTE_FORTISSIMO", {
 		return 100 + iTotalDamage
 	end,
 })
+
+
+--------------------------------------------------------------
+-- [port] Phase 4: Kyoshikyoku no Seigi (Rhapsody of Justice), Sayaka's UA.
+-- Design: docs/design/phase4-design-v1.md section 5. Data half: SQL/Phase4/Sayaka.sql.
+--
+-- This lives in the ability file on purpose: PMMMTraitBootstrapper.lua loads PMMMSayakaTrait.lua only
+-- when the old trait columns are set, and Phase 4 clears them to retire the old UA. This file is always
+-- loaded, so the new UA registers its own events here.
+--
+--   * Once, as soon as she has a capital: create Decretum and put it in the Palace Music Hall's first
+--     slot, then grant the hidden Wonder Tourism policy. The policy doubles as the "already done" flag,
+--     because the engine saves it; no new persisted table is needed.
+--   * When she founds a city and at the start of each of her turns: keep the Music Hall in her current
+--     capital, moving it and its works out of a former capital.
+--   * Each of her turns: 10% of her Tourism per turn becomes Musician Prodigy points in the capital, 5%
+--     each Artist and Writer points, each capped at 20 points per turn.
+--------------------------------------------------------------
+
+--[port] Phase 4: the trait that owns this UA
+local sRhapsodyTrait = "TRAIT_TOURISM_HEALING_BONUS"
+
+local iRhapsodyPolicy = GameInfoTypes.POLICY_PMMM_SAYAKA_RHAPSODY
+local iMusicHall = GameInfoTypes.BUILDING_PMMM_OKTAVIAN_MUSIC_HALL
+local iMusicHallClass = GameInfoTypes.BUILDINGCLASS_PMMM_OKTAVIAN_MUSIC_HALL
+local iMusicHallSlots = (iMusicHall and GameInfo.Buildings[iMusicHall].GreatWorkCount) or 0
+local iDecretum = GameInfoTypes.GREAT_WORK_PMMM_DECRETUM
+
+--Tourism to Prodigy points: percent of Tourism per turn, and the cap per type, in whole points.
+--Tourism and the progress call are both in hundredths, so the percentages apply directly.
+local tRhapsodyConversion = {
+	{ Specialist = GameInfoTypes.SPECIALIST_MUSICIAN, Percent = 10 },
+	{ Specialist = GameInfoTypes.SPECIALIST_ARTIST,   Percent = 5 },
+	{ Specialist = GameInfoTypes.SPECIALIST_WRITER,   Percent = 5 },
+}
+local iRhapsodyCapPerTurn = 20
+
+--Per-session cache of which players carry the trait. Read from the database, not from the persisted
+--trait cache, so it is right whatever order the scripts were loaded in.
+local tIsRhapsodyPlayer = {}
+local function IsRhapsodyPlayer(iPlayer)
+	if iPlayer < 0 or iPlayer >= GameDefines.MAX_MAJOR_CIVS then return false end
+	if tIsRhapsodyPlayer[iPlayer] == nil then
+		local pPlayer = Players[iPlayer]
+		--A slot that has never been alive is not cached, so a player who enters later is still seen.
+		if not pPlayer or not pPlayer:IsEverAlive() then return false end
+		local bHas = false
+		local pLeader = GameInfo.Leaders[pPlayer:GetLeaderType()]
+		if pLeader then
+			for row in GameInfo.Leader_Traits{LeaderType = pLeader.Type} do
+				if row.TraitType == sRhapsodyTrait then bHas = true end
+			end
+		end
+		tIsRhapsodyPlayer[iPlayer] = bHas
+	end
+	return tIsRhapsodyPlayer[iPlayer]
+end
+
+--The Music Hall always stands in the current capital. If another of her cities still holds it (the
+--Palace moved, or she lost the capital and a new one was chosen), its works move into the new Hall's
+--free slots and the old Hall is removed. A work that finds no free slot stays where it is, Hall and all.
+local function KeepMusicHallInCapital(pPlayer, pCapital)
+	if not iMusicHall or not pCapital then return end
+	if not pCapital:IsHasBuilding(iMusicHall) then
+		pCapital:SetNumRealBuilding(iMusicHall, 1)
+	end
+	local iCapitalID = pCapital:GetID()
+	for pCity in pPlayer:Cities() do
+		if pCity:GetID() ~= iCapitalID and pCity:IsHasBuilding(iMusicHall) then
+			local bAllMoved = true
+			for iSlot = 0, iMusicHallSlots - 1 do
+				local iWork = pCity:GetBuildingGreatWork(iMusicHallClass, iSlot)
+				if iWork and iWork >= 0 then
+					local iFree
+					for iNewSlot = 0, iMusicHallSlots - 1 do
+						if not iFree and pCapital:GetBuildingGreatWork(iMusicHallClass, iNewSlot) < 0 then
+							iFree = iNewSlot
+						end
+					end
+					if iFree then
+						pCity:SetBuildingGreatWork(iMusicHallClass, iSlot, -1)
+						pCapital:SetBuildingGreatWork(iMusicHallClass, iFree, iWork)
+					else
+						bAllMoved = false
+					end
+				end
+			end
+			if bAllMoved then
+				pCity:SetNumRealBuilding(iMusicHall, 0)
+			end
+		end
+	end
+end
+
+--Once per player: Decretum into the Hall's first slot, then the hidden Wonder Tourism policy.
+local function RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
+	if not iRhapsodyPolicy or pPlayer:HasPolicy(iRhapsodyPolicy) then return end
+	if iDecretum and iMusicHall and pCapital:IsHasBuilding(iMusicHall)
+	and pCapital:GetBuildingGreatWork(iMusicHallClass, 0) < 0 then
+		local sCreator = Locale.ConvertTextKey("TXT_KEY_LEADER_SAYAKA")
+		local iWork = Game.CreateGreatWork(iDecretum, iPlayer, pPlayer:GetCurrentEra(), sCreator)
+		if iWork and iWork >= 0 then
+			pCapital:SetBuildingGreatWork(iMusicHallClass, 0, iWork)
+			pCapital:RefreshTourism()
+		end
+	end
+	--bFree: the policy does not count toward the cost of the next one (it is also IsDummy in the data).
+	pPlayer:SetHasPolicy(iRhapsodyPolicy, true, true)
+end
+
+--10% of Tourism to Musician points, 5% each to Artist and Writer, 20 points per type per turn at most.
+local function RhapsodyTourismToProdigies(pPlayer, pCapital)
+	local iTourismTimes100 = pPlayer:GetTourism()	--hundredths, as TopPanel.lua reads it
+	if not iTourismTimes100 or iTourismTimes100 <= 0 then return end
+	for _, tConv in ipairs(tRhapsodyConversion) do
+		if tConv.Specialist then
+			local iPointsTimes100 = math.floor(iTourismTimes100 * tConv.Percent / 100)
+			iPointsTimes100 = math.min(iPointsTimes100, iRhapsodyCapPerTurn * 100)
+			if iPointsTimes100 > 0 then
+				pCapital:ChangeSpecialistGreatPersonProgressTimes100(tConv.Specialist, iPointsTimes100)
+			end
+		end
+	end
+end
+
+function SayakaRhapsodyDoTurn(iPlayer)
+	if not IsRhapsodyPlayer(iPlayer) then return end
+	local pPlayer = Players[iPlayer]
+	if not pPlayer or not pPlayer:IsAlive() then return end
+	local pCapital = pPlayer:GetCapitalCity()
+	if not pCapital then return end
+	KeepMusicHallInCapital(pPlayer, pCapital)
+	RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
+	RhapsodyTourismToProdigies(pPlayer, pCapital)
+end
+
+--Founding her first city puts the Hall and Decretum in place at once rather than on the next turn.
+function SayakaRhapsodyCityFounded(iPlayer, iX, iY)
+	if not IsRhapsodyPlayer(iPlayer) then return end
+	local pPlayer = Players[iPlayer]
+	local pCapital = pPlayer and pPlayer:GetCapitalCity()
+	if not pCapital then return end
+	KeepMusicHallInCapital(pPlayer, pCapital)
+	RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
+end
+
+GameEvents.PlayerDoTurn.Add(SayakaRhapsodyDoTurn)
+GameEvents.PlayerCityFounded.Add(SayakaRhapsodyCityFounded)

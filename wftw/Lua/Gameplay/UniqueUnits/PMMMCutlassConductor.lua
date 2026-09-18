@@ -3,68 +3,27 @@
 -- DateCreated: 6/13/2014 1:32:50 AM
 --------------------------------------------------------------
 
-
+--[port] Phase 4: the Harmony system is retired. The Cutlass Conductor now replaces the Swordsman and earns
+--Culture and Faith on kills through the data column UnitPromotions_YieldFromKills (SQL/Phase4/Sayaka.sql),
+--so it needs no script. BUILDING_PMMM_CUTLASS_CONDUCTOR_DUMMY is deleted from the database and nothing here
+--names it any more.
+--
+--PMMMUUBootstrapper.lua calls these three functions for every player, every turn, promotion and death, so
+--they stay defined as empty functions.
 
 include('PMMMGeneralFunctions.lua');
 
-local iDummy = GameInfoTypes.BUILDING_PMMM_CUTLASS_CONDUCTOR_DUMMY
-
-
-
---When a CC gets a level-up, grant it more Harmony. Currently, it is the level multiplied by the harmony from all promotions.
+--[port] Phase 4: retired, levels no longer grant Harmony.
 function AddHarmonyOnLevel(iPlayer, iUnit)
-	if iPlayer < iMaxCivs then
-		local pPlayer = Players[iPlayer]
-		local pUnit = pPlayer:GetUnitByID(iUnit)
-		local iHarmonyPerLevel = 0;
-		for k, v in pairs(MapModData.gPMMMHarmonyPromotions) do
-			if pUnit:IsHasPromotion(k) then
-				iHarmonyPerLevel = iHarmonyPerLevel + v
-			end
-		end
-		if iHarmonyPerLevel > 0 then
-			local iLevel = pUnit:GetLevel()
-			local iTotalHarmonyGained = iHarmonyPerLevel * iLevel
-			local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
-			if not PMMM.Harmony[iSpecialID] then
-				PMMM.Harmony[iSpecialID] = iTotalHarmonyGained
-			else
-				PMMM.Harmony[iSpecialID] = PMMM.Harmony[iSpecialID] + iTotalHarmonyGained
-			end
-		end
-	end
 end
 
-
---[port] PMMM.Harmony is keyed by "owner:unit" and unit IDs are recycled; drop the entry
---when the unit dies so a later unit does not inherit its Harmony
+--[port] Phase 4: retired. PMMM.Harmony is never written now; drop any entry an older save still carries.
 function ClearHarmonyOnDeath(iPlayer, iUnit)
-	PMMM.Harmony[GetUnitSpecialID(iPlayer, iUnit)] = nil
+	if PMMM and PMMM.Harmony then
+		PMMM.Harmony[GetUnitSpecialID(iPlayer, iUnit)] = nil
+	end
 end
 
-
---Grant a dummy building in each city which has a unit with Harmony garrisoned in it.
+--[port] Phase 4: retired, garrisoned Conductors no longer place the Harmony dummy building.
 function ExpendHarmony(iPlayer)
-	if iPlayer < iMaxCivs then
-		local pPlayer = Players[iPlayer]
-		for pCity in pPlayer:Cities() do
-			if pCity:GetGarrisonedUnit() then
-				local pUnit = pCity:GetGarrisonedUnit()
-				local iUnit = pUnit:GetID()
-				local iSpecialID = GetUnitSpecialID(iPlayer, iUnit)
-				if PMMM.Harmony[iSpecialID] then
-					if PMMM.Harmony[iSpecialID] > 0 then
-						PMMM.Harmony[iSpecialID] = PMMM.Harmony[iSpecialID] - 1
-						pCity:SetNumRealBuilding(iDummy, 1)
-					else
-						pCity:SetNumRealBuilding(iDummy, 0)
-					end
-				else
-					pCity:SetNumRealBuilding(iDummy, 0)
-				end
-			else
-				pCity:SetNumRealBuilding(iDummy, 0)
-			end
-		end
-	end
 end

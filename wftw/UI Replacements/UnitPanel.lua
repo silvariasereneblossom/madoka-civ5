@@ -1114,15 +1114,7 @@ function UpdateUnitStats(unit)
 		local rangeStrengthTT = Locale.ConvertTextKey( "TXT_KEY_UPANEL_PMMM_STOLEN_FOOD_TT", unit:GetName());
 		Controls.UnitStatRangedAttack:SetToolTipString(rangeStrengthTT);
 		Controls.UnitStatNameRangedAttack:SetToolTipString(rangeStrengthTT);
-	elseif unit:IsCombatUnit() and unit:GetUnitType() == GameInfoTypes.UNIT_PMMM_CUTLASS_CONDUCTOR then
-		local iHarmony = MapModData.PMMM.Harmony[GetUnitSpecialID(iPlayer, iUnit)] or 0
-		Controls.UnitRangedAttackBox:SetHide(false);
-		local rangeStrengthStr = Locale.ConvertTextKey("TXT_KEY_UPANEL_PMMM_HARMONY");
-		Controls.UnitStatNameRangedAttack:SetText(rangeStrengthStr);
-		Controls.UnitStatRangedAttack:SetText(iHarmony .. "     ");
-		local rangeStrengthTT = Locale.ConvertTextKey( "TXT_KEY_UPANEL_PMMM_HARMONY_TT", unit:GetName());
-		Controls.UnitStatRangedAttack:SetToolTipString(rangeStrengthTT);
-		Controls.UnitStatNameRangedAttack:SetToolTipString(rangeStrengthTT);
+	--[port] Phase 4: the Cutlass Conductor's Harmony counter is retired, so its stat line is gone.
 	--PMMM Mod
     else
         Controls.UnitRangedAttackBox:SetHide(true);

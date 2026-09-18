@@ -3,159 +3,28 @@
 -- DateCreated: 8/20/2013 12:04:47 AM
 --------------------------------------------------------------
 
+--[port] Phase 4: retired. Sayaka's old UA ("Orchestra for Justice") is replaced by Kyoshikyoku no Seigi
+--(Rhapsody of Justice), design section 5. Its two effects are gone:
+--  * Musician Prodigy points for kills (Traits.GreatPersonProgressFromKills), and
+--  * the combat promotions for Tourism influence over the landowner (Traits.CombatBonusFromTourismInfluence,
+--    PROMOTION_SAYAKA_EXOTIC ... _DOMINANT).
+--SQL/Phase4/Sayaka.sql clears both columns, so PMMMTraitBootstrapper.lua, which includes this file only when
+--one of them is set, no longer loads it. The new UA lives in
+--Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilitySayaka.lua, which is always loaded.
+--
+--The three entry points the bootstrapper calls are kept as empty functions so that nothing can call a nil
+--global if this file is ever included again, and so that they no longer touch any promotion id.
 
 include('PMMMGeneralFunctions.lua');
 
-
+--[port] Phase 4: retired, kills no longer give Great Person points.
 function GreatPersonProgressFromKills(iKiller, iKilled, iKilledUnit)
-	dprint("Sayaka OnKill function called")
-	if iKiller == 63 then return end
-	local pKiller = Players[iKiller]
-	local pKilled = Players[iKilled]
-	if not pKiller:IsEverAlive() or not pKilled:IsEverAlive() then return end
-	if pKiller:IsMinorCiv() then return end
-	dprint("Both civs are majors")
-	if Teams[pKiller:GetTeam()]:IsHasTech(GameInfoTypes.TECH_ACOUSTICS) then
-	dprint("Killer has discovered acoustics")
-		--[port] read the killer's trait row, not a stale global iPlayer
-		if MapModData.gPMMMTraits[iKiller] and MapModData.gPMMMTraits[iKiller].GreatPersonProgressFromKills and GameInfo.Units[iKilledUnit].Combat > 0 then
-			dprint("Trait is correct and killed unit has a Combat Str value")
-			iSpecialistType = GameInfoTypes[MapModData.gPMMMTraits[iKiller].GreatPersonProgressFromKills]
-			iSpecialistAmount = (math.floor(GameInfo.Units[iKilledUnit].Combat / 10)) * 100
-			if ContentManager.IsActive("6DA07636-4123-4018-B643-6575B4EC336B", ContentType.GAMEPLAY) then
-				dprint("BNW is active")
-				local iBuildingType;
-				if iSpecialistType == GameInfoTypes.SPECIALIST_MUSICIAN then
-					dprint("Musician")
-					iBuildingType = GameInfoTypes.BUILDING_MUSICIANS_GUILD
-				elseif iSpecialistType == GameInfoTypes.SPECIALIST_WRITER then
-					dprint("Writer")
-					iBuildingType = GameInfoTypes.BUILDING_WRITERS_GUILD
-				elseif iSpecialistType == GameInfoTypes.SPECIALIST_ARTIST then
-					dprint("Artist")
-					iBuildingType = GameInfoTypes.BUILDING_ARTISTS_GUILD
-				end
-				if iBuildingType then
-					dprint("Specialist which requires building needed")
-					for pCity in pKiller:Cities() do
-						dprint("Checking city " ..pCity:GetName())
-						if pCity:IsHasBuilding(iBuildingType) then
-							pCity:ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
-							if iKiller == Game:GetActivePlayer() then
-								Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pCity:GetName()))
-							end
-							dprint("Added " ..iSpecialistAmount.. " to Musician's Guild city")
-							return
-						end
-					end
-				else
-					--[port] a cityless civ has no capital
-					local pCapital = pKiller:GetCapitalCity()
-					if pCapital then
-						pCapital:ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
-						if iKiller == Game:GetActivePlayer() then
-							Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pCapital:GetName()))
-						end
-					end
-					return
-				end
-			else
-				--[port] a cityless civ has no capital
-				local pCapital = pKiller:GetCapitalCity()
-				if pCapital then
-					pCapital:ChangeSpecialistGreatPersonProgressTimes100(iSpecialistType, iSpecialistAmount)
-					if iKiller == Game:GetActivePlayer() then
-						Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_SAYAKA_BOOST", iSpecialistAmount / 100, pCapital:GetName()))
-					end
-				end
-			end
-		end
-	end
 end
 
+--[port] Phase 4: retired, no Tourism influence combat promotions.
 function OnMoveTourismPromotionUpdate(iPlayer, iUnitID)
-	local pPlayer = Players[iPlayer]
-    if iPlayer < iMaxCivs and (pPlayer:IsEverAlive()) then
-        if MapModData.gPMMMTraits[iPlayer].CombatBonusFromTourismInfluence == 1 or MapModData.gPMMMTraits[iPlayer].CombatBonusFromTourismInfluence == true then
-            local pUnit = pPlayer:GetUnitByID(iUnitID);
-            UpdateTourismBonusPromotions(pUnit);
-        end
-    end
 end
 
-
+--[port] Phase 4: retired, no Tourism influence combat promotions.
 function OnTurnTourismPromotionUpdate(iPlayer)
-	local pPlayer = Players[iPlayer]
-    if iPlayer < iMaxCivs and (pPlayer:IsEverAlive()) then
-        if MapModData.gPMMMTraits[iPlayer].CombatBonusFromTourismInfluence == 1 or MapModData.gPMMMTraits[iPlayer].CombatBonusFromTourismInfluence == true then
-            for pUnit in pPlayer:Units() do
-				 UpdateTourismBonusPromotions(pUnit);
-			end
-        end
-    end
-end
-
-
-
-function UpdateTourismBonusPromotions(pUnit)
-    if pUnit and pUnit:GetPlot() and pUnit:IsCombatUnit() then
-		local pPlayer = Players[pUnit:GetOwner()];
-		local iPlotOwner = pUnit:GetPlot():GetOwner();
-		local pPlotOwner = Players[iPlotOwner];
-		if (pPlotOwner == nil) then
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-			pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)
-		else
-			if (pPlotOwner == pPlayer or pPlotOwner:IsMinorCiv()) then
-				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-				pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)
-		    else
-				iInfluenceLevel = pPlayer:GetInfluenceLevel(iPlotOwner);
-				dprint("Influence level: " ..iInfluenceLevel)
-				if (iInfluenceLevel == InfluenceLevelTypes.INFLUENCE_LEVEL_EXOTIC) then
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, true)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)
-				elseif (iInfluenceLevel == InfluenceLevelTypes.INFLUENCE_LEVEL_FAMILIAR) then
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, true)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)    
-				elseif (iInfluenceLevel == InfluenceLevelTypes.INFLUENCE_LEVEL_POPULAR) then
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, true)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)    
-				elseif (iInfluenceLevel == InfluenceLevelTypes.INFLUENCE_LEVEL_INFLUENTIAL) then
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, true)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)    
-				elseif (iInfluenceLevel == InfluenceLevelTypes.INFLUENCE_LEVEL_DOMINANT) then
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, true)     
-				else
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_EXOTIC, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_FAMILIAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_POPULAR, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_INFLUENTIAL, false)
-					pUnit:SetHasPromotion(GameInfoTypes.PROMOTION_SAYAKA_DOMINANT, false)    
-				end
-			end
-        end
-    end    
 end
