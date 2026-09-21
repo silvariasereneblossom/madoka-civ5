@@ -662,7 +662,7 @@
     <File md5="AC1537E4DF81956CD3F6BC041BA4BF23" import="0">XML/Text/CivilizationCivilopedia-english.xml</File>
     <File md5="A6103519207AA3CA32D5FCB4BA8BE4C7" import="0">XML/Text/CivilizationDescriptors-english.xml</File>
     <File md5="80C81417AD0000B424A75498DC7C230B" import="0">XML/Text/Concepts-english.xml</File>
-    <File md5="C586293F878114FD4F9648299BEF464C" import="0">XML/Text/LeaderMGNames-english.xml</File>
+    <File md5="C286B954C5F2EFEAB7B073CDFB552740" import="0">XML/Text/LeaderMGNames-english.xml</File>
     <File md5="05512651A9D0CFF93A753E5FC8C29AEB" import="0">XML/Text/MagicalGirlPersonalityTraits.xml</File>
     <File md5="89C1A61989706288678E8FC61DAB7645" import="0">XML/Text/ModCompatibility/CivilizationNamesByPolicies.xml</File>
     <File md5="E35E0374A2C90CE537C3BADF28E2AF3D" import="0">XML/Text/ModCompatibility/DecisionsModTextUpdate-english.xml</File>

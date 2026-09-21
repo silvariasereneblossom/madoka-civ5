@@ -15,6 +15,53 @@
 				Kirika Kure
 			</Text>
 		</Row>
+		<!-- [port] The other Magical Girl civs: their leader text has no <Gender>, so without these rows their Leader
+		     Magical Girl fell through to a random generic name. -->
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_MADOKA">
+			<Text>
+				Ultimate Madoka
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_ORIGINAL_MADOKA">
+			<Text>
+				Madoka Kaname
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_HOMURA">
+			<Text>
+				Homura Akemi
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_DEMON_HOMURA">
+			<Text>
+				Demon Homura
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_SAYAKA">
+			<Text>
+				Sayaka Miki
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_KYOUKO">
+			<Text>
+				Kyouko Sakura
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_MAMI">
+			<Text>
+				Mami Tomoe
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_NAGISA">
+			<Text>
+				Nagisa Momoe
+			</Text>
+		</Row>
+		<Row Tag="TXT_KEY_PMMM_LEADER_MG_NAME_KAORU_UMIKA">
+			<Text>
+				Kazumi
+			</Text>
+		</Row>
 		
 		<!-- ***************************************************************** -->
 		<!-- FIRAXIS CIVS -->
