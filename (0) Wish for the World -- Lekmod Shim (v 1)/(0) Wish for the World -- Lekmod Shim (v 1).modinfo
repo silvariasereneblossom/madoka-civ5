@@ -24,6 +24,10 @@
   <Dependencies>
     <Mod id="6938dbeb-84c4-4a08-8bc0-51fca6135175" minversion="27" maxversion="999" title="Madoka Magica -- Wish for the World [BNW]" />
   </Dependencies>
+  <Blocks>
+    <!-- Lekmod-only: the Mods menu refuses to enable this together with the Community Patch. -->
+    <Mod id="d1b6328c-ff44-4b0d-aad7-c657f83610cd" minversion="0" maxversion="999" title="(1) Community Patch" />
+  </Blocks>
   <Actions>
     <OnModActivated>
       <UpdateDatabase>SQL/Phase6LekmodShim.sql</UpdateDatabase>
