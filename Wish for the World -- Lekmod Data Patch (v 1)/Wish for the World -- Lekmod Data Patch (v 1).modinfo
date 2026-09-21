@@ -34,4 +34,12 @@
       <UpdateDatabase>SQL/Phase6LekmodRebalanceRulings.sql</UpdateDatabase>
     </OnModActivated>
   </Actions>
+  <!-- The game only reads files listed here: without this block every UpdateDatabase above was a silent no-op
+       (found 2026-09-21). Refresh the md5s with scripts/modinfo_md5.py after editing a file. -->
+  <Files>
+    <File md5="377DBB7BC496B3BEDE5A404A3ABF1559" import="0">SQL/Phase6LekmodPromotionPrereqOrs.sql</File>
+    <File md5="BB73C5DD41E71F9AD560EDE6C0FB3B4D" import="0">SQL/Phase6LekmodCampGold.sql</File>
+    <File md5="D04CE96EC3E5FCDC3453702040A81EA1" import="0">SQL/Phase6LekmodKyouko.sql</File>
+    <File md5="EF2E49452384E9C26F97B98EAC2132AA" import="0">SQL/Phase6LekmodRebalanceRulings.sql</File>
+  </Files>
 </Mod>

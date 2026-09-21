@@ -32,4 +32,9 @@
       <UpdateDatabase>SQL/Phase6LekmodShim.sql</UpdateDatabase>
     </OnModActivated>
   </Actions>
+  <!-- The game only reads files listed here: without this block every UpdateDatabase above was a silent no-op
+       (found 2026-09-21). Refresh the md5s with scripts/modinfo_md5.py after editing a file. -->
+  <Files>
+    <File md5="C597883D340886B75AA2FBC9EB3BB704" import="0">SQL/Phase6LekmodShim.sql</File>
+  </Files>
 </Mod>
