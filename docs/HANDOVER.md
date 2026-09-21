@@ -54,7 +54,7 @@ DLL loads in game, but the new abilities and kits have not been exercised in a r
 | Kazumi | Interim kit; maintainer plans a full rework later |
 | Devil Homura | Kit built; explicitly provisional pending *Walpurgisnacht Rising* |
 | Phase 5 (new girls) | Not started |
-| Phase 6 (Lekmod / multiplayer) | Blocker analysis done (section 9); scoping pass is the next task |
+| Phase 6 (Lekmod / multiplayer) | Private port implemented offline (section 9); live test is next; MP + distribution parked |
 
 ---
 
@@ -243,7 +243,30 @@ What a Lekmod version takes:
 4. Multiplayer safety: synced state instead of client-local saves, deterministic iteration for random choices,
    no state changes from UI code.
 
-**The immediate next task** is a scoping pass (started and paused on 2026-09-18 with no output yet; the three
-briefs are in `docs/design/lekmod-scoping-plan.md`): inventory every Community Patch dependency in WFTW (GameEvents,
-Lua methods, tables, columns, defines) against Lekmod's DLL and schema, and produce a port list with effort
-estimates, plus a recommendation on forking versus upstreaming.
+**The scoping pass is complete** (2026-09-19; re-run of the attempt paused on 2026-09-18). The three
+investigations and their synthesis are `docs/design/lekmod-scope-engine.md`, `lekmod-scope-database.md`,
+`lekmod-scope-multiplayer.md` and `lekmod-scope-synthesis.md`. Headline: the engine port is ~500-800 lines of
+C++ (custom missions are the keystone, ~120-180 lines in one file); the database layer is ~5 files with all
+94 `ALTER TABLE`s applying cleanly. **Maintainer ruling (2026-09-19): the port stays private for now** —
+Lekmod's license §1 permits personal-use modification, so a private fork needs no permission; the DLC
+packaging and multiplayer workstreams park, and WFTW can run as a normal ticked mod on top of Lekmod in
+single player. If distribution ever follows, the generic hooks go upstream first (the license makes written
+permission a hard prerequisite for any *distributed* fork — details in the synthesis §3 and
+`lekmod-scope-multiplayer.md` §C6).
+
+**All three workstreams are implemented and offline-verified (2026-09-19; build findings in
+`docs/port-notes.md`, same date).** Nothing has been in game yet — that is the next gate:
+
+| Piece | Artifact | State |
+|---|---|---|
+| DLL hooks (missions, 6 events, pmmm-phase4 re-application, `ChangeOverflowResearch`) | `dll/lekmod-wftw.patch` (37 files), built by `scripts/build_lekmod_dll.py`, deployed by `scripts/deploy_lekmod_dll.py` | Builds clean (release, 6.1 MB I386); **apply the patch only via the build script** — GNU `patch --forward` duplicates insertions |
+| Schema shim | `(0) Wish for the World -- Lekmod Shim (v 1)` companion mod (7 tables, 225 columns, 1 table rebuild) | Lekmod sim converges (144 ok / 14 pre-existing failures). **Never tick with CP** (duplicate-column aborts) |
+| Content variants + late patch | `Wish for the World -- Lekmod Data Patch (v 1)` (promotion OR-prereqs → native link table, camp gold, Kyouko shrine, 44 rebalance rulings defaulting KEEP) | Same |
+| Lua compatibility layer | 15 `wftw/Lua/` files, probe-guarded CP-first fallbacks, real-Defines damage formula | luac / luarefs / smoke green (76/0); CP sim unchanged (310/15) |
+
+Known silent degradations on Lekmod (tracked, intentional, not bugs): Time Stop's influence on **major**
+civs (needs a ~10-line `ChangeInfluenceOn` binding port), Shirome's `GetRandomIntrigue`, Kyouko's
+`StartsWithPantheon`. **Next step: the live test** — install Lekmod 35.3 (the parked 34.15 mismatches the
+v35.3000 DLL source), deploy the DLL, junction both companion mods into MODS, tick Shim + WFTW + Data Patch,
+and work the checklist in `docs/port-notes.md` / the synthesis §4; then a CP regression session (untick
+everything Lekmod, tick CP + WFTW only).

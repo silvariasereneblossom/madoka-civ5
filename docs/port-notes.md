@@ -278,3 +278,49 @@ Follow-up, same day: with the VC9 target fixed the release DLL still failed (111
 The difference was link-time optimisation: a release build without `-flto` loads and runs. `build_dll.py` now
 builds release without LTO by default (`--lto` restores upstream's setting for experiments). Root cause of the
 LTO failure is not known; a 64-bit LLVM matching upstream CI's version would be the next thing to try.
+
+## Phase 6 Lekmod port implemented, offline-verified (2026-09-19)
+
+The three workstreams from the scoping pass are implemented against Lekmod v35.3000 (pinned at upstream
+commit 70aa6ad). None has been in game yet; that is the next gate. The full scoping record is in
+`docs/design/lekmod-scope-*.md`; this entry holds the non-obvious build findings.
+
+**Data layer** (`(0) Wish for the World -- Lekmod Shim (v 1)` and `Wish for the World -- Lekmod Data Patch (v 1)`,
+companion mods — zero edits inside `wftw/`): the shim recreates 7 tables Lekmod v35 deleted or never shipped and
+stages 225 columns WFTW writes that Lekmod lacks (14 of them in `UnitPromotions`, including the deleted
+`PromotionPrereq`/`Or1..9`); the late patch converts those staged OR-prereqs into Lekmod's native
+`UnitPromotions_PromotionPrereqOrs` link table (32 rows) and routes camp gold to `BarbCampGold`, the only
+column Lekmod's DLL reads. One table could not be healed by late re-issue and was rebuilt in the shim instead:
+Lekmod's `Trait_BuildingClassYieldChanges` ships `Yield integer not null` with no default, which aborts
+`Kyouko.sql` at its 4th statement and cannot be relaxed via `ALTER` — rebuilt with the identical schema plus
+`DEFAULT 0`, Lekmod's 66 rows copied verbatim. Verified: the Lekmod-seeded sim converges to the pre-existing
+14 failures (from 28), the CP sim is unchanged at 15, and companion ordering holds under both candidate
+mechanisms (name sort + `.modinfo` dependency on WFTW). The shim must never be ticked with CP active —
+duplicate-column aborts; documented in its modinfo.
+
+**Lua compatibility layer** (15 files, probe-guarded): CP natives stay the primary path everywhere; fallbacks
+fire only when a binding is absent. The probe must be instance-level (`pObj.Method ~= nil`, cached): CP stores
+class method tables under the global `LuaTypes`, not as globals like Lekmod, so a file-scope probe on a class
+table is unsafe under CP. The damage-formula fallback uses only real Defines (`ATTACK_SAME_STRENGTH_MIN_DAMAGE`
+2400 etc., read from the game DB and Lekmod's megafile) and was checked line-for-line against Lekmod's own
+`CvStructs.cpp`/`CvGame.cpp` combat math; its one random term is `Game.Rand`, keeping it sync-safe. Three
+features silently degrade on Lekmod, tracked and intentional: Time Stop's influence on major civs (Lekmod's
+`ChangeMinorCivFriendshipWithMajor` is CS-only; needs a `ChangeInfluenceOn` binding-only port, ~10 lines),
+Shirome's `GetRandomIntrigue` (no Lua-equivalent; the once-per-N stamp is not spent), Kyouko's
+`StartsWithPantheon` (inert data without the DLL feature).
+
+**DLL layer** (`dll/lekmod-wftw.patch`, 37 files / 2,006 lines, applied only via `scripts/build_lekmod_dll.py`):
+mission keystone + six events + `pmmm-phase4` re-application + the `ChangeOverflowResearch` binding, hooks
+always-on, no `PMMM` symbols outside our own trait machinery. Build findings that will bite anyone touching it:
+clang-cl needs `-fdelayed-template-parsing` and `-Wno-invalid-token-paste` for Lekmod's `CvLuaMethodWrapper.h`
+(MemClass template param rewritten for clang); the two prebuilt FireWorks archives are `/GL` and must be
+substituted with CP's non-LTCG objects or the link fails; the prebuilt `FTimer.obj` references the old VC x87
+helpers `__ftol3`/`__ltod3`, which lld-link rejects unless the stub object declares `.set "@feat.00", 1` and
+`.def/.safeseh` (every prebuilt object in the archive carries these). Two integrity traps were found and
+repaired: an earlier text-mode edit had mangled the CP1252 copyright byte (0xA9) in four files, and
+`CvLuaMethodWrapper.h` had been CRLF-mangled — regenerate the patch only with the build script's generator, and
+**never apply `dll/lekmod-wftw.patch` with GNU `patch --forward`** (its already-applied heuristic duplicated
+insertions in 3 files during testing); the build script's marker check is the only safe path.
+`python scripts/build_lekmod_dll.py --config release` exits 0 (160 translation units, 6.1 MB I386 DLL);
+`python scripts/deploy_lekmod_dll.py <lekmod-dlc-folder>` deploys with a one-time backup (`--restore` reverts,
+refuses while the game runs, never touches `build/parked-dlc/`).
