@@ -136,9 +136,18 @@ end
 	--Which promotions give Harmony, and how much per level?
 	MapModData.gPMMMHarmonyPromotions = {}
 
+	-- [port] nil-safe: on Lekmod (2026-09-21) this read came back nil for at least one row although the column
+	-- exists with no NULLs in the saved database, and the comparison killed the whole loader (no Leader Magical
+	-- Girls, no missions). Log the first such row so the cause can be traced.
+	local bLoggedMissingHarmony = false
 	for promotion in GameInfo.UnitPromotions() do
-		if promotion.HarmonyGainedPerLevel > 0 then
-			MapModData.gPMMMHarmonyPromotions[promotion.ID] = promotion.HarmonyGainedPerLevel
+		local iHarmony = promotion.HarmonyGainedPerLevel
+		if iHarmony == nil and not bLoggedMissingHarmony then
+			print("[port] HarmonyGainedPerLevel is nil for promotion "..tostring(promotion.Type).." (ID "..tostring(promotion.ID)..")")
+			bLoggedMissingHarmony = true
+		end
+		if (iHarmony or 0) > 0 then
+			MapModData.gPMMMHarmonyPromotions[promotion.ID] = iHarmony
 		end
 	end
 	--Which promotions grant a new promotion when on a specific Improvement?
