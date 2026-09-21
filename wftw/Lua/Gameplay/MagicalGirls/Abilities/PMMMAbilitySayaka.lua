@@ -250,7 +250,10 @@ local function RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
 		local iWork = Game.CreateGreatWork(iDecretum, iPlayer, pPlayer:GetCurrentEra(), sCreator)
 		if iWork and iWork >= 0 then
 			pCapital:SetBuildingGreatWork(iMusicHallClass, 0, iWork)
-			pCapital:RefreshTourism()
+			--[port] Phase 6 Lekmod: City:RefreshTourism is a CP-only recompute trigger; the wrapper
+			--(PMMMGeneralFunctions.lua) calls it natively under CP and is a no-op elsewhere, where the next
+			--turn's own recompute covers it (one-turn-later tourism display only).
+			PMMMCityRefreshTourism(pCapital)
 		end
 	end
 	--bFree: the policy does not count toward the cost of the next one (it is also IsDummy in the data).

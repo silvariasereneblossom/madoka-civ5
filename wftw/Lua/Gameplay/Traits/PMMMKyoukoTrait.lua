@@ -114,7 +114,9 @@ function OnKyoukoCustomMission1Start(iPlayer, iUnit, iMission, iData1, iData2, i
 				if PMMM.StolenFood[iSpecialID] > 0 and iMission == iMissionType1 then
 					if pUnit:GetPlot():GetPlotCity() then
 						local pCity = pUnit:GetPlot():GetPlotCity()
-						pUnit:AddMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_GIVE_FOOD", pUnit:GetName(), pCity:GetName(), PMMM.StolenFood[iSpecialID]), iPlayer)
+						--[port] Phase 6 Lekmod: Unit:AddMessage is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+						--calls it natively under CP and falls back to a player AddNotification at the unit's plot.
+						PMMMUnitAddMessage(pUnit, Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_GIVE_FOOD", pUnit:GetName(), pCity:GetName(), PMMM.StolenFood[iSpecialID]), iPlayer)
 						pCity:ChangeFood(PMMM.StolenFood[iSpecialID])
 						PMMM.StolenFood[iSpecialID] = 0
 						pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
@@ -126,7 +128,7 @@ function OnKyoukoCustomMission1Start(iPlayer, iUnit, iMission, iData1, iData2, i
 						local iMaxHeal = math.floor(PMMM.StolenFood[iSpecialID] / 2)
 						local iActualHeal = math.min(iCurDamage, iMaxHeal)
 						local iRemovedFood = iActualHeal * 2
-						pUnit:AddMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_FOOD_HEAL", pUnit:GetName(), iActualHeal), iPlayer)
+						PMMMUnitAddMessage(pUnit, Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_FOOD_HEAL", pUnit:GetName(), iActualHeal), iPlayer)
 						PMMM.StolenFood[iSpecialID] = math.max(PMMM.StolenFood[iSpecialID] - iRemovedFood, 0)
 						pUnit:ChangeDamage(-1 * iActualHeal)
 						pUnit:ChangeMoves(-1 * GameDefines.MOVE_DENOMINATOR)
@@ -162,7 +164,9 @@ function AddStolenFoodFromSacking(iPlayer, iUnit)
 		end
 		PMMM.StolenFood[iSpecialID] = math.min((iCurFood + MapModData.gPMMMTraits[iPlayer].CaravanPillageStolenFood), MapModData.gPMMMTraits[iPlayer].MaxStolenFood)
 		dprint("Current food for unit: " ..PMMM.StolenFood[iSpecialID])
-		pUnit:AddMessage(Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_KYOUKO_CARAVAN_SACK", pUnit:GetName(), MapModData.gPMMMTraits[iPlayer].CaravanPillageStolenFood))
+		--[port] Phase 6 Lekmod: Unit:AddMessage is CP-only; wrapper (PMMMGeneralFunctions.lua). This site
+		--passed no player, so the fallback addresses the unit's owner, as the CP path effectively did.
+		PMMMUnitAddMessage(pUnit, Locale.ConvertTextKey("TXT_KEY_ALERT_PMMM_KYOUKO_CARAVAN_SACK", pUnit:GetName(), MapModData.gPMMMTraits[iPlayer].CaravanPillageStolenFood))
 	end
 end
 
@@ -256,6 +260,10 @@ end
 --[port] Phase 4: she can never found a religion. CvUnit::CanFoundReligion asks this event (TestAll) before any
 --Great Prophet may found one, for the human UI and the AI alike, so refusing here blocks every founding path.
 --Her free pantheon (Traits.StartsWithPantheon) is untouched: pantheons are not founded through this check.
+--[port] Phase 6 Lekmod (lekmod-scope-engine.md §7.4): that free pantheon is INERT DATA on Lekmod -- its DLL
+--never reads Traits.StartsWithPantheon, so Kyouko starts with no pantheon there. No Lua fix can grant one
+--without inventing a replacement mechanic; this is a known, silently-degrading behaviour difference, not a bug
+--in this file. Restoring it belongs to the DLL side (if ever), not to the compatibility layer.
 function KyoukoCanFoundReligion(iPlayer, iCity)
 	if IsKyoukoTraitPlayer(iPlayer) then
 		return false

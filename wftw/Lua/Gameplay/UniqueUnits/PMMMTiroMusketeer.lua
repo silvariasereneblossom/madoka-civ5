@@ -83,7 +83,9 @@ function DoTiroSiege(iPlayer, pUnit, pPlot)
 	local pCity = GetTiroSiegeTarget(pUnit, pPlot)
 	if not pCity then return 0 end
 
-	local iDamage = pUnit:GetMeleeCombatDamageCity(iSiegeStrengthTimes100, pCity, true)
+	--[port] Phase 6 Lekmod: through the framework wrapper (PMMMLeaderAbilities.lua) -- CP's bound
+	--GetMeleeCombatDamageCity under CP, the vanilla melee-vs-city formula in Lua under a DLL without it.
+	local iDamage = PMMMGetMeleeCombatDamageCity(pUnit, iSiegeStrengthTimes100, pCity)
 	if not iDamage or iDamage < 0 then iDamage = 0 end
 	local iRoom = pCity:GetMaxHitPoints() - pCity:GetDamage() - 1
 	if iDamage > iRoom then iDamage = math.max(iRoom, 0) end

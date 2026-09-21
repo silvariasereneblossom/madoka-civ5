@@ -30,10 +30,16 @@ if iHalicarnassus then
 end
 
 
-function ReplaceHostileUnits(iPlayer, iUnit, iUnitType)
+--[port] Phase 6 Lekmod: the UnitCreated signature differs between the DLLs -- CP passes (owner, unitID,
+--unitType, x, y), Lekmod passes (owner, unitID, x, y) -- so the type now comes from the unit object, which
+--both DLLs bind, instead of the third argument (which is the plot X on Lekmod). pUnit:GetUnitType() returns
+--exactly what CP's third argument carried, so CP behaviour is unchanged. -1 stands in for "no such unit" so
+--the type tests below behave as they did when the argument was always a real type ID.
+function ReplaceHostileUnits(iPlayer, iUnit)
+	local pPlayer = Players[iPlayer]
+	local pUnit = pPlayer:GetUnitByID(iUnit)
+	local iUnitType = pUnit and pUnit:GetUnitType() or -1
 	if iPlayer == iMaxCivsAndCS and iUnitType ~= iWitchType and iUnitType ~= iFamiliarType and iUnitType ~= iSeaWitchType and iUnitType ~= iSeaFamiliarType and iUnitType ~= iIncubatorType then
-		local pPlayer = Players[iPlayer]
-		local pUnit = pPlayer:GetUnitByID(iUnit)
 		if pUnit:IsCombatUnit() then
 			if iRecluseVillain > -2 and pUnit:GetUnitType() == iRecluseVillain then return end --Recluse's villains aren't replaced in the COH Civpack
 			local pPlot = pUnit:GetPlot()
@@ -72,8 +78,8 @@ function ReplaceHostileUnits(iPlayer, iUnit, iUnitType)
 		end
 	else
 		--Handler for if a Witch or Familiar is given to a human player and their strength wasn't already set. Adjust strength accordingly.
-		local pPlayer = Players[iPlayer]
-		local pUnit = pPlayer:GetUnitByID(iUnit)
+		--[port] Phase 6 Lekmod: these two locals used to shadow-duplicate the ones derived above for the
+		--UnitCreated fix; they resolve to the same objects, so they are simply gone.
 		local iCurrentEra = pPlayer:GetCurrentEra()
 		if (iUnitType == iWitchType or iUnitType == iSeaWitchType) and pUnit:GetBaseCombatStrength() < MapModData.gPMMMWitchEraStrengths[iCurrentEra] then
 			pUnit:SetBaseCombatStrength(MapModData.gPMMMWitchEraStrengths[iCurrentEra])
@@ -289,22 +295,26 @@ function GetGriefSeed(iKillerPlayer, iKilledPlayer, iKilledUnitType)
 		if MapModData.gPMMMTraits[iKillerPlayer] and (MapModData.gPMMMTraits[iKillerPlayer].NoMagicalGirls == true or MapModData.gPMMMTraits[iKillerPlayer].NoMagicalGirls == 1) then
 			local iWitchGold = (GameDefines.PMMM_AI_YO_WITCH_KILL_GOLD or 10) + (GameDefines.PMMM_AI_YO_WITCH_KILL_GOLD_PER_ERA or 3) * pPlayer:GetCurrentEra()
 			pPlayer:ChangeGold(iWitchGold)
-			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA", iWitchGold))
+			--[port] Phase 6 Lekmod: AddMessage is a CP-only binding; the wrapper (PMMMGeneralFunctions.lua)
+			--calls it natively under CP and falls back to AddNotification elsewhere.
+			PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DEMON_HOMURA", iWitchGold))
 		elseif not PlayerHasMagicalGirls(iKillerPlayer) then
 			--[port] a civilization outside the Magical Girl system has no use for the seed; the kill denies it to those who do
-			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DENIED"))
+			PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH_DENIED"))
 		else
 			if PMMM.GriefSeeds[iKillerPlayer] then
 				PMMM.GriefSeeds[iKillerPlayer] = PMMM.GriefSeeds[iKillerPlayer] + 1
 			else
 				PMMM.GriefSeeds[iKillerPlayer] = 1
 			end
-			Players[iKillerPlayer]:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH"))
+			--[port] Phase 6 Lekmod: AddMessage wrapper (see above); HasWonder is CP-only, the wrapper
+			--scans the player's cities for the wonder building, as CP's own backing does.
+			PMMMPlayerAddMessage(Players[iKillerPlayer], Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_KILLED_WITCH"))
 			LuaEvents.PMMMRefreshGriefSeedDisplay()
 		end
 		
 		--v19: Halicarnassus grants gold from Witch corpses instead of its regular effect (mostly for flavor)
-		if iHalicarnassusGold and pPlayer:HasWonder(GameInfoTypes.BUILDING_MAUSOLEUM_HALICARNASSUS) then	-- [port] guard the (previously nil) amount
+		if iHalicarnassusGold and PMMMPlayerHasWonder(pPlayer, iHalicarnassus) then	-- [port] guard the (previously nil) amount
 			pPlayer:ChangeGold(iHalicarnassusGold)
 		end
 		
@@ -335,7 +345,7 @@ function CheckDestroyWitchBarrier(iPlayer, iUnit, iX, iY)
 				--instead of the flat -1 that left her the same zero as every other civ.
 				local iLabyrinthGold = (GameDefines.PMMM_AI_YO_LABYRINTH_GOLD or 25) + (GameDefines.PMMM_AI_YO_LABYRINTH_GOLD_PER_ERA or 10) * pPlayer:GetCurrentEra()
 				pPlayer:ChangeGold(iLabyrinthGold - 1)
-				pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_LABYRINTH_GOLD_DEMON_HOMURA", iLabyrinthGold))
+				PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_LABYRINTH_GOLD_DEMON_HOMURA", iLabyrinthGold))
 			else
 				pPlayer:ChangeGold(-1)
 			end
@@ -407,7 +417,9 @@ function HiddenWitchSpawn(iPlayer)
 					while iFoodReduction > 0 do
 						pCity:ChangeFood(-1 * iFoodReduction)
 						if bFirstLoop then
-							pCity:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HW_FOOD_REDUCTION", pCity:GetName(), iFoodReduction), iPlayer)
+							--[port] Phase 6 Lekmod: City:AddMessage is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+							--calls it natively under CP and falls back to a player AddNotification at the city's plot.
+							PMMMCityAddMessage(pCity, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HW_FOOD_REDUCTION", pCity:GetName(), iFoodReduction), iPlayer)
 						end
 						iFoodReduction = 0
 						--If the growth is now negative, adjust it to kill off a Citizen
@@ -420,7 +432,7 @@ function HiddenWitchSpawn(iPlayer)
 								iFoodReduction = -1 * pCity:GetFood()
 								pCity:ChangePopulation(-1, true)
 								pCity:SetFood(pCity:GrowthThreshold())
-								pCity:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HW_CITIZEN_KILLED", pCity:GetName()), iPlayer)
+								PMMMCityAddMessage(pCity, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HW_CITIZEN_KILLED", pCity:GetName()), iPlayer)
 							end
 						end
 						bFirstLoop = false

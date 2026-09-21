@@ -200,7 +200,10 @@ function FindValidTargets(pPlayer, pUnit, sTargetType)
 						local pAllyUnit = k:GetUnit(i)
 						if pAllyUnit ~= pUnit then
 							local iOwner = pAllyUnit:GetOwner()
-							if iOwner == pPlayer:GetID() or pPlayer:IsAtWarWith(iOwner) == false then
+							--[port] Phase 6 Lekmod: Player:IsAtWarWith is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+							--compares the two players' teams through Teams:IsAtWar, which both DLLs bind -- the same
+							--test CP's own backing makes.
+							if iOwner == pPlayer:GetID() or PMMMPlayerIsAtWarWith(pPlayer, iOwner) == false then
 								local iMGKey = GetMagicalGirlKey(iOwner, pAllyUnit:GetID())
 								if iMGKey then
 									tTable[k] = true

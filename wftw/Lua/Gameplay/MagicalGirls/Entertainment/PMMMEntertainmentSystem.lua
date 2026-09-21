@@ -158,8 +158,11 @@ function GetCityEntertainmentFromSpecialists(pCity)
 	local iBonus = 0
 	local pPlayer = Players[pCity:GetOwner()]
 	--first determine Bonus from buildings
+	--[port] Phase 6 Lekmod: Player:HasWonder is CP-only; the wrapper (PMMMGeneralFunctions.lua) calls it
+	--natively under CP and otherwise scans the player's cities for the wonder -- the same check CP's own
+	--backing (wonder counts as a building in any city) makes. Applies to this and the *Connection tables.
 	for iBuilding, iEntertainment in pairs(tEntertainmentSpecialistModifierBuildings) do
-		if pPlayer:HasWonder(iBuilding) then
+		if PMMMPlayerHasWonder(pPlayer, iBuilding) then
 			iBonus = iBonus + iEntertainment
 		end
 	end
@@ -187,7 +190,7 @@ function GetCityEntertainmentFromPerConnectionBuildings(pCity)
 	local pPlayer = Players[pCity:GetOwner()]
 	if pCity:IsCapital() or pPlayer:IsCapitalConnectedToCity(pCity) then
 		for iBuilding, iEntertainment in pairs(tEntertainmentConnectionModifierBuildings) do
-			 if pPlayer:HasWonder(iBuilding) then
+			 if PMMMPlayerHasWonder(pPlayer, iBuilding) then
 				iTotal = iTotal + iEntertainment
 			 end
 		end

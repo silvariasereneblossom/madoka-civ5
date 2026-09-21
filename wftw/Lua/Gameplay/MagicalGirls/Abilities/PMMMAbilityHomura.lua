@@ -361,6 +361,10 @@ end
 --  Great Person points: GetSpecialistRate is the engine's own per-turn figure (hundredths, the unit
 --              ChangeSpecialistGreatPersonProgressTimes100 takes), for every specialist type. A Great
 --              Person whose threshold this crosses is born at the city's next turn, as usual.
+--              [port] Phase 6 Lekmod: GetSpecialistRate is CP-only; the PMMMCityGetSpecialistRate wrapper
+--              (PMMMGeneralFunctions.lua) calls it natively under CP and otherwise approximates it as the
+--              city's specialist count times the specialist's GreatPeopleRateChange -- base rates only, so
+--              per-player GP-rate modifiers are not part of the fallback figure.
 local function TimeStopCityYields(pPlayer)
 	local iPlayer = pPlayer:GetID()
 	local iGold, iScience, iCulture, iFaith = 0, 0, 0, 0
@@ -383,7 +387,7 @@ local function TimeStopCityYields(pPlayer)
 		iFaith = iFaith + math.max(pCity:GetFaithPerTurn(), 0)
 
 		for row in GameInfo.Specialists() do
-			local iRate = pCity:GetSpecialistRate(row.ID)
+			local iRate = PMMMCityGetSpecialistRate(pCity, row.ID)
 			if iRate and iRate > 0 then
 				pCity:ChangeSpecialistGreatPersonProgressTimes100(row.ID, iRate)
 			end
@@ -454,7 +458,12 @@ local function TimeStopTourism(pPlayer)
 				and Teams[pOther:GetTeam()]:IsHasMet(iTeam) then
 			local iInfluence = pPlayer:GetInfluencePerTurn(iOther)
 			if iInfluence and iInfluence > 0 then
-				pPlayer:ChangeInfluenceOnPlayer(iOther, iInfluence, false, false)
+				--[port] Phase 6 Lekmod: ChangeInfluenceOnPlayer is CP-only. The wrapper (PMMMGeneralFunctions.lua)
+				--calls it natively under CP. On a DLL without it the loop only ever passes MAJOR civilizations, where
+				--Lekmod binds no substitute either (the vanilla backing, CvPlayerCulture::ChangeInfluenceOn, is
+				--unbound there), so the fallback is a documented no-op: Time Stop's Tourism turn is silently lost
+				--for majors. The binding-only port to Lekmod's DLL restores it (see lekmod-scope-engine.md §7.4).
+				PMMMPlayerChangeInfluenceOnPlayer(pPlayer, iOther, iInfluence)
 			end
 		end
 	end
@@ -594,7 +603,9 @@ local function GrantThiefOfTimeTech(pPlayer)
 	pTeamTechs:ChangeResearchProgress(iTech, iBeakers, iPlayer)
 	if pPlayer:IsHuman() then
 		local pTech = GameInfo.Technologies[iTech]
-		pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_THIEF_OF_TIME", iBeakers, pTech and pTech.Description or ""))
+		--[port] Phase 6 Lekmod: AddMessage is CP-only; the wrapper (PMMMGeneralFunctions.lua) calls it
+		--natively under CP and falls back to AddNotification elsewhere.
+		PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_THIEF_OF_TIME", iBeakers, pTech and pTech.Description or ""))
 	end
 end
 
@@ -651,7 +662,8 @@ function PMMMHomuraDoTurn(iPlayer)
 	if iCooldown > 0 then
 		SetTimeStopCooldown(iPlayer, iCooldown - 1)
 		if iCooldown == 1 and pPlayer:IsHuman() then
-			pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HOMURA_TIME_STOP_READY"))
+			--[port] Phase 6 Lekmod: AddMessage is CP-only; wrapper (PMMMGeneralFunctions.lua).
+			PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_HOMURA_TIME_STOP_READY"))
 		end
 	end
 

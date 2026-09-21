@@ -557,7 +557,10 @@ function AutoSocializationCustomMissionCompleted(iPlayer, iUnit, iMission, iData
 						local pAllyUnit = pAreaPlot:GetUnit(i)
 						if pAllyUnit ~= pUnit then
 							local iOwner = pAllyUnit:GetOwner()
-							if iOwner == pPlayer:GetID() or pPlayer:IsAtWarWith(iOwner) == false then
+							--[port] Phase 6 Lekmod: Player:IsAtWarWith is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+							--compares the two players' teams through Teams:IsAtWar, which both DLLs bind -- the same test
+							--CP's own backing makes.
+							if iOwner == pPlayer:GetID() or PMMMPlayerIsAtWarWith(pPlayer, iOwner) == false then
 								local iMGKey = GetMagicalGirlKey(iOwner, pAllyUnit:GetID())
 								if iMGKey then
 									tCandidatePlots[#tCandidatePlots + 1] = pAreaPlot
@@ -1394,8 +1397,12 @@ function ContactHomeCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iDat
 			local iMGKey = GetMagicalGirlKey(iPlayer, iUnit)
 			if iMGKey then
 				if iMission == iWriteHome or iMission == iPhoneHome then
-					if (iMission == iWriteHome and (pPlayer:HasBuildingClass(iPostOfficeClass) == false or pPlayer:HasBuildingClass(iPhoneNetworkClass) == true)) then return false end
-					if (iMission == iPhoneHome and not pPlayer:HasBuildingClass(iPhoneNetworkClass)) then return false end
+					--[port] Phase 6 Lekmod: Player:HasBuildingClass / HasTech are CP-only; the wrappers
+					--(PMMMGeneralFunctions.lua) call them natively under CP and otherwise scan the player's
+					--cities for the class's buildings / read the team tech table -- the same checks CP's
+					--own backings make.
+					if (iMission == iWriteHome and (PMMMPlayerHasBuildingClass(pPlayer, iPostOfficeClass) == false or PMMMPlayerHasBuildingClass(pPlayer, iPhoneNetworkClass) == true)) then return false end
+					if (iMission == iPhoneHome and not PMMMPlayerHasBuildingClass(pPlayer, iPhoneNetworkClass)) then return false end
 					local pCity = Vice_DecompileCityID(MagicalGirls[iMGKey].HomeCity)
 					if pCity then
 						local iTurn = Game:GetGameTurn()
@@ -1411,7 +1418,7 @@ function ContactHomeCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iDat
 								return bTestVisible
 							end
 						end
-						if (iMission == iPhoneHome and pPlayer:HasTech(GameInfoTypes.TECH_INTERNET)) then
+						if (iMission == iPhoneHome and PMMMPlayerHasTech(pPlayer, GameInfoTypes.TECH_INTERNET)) then
 							return true
 						else
 							local pPlot = pUnit:GetPlot()

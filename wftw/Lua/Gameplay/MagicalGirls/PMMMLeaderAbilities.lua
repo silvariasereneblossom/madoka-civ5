@@ -97,6 +97,115 @@ end
 -- Damage helpers
 --------------------------------------------------------------
 
+--[port] Phase 6 Lekmod: the melee damage pair. CP binds Unit:GetMeleeCombatDamage / GetMeleeCombatDamageCity
+--(CvLuaUnit.cpp:64-65); Lekmod has neither the bindings nor the backing (its combat rework does not exist
+--there). Under CP the native methods stay the primary path and behaviour is exactly what it was (note the
+--existing trap: CP's Unit:GetCombatDamage is a stub returning 0 -- CvLuaUnit.cpp:1175-1190 -- which is why
+--these two are used at all). Under a DLL without the binding, the fallback reimplements the vanilla Civ V
+--melee formula in Lua, ported line-for-line from the engine source as shipped in Lekmod (identical to the
+--vanilla game's math):
+--  CvGame::getCombatDamage (Lekmod CvGame.cpp, "Defender is Unit"/"Defender is City" branches)
+--  CvCombatInfo::doStrengthRatio: RATIO = ((((ME / OPP) + 3) / 4) ^ 4) + 1) / 2, inverted when the defender
+--    is stronger, capped at 10 before the transform
+--  CvCombatInfo::doRandomness + CvUnit::getWoundedRatio: a unit at D damage deals
+--    (100 - D * WOUNDED_DAMAGE_MULTIPLIER / 100) percent of base damage (air units: 100 - D); cities are
+--    always at full strength
+--All constants come from the game's own Defines XML (GlobalDefines), verified in the vanilla BNW database
+--(Defines table) and re-asserted by Lekmod's Override/CIV5Units.xml: ATTACK_SAME_STRENGTH_MIN_DAMAGE = 2400
+--and ATTACK_SAME_STRENGTH_POSSIBLE_EXTRA_DAMAGE = 1200 (hundredths: 24 base damage + a 0..11 roll at equal
+--strength, full health), ATTACKING_CITY_MELEE_DAMAGE_MOD = 100, WOUNDED_DAMAGE_MULTIPLIER = 33,
+--MAX_HIT_POINTS = 100. The roll uses Game.Rand (the synchronised RNG, the same stream the engine's
+--getJonRandNum draws from), never math.random, so every client rolls the same number in the same handler.
+--Skipped, deliberately: CP-only combat systems with no Lekmod equivalent (forced/change damage values, the
+--wounded-damage policy modifier, garrison damage absorption) -- on Lekmod those are zero everywhere anyway.
+local iPMMMDamageMaxHP = GameDefines.MAX_HIT_POINTS or 100
+local iPMMMDamageBase100 = GameDefines.ATTACK_SAME_STRENGTH_MIN_DAMAGE or 2400
+local iPMMMDamageRand100 = GameDefines.ATTACK_SAME_STRENGTH_POSSIBLE_EXTRA_DAMAGE or 1200
+local iPMMMDamageWoundedMult = GameDefines.WOUNDED_DAMAGE_MULTIPLIER or 33
+local iPMMMDamageCityMeleeMod = GameDefines.ATTACKING_CITY_MELEE_DAMAGE_MOD or 100
+
+local bPMMMCPMeleeDamage = nil      -- cached presence probes (nil = not probed yet; see PMMMGeneralFunctions.lua)
+local bPMMMCPMeleeDamageCity = nil
+
+local function PMMMDamageWoundedRatio(pUnit)
+	if not pUnit then return iPMMMDamageMaxHP end
+	local iDamage = pUnit:GetDamage() or 0
+	local iRatio
+	if pUnit:GetDomainType() == DomainTypes.DOMAIN_AIR then
+		iRatio = iPMMMDamageMaxHP - iDamage
+	else
+		iRatio = iPMMMDamageMaxHP - math.floor(iDamage * iPMMMDamageWoundedMult / 100)
+	end
+	if iRatio < 1 then iRatio = 1 end
+	return iRatio
+end
+
+local function PMMMDamageStrengthRatio(iStrength, iOpponentStrength)
+	local bInvert = iOpponentStrength > iStrength
+	local fRatio
+	if iOpponentStrength > 0 then
+		fRatio = iStrength / iOpponentStrength
+	else
+		fRatio = iStrength
+	end
+	if bInvert then
+		if iStrength > 0 then
+			fRatio = iOpponentStrength / iStrength
+		else
+			fRatio = iOpponentStrength
+		end
+	end
+	if fRatio > 10 then fRatio = 10 end
+	fRatio = (fRatio + 3) / 4
+	fRatio = fRatio ^ 4
+	fRatio = (fRatio + 1) / 2
+	if bInvert then fRatio = 1 / fRatio end
+	return fRatio
+end
+
+--Damage pAttacker deals to pDefender. CP: the bound method, exactly as before (bIncludeRand = true, matching
+--every existing call site). Lekmod: the vanilla formula above, in hundredths until the final divisions.
+function PMMMGetMeleeCombatDamage(pAttacker, iStrength, iDefense, pDefender)
+	if bPMMMCPMeleeDamage == nil then
+		bPMMMCPMeleeDamage = (pAttacker.GetMeleeCombatDamage ~= nil)
+	end
+	if bPMMMCPMeleeDamage then
+		return pAttacker:GetMeleeCombatDamage(iStrength, iDefense, true, pDefender)
+	end
+	local iWoundedRatio = PMMMDamageWoundedRatio(pAttacker)
+	local iDamage100 = math.floor(iPMMMDamageBase100 * iWoundedRatio / iPMMMDamageMaxHP)
+	local iRoll = Game.Rand(iPMMMDamageRand100, "PMMM melee damage roll")
+	iRoll = math.floor(iRoll * iWoundedRatio / iPMMMDamageMaxHP)
+	iDamage100 = iDamage100 + iRoll
+	local iDamage = math.floor(iDamage100 * PMMMDamageStrengthRatio(iStrength, iDefense))
+	iDamage = math.floor(iDamage / 100)
+	--Vanilla melee always deals at least 1 damage (Lekmod CvGame.cpp: "Damage is at least 1").
+	if iDamage <= 0 then iDamage = 1 end
+	return iDamage
+end
+
+--Damage pAttacker deals to pCity. Same split; the city's defense is its own bound GetStrengthValue (city and
+--unit strengths are both in hundredths), and the engine's ATTACKING_CITY_MELEE_DAMAGE_MOD (100 = no change)
+--is applied in the fallback for fidelity with real Lekmod melee-vs-city combat.
+function PMMMGetMeleeCombatDamageCity(pAttacker, iStrength, pCity)
+	if bPMMMCPMeleeDamageCity == nil then
+		bPMMMCPMeleeDamageCity = (pAttacker.GetMeleeCombatDamageCity ~= nil)
+	end
+	if bPMMMCPMeleeDamageCity then
+		return pAttacker:GetMeleeCombatDamageCity(iStrength, pCity, true)
+	end
+	local iWoundedRatio = PMMMDamageWoundedRatio(pAttacker)
+	local iDamage100 = math.floor(iPMMMDamageBase100 * iWoundedRatio / iPMMMDamageMaxHP)
+	local iRoll = Game.Rand(iPMMMDamageRand100, "PMMM city damage roll")
+	iRoll = math.floor(iRoll * iWoundedRatio / iPMMMDamageMaxHP)
+	iDamage100 = iDamage100 + iRoll
+	local iDamage = math.floor(iDamage100 * PMMMDamageStrengthRatio(iStrength, pCity:GetStrengthValue() or 0))
+	iDamage = math.floor(iDamage * iPMMMDamageCityMeleeMod / 100)
+	iDamage = math.floor(iDamage / 100)
+	if iDamage <= 0 then iDamage = 1 end
+	return iDamage
+end
+
 --A virtual attack: the girl hits pDefender as if her strength were fMultiplier times her real
 --attack strength, without moving, without counterattack, and without spending her attack.
 function PMMMVirtualAttack(pAttacker, pDefender, fMultiplier)
@@ -114,7 +223,7 @@ function PMMMVirtualAttack(pAttacker, pDefender, fMultiplier)
 	end
 
 	--GetCombatDamage is a stub in CP 5.4.6; GetMeleeCombatDamage is the real one.
-	local iDamage = pAttacker:GetMeleeCombatDamage(iStrength, iDefense, true, pDefender)
+	local iDamage = PMMMGetMeleeCombatDamage(pAttacker, iStrength, iDefense, pDefender)
 	if not iDamage or iDamage < 0 then iDamage = 0 end
 	if iDamage > 100 then iDamage = 100 end
 	if iDamage > 0 then
@@ -131,7 +240,7 @@ function PMMMVirtualAttackCity(pAttacker, pCity, fMultiplier)
 	if not pFromPlot or not pToPlot then return 0 end
 
 	local iStrength = math.floor(pAttacker:GetMaxAttackStrength(pFromPlot, pToPlot, nil) * fMultiplier)
-	local iDamage = pAttacker:GetMeleeCombatDamageCity(iStrength, pCity, true)
+	local iDamage = PMMMGetMeleeCombatDamageCity(pAttacker, iStrength, pCity)
 	if not iDamage or iDamage < 0 then iDamage = 0 end
 	local iRoom = pCity:GetMaxHitPoints() - pCity:GetDamage() - 1
 	if iDamage > iRoom then iDamage = math.max(iRoom, 0) end

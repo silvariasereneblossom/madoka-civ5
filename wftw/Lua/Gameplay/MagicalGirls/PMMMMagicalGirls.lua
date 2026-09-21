@@ -54,10 +54,16 @@ tMagicalGirlSpawnTable = {}
 
 --Added to GameEvents.UnitCreated
 --This happens ANY TIME an MG is created, regardless of its source, so it should handle both respawns of existing MGs and births of new MGs.
-function OnCreatedMagicalGirl(iPlayer, iUnit, iUnitType)
+--[port] Phase 6 Lekmod: the two DLLs pass different UnitCreated arguments -- CP fires
+--(owner, unitID, unitType, x, y) (CvUnit.cpp:1254) and Lekmod fires (owner, unitID, x, y) (Lekmod CvUnit.cpp,
+--LEKMOD_NEW_LUA_EVENTS), so the third argument is the unit type on CP but the plot X on Lekmod. The first two
+--arguments are (owner, unitID) on both, so the type is now derived from the unit itself, which both DLLs
+--bind: pUnit:GetUnitType() returns exactly what CP's third argument carried, so CP behaviour is unchanged.
+function OnCreatedMagicalGirl(iPlayer, iUnit)
 	dprint("OnCreatedMagicalGirl called")
 	local pPlayer = Players[iPlayer]
 	local pUnit = pPlayer:GetUnitByID(iUnit)
+	local iUnitType = pUnit and pUnit:GetUnitType() or nil
 	if iUnitType == iMagicalGirl then
 		--Did she already exist in the table?
 		if tMagicalGirlSpawnTable["ID"] then
@@ -1032,6 +1038,11 @@ end
 
 
 --If a GP spawns without a proper name, give it one from the Generic MGs table.
+--[port] Phase 6 Lekmod: no change needed for the UnitCreated signature difference (see OnCreatedMagicalGirl
+--above): this is also registered on UnitCreated directly, but its iUnitType parameter is never read, and its
+--fourth parameter (bMagicalGirl) receives a plot coordinate NUMBER under both DLLs -- y on Lekmod's
+--(owner, unitID, x, y), x under CP's (owner, unitID, unitType, x, y) -- and the `bMagicalGirl == true` test
+--below is false for a number either way, so the direct-registration behaviour is identical on both.
 function GiveGPAName(iPlayer, iUnit, iUnitType, bMagicalGirl)
 	if iPlayer < iMaxCivsAndCS then
 		local pPlayer = Players[iPlayer]

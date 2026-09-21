@@ -15,6 +15,315 @@ iMaxCivs = GameDefines.MAX_MAJOR_CIVS
 
 include("VV_PlotIt.lua")
 
+----------------------------------------------------------------------------------------------------------------------------
+--[port] Phase 6 Lekmod: CP/Lekmod dual-compatibility layer for engine methods CP binds and Lekmod does not.
+--Spec: docs/design/lekmod-scope-engine.md section 4 (Lua-workaround rows only; the binding-only rows are ported
+--into Lekmod's DLL separately).
+--
+--How the capability probes work: engine objects handed to Lua are plain tables whose metatable's __index is the
+--class's method table (CvLuaScopedInstance::Push/PushTypeTable -- CP keeps the class tables under the global
+--"LuaTypes", Lekmod under globals named "Unit", "Player", ...). Indexing a method a DLL does not bind therefore
+--returns nil instead of raising, so `pObject.MethodName ~= nil` is a safe presence test. The probes are done on
+--first use, not at file scope: an instance is always in hand there (file scope is NOT safe -- `Unit.X` would
+--error under CP, where the class table is not a global), and all instances of a class share one method table,
+--so one cached result is valid for every receiver. Under CP every helper below calls the native method and
+--behaviour is bit-for-bit what it was; the fallback body only runs under a DLL without the binding.
+--
+--Sync rule (lekmod-scope-multiplayer.md B0): all of this is gameplay code called from GameEvents handlers; the
+--fallbacks touch no randomness (except the damage formula's roll, which uses the synchronised Game.Rand) and
+--iterate in fixed order wherever order matters.
+----------------------------------------------------------------------------------------------------------------------------
+
+--NOTIFICATION_GENERIC for the AddNotification fallbacks below: the engine-side enum (what vanilla Lua UI
+--uses for AddNotification), which every DLL exposes regardless of database state; 0 is the enum's own
+--value (Notifications table row 0), so the literal is the belt to the enum's braces.
+local iPMMMNotificationGeneric = (NotificationTypes and NotificationTypes.NOTIFICATION_GENERIC) or 0
+
+local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
+local bPMMMCPPlayerChangeInfluence = nil
+local bPMMMCPPlayerExpansionPromise = nil
+local bPMMMCPPlayerHasBuildingClass = nil
+local bPMMMCPPlayerHasTech = nil
+local bPMMMCPPlayerHasWonder = nil
+local bPMMMCPPlayerIsAtWarWith = nil
+local bPMMMCPPlayerHasBuilding = nil
+local bPMMMCPGameAnyoneHasWonder = nil
+local bPMMMCPPlayerGetRandomIntrigue = nil
+local bPMMMCPCityAddMessage = nil
+local bPMMMCPCityHasBuilding = nil
+local bPMMMCPCityGetSpecialistRate = nil
+local bPMMMCPCityRefreshTourism = nil
+local bPMMMCPUnitAddMessage = nil
+
+--Player:AddMessage(text): CP shows a transient message to that player (CvLuaPlayer.cpp lAddMessage ->
+--SHOW_PLAYER_MESSAGE). Lekmod binds Player:AddNotification (CvLuaPlayer.cpp lAddNotification) with the full
+--CvNotifications::Add signature (type, message, summary, x, y, gameDataIndex, extraData); NOTIFICATION_GENERIC
+--(Notifications table row 0, vanilla) with no plot is the closest per-player equivalent, and unlike
+--Events.GameplayAlertMessage it reaches the addressed player in multiplayer, not just the local one.
+function PMMMPlayerAddMessage(pPlayer, sText)
+	if bPMMMCPPlayerAddMessage == nil then
+		bPMMMCPPlayerAddMessage = (pPlayer.AddMessage ~= nil)
+	end
+	if bPMMMCPPlayerAddMessage then
+		pPlayer:AddMessage(sText)
+	else
+		pPlayer:AddNotification(iPMMMNotificationGeneric, sText, sText, -1, -1, pPlayer:GetID(), -1)
+	end
+end
+
+--City:AddMessage(text, ePlayer): same replacement, carrying the city's plot so the notification points at it.
+function PMMMCityAddMessage(pCity, sText, iPlayer)
+	if bPMMMCPCityAddMessage == nil then
+		bPMMMCPCityAddMessage = (pCity.AddMessage ~= nil)
+	end
+	if bPMMMCPCityAddMessage then
+		pCity:AddMessage(sText, iPlayer)
+	else
+		local pPlayer = Players[iPlayer or pCity:GetOwner()]
+		if pPlayer then
+			pPlayer:AddNotification(iPMMMNotificationGeneric, sText, sText, pCity:GetX(), pCity:GetY(), pPlayer:GetID(), -1)
+		end
+	end
+end
+
+--Unit:AddMessage(text, ePlayer): same replacement, carrying the unit's plot.
+function PMMMUnitAddMessage(pUnit, sText, iPlayer)
+	if bPMMMCPUnitAddMessage == nil then
+		bPMMMCPUnitAddMessage = (pUnit.AddMessage ~= nil)
+	end
+	if bPMMMCPUnitAddMessage then
+		pUnit:AddMessage(sText, iPlayer)
+	else
+		local pPlayer = Players[iPlayer or pUnit:GetOwner()]
+		if pPlayer then
+			pPlayer:AddNotification(iPMMMNotificationGeneric, sText, sText, pUnit:GetX(), pUnit:GetY(), pPlayer:GetID(), -1)
+		end
+	end
+end
+
+--Player:ChangeInfluenceOnPlayer(other, amount, false, false): CP's tourism-influence changer
+--(CvPlayerCulture::ChangeInfluenceOn). Lekmod binds only Player:ChangeMinorCivFriendshipWithMajor, whose
+--receiver is the MINOR (CvLuaPlayer.cpp lChangeMinorCivFriendshipWithMajor -> ChangeFriendshipWithMajor), so
+--for a city-state the call inverts to Players[iMinor]:ChangeMinorCivFriendshipWithMajor(iMajor, iAmount); note
+--this skips CP's influence modifiers and game-speed scaling (both false in the one call site anyway).
+--For a MAJOR civ there is no bound equivalent at all: the vanilla backing exists in Lekmod
+--(CvPlayerCulture::ChangeInfluenceOn, CvCultureClasses.cpp) but is unbound, so the call is a documented no-op
+--until that binding-only port lands. The single call site (Homura's Time Stop tourism) only passes majors.
+function PMMMPlayerChangeInfluenceOnPlayer(pPlayer, iOther, iInfluence)
+	if bPMMMCPPlayerChangeInfluence == nil then
+		bPMMMCPPlayerChangeInfluence = (pPlayer.ChangeInfluenceOnPlayer ~= nil)
+	end
+	if bPMMMCPPlayerChangeInfluence then
+		pPlayer:ChangeInfluenceOnPlayer(iOther, iInfluence, false, false)
+	elseif iOther and iOther >= 0 and Players[iOther] and Players[iOther]:IsMinorCiv() and iInfluence and iInfluence > 0 then
+		Players[iOther]:ChangeMinorCivFriendshipWithMajor(pPlayer:GetID(), iInfluence)
+	end
+end
+
+--Player:GetNumTurnsExpansionPromise(other): CP promise-rework counter, no Lekmod equivalent. Drop the term
+--under Lekmod (the adjacent IsPlayerBrokenExpansionPromise / IsPlayerIgnoredExpansionPromise checks ARE
+--bound there, so the mood demand still fires off those).
+function PMMMPlayerGetNumTurnsExpansionPromise(pPlayer, iOther)
+	if bPMMMCPPlayerExpansionPromise == nil then
+		bPMMMCPPlayerExpansionPromise = (pPlayer.GetNumTurnsExpansionPromise ~= nil)
+	end
+	if bPMMMCPPlayerExpansionPromise then
+		return pPlayer:GetNumTurnsExpansionPromise(iOther)
+	end
+	return 0
+end
+
+--Player:HasBuildingClass(class): CP semantics are "any city has the civilization's building of that class"
+--(CvPlayer::HasBuildingClass -> CvCity::HasBuildingClass). Fallback: any city has ANY building of the class
+--(one building per class per city, so this is the same set), via GetNumBuilding > 0, which is exactly the
+--count CP's city-level check reads. The class->buildings map is built once, lazily; the iteration order does
+--not matter (presence test only).
+local tPMMMBuildingsByClass = nil
+function PMMMPlayerHasBuildingClass(pPlayer, iClass)
+	if bPMMMCPPlayerHasBuildingClass == nil then
+		bPMMMCPPlayerHasBuildingClass = (pPlayer.HasBuildingClass ~= nil)
+	end
+	if bPMMMCPPlayerHasBuildingClass then
+		return pPlayer:HasBuildingClass(iClass)
+	end
+	if not iClass or iClass < 0 then return false end
+	if tPMMMBuildingsByClass == nil then
+		tPMMMBuildingsByClass = {}
+		for row in GameInfo.Buildings() do
+			local iClassID = GameInfoTypes[row.BuildingClass]
+			if iClassID then
+				local tList = tPMMMBuildingsByClass[iClassID]
+				if not tList then
+					tList = {}
+					tPMMMBuildingsByClass[iClassID] = tList
+				end
+				tList[#tList + 1] = row.ID
+			end
+		end
+	end
+	local tList = tPMMMBuildingsByClass[iClass]
+	if tList then
+		for pCity in pPlayer:Cities() do
+			for i = 1, #tList do
+				if pCity:GetNumBuilding(tList[i]) > 0 then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+--Player:HasTech(tech): CP is a one-liner over the team's techs; Lekmod binds the same pieces
+--(Team:GetTeamTechs, TeamTech:HasTech), and the mod already uses this form elsewhere.
+function PMMMPlayerHasTech(pPlayer, iTech)
+	if bPMMMCPPlayerHasTech == nil then
+		bPMMMCPPlayerHasTech = (pPlayer.HasTech ~= nil)
+	end
+	if bPMMMCPPlayerHasTech then
+		return pPlayer:HasTech(iTech)
+	end
+	return Teams[pPlayer:GetTeam()]:GetTeamTechs():HasTech(iTech)
+end
+
+--Player:HasWonder(building): CP semantics are "any city HasWonder == HasBuilding == GetNumBuilding > 0"
+--(CvPlayer::HasWonder, CvCity::HasBuilding). Wonders are one-per-city, so the count comparison is exact.
+function PMMMPlayerHasWonder(pPlayer, iWonder)
+	if bPMMMCPPlayerHasWonder == nil then
+		bPMMMCPPlayerHasWonder = (pPlayer.HasWonder ~= nil)
+	end
+	if bPMMMCPPlayerHasWonder then
+		return pPlayer:HasWonder(iWonder)
+	end
+	if not iWonder or iWonder < 0 then return false end
+	for pCity in pPlayer:Cities() do
+		if pCity:GetNumBuilding(iWonder) > 0 then
+			return true
+		end
+	end
+	return false
+end
+
+--Player:HasBuilding(building): NOT in the spec's §4 table -- a call site the name-by-name inventory
+--missed (PMMMCoreLikesDislikes.lua, wonder Likes/Dislikes). CP binds it (CvLuaPlayer.cpp LUAAPIIMPL
+--Player HasBuilding -> CvPlayer::HasBuilding) and Lekmod does not bind it (no "HasBuilding" in its
+--CvLuaPlayer.cpp at all). CP semantics: any city HasBuilding(i) == any city GetNumBuilding(i) > 0 --
+--the same loop HasWonder makes, so the fallback is exact, not approximate.
+function PMMMPlayerHasBuilding(pPlayer, iBuilding)
+	if bPMMMCPPlayerHasBuilding == nil then
+		bPMMMCPPlayerHasBuilding = (pPlayer.HasBuilding ~= nil)
+	end
+	if bPMMMCPPlayerHasBuilding then
+		return pPlayer:HasBuilding(iBuilding)
+	end
+	if not iBuilding or iBuilding < 0 then return false end
+	for pCity in pPlayer:Cities() do
+		if pCity:GetNumBuilding(iBuilding) > 0 then
+			return true
+		end
+	end
+	return false
+end
+
+--Player:GetRandomIntrigue(city): NOT in the spec's §4 table -- a call site the name-by-name inventory
+--missed (PMMMShiromeTrait.lua, Shirome's Leader-MG free intrigue). CP-only binding (CvLuaPlayer.cpp
+--lGetRandomIntrigue -> CvPlayerEspionage::GetRandomIntrigue), and the backing is deep inside CP's
+--espionage/AIOperation rework: it reads CP's spy-assignment and AI sneak-attack-operation state, none
+--of which Lekmod's vanilla espionage has or exposes to Lua. No Lua fallback can exist; under a DLL
+--without the binding the call is a documented no-op (Shirome's free intrigue silently does nothing,
+--like Kyouko's StartsWithPantheon, lekmod-scope-engine.md §7.4). Returns true if intrigue was granted
+--so the caller can decide whether to spend its once-per-N-turns bookkeeping on it.
+function PMMMPlayerGetRandomIntrigue(pPlayer, pCity)
+	if bPMMMCPPlayerGetRandomIntrigue == nil then
+		bPMMMCPPlayerGetRandomIntrigue = (pPlayer.GetRandomIntrigue ~= nil)
+	end
+	if bPMMMCPPlayerGetRandomIntrigue then
+		pPlayer:GetRandomIntrigue(pCity)
+		return true
+	end
+	return false
+end
+
+--Game:AnyoneHasWonder(building): NOT in the spec's §4 table -- a call site the
+--name-by-name inventory missed (PMMMCoreLikesDislikes.lua, wonder Likes/Dislikes). CP binds it
+--(CvLuaGame.cpp lAnyoneHasWonder -> CvGame::AnyoneHasWonder); Lekmod has neither binding nor backing.
+--CP semantics: any LIVING player HasWonder(i) -- the loop below over civs, city-states and barbarians
+--(iMaxCivsAndCS is the barbarian slot, GameDefines.MAX_CIV_PLAYERS) covers every player that can own
+--a city; the spectator cannot, so the fallback matches CP exactly.
+function PMMMGameAnyoneHasWonder(iWonder)
+	if bPMMMCPGameAnyoneHasWonder == nil then
+		bPMMMCPGameAnyoneHasWonder = (Game.AnyoneHasWonder ~= nil)
+	end
+	if bPMMMCPGameAnyoneHasWonder then
+		return Game:AnyoneHasWonder(iWonder)
+	end
+	for iOther = 0, iMaxCivsAndCS do
+		local pOther = Players[iOther]
+		if pOther and pOther:IsAlive() and PMMMPlayerHasWonder(pOther, iWonder) then
+			return true
+		end
+	end
+	return false
+end
+
+--Player:IsAtWarWith(player): CP is a one-liner over the teams; the mod already uses the Teams form at
+--MagicalGirlMissionHandler.lua's ENEMY targeting.
+function PMMMPlayerIsAtWarWith(pPlayer, iOther)
+	if bPMMMCPPlayerIsAtWarWith == nil then
+		bPMMMCPPlayerIsAtWarWith = (pPlayer.IsAtWarWith ~= nil)
+	end
+	if bPMMMCPPlayerIsAtWarWith then
+		return pPlayer:IsAtWarWith(iOther)
+	end
+	if not iOther or iOther < 0 then return false end
+	local pOther = Players[iOther]
+	if not pOther then return false end
+	return Teams[pPlayer:GetTeam()]:IsAtWar(pOther:GetTeam())
+end
+
+--City:HasBuilding(building): CP reads the total building count (CvCity::HasBuilding ->
+--GetCityBuildings()->GetNumBuilding), which includes free buildings. City:IsHasBuilding reads the same
+--counter and is bound in BOTH DLLs, so the fallback is exact, not approximate (GetNumRealBuilding would
+--have differed on free buildings).
+function PMMMCityHasBuilding(pCity, iBuilding)
+	if bPMMMCPCityHasBuilding == nil then
+		bPMMMCPCityHasBuilding = (pCity.HasBuilding ~= nil)
+	end
+	if bPMMMCPCityHasBuilding then
+		return pCity:HasBuilding(iBuilding)
+	end
+	return pCity:IsHasBuilding(iBuilding)
+end
+
+--City:GetSpecialistRate(specialist): CP's per-turn Great Person progress in hundredths from a CP-only class
+--(CvCityCitizens::GetSpecialistRate: specialists + buildings + religion, times the city's rate modifier).
+--Fallback approximation per the spec: specialist count x the Specialists-table base rate (GreatPeopleRateChange,
+--vanilla value 3 for GP specialists, 0 for citizens), x 100 for the hundredths
+--ChangeSpecialistGreatPersonProgressTimes100 takes. Under-counts by design (no building, religion or modifier
+--terms), so Time Stop grants slightly fewer Great Person points under Lekmod than under CP.
+function PMMMCityGetSpecialistRate(pCity, iSpecialist)
+	if bPMMMCPCityGetSpecialistRate == nil then
+		bPMMMCPCityGetSpecialistRate = (pCity.GetSpecialistRate ~= nil)
+	end
+	if bPMMMCPCityGetSpecialistRate then
+		return pCity:GetSpecialistRate(iSpecialist)
+	end
+	local tSpecialist = GameInfo.Specialists[iSpecialist]
+	if not tSpecialist then return 0 end
+	return (pCity:GetSpecialistCount(iSpecialist) or 0) * (tSpecialist.GreatPeopleRateChange or 0) * 100
+end
+
+--City:RefreshTourism(): CP-only recompute trigger. Tourism is recomputed on every turn anyway, so under
+--Lekmod the call is dropped and the next turn's recompute covers it (one-turn-later display only).
+function PMMMCityRefreshTourism(pCity)
+	if bPMMMCPCityRefreshTourism == nil then
+		bPMMMCPCityRefreshTourism = (pCity.RefreshTourism ~= nil)
+	end
+	if bPMMMCPCityRefreshTourism then
+		pCity:RefreshTourism()
+	end
+end
+
 
 
 -- from http://lua-users.org/wiki/SplitJoin
@@ -344,7 +653,9 @@ function DoConsumeGriefSeed(iMGKey, iPlayer)
 		for _, fHook in ipairs(tPMMMGriefSeedUsedHooks) do fHook(iPlayer, iMGKey) end
 	end
 	local pPlayer, pUnit = RetrieveMGPointers(iMGKey)
-	pPlayer:AddMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_USED_GRIEF_SEED", MagicalGirls[iMGKey].Name, MapModData.gPMMMGriefSeedRecoverAmount))
+	--[port] Phase 6 Lekmod: AddMessage is CP-only; the wrapper (defined above) calls it natively under CP
+	--and falls back to AddNotification elsewhere.
+	PMMMPlayerAddMessage(pPlayer, Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_USED_GRIEF_SEED", MagicalGirls[iMGKey].Name, MapModData.gPMMMGriefSeedRecoverAmount))
 end
 
 

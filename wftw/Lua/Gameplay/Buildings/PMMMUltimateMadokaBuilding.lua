@@ -23,7 +23,10 @@ function LuminousRecoverSoulGem(iPlayer)
 			local iRecovery = 0
 			if pUnit:GetPlot():IsCity() then
 				local pCity = pUnit:GetPlot():GetPlotCity()
-				if pCity:HasBuilding(iLuminousGarden) then
+				--[port] Phase 6 Lekmod: City:HasBuilding is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+				--calls it natively under CP and otherwise reads City:IsHasBuilding, which both DLLs bind and
+				--which counts the same counter CP's backing reads.
+				if PMMMCityHasBuilding(pCity, iLuminousGarden) then
 					iRecovery = iRecovery + 1
 				end
 			end

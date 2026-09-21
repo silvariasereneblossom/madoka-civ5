@@ -707,7 +707,10 @@ t_LikesDislikes[iCivLDID].FulfilledFunc = (
 			local iFromDemands = 0
 			-- CP 5.x removed the vanilla "request ever asked" flags. Its promise system is the
 			-- closest equivalent: an expansion/spy promise exists only after we asked them to stop.
-			if pPlayer:GetNumTurnsExpansionPromise(iValue) > 0
+			--[port] Phase 6 Lekmod: GetNumTurnsExpansionPromise is CP-only; the wrapper (PMMMGeneralFunctions.lua)
+			--calls it natively under CP and returns 0 elsewhere, so on such a DLL only the broken/ignored-promise
+			--flags (bound in both DLLs) can score this branch -- the term is silently dropped, not the whole check.
+			if PMMMPlayerGetNumTurnsExpansionPromise(pPlayer, iValue) > 0
 				or pPlayer:IsPlayerBrokenExpansionPromise(iValue)
 				or pPlayer:IsPlayerIgnoredExpansionPromise(iValue) then iFromDemands = iFromDemands + 20 end
 
@@ -1310,7 +1313,10 @@ t_LikesDislikes[iWonderLDID].FulfilledFunc = (
 		--For now, Likes/Loves are fulfilled simply if you possess that wonder, and the opposite for Dislike/Hate.
 		--Wonders which haven't yet been built have return no mood value at all.
 		
-		if not Game.AnyoneHasWonder(iValue) then return 0 end
+		--[port] Phase 6 Lekmod: Game:AnyoneHasWonder is CP-only (missed by the spec's §4 inventory; see the
+		--wrapper in PMMMGeneralFunctions.lua); the wrapper calls it natively under CP and otherwise loops the
+		--living players on the HasWonder fallback -- the same loop CP's own backing makes.
+		if not PMMMGameAnyoneHasWonder(iValue) then return 0 end
 		
 		local bFulfilled = false
 		local bLike = true
@@ -1318,7 +1324,10 @@ t_LikesDislikes[iWonderLDID].FulfilledFunc = (
 		local pPlayer = Players[iPlayer]
 		local iVal = 0
 		
-		if pPlayer:HasBuilding(iValue)then
+		--[port] Phase 6 Lekmod: Player:HasBuilding is CP-only (missed by the spec's §4 inventory; see the
+		--wrapper in PMMMGeneralFunctions.lua); the wrapper calls it natively under CP and otherwise loops the
+		--player's cities on GetNumBuilding -- the same loop CP's own backing makes.
+		if PMMMPlayerHasBuilding(pPlayer, iValue)then
 			bFulfilled = bLike
 		else
 			bFulfilled = not bLike

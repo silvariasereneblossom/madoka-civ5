@@ -31,8 +31,14 @@ function OnPlayerDoTurnShiromeTrait(iPlayer)
 					pChosenCity = tCities[1]
 				end
 				if pChosenCity then
-					Players[iPlayer]:GetRandomIntrigue(pChosenCity)
-					PMMM.PlayerLastGotFreeIntrigueTurn[iPlayer] = Game:GetGameTurn()
+					--[port] Phase 6 Lekmod: Player:GetRandomIntrigue is CP-only (missed by the spec's §4
+					--inventory; see the wrapper in PMMMGeneralFunctions.lua). Under CP it is the native call,
+					--unchanged. Under a DLL without it the free intrigue is silently not granted (CP's intrigue
+					--grant reads espionage/AIOperation state that vanilla-lineage DLLs do not expose), and the
+					--once-per-N-turns stamp is NOT spent, so nothing pretends something happened.
+					if PMMMPlayerGetRandomIntrigue(Players[iPlayer], pChosenCity) then
+						PMMM.PlayerLastGotFreeIntrigueTurn[iPlayer] = Game:GetGameTurn()
+					end
 				end
 			end
 		end
