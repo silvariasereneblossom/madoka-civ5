@@ -1,8 +1,16 @@
 # Lekmod scoping pass: plan and status
 
-**Status (2026-09-18):** started and stopped at the maintainer's request after about fifteen minutes. None of the
-three investigations had produced a report, so there are no findings beyond the blocker analysis already in
-`docs/HANDOVER.md` section 9. Re-run from the briefs below; each wrote to its own file, so they parallelise.
+**Status (2026-09-19): complete.** All three investigations ran (a first attempt on 2026-09-18 was stopped
+~15 minutes in; this is the re-run) and each wrote its report:
+
+| Investigation | Report |
+|---|---|
+| 1: engine (Lua) dependencies | `docs/design/lekmod-scope-engine.md` |
+| 2: database dependencies | `docs/design/lekmod-scope-database.md` |
+| 3: multiplayer and packaging | `docs/design/lekmod-scope-multiplayer.md` |
+
+The consolidated port list and the fork-versus-upstream recommendation are in
+`docs/design/lekmod-scope-synthesis.md`. The briefs below are retained for provenance.
 
 The pass answers one question: what exactly does it take to run Wish for the World on Lekmod, in multiplayer?
 The output is a port list with effort estimates and a recommendation on forking Lekmod versus upstreaming.
