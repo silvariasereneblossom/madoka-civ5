@@ -2,7 +2,7 @@
 <!-- Phase 6 Lekmod companion mod 1 of 2: the EARLY schema shim.
      Tick order for Lekmod sessions: this shim, then WFTW, then the late
      "Wish for the World Lekmod Data Patch". The "(0)" name prefix makes it
-     load before the WFTW mod. NEVER tick this together with the Community
+     load before the WFTW mod (the real guarantee is WFTW's References entry; see below). NEVER tick this together with the Community
      Patch (its DLL and database are mutually exclusive with Lekmod anyway):
      every statement below duplicates a column CP already has, and
      ALTER TABLE ADD COLUMN aborts on duplicates under the game's SQLite 3.7.17. -->
@@ -21,9 +21,8 @@
     <SupportsHotSeat>0</SupportsHotSeat>
     <SupportsMac>0</SupportsMac>
   </Properties>
-  <Dependencies>
-    <Mod id="6938dbeb-84c4-4a08-8bc0-51fca6135175" minversion="27" maxversion="999" title="Madoka Magica -- Wish for the World [BNW]" />
-  </Dependencies>
+  <!-- No Dependency on WFTW: a dependency always loads first, which ran this shim AFTER WFTW and aborted half its
+       files (2026-09-21). WFTW References this mod instead, so the shim loads first when both are ticked. -->
   <Blocks>
     <!-- Lekmod-only: the Mods menu refuses to enable this together with the Community Patch. -->
     <Mod id="d1b6328c-ff44-4b0d-aad7-c657f83610cd" minversion="0" maxversion="999" title="(1) Community Patch" />
