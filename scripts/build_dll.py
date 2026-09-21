@@ -120,6 +120,10 @@ def patch_upstream(src: str, repo: Path, llvm_bin: Path, no_lto: bool = False) -
     p = _patch(p, r"rf'C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include'", f"r'{VC9_DIR}\\include'")
     p = _patch(p, r"sdk_path = rf'C:\Program Files (x86)\Microsoft SDKs\Windows\v{sdk_version}'", f"sdk_path = r'{SDK_DIR}'")
     p = _patch(p, r"vs_path = r'C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC'", f"vs_path = r'{VC9_DIR}'")
+    # 5b: search scripts/clang-shim first, so va_start is clang's builtin rather than VC9's pointer arithmetic
+    #     (scripts/clang-shim/vadefs.h explains the bug this fixes)
+    shim = ROOT / "scripts" / "clang-shim"
+    p = _patch(p, "INCLUDE_PATHS = [\n", f"INCLUDE_PATHS = [\n    r'{shim}',\n")
     # 6: keep VC9\lib on the link path (upstream relies on the LIB env var for it)
     p = _patch(p, "LIB_PATHS = [\n", f"LIB_PATHS = [\n    r'{VC9_DIR}\\lib',\n")
     # 7: upstream shells out to update_commit_id.bat, which cmd cannot resolve from this

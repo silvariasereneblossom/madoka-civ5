@@ -201,6 +201,8 @@ def main(argv=None) -> int:
     for inc in ["."] + incdirs:  # project dir first, as the MSVC build implies it
         inc = inc.replace("$(SolutionDir)", "").replace("$(ProjectDir)", "").strip("\\/")
         cl_args.append(f'/I"{project_dir / inc}"')
+    # clang-builtin va_start over VC9's pointer-arithmetic one; must precede the VC9 folder (see the header)
+    cl_args.append(f'-external:I"{ROOT / "scripts" / "clang-shim"}"')
     cl_args.append(f'-external:I"{SDK_DIR / "Include"}"')
     cl_args.append(f'-external:I"{VC9_DIR / "include"}"')
     cl_args += [f"-Wno-{s}" for s in CL_SUPPRESS]

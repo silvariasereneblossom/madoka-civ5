@@ -324,3 +324,25 @@ insertions in 3 files during testing); the build script's marker check is the on
 `python scripts/build_lekmod_dll.py --config release` exits 0 (160 translation units, 6.1 MB I386 DLL);
 `python scripts/deploy_lekmod_dll.py <lekmod-dlc-folder>` deploys with a one-time backup (`--restore` reverts,
 refuses while the game runs, never touches `build/parked-dlc/`).
+
+## Varargs crash at database load: VC9 `va_start` under clang (2026-09-21)
+
+First Lekmod live test crashed while the DLC database loaded, before any mod was imported (dump
+`CvMiniDump_20260921_150931_LEKMOD.dmp`; the two dumps from 2026-09-19 01:13/01:24 are the same crash, so
+the port had in fact been tried in game once already). Stack: `PrefetchCollection<CvAICityStrategyEntry>` →
+`SetFlavors` → `PopulateArrayByValue` → `CvDatabaseUtility::MaxRows` → `vsprintf_s` reading `0x9` as a
+`%s`. The 47 `select ROWID from (null) where Type = '(null)'` lines in `Database.log` are the same bug in
+`CvDllDatabaseUtility`'s PostDefines pass.
+
+Cause: VC9's `vadefs.h` implements x86 `va_start` as pointer arithmetic on the address of the last named
+parameter. When clang inlines a varargs function (VC9's C++ `sprintf_s(char (&)[N], fmt, ...)` overload), that
+parameter is a copied local, so the argument pointer lands on stack garbage; `MaxRows` never read
+`szTableName` at all. clang ships a `vadefs.h` that swaps in `__builtin_va_*`, but the VC9 include folder is
+searched first, so it never applied. **The CP DLL compiled the identical broken code** and survived only
+because the leftover stack happened to hold a valid string. Every `sprintf_s`-into-array in both DLLs was
+affected.
+
+Fix: `scripts/clang-shim/vadefs.h` (`#include_next`s VC9's, then redefines the three macros), searched before
+VC9 by both `build_lekmod_dll.py` and `build_dll.py` (patch 5b). Verified by disassembly: `MaxRows` now loads
+`[ebp+8]` and calls a real varargs `sprintf_s<256>` in both builds. The fixed Lekmod DLL (md5 B9271257…) is
+deployed; the rebuilt CP release is built but **not yet deployed** (deploy before the next CP session).
