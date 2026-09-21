@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phase 6 Lekmod companion mod 1 of 2: the EARLY schema shim.
+     Tick order for Lekmod sessions: this shim, then WFTW, then the late
+     "Wish for the World Lekmod Data Patch". The "(0)" name prefix makes it
+     load before the WFTW mod. NEVER tick this together with the Community
+     Patch (its DLL and database are mutually exclusive with Lekmod anyway):
+     every statement below duplicates a column CP already has, and
+     ALTER TABLE ADD COLUMN aborts on duplicates under the game's SQLite 3.7.17. -->
+<Mod id="e8577662-6ec2-439a-b549-7ef67c5b6457" version="1">
+  <Properties>
+    <Name>(0) Wish for the World -- Lekmod Shim</Name>
+    <Stability>Beta</Stability>
+    <Teaser>Phase 6 Lekmod schema shim: stages the CP-era tables and columns WFTW writes but Lekmod v35 lacks.</Teaser>
+    <Description>Private Lekmod port of Madoka Magica: Wish for the World (Lekmod license permits personal-use modification; not for distribution). Stages, before WFTW loads, every Community-Patch-era table and column WFTW's database files write but Lekmod v35 does not ship, so the mod loads unmodified on Lekmod. It also rebuilds Lekmod's native Trait_BuildingClassYieldChanges with a default on its NOT NULL Yield column, which otherwise aborts WFTW's Kyouko.sql. Staging only: Lekmod's DLL reads none of it until the Phase 6 DLL port lands; the late data patch converts what can be converted (promotion-prereq link rows, trait yield) and repairs camp gold. Tick with WFTW and the Lekmod data patch, on top of a Lekmod v35 install. Single player only.</Description>
+    <Authors>WFTW revival project (maintainer)</Authors>
+    <HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <MinCompatibleSaveVersion>1</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>0</SupportsMultiplayer>
+    <SupportsHotSeat>0</SupportsHotSeat>
+    <SupportsMac>0</SupportsMac>
+  </Properties>
+  <Dependencies>
+    <Mod id="6938dbeb-84c4-4a08-8bc0-51fca6135175" minversion="27" maxversion="999" title="Madoka Magica -- Wish for the World [BNW]" />
+  </Dependencies>
+  <Actions>
+    <OnModActivated>
+      <UpdateDatabase>SQL/Phase6LekmodShim.sql</UpdateDatabase>
+    </OnModActivated>
+  </Actions>
+</Mod>

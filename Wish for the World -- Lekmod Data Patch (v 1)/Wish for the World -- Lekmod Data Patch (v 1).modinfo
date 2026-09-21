@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phase 6 Lekmod companion mod 2 of 2: the LATE data patch.
+     Tick order for Lekmod sessions: the "(0) Wish for the World Lekmod Shim",
+     then WFTW, then this patch. The name sorts after the WFTW mod so it
+     loads last. Never tick together with the Community Patch. -->
+<Mod id="12dbb2be-7d5d-48e9-8a66-df6ee4c0adbe" version="1">
+  <Properties>
+    <Name>Wish for the World -- Lekmod Data Patch</Name>
+    <Stability>Beta</Stability>
+    <Teaser>Phase 6 Lekmod data patch: converts promotion prereqs to Lekmod's link table, repairs camp gold, holds the rebalance rulings review.</Teaser>
+    <Description>Private Lekmod port of Madoka Magica: Wish for the World (Lekmod license permits personal-use modification; not for distribution). Loads after WFTW on Lekmod v35 and (1) converts the promotion-prerequisite values staged by the shim into Lekmod's native UnitPromotions_PromotionPrereqOrs link rows, (2) copies Kyouko's shrine food staged under the CP column name into Lekmod's live Yield column, (3) restores the mod's intended 1 gold per Witch Labyrinth on the legacy column Lekmod actually reads, and (4) carries the maintainer's 44-row keep-or-override rebalance review as SQL comments (default: keep Lekmod's values). Tick with the Lekmod shim and WFTW, on top of a Lekmod v35 install. Single player only.</Description>
+    <Authors>WFTW revival project (maintainer)</Authors>
+    <HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <MinCompatibleSaveVersion>1</MinCompatibleSaveVersion>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>0</SupportsMultiplayer>
+    <SupportsHotSeat>0</SupportsHotSeat>
+    <SupportsMac>0</SupportsMac>
+  </Properties>
+  <Dependencies>
+    <Mod id="6938dbeb-84c4-4a08-8bc0-51fca6135175" minversion="27" maxversion="999" title="Madoka Magica -- Wish for the World [BNW]" />
+    <Mod id="e8577662-6ec2-439a-b549-7ef67c5b6457" minversion="1" maxversion="999" title="(0) Wish for the World -- Lekmod Shim" />
+  </Dependencies>
+  <Actions>
+    <OnModActivated>
+      <UpdateDatabase>SQL/Phase6LekmodPromotionPrereqOrs.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase6LekmodCampGold.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase6LekmodKyouko.sql</UpdateDatabase>
+      <UpdateDatabase>SQL/Phase6LekmodRebalanceRulings.sql</UpdateDatabase>
+    </OnModActivated>
+  </Actions>
+</Mod>

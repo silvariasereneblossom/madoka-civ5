@@ -1,0 +1,26 @@
+--==============================================================================
+-- Phase 6 Lekmod -- witch-labyrinth gold repair (late data patch)
+--==============================================================================
+-- PRIVATE Lekmod port of Madoka Magica: Wish for the World (WFTW). Lekmod's
+-- license permits personal-use modification. Not for distribution.
+--
+-- WFTW's SQL/Shared/MGDefines.sql:691-692 writes Community Patch's
+-- HandicapInfos.BarbarianCampGold / AIBarbarianCampGold columns and zeroes the
+-- legacy BarbCampGold, because on CP the legacy column is additive (CP pays
+-- the legacy gold on top of its own) and the mod wants exactly 1 gold per
+-- labyrinth. On Lekmod the legacy BarbCampGold is the ONLY column the DLL
+-- reads, and the shim staged the CP columns as inert storage -- so after
+-- WFTW loads, camp gold would be zero. This re-issues the statement in its
+-- Lekmod form: the mod's intended value 1 on the live column. (The mod then
+-- removes that 1 gold again in Lua; the value must stay 1, not 0, because
+-- Firaxis divides by it when discovering Natural Wonders.)
+--
+-- MGDefines' trigger SetBarbCampGold0 (MGDefines.sql:694-700) is left as
+-- created: it only fires on an INSERT into HandicapInfos, which never
+-- happens after database load.
+--
+-- Idempotent: a plain UPDATE. SQLite 3.7.17-safe.
+--==============================================================================
+
+-- Phase 6 Lekmod: restore 1 gold per Witch Labyrinth on Lekmod's live column
+UPDATE HandicapInfos SET BarbCampGold = 1;
