@@ -345,4 +345,4 @@ affected.
 Fix: `scripts/clang-shim/vadefs.h` (`#include_next`s VC9's, then redefines the three macros), searched before
 VC9 by both `build_lekmod_dll.py` and `build_dll.py` (patch 5b). Verified by disassembly: `MaxRows` now loads
 `[ebp+8]` and calls a real varargs `sprintf_s<256>` in both builds. The fixed Lekmod DLL (md5 B9271257…) is
-deployed; the rebuilt CP release is built but **not yet deployed** (deploy before the next CP session).
+deployed; the rebuilt CP release (md5 7C945B89…) was deployed the same day after the Lekmod build started cleanly in game.
