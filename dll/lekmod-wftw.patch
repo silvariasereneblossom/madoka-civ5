@@ -1,0 +1,2006 @@
+--- a/CvGameCoreDLL_Expansion2/CvAStar.cpp
++++ b/CvGameCoreDLL_Expansion2/CvAStar.cpp
+@@ -4082,13 +4082,12 @@
+ 
+ //	--------------------------------------------------------------------------------
+ /// Constructor
++// WFTW Lekmod port (clang-cl build compatibility): the ctor body called the base
++// constructor explicitly ('CvAStar::CvAStar();' / 'this->CvAStar::CvAStar();'),
++// which is an MSVC extension, not valid C++; moved to the initializer list.
+ CvTwoLayerPathFinder::CvTwoLayerPathFinder()
++	: CvAStar()
+ {
+-#ifdef AUI_WARNING_FIXES
+-	this->CvAStar::CvAStar();
+-#else
+-	CvAStar::CvAStar();
+-#endif
+ 	m_ppaaPartialMoveNodes = NULL;
+ }
+ 
+--- a/CvGameCoreDLL_Expansion2/CvBarbarians.cpp
++++ b/CvGameCoreDLL_Expansion2/CvBarbarians.cpp
+@@ -271,8 +271,13 @@
+ 	ArrayWrapper<int> kWrapper2(iWorldNumPlots, m_aiPlotBarbCampNumUnitsSpawned);
+ 	kStream >> kWrapper2;
+ #else
+-	kStream >> ArrayWrapper<short>(iWorldNumPlots, m_aiPlotBarbCampSpawnCounter);
+-	kStream >> ArrayWrapper<short>(iWorldNumPlots, m_aiPlotBarbCampNumUnitsSpawned);
++	// WFTW Lekmod port (clang-cl build compatibility): operator>> takes a
++	// non-const ArrayWrapper&, which cannot bind to the temporaries below
++	// (MSVC allows rvalues there); use named locals as the branch above.
++	ArrayWrapper<short> kWrapper1(iWorldNumPlots, m_aiPlotBarbCampSpawnCounter);
++	kStream >> kWrapper1;
++	ArrayWrapper<short> kWrapper2(iWorldNumPlots, m_aiPlotBarbCampNumUnitsSpawned);
++	kStream >> kWrapper2;
+ #endif
+ }
+ 
+--- a/CvGameCoreDLL_Expansion2/CvCity.cpp
++++ b/CvGameCoreDLL_Expansion2/CvCity.cpp
+@@ -12641,6 +12641,15 @@
+ 	}
+ #endif // LEKMOD_PUPPET_YIELD_MOD_INFO
+ 
++	// PMMM Phase 4: Ai Yo, yields grow with unhappiness from cities and population
++	const int iPMMMAiYo = kPlayer.GetPMMMUnhappinessBonusPercent();
++	if (iPMMMAiYo != 0)
++	{
++		iModifier += iPMMMAiYo;
++		if (toolTipSink)
++			GC.getGame().BuildProdModHelpText(toolTipSink, "TXT_KEY_PMMM_YIELD_MOD_AI_YO", iPMMMAiYo);
++	}
++
+ 	iModifier += iExtra;
+ 
+ 	// note: player->invalidateYieldRankCache() must be called for anything that is checked here
+--- a/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvCultureClasses.cpp
+@@ -3346,6 +3346,10 @@
+ /// Unhappiness generated from public opinion
+ int CvPlayerCulture::GetPublicOpinionUnhappiness() const
+ {
++	// PMMM Phase 4: Ai Yo, immune to ideology pressure
++	if (m_pPlayer && m_pPlayer->IsPMMMNoIdeologyPressure())
++		return 0;
++
+ 	return m_iOpinionUnhappiness;
+ }
+ 
+--- a/CvGameCoreDLL_Expansion2/CvDatabaseUtility.h
++++ b/CvGameCoreDLL_Expansion2/CvDatabaseUtility.h
+@@ -47,8 +47,10 @@
+ #endif
+ 
+ 	//!Allocates an array to Count(szTableName) and zero's memory.
++	// WFTW Lekmod port (clang-cl build compatibility): the parameter was named 'default',
++	// which MSVC accepts as an identifier; renamed (callers pass it positionally).
+ 	template<typename T>
+-void InitializeArray(T*& pArray, const char* szTableName, T default = (T)0);
++void InitializeArray(T*& pArray, const char* szTableName, T tDefault = (T)0);
+ 
+ 	bool Initialize2DArray(int**& pArray, const char* szTable1Name, const char* szTable2Name, int iDefault = 0);
+ #ifdef AUI_DATABASE_UTILITY_PROPER_2D_ALLOCATION_AND_DESTRUCTION
+@@ -180,7 +182,7 @@
+ }
+ //------------------------------------------------------------------------------
+ template<typename T>
+-inline void CvDatabaseUtility::InitializeArray(T*& pArray, const char* szTableName, T default)
++inline void CvDatabaseUtility::InitializeArray(T*& pArray, const char* szTableName, T tDefault)
+ {
+ 	size_t count = MaxRows(szTableName);
+ 
+@@ -193,7 +195,7 @@
+ 	if(count == 0)
+ 		count = 1;
+ 
+-	InitializeArray(pArray, count, default);
++	InitializeArray(pArray, count, tDefault);
+ }
+ 
+ #endif //CVDATABASEUTILITY_H
+\ No newline at end of file
+--- a/CvGameCoreDLL_Expansion2/CvDiplomacyAI.cpp
++++ b/CvGameCoreDLL_Expansion2/CvDiplomacyAI.cpp
+@@ -2981,6 +2981,14 @@
+ 	iOpinionWeight += GetScenarioModifier2(ePlayer);
+ 	iOpinionWeight += GetScenarioModifier3(ePlayer);
+ 
++	// WFTW Lekmod port: mod-defined diplo modifiers (GetDiploModifier event).
++	// Skipped in networked games, as in Community Patch.
++	if (!GC.getGame().isNetworkMultiPlayer())
++	{
++		std::vector<Opinion> aOpinions;
++		iOpinionWeight += GetDiploModifiers(ePlayer, aOpinions);
++	}
++
+ 	return iOpinionWeight;
+ }
+ 
+@@ -22892,6 +22900,63 @@
+ 
+ }
+ 
++// WFTW Lekmod port: mod-defined diplo modifiers. Rows of the DiploModifiers
++// table whose From/To civ filters match are looked up through the
++// GetDiploModifier event (iDiploModifier, eFromPlayer, eToPlayer) and summed
++// into the opinion weight (Community Patch-compatible).
++int CvDiplomacyAI::GetDiploModifiers(PlayerTypes eToPlayer, std::vector<Opinion>& aOpinions)
++{
++	int iValue = 0;
++	int iModifier = 0;
++
++	PlayerTypes eFromPlayer = GetPlayer()->GetID();
++	CivilizationTypes eFromCiv = m_pPlayer->getCivilizationType();
++
++	CvPlayer* pToPlayer = &GET_PLAYER(eToPlayer);
++	CivilizationTypes eToCiv = pToPlayer->getCivilizationType();
++
++	for (uint iI = 0; iI < GC.getNumDiploModifierInfos(); iI++)
++	{
++		CvDiploModifierInfo* pDiploModifierInfo = GC.getDiploModifierInfo((DiploModifierTypes) iI);
++
++		if (pDiploModifierInfo && pDiploModifierInfo->isForFromCiv(eFromCiv) && pDiploModifierInfo->isForToCiv(eToCiv))
++		{
++			iModifier = 0;
++
++			ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++			if (pkScriptSystem)
++			{
++				CvLuaArgsHandle args;
++				args->Push(pDiploModifierInfo->GetID());
++				args->Push(eFromPlayer);
++				args->Push(eToPlayer);
++
++				if (LuaSupport::CallAccumulator(pkScriptSystem, "GetDiploModifier", args.get(), iModifier))
++				{
++					if (iModifier != 0)
++					{
++						iValue += iModifier;
++
++						Opinion kOpinion;
++						kOpinion.m_iValue = iModifier;
++						Localization::String strOpinion = Localization::Lookup(pDiploModifierInfo->GetDescriptionKey());
++						strOpinion << iModifier;
++						strOpinion << m_pPlayer->getName();
++						strOpinion << m_pPlayer->getCivilizationDescription();
++						strOpinion << pToPlayer->getName();
++						strOpinion << pToPlayer->getCivilizationDescription();
++
++						kOpinion.m_str = strOpinion;
++						aOpinions.push_back(kOpinion);
++					}
++				}
++			}
++		}
++	}
++
++	return iValue;
++}
++
+ /////////////////////////////////////////////////////////
+ // Miscellaneous
+ /////////////////////////////////////////////////////////
+--- a/CvGameCoreDLL_Expansion2/CvDiplomacyAI.h
++++ b/CvGameCoreDLL_Expansion2/CvDiplomacyAI.h
+@@ -16,6 +16,14 @@
+ 
+ #define BULLY_DEBUGGING false
+ 
++// WFTW Lekmod port: one reported diplomatic opinion (Community
++// Patch-compatible; used by the GetDiploModifier event's summary strings).
++struct Opinion
++{
++	Localization::String m_str;
++	int m_iValue;
++};
++
+ struct DiploLogData
+ {
+ 	DiploStatementTypes m_eDiploLogStatement;
+@@ -1033,6 +1041,8 @@
+ 	int GetScenarioModifier1(PlayerTypes ePlayer);
+ 	int GetScenarioModifier2(PlayerTypes ePlayer);
+ 	int GetScenarioModifier3(PlayerTypes ePlayer);
++	// WFTW Lekmod port: mod-defined diplo modifiers (GetDiploModifier event)
++	int GetDiploModifiers(PlayerTypes eToPlayer, std::vector<Opinion>& aOpinions);
+ 
+ 	/////////////////////////////////////////////////////////
+ 	// Miscellaneous
+--- a/CvGameCoreDLL_Expansion2/CvDllDatabaseUtility.cpp
++++ b/CvGameCoreDLL_Expansion2/CvDllDatabaseUtility.cpp
+@@ -352,6 +352,9 @@
+ #if defined(TRADE_REFACTOR)
+ 	PrefetchCollection(GC.getTradeConnectionInfo(), "TradeConnections");
+ #endif
++	// WFTW Lekmod port: DiploModifiers table (Community Patch-compatible).
++	// Tolerates a database without the table: the collection simply stays empty.
++	PrefetchCollection(GC.getDiploModifierInfo(), "DiploModifiers");
+ 	//Technologies
+ 	PrefetchCollection(GC.getTechInfo(), "Technologies");
+ 
+--- a/CvGameCoreDLL_Expansion2/CvEspionageClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvEspionageClasses.cpp
+@@ -835,7 +835,11 @@
+ 					CvNotifications* pNotifications = m_pPlayer->GetNotifications();
+ 					if(pNotifications)
+ 					{
+-						Localization::String strSummary = GetLocalizedText("TXT_KEY_NOTIFICATION_SPY_STEAL_TECH_S");
++						// WFTW Lekmod port (clang-cl build compatibility): copy-initializing
++						// Localization::String from a CvString needs two user-defined
++						// conversions (CvString -> const char* -> String); MSVC accepts,
++						// clang does not. Direct-init from the C string keeps MSVC behavior.
++						Localization::String strSummary(GetLocalizedText("TXT_KEY_NOTIFICATION_SPY_STEAL_TECH_S").c_str());
+ 						Localization::String strNotification = Localization::Lookup("TXT_KEY_NOTIFICATION_SPY_STEAL_TECH");
+ 						strNotification << GetSpyRankName(pSpy->m_eRank);
+ 						strNotification << m_pPlayer->getCivilizationInfo().getSpyNames(pSpy->m_iName);
+@@ -2801,7 +2805,11 @@
+ 			case SPY_RESULT_DETECTED:
+ 				// notify defending player that a spy of unknown origin stole something
+ 			{
+-				Localization::String strSummary = GetLocalizedText("TXT_KEY_NOTIFICATION_TECH_STOLEN_SPY_DETECTED_WO_TECH_S");;
++				// WFTW Lekmod port (clang-cl build compatibility): copy-initializing
++				// Localization::String from a CvString needs two user-defined
++				// conversions (CvString -> const char* -> String); MSVC accepts,
++				// clang does not. Direct-init from the C string keeps MSVC behavior.
++				Localization::String strSummary(GetLocalizedText("TXT_KEY_NOTIFICATION_TECH_STOLEN_SPY_DETECTED_WO_TECH_S").c_str());;
+ 				Localization::String strNotification;
+ 
+ 				if(pCityEspionage->m_aiSpyAssignment[m_pPlayer->GetID()] == -1)
+--- a/CvGameCoreDLL_Expansion2/CvGame.cpp
++++ b/CvGameCoreDLL_Expansion2/CvGame.cpp
+@@ -7718,8 +7718,11 @@
+ 			}
+ 
+ 			//Write out time spent playing.
+-			long iHours = getMinutesPlayed() / 60;
+-			long iMinutes = getMinutesPlayed() % 60;
++			// WFTW Lekmod port (clang-cl build compatibility): 'long' made the
++			// Localization::String::PushArgument overload set ambiguous (int vs
++			// __int64); int is what MSVC resolves to on 32-bit anyway.
++			int iHours = getMinutesPlayed() / 60;
++			int iMinutes = getMinutesPlayed() % 60;
+ 
+ 			for(int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+ 			{
+@@ -11147,7 +11150,10 @@
+ 			CvAssertMsg(false,"Saved game database exists, but could not open it!");
+ 		}
+ 
+-		long nilSize = 0;
++		// WFTW Lekmod port (clang-cl build compatibility): 'long' had no exact
++		// FDataStream::Write overload and was ambiguous among the int/uint ones;
++		// int is 32-bit here, exactly what MSVC resolves to.
++		int nilSize = 0;
+ 		kStream << nilSize;
+ 	}
+ 
+--- a/CvGameCoreDLL_Expansion2/CvGameCoreDLLUtil/include/CvEnums.h
++++ b/CvGameCoreDLL_Expansion2/CvGameCoreDLLUtil/include/CvEnums.h
+@@ -3229,4 +3229,11 @@
+ 	NO_GREAT_WORK_SLOT = -1,
+ };
+ 
++// WFTW Lekmod port: types for the DiploModifiers database table
++// (Community Patch-compatible; IDs are row IDs of that table).
++enum DiploModifierTypes
++{
++	NO_DIPLOMODIFIER = -1,
++};
++
+ #endif //CVENUMS_H
+--- a/CvGameCoreDLL_Expansion2/CvGameCoreDLLUtil/include/CvLuaMethodWrapper.h
++++ b/CvGameCoreDLL_Expansion2/CvGameCoreDLLUtil/include/CvLuaMethodWrapper.h
+@@ -3,6 +3,13 @@
+ 
+ #include "CvLuaArgTemplates.h"
+ 
++// WFTW Lekmod port (clang-cl build compatibility): the BasicLuaMethod template
++// overloads take the member pointer's class as a deduced parameter (MemClass).
++// MSVC deduces InstanceType::* from a pointer whose class is a base (e.g.
++// &CvPlayerAI::method declared in CvPlayer); clang refuses that deduction, so
++// every inherited-member binding failed to compile. MemClass is only used to
++// deduce; the pointer converts to InstanceType::* when invoked, as before.
++
+ template< class Derived, class InstanceType>
+ class CvLuaMethodWrapper
+ {
+@@ -12,50 +19,55 @@
+ 	//implementing a Lua method.
+ 	//They currently do not support non-native types or optional values so the scope is quite limited.
+ 	//regular variations (const)
+-	template<typename ret>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)() const);
+-	template<typename ret, typename arg1>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1) const);
+-	template<typename ret, typename arg1, typename arg2>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2) const);
+-	template<typename ret, typename arg1, typename arg2, typename arg3>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3) const);
+-	template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3, arg4) const);
++	template<typename ret, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)() const);
++	template<typename ret, typename arg1, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1) const);
++	template<typename ret, typename arg1, typename arg2, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2) const);
++	template<typename ret, typename arg1, typename arg2, typename arg3, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3) const);
++	template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3, arg4) const);
+ 
+ 	//regular variations (non const)
+-	template<typename ret>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)());
+-	template<typename ret, typename arg1>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1));
+-	template<typename ret, typename arg1, typename arg2>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2));
+-	template<typename ret, typename arg1, typename arg2, typename arg3>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3));
+-	template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4>
+-	static int BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3, arg4));
++	template<typename ret, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)());
++	template<typename ret, typename arg1, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1));
++	template<typename ret, typename arg1, typename arg2, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2));
++	template<typename ret, typename arg1, typename arg2, typename arg3, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3));
++	template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++	static int BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3, arg4));
+ 
+ 	//void variations (const)
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)() const);
+-	template<typename arg1>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1) const);
+-	template<typename arg1, typename arg2>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2) const);
+-	template<typename arg1, typename arg2, typename arg3>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3) const);
+-	template<typename arg1, typename arg2, typename arg3, typename arg4>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3, arg4) const);
++	// WFTW Lekmod port (clang-cl build compatibility): the zero-argument void
++	// overloads are templates too, so partial ordering (not the non-template
++	// preference) keeps ret=void away from the ret-returning overloads above.
++	template<class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)() const);
++	template<typename arg1, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1) const);
++	template<typename arg1, typename arg2, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2) const);
++	template<typename arg1, typename arg2, typename arg3, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3) const);
++	template<typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3, arg4) const);
+ 
+ 	//void variations (non const)
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)());
+-	template<typename arg1>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1));
+-	template<typename arg1, typename arg2>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2));
+-	template<typename arg1, typename arg2, typename arg3>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3));
+-	template<typename arg1, typename arg2, typename arg3, typename arg4>
+-	static int BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3, arg4));
++	template<class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)());
++	template<typename arg1, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1));
++	template<typename arg1, typename arg2, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2));
++	template<typename arg1, typename arg2, typename arg3, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3));
++	template<typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++	static int BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3, arg4));
+ };
+ 
+ //------------------------------------------------------------------------------
+@@ -64,8 +76,8 @@
+ //------------------------------------------------------------------------------
+ // regular variations (const)
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)() const)
++template<class Derived, class InstanceType> template<typename ret, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)() const)
+ {
+ 	InstanceType* pkType = Derived::GetInstance(L);
+ 	CvLuaArgs::pushValue<ret>(L, (pkType->*func)());
+@@ -73,8 +85,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1) const)
++template<class Derived, class InstanceType> template<typename ret, typename arg1, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -83,8 +95,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2) const)
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -93,8 +105,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3) const)
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -103,8 +115,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3, arg4) const)
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3, arg4) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -116,8 +128,8 @@
+ //------------------------------------------------------------------------------
+ // regular variations (non const)
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)())
++template<class Derived, class InstanceType> template<typename ret, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)())
+ {
+ 	InstanceType* pkType = Derived::GetInstance(L);
+ 	CvLuaArgs::pushValue<ret>(L, (pkType->*func)());
+@@ -125,8 +137,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1))
++template<class Derived, class InstanceType> template<typename ret, typename arg1, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -135,8 +147,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2))
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -145,8 +157,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3))
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -155,8 +167,8 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (InstanceType::*func)(arg1, arg2, arg3, arg4))
++template<class Derived, class InstanceType> template<typename ret, typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, ret (MemClass::*func)(arg1, arg2, arg3, arg4))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -168,16 +180,16 @@
+ //------------------------------------------------------------------------------
+ // void variations (const)
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)() const)
++template<class Derived, class InstanceType> template<class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)() const)
+ {
+ 	InstanceType* pkType = Derived::GetInstance(L);
+ 	(pkType->*func)();
+ 	return 0;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1) const)
++template<class Derived, class InstanceType> template<typename arg1, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -185,8 +197,8 @@
+ 	return 0;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2) const)
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -195,8 +207,8 @@
+ }
+ 
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3) const)
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -205,8 +217,8 @@
+ }
+ 
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, typename arg4>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3, arg4) const)
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3, arg4) const)
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -217,16 +229,16 @@
+ //------------------------------------------------------------------------------
+ // void variations (non const)
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)())
++template<class Derived, class InstanceType> template<class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)())
+ {
+ 	InstanceType* pkType = Derived::GetInstance(L);
+ 	(pkType->*func)();
+ 	return 0;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1))
++template<class Derived, class InstanceType> template<typename arg1, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -234,8 +246,8 @@
+ 	return 0;
+ }
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2))
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -244,8 +256,8 @@
+ }
+ 
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3))
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+@@ -254,8 +266,8 @@
+ }
+ 
+ //------------------------------------------------------------------------------
+-template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, typename arg4>
+-int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (InstanceType::*func)(arg1, arg2, arg3, arg4))
++template<class Derived, class InstanceType> template<typename arg1, typename arg2, typename arg3, typename arg4, class MemClass>
++int CvLuaMethodWrapper<Derived, InstanceType>::BasicLuaMethod(lua_State* L, void (MemClass::*func)(arg1, arg2, arg3, arg4))
+ {
+ 	const int idx = Derived::GetStartingArgIndex();
+ 	InstanceType* pkType = Derived::GetInstance(L);
+--- a/CvGameCoreDLL_Expansion2/CvGlobals.cpp
++++ b/CvGameCoreDLL_Expansion2/CvGlobals.cpp
+@@ -4840,6 +4840,28 @@
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////
++// WFTW Lekmod port: DiploModifiers table (Community Patch-compatible)
++uint CvGlobals::getNumDiploModifierInfos() const
++{
++	return m_paDiploModifierInfo.size();
++}
++
++std::vector<CvDiploModifierInfo*>& CvGlobals::getDiploModifierInfo()
++{
++	return m_paDiploModifierInfo;
++}
++
++_Ret_maybenull_ CvDiploModifierInfo* CvGlobals::getDiploModifierInfo(DiploModifierTypes eDiploModifierNum)
++{
++	uint uiIndex = uint(eDiploModifierNum);
++	CvAssert(uiIndex < GC.getNumDiploModifierInfos());
++	if (uiIndex < GC.getNumDiploModifierInfos())
++		return m_paDiploModifierInfo[uiIndex];
++	else
++		return NULL;
++}
++
++//////////////////////////////////////////////////////////////////////////
+ #ifdef AUI_WARNING_FIXES
+ uint CvGlobals::getNumUnitDomainInfos() const
+ {
+@@ -7097,6 +7119,7 @@
+ 	deleteInfoArray(m_paTurnTimerInfo);
+ 	deleteInfoArray(m_paVictoryInfo);
+ 	deleteInfoArray(m_paSmallAwardInfo);
++	deleteInfoArray(m_paDiploModifierInfo); // WFTW Lekmod port: DiploModifiers table
+ 	deleteInfoArray(m_paHurryInfo);
+ 	deleteInfoArray(m_paProcessInfo);
+ 	deleteInfoArray(m_paVoteInfo);
+--- a/CvGameCoreDLL_Expansion2/CvGlobals.h
++++ b/CvGameCoreDLL_Expansion2/CvGlobals.h
+@@ -74,6 +74,7 @@
+ class CvHurryInfo;
+ class CvVictoryInfo;
+ class CvSmallAwardInfo;
++class CvDiploModifierInfo; // WFTW Lekmod port: DiploModifiers table
+ class CvGameOptionInfo;
+ class CvMPOptionInfo;
+ class CvPlayerOptionInfo;
+@@ -811,6 +812,11 @@
+ 	std::vector<CvSmallAwardInfo*>& getSmallAwardInfo();
+ 	_Ret_maybenull_ CvSmallAwardInfo* getSmallAwardInfo(SmallAwardTypes eSmallAwardNum);
+ 
++	// WFTW Lekmod port: DiploModifiers table (Community Patch-compatible)
++	uint getNumDiploModifierInfos() const;
++	std::vector<CvDiploModifierInfo*>& getDiploModifierInfo();
++	_Ret_maybenull_ CvDiploModifierInfo* getDiploModifierInfo(DiploModifierTypes eDiploModifierNum);
++
+ 	CvNotificationXMLEntries* GetNotificationEntries();
+ 
+ 	//
+@@ -8019,6 +8025,7 @@
+ 	std::vector<CvHurryInfo*> m_paHurryInfo;
+ 	std::vector<CvVictoryInfo*> m_paVictoryInfo;
+ 	std::vector<CvSmallAwardInfo*> m_paSmallAwardInfo;
++	std::vector<CvDiploModifierInfo*> m_paDiploModifierInfo; // WFTW Lekmod port: DiploModifiers table
+ 	std::vector<CvEntityEventInfo*> m_paEntityEventInfo;
+ 	std::vector<CvDomainInfo*> m_paUnitDomainInfo;
+ 
+--- a/CvGameCoreDLL_Expansion2/CvGoodyHuts.cpp
++++ b/CvGameCoreDLL_Expansion2/CvGoodyHuts.cpp
+@@ -182,7 +182,11 @@
+ 		ArrayWrapper<int> kWrapper(NUM_GOODIES_REMEMBERED, m_aaiPlayerGoodyHutResults[iI]);
+ 		kStream >> kWrapper;
+ #else
+-		kStream >> ArrayWrapper<int>(NUM_GOODIES_REMEMBERED, m_aaiPlayerGoodyHutResults[iI]);
++		// WFTW Lekmod port (clang-cl build compatibility): operator>> takes a
++		// non-const ArrayWrapper&, which cannot bind to the temporary below
++		// (MSVC allows rvalues there); use a named local as the branch above.
++		ArrayWrapper<int> kWrapper(NUM_GOODIES_REMEMBERED, m_aaiPlayerGoodyHutResults[iI]);
++		kStream >> kWrapper;
+ #endif
+ #ifdef LEKMOD_NEW_ANCIENT_RUIN_REWARDS
+ 		
+--- a/CvGameCoreDLL_Expansion2/CvInfos.cpp
++++ b/CvGameCoreDLL_Expansion2/CvInfos.cpp
+@@ -3695,6 +3695,56 @@
+ }
+ 
+ //======================================================================================================
++//					WFTW Lekmod port: CvDiploModifierInfo
++//======================================================================================================
++CvDiploModifierInfo::CvDiploModifierInfo() :
++	m_eFromCiv(NO_CIVILIZATION),
++	m_eToCiv(NO_CIVILIZATION)
++{}
++
++bool CvDiploModifierInfo::isForFromCiv(CivilizationTypes eFromCiv)
++{
++	return (m_eFromCiv == NO_CIVILIZATION || m_eFromCiv == eFromCiv);
++}
++
++bool CvDiploModifierInfo::isForToCiv(CivilizationTypes eToCiv)
++{
++	return (m_eToCiv == NO_CIVILIZATION || m_eToCiv == eToCiv);
++}
++
++bool CvDiploModifierInfo::CacheResults(Database::Results& results, CvDatabaseUtility& kUtility)
++{
++	if(CvBaseInfo::CacheResults(results, kUtility))
++	{
++		const char* szTextVal = NULL;
++
++		szTextVal = results.GetText("FromCivilizationType");
++		m_eFromCiv = (CivilizationTypes) GC.getInfoTypeForString(szTextVal, true);
++
++		szTextVal = results.GetText("ToCivilizationType");
++		m_eToCiv = (CivilizationTypes) GC.getInfoTypeForString(szTextVal, true);
++
++		return true;
++	}
++
++	return false;
++}
++
++void CvDiploModifierInfo::writeTo(FDataStream& saveTo) const
++{
++	CvBaseInfo::writeTo(saveTo);
++	saveTo << m_eFromCiv;
++	saveTo << m_eToCiv;
++}
++
++void CvDiploModifierInfo::readFrom(FDataStream& loadFrom)
++{
++	CvBaseInfo::readFrom(loadFrom);
++	loadFrom >> m_eFromCiv;
++	loadFrom >> m_eToCiv;
++}
++
++//======================================================================================================
+ //					CvBuildInfo
+ //======================================================================================================
+ CvBuildInfo::CvBuildInfo() :
+--- a/CvGameCoreDLL_Expansion2/CvInfos.h
++++ b/CvGameCoreDLL_Expansion2/CvInfos.h
+@@ -1102,6 +1102,30 @@
+ FDataStream& operator>>(FDataStream&, CvTurnTimerInfo&);
+ 
+ //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++// WFTW Lekmod port: CvDiploModifierInfo
++// Info class for the DiploModifiers database table (Community
++// Patch-compatible). The opinion amount itself is obtained through the
++// GetDiploModifier game event (Lua); this only carries the row's civ filters.
++//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++class CvDiploModifierInfo :	public CvBaseInfo
++{
++public:
++	CvDiploModifierInfo();
++
++	virtual bool CacheResults(Database::Results& kResults, CvDatabaseUtility& kUtility);
++
++	bool isForFromCiv(CivilizationTypes eFromCiv);
++	bool isForToCiv(CivilizationTypes eToCiv);
++
++	virtual void readFrom(FDataStream& loadFrom);
++	virtual void writeTo(FDataStream& saveTo) const;
++
++protected:
++	CivilizationTypes m_eFromCiv;
++	CivilizationTypes m_eToCiv;
++};
++
++//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ //  class : CvBuildInfo
+ //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ class CvBuildInfo : public CvHotKeyInfo
+--- a/CvGameCoreDLL_Expansion2/CvInfosSerializationHelper.cpp
++++ b/CvGameCoreDLL_Expansion2/CvInfosSerializationHelper.cpp
+@@ -154,7 +154,10 @@
+ #ifdef AUI_WARNING_FIXES
+ 			szError.Format("LOAD ERROR: Type not found: %s", sTemp.GetCString());
+ #else
+-			szError.Format("LOAD ERROR: Type not found: %s", sTemp);
++			// WFTW Lekmod port (clang-cl build compatibility): pass the C string,
++			// not the FString object, through the variadic Format (matches the
++			// AUI_WARNING_FIXES branch above).
++			szError.Format("LOAD ERROR: Type not found: %s", sTemp.GetCString());
+ #endif
+ 			GC.LogMessage(szError.GetCString());
+ 			CvAssertMsg(false, szError);
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
+@@ -168,6 +168,16 @@
+ #endif
+ 	, m_iHappinessPerXPopulation(0)
+ 	, m_iHappinessFromLeagues(0)
++	// PMMM Phase 4: trait-derived cache, rebuilt on demand, never serialized
++	, m_iPMMMTraitCacheLeader(-2)
++	, m_bPMMMIgnoreUnhappiness(false)
++	, m_iPMMMUnhappinessPerBonusPercent(0)
++	, m_iPMMMUnhappinessBonusMax(0)
++	, m_bPMMMNoGoldenAges(false)
++	, m_bPMMMNoIdeologyPressure(false)
++	, m_iPMMMCityCapThreshold(0)
++	, m_iPMMMCityCapStep(0)
++	, m_iPMMMUnhappinessFromCitiesAndPop(0)
+ 	, m_iEspionageModifier(0)
+ 	, m_iSpyStartingRank(0)
+ #ifdef ENHANCED_GRAPHS
+@@ -14732,6 +14742,10 @@
+ /// Has the player passed the Happiness limit?
+ bool CvPlayer::IsEmpireUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if(GC.getGame().isOption(GAMEOPTION_NO_HAPPINESS))
+ 	{
+ 		return false;
+@@ -14749,6 +14763,10 @@
+ /// Is the empire REALLY unhappy? (other penalties)
+ bool CvPlayer::IsEmpireVeryUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if(GC.getGame().isOption(GAMEOPTION_NO_HAPPINESS))
+ 	{
+ 		return false;
+@@ -14766,6 +14784,10 @@
+ /// Is the empire SUPER unhappy? (leads to revolts)
+ bool CvPlayer::IsEmpireSuperUnhappy() const
+ {
++	// PMMM Phase 4: Ai Yo removes every penalty tied to unhappiness
++	if (IsPMMMIgnoreUnhappinessPenalties())
++		return false;
++
+ 	if(GC.getGame().isOption(GAMEOPTION_NO_HAPPINESS))
+ 	{
+ 		return false;
+@@ -14780,6 +14802,102 @@
+ }
+ 
+ //	--------------------------------------------------------------------------------
++// PMMM Phase 4 (Madoka Magica: Wish for the World)
++// Trait columns are summed over the leader's traits once per leader and cached. The cache is not
++// serialized: it is rebuilt from the database the first time it is read after a load.
++void CvPlayer::PMMMRefreshTraitCache() const
++{
++	const int iLeader = (int)getLeaderType();
++	if (m_iPMMMTraitCacheLeader == iLeader)
++		return;
++
++	m_iPMMMTraitCacheLeader = iLeader;
++	m_bPMMMIgnoreUnhappiness = false;
++	m_iPMMMUnhappinessPerBonusPercent = 0;
++	m_iPMMMUnhappinessBonusMax = 0;
++	m_bPMMMNoGoldenAges = false;
++	m_bPMMMNoIdeologyPressure = false;
++	m_iPMMMCityCapThreshold = 0;
++	m_iPMMMCityCapStep = 0;
++
++	if (iLeader < 0 || !isMajorCiv())
++		return;
++
++	const CvLeaderHeadInfo& kLeader = getLeaderInfo();
++	for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
++	{
++		if (!kLeader.hasTrait(iI))
++			continue;
++		CvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);
++		if (pTrait == NULL)
++			continue;
++		if (pTrait->IsPMMMIgnoreUnhappinessPenalties())
++			m_bPMMMIgnoreUnhappiness = true;
++		if (pTrait->IsPMMMNoGoldenAges())
++			m_bPMMMNoGoldenAges = true;
++		if (pTrait->IsPMMMNoIdeologyPressure())
++			m_bPMMMNoIdeologyPressure = true;
++		m_iPMMMUnhappinessPerBonusPercent = max(m_iPMMMUnhappinessPerBonusPercent, pTrait->GetPMMMUnhappinessPerBonusPercent());
++		m_iPMMMUnhappinessBonusMax = max(m_iPMMMUnhappinessBonusMax, pTrait->GetPMMMUnhappinessBonusMax());
++		if (pTrait->GetPMMMCityCapThreshold() > 0)
++		{
++			m_iPMMMCityCapThreshold = pTrait->GetPMMMCityCapThreshold();
++			m_iPMMMCityCapStep = pTrait->GetPMMMCityCapUnhappinessStep();
++		}
++	}
++}
++
++bool CvPlayer::IsPMMMIgnoreUnhappinessPenalties() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMIgnoreUnhappiness;
++}
++
++/// Ai Yo: +1% yields and combat strength per N unhappiness from cities and population, capped
++int CvPlayer::GetPMMMUnhappinessBonusPercent() const
++{
++	PMMMRefreshTraitCache();
++	if (m_iPMMMUnhappinessPerBonusPercent <= 0)
++		return 0;
++	int iBonus = m_iPMMMUnhappinessFromCitiesAndPop / m_iPMMMUnhappinessPerBonusPercent;
++	if (m_iPMMMUnhappinessBonusMax > 0)
++		iBonus = min(iBonus, m_iPMMMUnhappinessBonusMax);
++	return max(iBonus, 0);
++}
++
++bool CvPlayer::IsPMMMNoGoldenAges() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMNoGoldenAges;
++}
++
++bool CvPlayer::IsPMMMNoIdeologyPressure() const
++{
++	PMMMRefreshTraitCache();
++	return m_bPMMMNoIdeologyPressure;
++}
++
++/// Mami's soft cap: every city past the threshold carries Step x (cities over the threshold) unhappiness,
++/// so the total is Step x (over)^2. Puppets are not counted, in the manner of Venice.
++int CvPlayer::GetPMMMCityCapUnhappiness() const
++{
++	PMMMRefreshTraitCache();
++	if (m_iPMMMCityCapThreshold <= 0 || m_iPMMMCityCapStep <= 0)
++		return 0;
++	int iCounted = 0;
++	int iLoop = 0;
++	for (const CvCity* pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
++	{
++		if (!pLoopCity->IsPuppet())
++			iCounted++;
++	}
++	const int iOver = iCounted - m_iPMMMCityCapThreshold;
++	if (iOver <= 0)
++		return 0;
++	return m_iPMMMCityCapStep * iOver * iOver;
++}
++
++//	--------------------------------------------------------------------------------
+ /// Uprisings pop up if the empire is Very Unhappy
+ void CvPlayer::DoUpdateUprisings()
+ {
+@@ -15061,7 +15179,11 @@
+ 		CvNotifications* pNotifications = GetNotifications();
+ 		if(pNotifications && isHuman())
+ 		{
+-			Localization::String strMessage = GetLocalizedText("TXT_KEY_NOTIFICATION_POSSIBLE_CITY_REVOLT", iTurns, pMostUnhappyCity->getName(), GET_PLAYER(eRecipient).getCivilizationShortDescription());
++			// WFTW Lekmod port (clang-cl build compatibility): copy-initializing
++			// Localization::String from a CvString needs two user-defined
++			// conversions (CvString -> const char* -> String); MSVC accepts,
++			// clang does not. Direct-init from the C string keeps MSVC behavior.
++			Localization::String strMessage(GetLocalizedText("TXT_KEY_NOTIFICATION_POSSIBLE_CITY_REVOLT", iTurns, pMostUnhappyCity->getName(), GET_PLAYER(eRecipient).getCivilizationShortDescription()).c_str());
+ 			Localization::String strSummary = Localization::Lookup("TXT_KEY_NOTIFICATION_POSSIBLE_CITY_REVOLT_SUMMARY");
+ 			pNotifications->Add(NOTIFICATION_CITY_REVOLT_POSSIBLE, strMessage.toUTF8(), strSummary.toUTF8(), pMostUnhappyCity->getX(), pMostUnhappyCity->getY(), -1);
+ 		}
+@@ -15721,13 +15843,24 @@
+ 
+ 	// City Population Unhappiness
+ 	iUnhappiness += GetUnhappinessFromCityPopulation(pAssumeCityAnnexed, pAssumeCityPuppeted);
++	// PMMM Phase 4: Ai Yo scales on unhappiness from cities and population (count, captured count, population, occupied)
++	int iPMMMCitiesAndPopTimes100 = iUnhappiness;
+ 
+ 	// Occupied City Population Unhappiness
+-	iUnhappiness += GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);
++	int iPMMMOccupiedTimes100 = GetUnhappinessFromOccupiedCities(pAssumeCityAnnexed, pAssumeCityPuppeted);
++	iUnhappiness += iPMMMOccupiedTimes100;
++	iPMMMCitiesAndPopTimes100 += iPMMMOccupiedTimes100;
+ 
+ 	// Unit Unhappiness (Builders)
+ 	iUnhappiness += GetUnhappinessFromUnits();
+ 
++	// PMMM Phase 4: Mami's soft cap on cities
++	iUnhappiness += GetPMMMCityCapUnhappiness() * 100;
++
++	// Only the real state is remembered, never an AI what-if about annexing or puppeting a city
++	if (pAssumeCityAnnexed == NULL && pAssumeCityPuppeted == NULL)
++		m_iPMMMUnhappinessFromCitiesAndPop = iPMMMCitiesAndPopTimes100 / 100;
++
+ 	iUnhappiness /= 100;
+ 
+ 	iUnhappiness += GetCulture()->GetPublicOpinionUnhappiness();
+@@ -17286,6 +17419,10 @@
+ /// Changes what is our progress towards the next GA
+ void CvPlayer::ChangeGoldenAgeProgressMeter(int iChange)
+ {
++	// PMMM Phase 4: Ai Yo, never a Golden Age from any source
++	if (iChange > 0 && IsPMMMNoGoldenAges())
++		return;
++
+ 	SetGoldenAgeProgressMeter(GetGoldenAgeProgressMeter() + iChange);
+ }
+ 
+@@ -17358,6 +17495,10 @@
+ //	--------------------------------------------------------------------------------
+ void CvPlayer::changeGoldenAgeTurns(int iChange)
+ {
++	// PMMM Phase 4: Ai Yo, never a Golden Age from any source
++	if (iChange > 0 && IsPMMMNoGoldenAges())
++		return;
++
+ 	Localization::String locString;
+ 	Localization::String locSummaryString;
+ 
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.h
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.h
+@@ -89,7 +89,11 @@
+ 	CvPlot* addFreeUnit(UnitTypes eUnit, UnitAITypes eUnitAI = NO_UNITAI);
+ 
+ 	CvCity* initCity(int iX, int iY, bool bBumpUnits = true, bool bInitialFounding = true);
+-#if !defined
++	// WFTW Lekmod port (clang-cl build compatibility): the macro name was lost here
++	// (bare '#if !defined'), which MSVC's preprocessor accepted. LEKMOD_MERCHANT_BUYOUT_NOT_NOANNEXING
++	// is defined in _Defines.h, so the four-argument declaration is the one Lekmod has always shipped
++	// (CvMinorCivAI.cpp calls acquireCity with an explicit bPurchased).
++#if defined(LEKMOD_MERCHANT_BUYOUT_NOT_NOANNEXING)
+ 	void acquireCity(CvCity* pCity, bool bConquest, bool bGift, bool bPurchased = false);
+ #else
+ 	void acquireCity(CvCity* pCity, bool bConquest, bool bGift);
+@@ -604,6 +608,13 @@
+ 	bool IsEmpireUnhappy() const;
+ 	bool IsEmpireVeryUnhappy() const;
+ 	bool IsEmpireSuperUnhappy() const;
++	// PMMM Phase 4 (Madoka Magica: Wish for the World): Ai Yo and the city soft cap, read from trait columns
++	bool IsPMMMIgnoreUnhappinessPenalties() const;
++	int GetPMMMUnhappinessBonusPercent() const;
++	bool IsPMMMNoGoldenAges() const;
++	bool IsPMMMNoIdeologyPressure() const;
++	int GetPMMMCityCapUnhappiness() const;
++	void PMMMRefreshTraitCache() const;
+ 
+ 	void DoUpdateUprisings();
+ 	int GetUprisingCounter() const;
+@@ -2022,6 +2033,17 @@
+ #endif
+ 	int m_iHappinessPerXPopulation;
+ 	int m_iHappinessFromLeagues;
++	// PMMM Phase 4: derived from the leader's traits, rebuilt on demand, never serialized
++	// (mutable: CvPlayer::GetUnhappiness is const on Lekmod and refreshes the cache)
++	mutable int m_iPMMMTraitCacheLeader;
++	mutable bool m_bPMMMIgnoreUnhappiness;
++	mutable int m_iPMMMUnhappinessPerBonusPercent;
++	mutable int m_iPMMMUnhappinessBonusMax;
++	mutable bool m_bPMMMNoGoldenAges;
++	mutable bool m_bPMMMNoIdeologyPressure;
++	mutable int m_iPMMMCityCapThreshold;
++	mutable int m_iPMMMCityCapStep;
++	mutable int m_iPMMMUnhappinessFromCitiesAndPop;
+ 	FAutoVariable<int, CvPlayer> m_iSpecialPolicyBuildingHappiness;  //unused
+ 	FAutoVariable<int, CvPlayer> m_iWoundedUnitDamageMod;
+ 	FAutoVariable<int, CvPlayer> m_iUnitUpgradeCostMod;
+--- a/CvGameCoreDLL_Expansion2/CvPlot.cpp
++++ b/CvGameCoreDLL_Expansion2/CvPlot.cpp
+@@ -7384,6 +7384,25 @@
+ 			DoHandleUnitsAfterWaterWalkGained();
+ 		}
+ #endif
++
++		// WFTW Lekmod port: TileImprovementChanged (improvement added, changed or
++		// removed), Community Patch-identical signature.
++		{
++			ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++			if (pkScriptSystem)
++			{
++				CvLuaArgsHandle args;
++				args->Push(getX());
++				args->Push(getY());
++				args->Push(getOwner());
++				args->Push(eOldImprovement);
++				args->Push(eNewValue);
++				args->Push(IsImprovementPillaged());
++
++				bool bResult = false;
++				LuaSupport::CallHook(pkScriptSystem, "TileImprovementChanged", args.get(), bResult);
++			}
++		}
+ 	}
+ }
+ 
+@@ -7488,6 +7507,26 @@
+ 				}
+ 			}
+ 		}
++
++		// WFTW Lekmod port: TileImprovementChanged (pillage state changed; the
++		// improvement itself is unchanged, so old and new are the current type),
++		// Community Patch-identical signature.
++		{
++			ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++			if (pkScriptSystem)
++			{
++				CvLuaArgsHandle args;
++				args->Push(getX());
++				args->Push(getY());
++				args->Push(getOwner());
++				args->Push(getImprovementType());
++				args->Push(getImprovementType());
++				args->Push(IsImprovementPillaged());
++
++				bool bResult = false;
++				LuaSupport::CallHook(pkScriptSystem, "TileImprovementChanged", args.get(), bResult);
++			}
++		}
+ 	}
+ 
+ 	if(bWasPillaged != m_bImprovementPillaged)
+--- a/CvGameCoreDLL_Expansion2/CvPromotionClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvPromotionClasses.cpp
+@@ -2799,7 +2799,10 @@
+ #ifdef AUI_WARNING_FIXES
+ 				szError.Format("LOAD ERROR:  Promotion Type not found: %s", sTemp.GetCString());
+ #else
+-				szError.Format("LOAD ERROR: Promotion Type not found: %s", sTemp);
++				// WFTW Lekmod port (clang-cl build compatibility): pass the C string,
++				// not the FString object, through the variadic Format (matches the
++				// AUI_WARNING_FIXES branch above).
++				szError.Format("LOAD ERROR: Promotion Type not found: %s", sTemp.GetCString());
+ #endif
+ 				GC.LogMessage(szError.GetCString());
+ 				CvAssertMsg(false, szError);
+--- a/CvGameCoreDLL_Expansion2/CvReligionClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvReligionClasses.cpp
+@@ -853,7 +853,11 @@
+ 				// Message slightly different for founder player
+ 				if(newReligion.m_eFounder == eNotifyPlayer)
+ 				{
+-					Localization::String localizedText = GetLocalizedText("TXT_KEY_NOTIFICATION_PANTHEON_FOUNDED_ACTIVE_PLAYER");
++					// WFTW Lekmod port (clang-cl build compatibility): copy-initializing
++					// Localization::String from a CvString needs two user-defined
++					// conversions (CvString -> const char* -> String); MSVC accepts,
++					// clang does not. Direct-init from the C string keeps MSVC behavior.
++					Localization::String localizedText(GetLocalizedText("TXT_KEY_NOTIFICATION_PANTHEON_FOUNDED_ACTIVE_PLAYER").c_str());
+ 					localizedText << pBelief->getShortDescription() << pBelief->GetDescriptionKey();
+ 
+ 					pNotifications->Add(NOTIFICATION_PANTHEON_FOUNDED_ACTIVE_PLAYER, localizedText.toUTF8(), strSummary.toUTF8(), -1, -1, -1);
+--- a/CvGameCoreDLL_Expansion2/CvTradeClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvTradeClasses.cpp
+@@ -1381,7 +1381,7 @@
+ 							if (pLoopUnit->canPlunderTradeRoute(pPlot, true))
+ 							{
+ 								// cheating to get around war!
+-								GET_PLAYER(pLoopUnit->getOwner()).GetTrade()->PlunderTradeRoute(m_aTradeConnections[uiTradeRoute].m_iID);
++								GET_PLAYER(pLoopUnit->getOwner()).GetTrade()->PlunderTradeRoute(m_aTradeConnections[uiTradeRoute].m_iID, pLoopUnit);
+ 								break;
+ 							}
+ 						}
+@@ -1857,7 +1857,7 @@
+ 		{
+ 			if (pEnemyUnit->canPlunderTradeRoute(pPlot, false))
+ 			{
+-				GET_PLAYER(pEnemyUnit->getOwner()).GetTrade()->PlunderTradeRoute(kTradeConnection.m_iID);
++				GET_PLAYER(pEnemyUnit->getOwner()).GetTrade()->PlunderTradeRoute(kTradeConnection.m_iID, pEnemyUnit);
+ 				// done died!
+ 				return false;
+ 			}
+@@ -4486,7 +4486,7 @@
+ }
+ 
+ //	--------------------------------------------------------------------------------
+-bool CvPlayerTrade::PlunderTradeRoute(int iTradeConnectionID)
++bool CvPlayerTrade::PlunderTradeRoute(int iTradeConnectionID, CvUnit* pUnit)
+ {
+ 	CvGameTrade* pTrade = GC.getGame().GetGameTrade();
+ 	int iTradeConnectionIndex = pTrade->GetIndexFromID(iTradeConnectionID);
+@@ -4688,6 +4688,29 @@
+ 		gDLL->UnlockAchievement(ACHIEVEMENT_XP2_28);
+ 	}
+ 
++	// WFTW Lekmod port: PlayerPlunderedTradeRoute
++	// (iPlayer, iUnit, iPlunderedGold, iFromPlayer, iFromCity, iToPlayer, iToCity, iRouteType, iRouteDomain),
++	// Community Patch-identical signature.
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(pUnit ? pUnit->getOwner() : m_pPlayer->GetID());
++			args->Push(pUnit ? pUnit->GetID() : -1);
++			args->Push(iPlunderGoldValue);
++			args->Push(pOriginCity ? pOriginCity->getOwner() : NO_PLAYER);
++			args->Push(pOriginCity ? pOriginCity->GetID() : -1);
++			args->Push(pDestCity ? pDestCity->getOwner() : NO_PLAYER);
++			args->Push(pDestCity ? pDestCity->GetID() : -1);
++			args->Push(pTradeConnection->m_eConnectionType);
++			args->Push(eDomain);
++
++			bool bResult = false;
++			LuaSupport::CallHook(pkScriptSystem, "PlayerPlunderedTradeRoute", args.get(), bResult);
++		}
++	}
++
+ 	return true;
+ }
+ 
+--- a/CvGameCoreDLL_Expansion2/CvTradeClasses.h
++++ b/CvGameCoreDLL_Expansion2/CvTradeClasses.h
+@@ -352,7 +352,9 @@
+ 	bool ContainsEnemyTradePlot(const CvPlot* pPlot);
+ #endif
+ 
+-	bool PlunderTradeRoute(int iTradeConnectionID);
++	// WFTW Lekmod port: pUnit (the plundering unit) is passed through so the
++	// PlayerPlunderedTradeRoute event can report it, as in Community Patch.
++	bool PlunderTradeRoute(int iTradeConnectionID, CvUnit* pUnit);
+ 
+ #ifdef AUI_CONSTIFY
+ 	int GetTradeRouteRange(DomainTypes eDomain, const CvCity* pOriginCity) const;
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
+@@ -252,6 +252,14 @@
+ 	m_eCombatBonusImprovement(NO_IMPROVEMENT),
+ 	m_bRiverTradeRoad(false),
+ 	m_bAngerFreeIntrusionOfCityStates(false),
++	// PMMM Phase 4 members
++	m_bPMMMIgnoreUnhappinessPenalties(false),
++	m_iPMMMUnhappinessPerBonusPercent(0),
++	m_iPMMMUnhappinessBonusMax(0),
++	m_bPMMMNoGoldenAges(false),
++	m_bPMMMNoIdeologyPressure(false),
++	m_iPMMMCityCapThreshold(0),
++	m_iPMMMCityCapUnhappinessStep(0),
+ #endif
+ #ifdef AUI_DATABASE_UTILITY_PROPER_2D_ALLOCATION_AND_DESTRUCTION
+ 	m_ppiImprovementYieldChanges(std::pair<int**, size_t>(NULL, 0)),
+@@ -884,6 +892,15 @@
+ 	return m_iTradeBuildingModifier;
+ }
+ 
++// PMMM Phase 4: Devil Homura's Ai Yo and Mami's city cap
++bool CvTraitEntry::IsPMMMIgnoreUnhappinessPenalties() const { return m_bPMMMIgnoreUnhappinessPenalties; }
++int CvTraitEntry::GetPMMMUnhappinessPerBonusPercent() const { return m_iPMMMUnhappinessPerBonusPercent; }
++int CvTraitEntry::GetPMMMUnhappinessBonusMax() const { return m_iPMMMUnhappinessBonusMax; }
++bool CvTraitEntry::IsPMMMNoGoldenAges() const { return m_bPMMMNoGoldenAges; }
++bool CvTraitEntry::IsPMMMNoIdeologyPressure() const { return m_bPMMMNoIdeologyPressure; }
++int CvTraitEntry::GetPMMMCityCapThreshold() const { return m_iPMMMCityCapThreshold; }
++int CvTraitEntry::GetPMMMCityCapUnhappinessStep() const { return m_iPMMMCityCapUnhappinessStep; }
++
+ // CMP DLL Table inserts ~EAP
+ 
+ TechTypes CvTraitEntry::GetFreeBuildingPrereqTech() const
+@@ -1803,6 +1820,14 @@
+ 	m_iLandTradeRouteRangeBonus				= kResults.GetInt("LandTradeRouteRangeBonus");
+ 	m_iTradeReligionModifier				= kResults.GetInt("TradeReligionModifier");
+ 	m_iTradeBuildingModifier				= kResults.GetInt("TradeBuildingModifier");
++	// PMMM Phase 4 columns (declared by the mod in SQL/Shared/MadokaTableUpdates.sql)
++	m_bPMMMIgnoreUnhappinessPenalties = kResults.GetBool("PMMMIgnoreUnhappinessPenalties");
++	m_iPMMMUnhappinessPerBonusPercent = kResults.GetInt("PMMMUnhappinessPerBonusPercent");
++	m_iPMMMUnhappinessBonusMax = kResults.GetInt("PMMMUnhappinessBonusMax");
++	m_bPMMMNoGoldenAges = kResults.GetBool("PMMMNoGoldenAges");
++	m_bPMMMNoIdeologyPressure = kResults.GetBool("PMMMNoIdeologyPressure");
++	m_iPMMMCityCapThreshold = kResults.GetInt("PMMMCityCapThreshold");
++	m_iPMMMCityCapUnhappinessStep = kResults.GetInt("PMMMCityCapUnhappinessStep");
+ 
+ 	const char* szTextVal = NULL;
+ 	szTextVal = kResults.GetText("FreeUnit");
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.h
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.h
+@@ -190,7 +190,16 @@
+ 	int GetLandTradeRouteRangeBonus() const;
+ 	int GetTradeReligionModifier() const;
+ 	int GetTradeBuildingModifier() const;
+-	
++
++	// PMMM Phase 4: Devil Homura's Ai Yo and Mami's city cap
++	bool IsPMMMIgnoreUnhappinessPenalties() const;
++	int GetPMMMUnhappinessPerBonusPercent() const;
++	int GetPMMMUnhappinessBonusMax() const;
++	bool IsPMMMNoGoldenAges() const;
++	bool IsPMMMNoIdeologyPressure() const;
++	int GetPMMMCityCapThreshold() const;
++	int GetPMMMCityCapUnhappinessStep() const;
++
+ 	// Here we insert usefull new table entries to smooth out existing code (From the Community-Patch DLL) ~EAP
+ 	TechTypes GetFreeBuildingPrereqTech() const; 
+ 	TechTypes GetCapitalFreeBuildingPrereqTech() const;
+@@ -477,6 +486,14 @@
+ 	int m_iLandTradeRouteRangeBonus;
+ 	int m_iTradeReligionModifier;
+ 	int m_iTradeBuildingModifier;
++	// PMMM Phase 4 members
++	bool m_bPMMMIgnoreUnhappinessPenalties;
++	int m_iPMMMUnhappinessPerBonusPercent;
++	int m_iPMMMUnhappinessBonusMax;
++	bool m_bPMMMNoGoldenAges;
++	bool m_bPMMMNoIdeologyPressure;
++	int m_iPMMMCityCapThreshold;
++	int m_iPMMMCityCapUnhappinessStep;
+ 
+ #if defined(LEKMOD_CITY_YIELDS_TRAITS)
+ 	UnitTypes m_eYieldSettleUnit;
+--- a/CvGameCoreDLL_Expansion2/CvUnit.cpp
++++ b/CvGameCoreDLL_Expansion2/CvUnit.cpp
+@@ -2453,6 +2453,33 @@
+ 	if (GetAutomateType() == AUTOMATE_TRADE)
+ 		return false;	// No commands for this type.
+ 
++	// WFTW Lekmod port: CanDoCommand - let Lua veto a command
++	// (Community Patch-identical signature; all listeners must allow).
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(getOwner());
++			args->Push(GetID());
++			args->Push(eCommand);
++			args->Push(iData1);
++			args->Push(iData2);
++			args->Push(getX());
++			args->Push(getY());
++			args->Push(bTestVisible);
++
++			bool bResult = false;
++			if (LuaSupport::CallTestAll(pkScriptSystem, "CanDoCommand", args.get(), bResult))
++			{
++				if (!bResult)
++				{
++					return false;
++				}
++			}
++		}
++	}
++
+ 	switch(eCommand)
+ 	{
+ 	case COMMAND_PROMOTION:
+@@ -6636,7 +6663,11 @@
+ 					if (pPlot && pPlot->GetActiveFogOfWarMode() == FOGOFWARMODE_OFF)
+ #endif
+ 					{
+-						Localization::String string = GetLocalizedText("TXT_KEY_MISC_YOU_UNIT_WAS_DAMAGED_ATTRITION");
++						// WFTW Lekmod port (clang-cl build compatibility): copy-initializing
++						// Localization::String from a CvString needs two user-defined
++						// conversions (CvString -> const char* -> String); MSVC accepts,
++						// clang does not. Direct-init from the C string keeps MSVC behavior.
++						Localization::String string(GetLocalizedText("TXT_KEY_MISC_YOU_UNIT_WAS_DAMAGED_ATTRITION").c_str());
+ 
+ 						char text[256];
+ 						sprintf_s (text, "%s [COLOR_WHITE]-%d [ICON_PEACE][ENDCOLOR]", string.toUTF8(), iStrengthLoss);
+@@ -7601,7 +7632,7 @@
+ #endif
+ 
+ 	// right now, plunder the first unit
+-	pTrade->PlunderTradeRoute(aiTradeUnitsAtPlot[0]);
++	pTrade->PlunderTradeRoute(aiTradeUnitsAtPlot[0], this);
+ 	return true;
+ }
+ 
+@@ -7741,6 +7772,21 @@
+ 			}
+ 		}
+ 
++		// WFTW Lekmod port: GreatWorkCreated (owner, unit, great work type index).
++		{
++			ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++			if (pkScriptSystem)
++			{
++				CvLuaArgsHandle args;
++				args->Push(getOwner());
++				args->Push(GetID());
++				args->Push((int)eGreatWorkType);
++
++				bool bResult = false;
++				LuaSupport::CallHook(pkScriptSystem, "GreatWorkCreated", args.get(), bResult);
++			}
++		}
++
+ 		return true;
+ 	}
+ 
+@@ -12691,6 +12737,10 @@
+ 	CvPlayer &kPlayer = GET_PLAYER(getOwner());
+ 	int iPenalty = 0;
+ 
++	// PMMM Phase 4: Ai Yo turns unhappiness into strength instead (a positive value here is a bonus)
++	if (kPlayer.IsPMMMIgnoreUnhappinessPenalties())
++		return kPlayer.GetPMMMUnhappinessBonusPercent();
++
+ 	if (kPlayer.IsEmpireUnhappy())
+ 	{
+ 		iPenalty = (-1 * kPlayer.GetExcessHappiness()) * GC.getVERY_UNHAPPY_COMBAT_PENALTY_PER_UNHAPPY();
+@@ -12765,8 +12815,8 @@
+ 	ReligionTypes eFoundedReligion = pReligions->GetFounderBenefitsReligion(kPlayer.GetID());
+ 
+ 	// If the empire is unhappy, then Units get a combat penalty
+-	if(kPlayer.IsEmpireUnhappy())
+-		iModifier += GetUnhappinessCombatPenalty();
++	// PMMM Phase 4: the penalty function itself decides; Ai Yo returns a bonus while the empire counts as happy
++	iModifier += GetUnhappinessCombatPenalty();
+ 
+ 	// Over our strategic resource limit?
+ 	iTempModifier = GetStrategicResourceCombatPenalty();
+@@ -13463,10 +13513,8 @@
+ 		iModifier += getKamikazePercent();
+ 
+ 	// If the empire is unhappy, then Units get a combat penalty
+-	if (kPlayer.IsEmpireUnhappy())
+-	{
+-		iModifier += GetUnhappinessCombatPenalty();
+-	}
++	// PMMM Phase 4: the penalty function itself decides; Ai Yo returns a bonus while the empire counts as happy
++	iModifier += GetUnhappinessCombatPenalty();
+ 
+ 	// Over our strategic resource limit?
+ 	iTempModifier = GetStrategicResourceCombatPenalty();
+@@ -13938,14 +13986,12 @@
+ 	}
+ 	
+ 	// If the empire is unhappy, then Units get a combat penalty
+-	if (kPlayer.IsEmpireUnhappy())
++	// PMMM Phase 4: the penalty function itself decides; Ai Yo returns a bonus while the empire counts as happy
++	iTempModifier = GetUnhappinessCombatPenalty();
++	iModifier += iTempModifier;
++	if (kModifierList && iTempModifier)
+ 	{
+-		iTempModifier = GetUnhappinessCombatPenalty();
+-		iModifier += iTempModifier;
+-		if (kModifierList && iTempModifier)
+-		{
+-			GC.getGame().BuildCombatModHelpText(*kModifierList, "TXT_KEY_COMBATMOD_UNHAPPY", iTempModifier, kPlayer.GetExcessHappiness());
+-		}
++		GC.getGame().BuildCombatModHelpText(*kModifierList, "TXT_KEY_COMBATMOD_UNHAPPY", iTempModifier, kPlayer.GetExcessHappiness());
+ 	}
+ 
+ 	// Over our strategic resource limit?
+--- a/CvGameCoreDLL_Expansion2/CvUnitCombat.cpp
++++ b/CvGameCoreDLL_Expansion2/CvUnitCombat.cpp
+@@ -2177,6 +2177,98 @@
+ 	{
+ 		GC.GetEngineUserInterface()->SetDontShowPopups(false);
+ 	}
++
++	// WFTW Lekmod port: CombatEnded, ungated, Community Patch-identical signature.
++	// iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP
++	// iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP
++	// iInterceptingPlayer, iInterceptingUnit, interceptorDamage
++	// plotX, plotY
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			PlayerTypes iAttackingPlayer = NO_PLAYER;
++			PlayerTypes iDefendingPlayer = NO_PLAYER;
++			PlayerTypes iInterceptingPlayer = NO_PLAYER;
++
++			int plotX = -1;
++			int plotY = -1;
++
++			int iAttackingUnit = -1;
++			int iDefendingUnit = -1;
++			int iInterceptingUnit = -1;
++
++			// Generic values for max hit points, changed below when we have the specific units available
++			int attackerMaxHP = GD_INT_GET(MAX_HIT_POINTS);
++			if (pAttacker)
++				attackerMaxHP = pAttacker->GetMaxHitPoints();
++			int defenderMaxHP = GD_INT_GET(MAX_HIT_POINTS);
++			if (pDefender)
++				defenderMaxHP = pDefender->GetMaxHitPoints();
++
++			int attackerDamage = kInfo.getDamageInflicted(BATTLE_UNIT_DEFENDER);
++			int defenderDamage = kInfo.getDamageInflicted(BATTLE_UNIT_ATTACKER);
++			int interceptorDamage = kInfo.getDamageInflicted(BATTLE_UNIT_INTERCEPTOR);
++
++			int attackerFinalDamage = kInfo.getFinalDamage(BATTLE_UNIT_ATTACKER);
++			int defenderFinalDamage = kInfo.getFinalDamage(BATTLE_UNIT_DEFENDER);
++
++			CvUnit* pkAttacker = kInfo.getUnit(BATTLE_UNIT_ATTACKER);
++			CvUnit* pkDefender = kInfo.getUnit(BATTLE_UNIT_DEFENDER);
++			CvUnit* pInterceptor = kInfo.getUnit(BATTLE_UNIT_INTERCEPTOR);
++			CvPlot* pkTargetPlot = kInfo.getPlot();
++
++			if (pkTargetPlot)
++			{
++				plotX = pkTargetPlot->getX();
++				plotY = pkTargetPlot->getY();
++				CvCity* pCity = pkTargetPlot->getPlotCity();
++				if (pCity)
++				{
++					iDefendingPlayer = pCity->getOwner();
++					defenderMaxHP = pCity->GetMaxHitPoints();
++				}
++			}
++			if (pkAttacker)
++			{
++				iAttackingPlayer = pAttacker->getOwner();
++				iAttackingUnit = pAttacker->GetID();
++				attackerMaxHP = pAttacker->GetMaxHitPoints();
++			}
++			if (pkDefender)
++			{
++				iDefendingPlayer = pkDefender->getOwner();
++				iDefendingUnit = pkDefender->GetID();
++				defenderMaxHP = pkDefender->GetMaxHitPoints();
++			}
++			if (pInterceptor)
++			{
++				iInterceptingPlayer = pInterceptor->getOwner();
++				iInterceptingUnit = pInterceptor->GetID();
++			}
++
++			CvLuaArgsHandle args;
++
++			args->Push(iAttackingPlayer);
++			args->Push(iAttackingUnit);
++			args->Push(attackerDamage);
++			args->Push(attackerFinalDamage);
++			args->Push(attackerMaxHP);
++			args->Push(iDefendingPlayer);
++			args->Push(iDefendingUnit);
++			args->Push(defenderDamage);
++			args->Push(defenderFinalDamage);
++			args->Push(defenderMaxHP);
++			args->Push(iInterceptingPlayer);
++			args->Push(iInterceptingUnit);
++			args->Push(interceptorDamage);
++			args->Push(plotX);
++			args->Push(plotY);
++
++			bool bResult = false;
++			LuaSupport::CallHook(pkScriptSystem, "CombatEnded", args.get(), bResult);
++		}
++	}
+ }
+ 
+ //	----------------------------------------------------------------------------
+--- a/CvGameCoreDLL_Expansion2/CvUnitMission.cpp
++++ b/CvGameCoreDLL_Expansion2/CvUnitMission.cpp
+@@ -32,6 +32,72 @@
+ // include this after all other headers
+ #include "LintFree.h"
+ 
++// WFTW Lekmod port: custom unit missions.
++// Plain LuaSupport hooks with Community Patch-identical event names and argument
++// orders, always on (no CustomModOptions machinery on Lekmod). CP's
++// GAMEEVENTINVOKE_VALUE/TESTANY wrappers are thin wrappers over these same
++// LuaSupport::CallAccumulator/CallTestAny calls, so the Lua side is unchanged.
++// Event signatures (identical to CP):
++// ANY: CustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, iFlags=0, iTurn=-1, iPlotX, iPlotY, bTestVisible)
++// ACC: CustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = CUSTOM_MISSION_ACTION
++// ACC: CustomMissionSetActivity(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = CUSTOM_MISSION_ACTION_AND_DONE
++// ACC: CustomMissionDoStep(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = CUSTOM_MISSION_ACTION_AND_DONE
++// ANY: CustomMissionCompleted(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn)
++// ACC: CustomMissionTargetPlot(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = iPlotIndex
++// ACC: CustomMissionCameraTime(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = iCameraTime (0, 1, 5 or 10)
++// ACC: CustomMissionTimerInc(iPlayer, iUnit, iMission, iData1, iData2, iFlags, iTurn) = iTimerInc
++
++#define CUSTOM_MISSION_NO_ACTION        0
++#define CUSTOM_MISSION_ACTION           1
++#define CUSTOM_MISSION_DONE             2
++#define CUSTOM_MISSION_ACTION_AND_DONE  3
++
++namespace
++{
++	// Fire a 7-argument accumulator event (Start/SetActivity/DoStep/TargetPlot/CameraTime/TimerInc).
++	// Returns true (and fills iValue) if a listener returned a value, false if there are no listeners.
++	bool CustomMissionGetValue(const char* szEvent, UnitHandle hUnit, const MissionData& kData, int& iValue)
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(hUnit->getOwner());
++			args->Push(hUnit->GetID());
++			args->Push(kData.eMissionType);
++			args->Push(kData.iData1);
++			args->Push(kData.iData2);
++			args->Push(kData.iFlags);
++			args->Push(kData.iPushTurn);
++			return LuaSupport::CallAccumulator(pkScriptSystem, szEvent, args.get(), iValue);
++		}
++		return false;
++	}
++
++	// Fire CustomMissionCompleted; returns true if any listener returned true.
++	bool CustomMissionIsCompleted(UnitHandle hUnit, const MissionData& kData)
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(hUnit->getOwner());
++			args->Push(hUnit->GetID());
++			args->Push(kData.eMissionType);
++			args->Push(kData.iData1);
++			args->Push(kData.iData2);
++			args->Push(kData.iFlags);
++			args->Push(kData.iPushTurn);
++			bool bResult = false;
++			if (LuaSupport::CallTestAny(pkScriptSystem, "CustomMissionCompleted", args.get(), bResult))
++			{
++				return bResult;
++			}
++		}
++		return false;
++	}
++}
++
+ //	---------------------------------------------------------------------------
+ /// Perform automated mission
+ void CvUnitMission::AutoMission(UnitHandle hUnit)
+@@ -712,6 +778,24 @@
+ 					bDone = true;
+ 				}
+ 			}
++
++			// WFTW Lekmod port: unknown mission - let Lua step it (CustomMissionDoStep).
++			else
++			{
++				int iValue = 0;
++				if (CustomMissionGetValue("CustomMissionDoStep", hUnit, kMissionData, iValue))
++				{
++					if (iValue == CUSTOM_MISSION_ACTION)
++						bAction = true;
++					else if (iValue == CUSTOM_MISSION_DONE)
++						bDone = true;
++					else if (iValue == CUSTOM_MISSION_ACTION_AND_DONE)
++					{
++						bAction = true;
++						bDone = true;
++					}
++				}
++			}
+ 		}
+ 
+ 		// check to see if mission is done
+@@ -819,6 +903,12 @@
+ 					hUnit->ChangeMissionTimer(1);
+ 				}
+ 			}
++
++			// WFTW Lekmod port: let Lua mark the mission done (CustomMissionCompleted).
++			if (CustomMissionIsCompleted(hUnit, kMissionData))
++			{
++				bDone = true;
++			}
+ 		}
+ 
+ 		if(HeadMissionQueueNode(kMissionQueue) != NULL)
+@@ -873,6 +963,21 @@
+ 
+ 							GC.GetEngineUserInterface()->changeCycleSelectionCounter(iCameraTime);
+ 						}
++
++						// WFTW Lekmod port: let Lua set the camera pan time (CustomMissionCameraTime).
++						{
++							int iCameraTime = 0;
++							if (CustomMissionGetValue("CustomMissionCameraTime", hUnit, kMissionData, iCameraTime))
++							{
++								if (iCameraTime > 0 && iCameraTime <= 10)
++								{
++									if (GET_PLAYER(hUnit->getOwner()).isOption(PLAYEROPTION_QUICK_MOVES))
++										iCameraTime = 1;
++
++									GC.GetEngineUserInterface()->changeCycleSelectionCounter(iCameraTime);
++								}
++							}
++						}
+ 					}
+ 
+ 					if(hUnit->m_unitMoveLocs.size() > 0)
+@@ -1337,6 +1442,38 @@
+ 		}
+ 	}
+ #endif
++
++	// WFTW Lekmod port: the mission chain does not know this mission - let Lua
++	// approve it (CustomMissionPossible). This is the keystone that lets modded
++	// mission rows from the Missions table actually start; without it every
++	// unknown mission dies here and no Lua handler ever runs.
++	{
++		ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
++		if (pkScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(hUnit->getOwner());
++			args->Push(hUnit->GetID());
++			args->Push(iMission);
++			args->Push(iData1);
++			args->Push(iData2);
++			args->Push(0);           // iFlags
++			args->Push(-1);          // iTurn
++			args->Push(pPlot->getX());
++			args->Push(pPlot->getY());
++			args->Push(bTestVisible);
++
++			bool bResult = false;
++			if (LuaSupport::CallTestAny(pkScriptSystem, "CustomMissionPossible", args.get(), bResult))
++			{
++				if (bResult)
++				{
++					return true;
++				}
++			}
++		}
++	}
++
+ 	return false;
+ }
+ 
+@@ -1441,6 +1578,24 @@
+ 			bDelete = true;
+ 		}
+ 
++		// WFTW Lekmod port: let Lua set the unit's activity type while a custom
++		// mission runs (CustomMissionSetActivity).
++		{
++			int iValue = 0;
++			if (CustomMissionGetValue("CustomMissionSetActivity", hUnit, *pkQueueData, iValue))
++			{
++				if (iValue == CUSTOM_MISSION_ACTION)
++					bNotify = true;
++				else if (iValue == CUSTOM_MISSION_DONE)
++					bDelete = true;
++				else if (iValue == CUSTOM_MISSION_ACTION_AND_DONE)
++				{
++					bNotify = true;
++					bDelete = true;
++				}
++			}
++		}
++
+ 
+ 		if(bNotify)
+ 		{
+@@ -1828,6 +1983,18 @@
+ 				bAction = true;
+ 			}
+ #endif
++
++			// WFTW Lekmod port: let Lua run the custom mission's effect
++			// (CustomMissionStart). A return value of CUSTOM_MISSION_ACTION
++			// counts as the unit having acted this turn.
++			{
++				int iValue = 0;
++				if (CustomMissionGetValue("CustomMissionStart", hUnit, *pkQueueData, iValue))
++				{
++					if (iValue == CUSTOM_MISSION_ACTION)
++						bAction = true;
++				}
++			}
+ 		}
+ 	}
+ 
+@@ -1891,6 +2058,23 @@
+ 			}
+ 		}
+ 
++		// WFTW Lekmod port: let Lua say where a custom mission's target plot is
++		// (CustomMissionTargetPlot); returns a plot index.
++		{
++			int iPlotIndex = -1;
++			if (CustomMissionGetValue("CustomMissionTargetPlot", hUnit, *pMissionNode, iPlotIndex))
++			{
++				if (iPlotIndex >= 0)
++				{
++					CvPlot* pCustomPlot = GC.getMap().plotByIndex(iPlotIndex);
++					if (pCustomPlot)
++					{
++						return pCustomPlot;
++					}
++				}
++			}
++		}
++
+ 		pMissionNode = PrevMissionQueueNode(hUnit->m_missionQueue, pMissionNode);
+ 	}
+ 
+@@ -1954,6 +2138,17 @@
+ 			}
+ 		}
+ 
++		// WFTW Lekmod port: let Lua add to the mission timer for multi-turn
++		// custom missions (CustomMissionTimerInc).
++		{
++			int iValue = 0;
++			if (CustomMissionGetValue("CustomMissionTimerInc", hUnit, kMissionData, iValue))
++			{
++				if (iValue != 0)
++					iTime += iValue;
++			}
++		}
++
+ 		if(hUnit->isHuman() && (hUnit->IsAutomated() /*|| (GET_PLAYER((GC.getGame().isNetworkMultiPlayer()) ? hUnit->getOwner() : GC.getGame().getActivePlayer()).isOption(PLAYEROPTION_QUICK_MOVES))*/))
+ 		{
+ 			iTime = std::min(iTime, 1);
+@@ -2240,6 +2435,13 @@
+ 				return true;
+ 			}
+ 		}
++
++		// WFTW Lekmod port: let Lua report a custom mission as complete
++		// (CustomMissionCompleted).
++		if (CustomMissionIsCompleted(hUnit, kMissionData))
++		{
++			return true;
++		}
+ 	}
+ 
+ 	return false;
+--- a/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastAllocator.h
++++ b/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastAllocator.h
+@@ -349,11 +349,14 @@
+ // 4 - The allocation pool to put any dynamic allocations in
+ // 5 - Allocation pool sub ID
+ ////////////////////////////////////////////////////////////////////////
+-template< 
++template<
+ 	class T,
+-	unsigned int AllocPool = c_eMPoolTypeContainer, 
++	unsigned int AllocPool = c_eMPoolTypeContainer,
+ 	unsigned int nSubID = 0,
+-	class BASE_ALLOC = typename BaseVector< T, bPODType >::FDefaultFastVectorAllocator
++	// WFTW Lekmod port (clang-cl build compatibility): bPODType is not a parameter of
++	// this template; MSVC never parses this default because FFixedBlockAllocator is
++	// never instantiated without an explicit BASE_ALLOC anywhere in the codebase.
++	class BASE_ALLOC = typename BaseVector< T, false >::FDefaultFastVectorAllocator
+ > class FFixedBlockAllocator
+ {
+ 	const static unsigned int ms_uiAnchorNodeIndex = 0x0fffffff;
+@@ -554,7 +557,10 @@
+ 
+ 	//Don't allow copying
+ private:
+-	void operator = (const FFastAllocator& rhs){}
++	// WFTW Lekmod port (clang-cl build compatibility): this operator= lives in
++	// FFixedBlockAllocator and originally named the FFastAllocator template without
++	// arguments, which only MSVC accepts; spell out this class's own template-id.
++	void operator = (const FFixedBlockAllocator<T, AllocPool, nSubID, BASE_ALLOC>& rhs){}
+ 
+ 
+ public:
+--- a/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastList.h
++++ b/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastList.h
+@@ -158,7 +158,9 @@
+ 	////////////////////////////////////////////////////////////////////////
+ 	explicit FFastList() : BASE_TYPE() {};
+ 	explicit FFastList( unsigned int uiCapacity ) : BASE_TYPE(uiCapacity) {};
+-	explicit TYPE( const TYPE& rhs ) : BASE_TYPE( rhs ) {};
++	// WFTW Lekmod port (clang-cl build compatibility): MSVC accepts a typedef naming
++	// the class as a constructor name; clang requires the class name itself.
++	explicit FFastList( const FFastList& rhs ) : BASE_TYPE( rhs ) {};
+ 
+ 	//Copy operator
+ 	const TYPE& operator = ( const TYPE& rhs ){  
+@@ -365,7 +367,9 @@
+ 
+ 	protected:
+ 		unsigned int m_uiCurrPos;
+-		friend class TYPE;
++		// WFTW Lekmod port (clang-cl build compatibility): 'friend class TYPE' with a
++		// typedef is an MSVC extension; 'friend TYPE;' is the standard spelling.
++		friend TYPE;
+ 	};
+ 
+ 	////////////////////////////////////////////////////////////////////////
+@@ -1135,7 +1139,9 @@
+ 		unsigned int m_uiCurrList;
+ 		unsigned int m_uiCurrPos;
+ 		const TYPE* m_pFastList;
+-		friend class TYPE;
++		// WFTW Lekmod port (clang-cl build compatibility): 'friend class TYPE' with a
++		// typedef is an MSVC extension; 'friend TYPE;' is the standard spelling.
++		friend TYPE;
+ 	};
+ 
+ public:
+--- a/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastVector.h
++++ b/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FFastVector.h
+@@ -30,6 +30,10 @@
+ #include "FAssert.h"
+ #include "new"
+ #include "iterator"
++// WFTW Lekmod port (clang-cl build compatibility): the default template arguments
++// below use c_eMPoolTypeContainer, declared in FMemHooks.h. MSVC parses default
++// template arguments lazily, clang does not, so the enum must be visible here.
++#include "FMemHooks.h"
+ 
+ //#define BREAK_ON_REPEATED_RESIZE 4
+ //#define BREAK_ON_STATIC_RESIZE 1
+--- a/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FLua/Include/FLuaTypeExposure.h
++++ b/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FLua/Include/FLuaTypeExposure.h
+@@ -42,6 +42,9 @@
+ // Exposes the member function FUNC on type CLASS with a thunk name of THUNK_NAME
+ // Restrict the exposure to only states that fall into one of the provided category flags
+ // Use this when FLUA_EXPOSE_MEMBER_R generates and invalid name for the thunk function or registrar
++// WFTW Lekmod port (clang-cl build compatibility): the registrar line originally read
++// 'FLua::TypeExposure<##CLASS##>::FunctionRegistrar'; the paste of '<' onto CLASS forms an
++// invalid token that MSVC silently tolerates. '<CLASS>' expands identically on both compilers.
+ #define FLUA_EXPOSE_MEMBER_REX(CLASS, FUNC, THUNK_NAME, CATEGORY_FLAGS) \
+ 	int LuaThunk_##CLASS##_##THUNK_NAME##(lua_State *L) { \
+ 	return FLua::Details::Call<CLASS>(&CLASS::FUNC, L, #CLASS "::" #THUNK_NAME); \
+@@ -52,7 +55,7 @@
+ 	lua_pushstring(L, szDescription); \
+ 	return 1; \
+ 	} \
+-	static FLua::TypeExposure<##CLASS##>::FunctionRegistrar LuaReg_##CLASS##_##THUNK_NAME## \
++	static FLua::TypeExposure<CLASS>::FunctionRegistrar LuaReg_##CLASS##_##THUNK_NAME## \
+ 	(#THUNK_NAME, &LuaThunk_##CLASS##_##THUNK_NAME##, &LuaToString_##CLASS##_##THUNK_NAME##, FLua::Details::DoConstCheck(&CLASS::FUNC), CATEGORY_FLAGS)
+ 
+ // FLUA_EXPOSE_MEMBER_EX(CLASS, FUNC, THUNK_NAME)
+@@ -72,6 +75,7 @@
+ // FLUA_EXPOSE_MEMBER_AS_NONCONST(CLASS, FUNC)
+ // Exposes the member function FUNC on type CLASS.  Use this for when there are a const and noncost
+ // version of a function with the same name.  It will always expose the nonconst version.
++// WFTW Lekmod port (clang-cl build compatibility): see the FLUA_EXPOSE_MEMBER_REX note above.
+ #define FLUA_EXPOSE_MEMBER_AS_NONCONST(CLASS, FUNC) \
+ 	int LuaThunk_##CLASS##_##FUNC##(lua_State *L) { \
+ 	return FLua::Details::Call<CLASS>(&CLASS::FUNC, L, #CLASS "::" #FUNC); \
+@@ -82,7 +86,7 @@
+ 	lua_pushstring(L, szDescription); \
+ 	return 1; \
+ 	} \
+-	static FLua::TypeExposure<##CLASS##>::FunctionRegistrar LuaReg_##CLASS##_##FUNC## \
++	static FLua::TypeExposure<CLASS>::FunctionRegistrar LuaReg_##CLASS##_##FUNC## \
+ 	(#FUNC, &LuaThunk_##CLASS##_##FUNC##, &LuaToString_##CLASS##_##FUNC##, false, FLua::TypeExposures::sm_uiUnrestrictedExposure)
+ 
+ // FLUA_SUPPORT_ENUM(ENUM)
+--- a/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FTimer.h
++++ b/CvGameCoreDLL_Expansion2/FirePlace/include/Fireworks/FTimer.h
+@@ -104,10 +104,13 @@
+ //---------------------------------------------------------------------------------------
+ //  P5time  --  return TICKS since last call
+ //---------------------------------------------------------------------------------------
++// WFTW Lekmod port (clang-cl build compatibility): clang requires naked functions to
++// contain only asm statements; the static local moves to file scope, which keeps the
++// same per-translation-unit copy the header always produced.
++static	int tick=0;
++
+ inline __declspec(naked) uint P5time()
+ {
+-	static	int tick=0;
+-
+ 	__asm  mov   ecx,tick
+     __asm  rdtsc
+ 	__asm  mov   tick,eax
+--- a/CvGameCoreDLL_Expansion2/Lua/CvLuaPlayer.cpp
++++ b/CvGameCoreDLL_Expansion2/Lua/CvLuaPlayer.cpp
+@@ -200,6 +200,7 @@
+ 	Method(GetGold);
+ 	Method(SetGold);
+ 	Method(ChangeGold);
++	Method(ChangeOverflowResearch); // WFTW Lekmod port: binding-only port (backing already exists)
+ 	Method(CalculateGrossGold);
+ 	Method(GetLifetimeGrossGold);
+ 	Method(GetGoldFromCitiesTimes100);
+@@ -2291,6 +2292,12 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
++// WFTW Lekmod port: void changeOverflowResearch(int iChange);
++int CvLuaPlayer::lChangeOverflowResearch(lua_State* L)
++{
++	return BasicLuaMethod(L, &CvPlayerAI::changeOverflowResearch);
++}
++//------------------------------------------------------------------------------
+ //int CalculateGrossGold();
+ int CvLuaPlayer::lCalculateGrossGold(lua_State* L)
+ {
+@@ -10499,12 +10506,9 @@
+ 	return 1;
+ }
+ //------------------------------------------------------------------------------
+-struct Opinion
+-{
+-	Localization::String m_str;
+-	int m_iValue;
+-};
+-
++// WFTW Lekmod port: struct Opinion now lives in CvDiplomacyAI.h (Community
++// Patch layout, used by CvDiplomacyAI::GetDiploModifiers); this local
++// definition duplicated the type in this translation unit.
+ struct OpinionEval
+ {
+ 	bool operator()(Opinion const& a, Opinion const& b) const
+--- a/CvGameCoreDLL_Expansion2/Lua/CvLuaPlayer.h
++++ b/CvGameCoreDLL_Expansion2/Lua/CvLuaPlayer.h
+@@ -193,6 +193,7 @@
+ 	static int lGetGold(lua_State* L);
+ 	static int lSetGold(lua_State* L);
+ 	static int lChangeGold(lua_State* L);
++	static int lChangeOverflowResearch(lua_State* L); // WFTW Lekmod port: binding-only port
+ 	static int lCalculateGrossGold(lua_State* L);
+ 	static int lGetLifetimeGrossGold(lua_State* L);
+ 	static int lGetGoldFromCitiesTimes100(lua_State* L);
