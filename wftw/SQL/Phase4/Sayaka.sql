@@ -256,9 +256,7 @@ SELECT 'UNIT_PMMM_CUTLASS_CONDUCTOR', PromotionType FROM Unit_FreePromotions WHE
 INSERT INTO Unit_FreePromotions (UnitType, PromotionType)
 VALUES ('UNIT_PMMM_CUTLASS_CONDUCTOR', 'PROMOTION_PMMM_CUTLASS_CONDUCTOR');
 
---Its promotion: Harmony retired, kill yields added.
-UPDATE UnitPromotions SET HarmonyGainedPerLevel = 0
-WHERE Type = 'PROMOTION_PMMM_CUTLASS_CONDUCTOR';
+--Its promotion: Harmony retired (the column itself is gone), kill yields added.
 
 DELETE FROM UnitPromotions_YieldFromKills WHERE PromotionType = 'PROMOTION_PMMM_CUTLASS_CONDUCTOR';
 INSERT INTO UnitPromotions_YieldFromKills
@@ -266,7 +264,7 @@ INSERT INTO UnitPromotions_YieldFromKills
 VALUES		('PROMOTION_PMMM_CUTLASS_CONDUCTOR',	'YIELD_CULTURE',	25),
 			('PROMOTION_PMMM_CUTLASS_CONDUCTOR',	'YIELD_FAITH',		25);
 
---Harmony's dummy building goes with it. PMMMCutlassConductor.lua no longer names it.
+--Harmony's dummy building goes with it. The Conductor has no script any more.
 DELETE FROM Buildings WHERE Type = 'BUILDING_PMMM_CUTLASS_CONDUCTOR_DUMMY';
 DELETE FROM BuildingClasses WHERE Type = 'BUILDINGCLASS_PMMM_CUTLASS_CONDUCTOR_DUMMY';
 

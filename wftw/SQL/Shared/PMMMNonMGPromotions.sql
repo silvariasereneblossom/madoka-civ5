@@ -221,9 +221,7 @@ WHERE Type = 'PROMOTION_PMMM_ROSEBOW_INFANTRY_BONUS_IMPROVEMENT';
 						Cutlass Conductor
    --------------------------------------------------- */
 
-UPDATE UnitPromotions
-SET HarmonyGainedPerLevel=1
-WHERE Type = 'PROMOTION_PMMM_CUTLASS_CONDUCTOR';
+-- [port] Harmony retired (Phase 4); the promotion's kill yields are set in SQL/Phase4/Sayaka.sql.
 
 /* -----------------------------------------------------
 						Tiro Musketeer

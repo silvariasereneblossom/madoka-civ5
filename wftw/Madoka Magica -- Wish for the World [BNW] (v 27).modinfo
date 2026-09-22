@@ -462,7 +462,7 @@
     <File md5="256F1D92A4F28CB19FD2E3DB13B23DD4" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
     <File md5="D15D5E4692FA1CC375483019BCEE2A77" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
     <File md5="897A683ECF90A26F897A2CEF6FFE647D" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
-    <File md5="3706F4617A15C2F91C6DC5EDA3A6FE39" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
+    <File md5="44DE9DDB0DAA092F47FE808EB864BB38" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
     <File md5="081636C45B73781BA65EF16BEB356BB3" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
     <File md5="3A28CA4124E8AE678D90308A170E8CCA" import="1">Lua/Gameplay/Traits/PMMMGustavusTrait.lua</File>
     <File md5="B855B49EA39152812DFA4D723C1539CE" import="1">Lua/Gameplay/Traits/PMMMHomuraTrait.lua</File>
@@ -477,15 +477,14 @@
     <File md5="C401DCE659ED7E27C0C628EB7384D2BA" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
     <File md5="A89DD4BD0FCA012865437E5B3EDDE40E" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
     <File md5="282A54679CD88C854984373CD4F1D83E" import="1">Lua/Gameplay/UniqueUnits/PMMMClockstopper.lua</File>
-    <File md5="8E5864D9831FFA1BE84C3E5AB0E48DD5" import="1">Lua/Gameplay/UniqueUnits/PMMMCutlassConductor.lua</File>
     <File md5="83959608796D55DAAA0641421C5363B8" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
     <File md5="F1979632BB637781FF17F503CCF544A1" import="1">Lua/Gameplay/UniqueUnits/PMMMRosebowInfantry.lua</File>
     <File md5="122A8DD92FF8542145174443BBBDFE4C" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
-    <File md5="B93C5A8907B6557C32210DBB4E96934F" import="1">Lua/PMMMDataStorage.lua</File>
-    <File md5="75351C539FEBF576A67986FB456D880C" import="1">Lua/PMMMDefines.lua</File>
+    <File md5="F75125F9E2842513E6DBC9DB94830873" import="1">Lua/PMMMDataStorage.lua</File>
+    <File md5="7B68E51E3630CD061D4CA3BB82C4C03C" import="1">Lua/PMMMDefines.lua</File>
     <File md5="E0245F94267C584EC325D247A77B47D4" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="901F7D838A9A365BDC7B35D8F2AAA2C7" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="9861EC5A16CDD3D2AC58B1CEF3FE309F" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
     <File md5="2A53FE602925732FD331B821F698937A" import="0">Lua/UI/PleiadesFreezer.lua</File>
@@ -573,7 +572,7 @@
     <File md5="EA0D2390D2EEFA8DC6A41068480C7797" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="835263A67A9FC4096792F3F529B313E1" import="0">SQL/Phase4/Homura.sql</File>
     <File md5="3B6F6183B896CFEE8A204550C3C831A3" import="0">SQL/Phase4/DemonHomura.sql</File>
-    <File md5="328A01890F87D4F5F3745E30C2355474" import="0">SQL/Phase4/Sayaka.sql</File>
+    <File md5="AE9E304D265CF0D33CB404CEB7547BA7" import="0">SQL/Phase4/Sayaka.sql</File>
     <File md5="E40735E9BFD09824EBFA6A5872352547" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
     <File md5="7B2B72CF6A4B1EFF92A35179F0D8832D" import="0">SQL/Shared/MGMissions.sql</File>
@@ -584,8 +583,8 @@
     <File md5="4E63CD2CB1C58A5D73B749FC9D4516A6" import="0">SQL/Shared/MiscPromotions.sql</File>
     <File md5="8E968CB796E87F10284EBCF8B6E90C0D" import="0">SQL/Shared/NavalOutpost.sql</File>
     <File md5="DB0DF1CE20A39BDE8332889E708ADF79" import="0">SQL/Shared/PlayerColors.sql</File>
-    <File md5="DCEB8BE87F29E5E36AFA159E20626EB1" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
-    <File md5="0B13E729BC76D73CFA438B1A56A8CD96" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="CFF4C1C4BAE6554C20C7DDA6150184BA" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
+    <File md5="8B687CA82B0E89D95F78A84DA3FF5259" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
     <File md5="FD01B1194B3EE011A39E86749EBDBF68" import="1">SQL/Shared/UnitArtDefines.sql</File>
     <File md5="5CA12672FE05C265D6C10749CC4510E5" import="0">SQL/Shared/WFTWConcepts.sql</File>
     <File md5="B0BD2983D305AE2DB0AB9CD52B234F36" import="0">SQL/Songhai/AskiaTrait.sql</File>

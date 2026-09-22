@@ -228,7 +228,6 @@ GameEvents.CityCanConstruct.Add(OnCityCanConstructLandmassBuildings)
 GameEvents.GreatPersonExpended.Add(MadokaInitMagicalGirl)
 
 --------UnitPromoted (added by DVMC)----------------------------------------------------------------
-GameEvents.UnitPromoted.Add(OnUnitPromotedUUFunctions)
 GameEvents.UnitPromoted.Add(OnPromotedRunTraitScripts)
 
 --------UnitCreated (added by DVMC)----------------------------------------------------------------

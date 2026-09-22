@@ -20,7 +20,6 @@ MagicalGirls = PMMM.MagicalGirls
 --All stuff not directly related to Magical Girl Stats
 PMMM.TimeStopCooldown = PMMM.TimeStopCooldown or {}									--Cooldown time before Time Stop use (per Civ; if multiple MGs who can stop time exist in the same Civ, they share cooldown)
 PMMM.TimeStopDuration = PMMM.TimeStopDuration or {}									--How long Time Stop is currently active (if for some insane reason you want it to be more than 1 turn)
-PMMM.Harmony = PMMM.Harmony or {}													--Cutlass Conductor
 PMMM.StolenFood = PMMM.StolenFood or {}												--Kyouko trait
 PMMM.StolenFoodPlots = PMMM.StolenFoodPlots or {}									--Prevent Kyouko from pillage-repair-pillage until 100 food
 PMMM.WitchBarrierSpawnedWitchPlots = PMMM.WitchBarrierSpawnedWitchPlots or {}		--Which Barriers have spawned Witches before (if so, new units are familiars)
@@ -70,7 +69,6 @@ function RefreshAllPMMMDefines()
 	--All stuff not directly related to Magical Girl Stats
 	PMMM.TimeStopCooldown = PMMM.TimeStopCooldown or {}									--Cooldown time before Time Stop use (per Civ; if multiple MGs who can stop time exist in the same Civ, they share cooldown)
 	PMMM.TimeStopDuration = PMMM.TimeStopDuration or {}									--How long Time Stop is currently active (if for some insane reason you want it to be more than 1 turn)
-	PMMM.Harmony = PMMM.Harmony or {}													--Cutlass Conductor
 	PMMM.StolenFood = PMMM.StolenFood or {}												--Kyouko trait
 	PMMM.StolenFoodPlots = PMMM.StolenFoodPlots or {}									--Prevent Kyouko from pillage-repair-pillage until 100 food
 	PMMM.WitchBarrierSpawnedWitchPlots = PMMM.WitchBarrierSpawnedWitchPlots or {}		--Which Barriers have spawned Witches before (if so, new units are familiars)

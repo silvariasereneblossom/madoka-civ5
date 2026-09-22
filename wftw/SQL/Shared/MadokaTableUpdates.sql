@@ -77,7 +77,8 @@ ALTER TABLE Traits ADD COLUMN 'MaximumMetEraMGStrength' BOOLEAN DEFAULT 0 NOT NU
 ALTER TABLE UnitPromotions ADD COLUMN 'ShowInPedia' BOOLEAN DEFAULT 1 NOT NULL; --General purpose field to prevent a promotion from showing up in the Civilopedia.
 ALTER TABLE UnitPromotions ADD COLUMN 'ObtainUniqueUnitPromotionOnCityCapture' BOOLEAN DEFAULT 0 NOT NULL; -- this unit gets a random promotion from the enemy Civ's UU(s) upon city capture
 ALTER TABLE UnitPromotions ADD COLUMN 'SoulGemPolishPercent' INTEGER DEFAULT 0; --this unit can use "Polish Soul Gem" on a Magical Girl; value is amount of Polish granted
-ALTER TABLE UnitPromotions ADD COLUMN 'HarmonyGainedPerLevel' INTEGER DEFAULT 0;--this unit earns Harmony upon gaining a level, when garrisoned, Harmony doubles Tourism output of the city. This is multiplied by the Level, so if it is, say, 2, and the unit gets to Level 3, it gets 6 Harmony
+-- [port] HarmonyGainedPerLevel removed: the Cutlass Conductor's Harmony system is retired (Phase 4).
+----this unit earns Harmony upon gaining a level, when garrisoned, Harmony doubles Tourism output of the city. This is multiplied by the Level, so if it is, say, 2, and the unit gets to Level 3, it gets 6 Harmony
 ALTER TABLE UnitPromotions ADD COLUMN 'TiroFinaleStrength' INTEGER DEFAULT 0; -- amount to multiply Melee Strength to determine its Tiro Finale strength. 100 = identical to Melee Strength.
 ALTER TABLE UnitPromotions ADD COLUMN 'CanStealCriticalMagicalGirl' BOOLEAN DEFAULT 0 NOT NULL; --this unit can steal a GMG from an enemy if that GMG's Soul Gem is Critical
 ALTER TABLE UnitPromotions ADD COLUMN 'AdjacentCommanderMovement' INTEGER DEFAULT 0;--Any promotion with GreatGeneralReceivesMovement set to true will get this instead. Gives adjacent Commander MGs +1 Movement at start of turn
