@@ -346,3 +346,21 @@ Fix: `scripts/clang-shim/vadefs.h` (`#include_next`s VC9's, then redefines the t
 VC9 by both `build_lekmod_dll.py` and `build_dll.py` (patch 5b). Verified by disassembly: `MaxRows` now loads
 `[ebp+8]` and calls a real varargs `sprintf_s<256>` in both builds. The fixed Lekmod DLL (md5 B9271257…) is
 deployed; the rebuilt CP release (md5 7C945B89…) was deployed the same day after the Lekmod build started cleanly in game.
+
+## Lekmod DLL: Units.PromotionClass ported (2026-09-22)
+
+In play, Magical Girls on Lekmod were offered melee promotions. WFTW (even the original v27) gives the girl
+`CombatClass = UNITCOMBAT_MELEE` plus CP's `PromotionClass = UNITCOMBAT_MAGICALGIRL`; Lekmod's DLL has no
+`PromotionClass`, so it validated promotions against the combat class. The scoping pass had listed the column as
+safely ignorable, which was wrong for gameplay. Ported CP's three-point implementation (read the column with a
+fallback to `CombatClass`, `CvUnitEntry::GetUnitPromotionType`, and `IsPromotionValidForUnitCombatType` checking
+it) as its own follow-up patch, `dll/lekmod-wftw-promotionclass.patch`, applied by `build_lekmod_dll.py` after the
+main patch via `EXTRA_PATCHES` (marker-detected, so reruns skip it). It was kept separate because the upstream
+tree has minor pre-existing drift from `dll/lekmod-wftw.patch` (a comment's copyright byte, a one-line offset)
+that a full regeneration would silently fold in. No save-format impact: unit entries come from the database.
+
+Also fixed the same day, in WFTW's Lua: Lekmod builds with `LEKMOD_COMBAT_PREDICTOR_IMPROVEMENTS`, which changes
+the `GetMaxAttackStrength` / `GetMaxDefenseStrength` signatures and drops `GetMaxRangedCombatStrength`; CP-order
+calls crashed the game (enemy-unit panel refresh). All calls now go through DLL-aware helpers in
+`PMMMGeneralFunctions.lua`. `GameInfo.UnitPromotions` also hides WFTW's promotion columns on Lekmod, so those
+are read with `DB.Query`.

@@ -50,6 +50,12 @@ NATIVE_OBJ_SUBSTITUTES = {
     "CvWorldBuilderMapWin32.lib": CP_REPO / "CvWorldBuilderMap" / "lib" / "CvWorldBuilderMapWin32.obj",
 }
 PATCH_FILE = ROOT / "dll" / "lekmod-wftw.patch"
+# Follow-up patches applied after the main one, each detected by its own marker so reruns skip it:
+# (patch file, file relative to CvGameCoreDLL_Expansion2 holding the marker, marker bytes).
+EXTRA_PATCHES = [
+    # 2026-09-22: CP's Units.PromotionClass, so Magical Girls level through their own promotion tree.
+    (ROOT / "dll" / "lekmod-wftw-promotionclass.patch", "CvUnitClasses.h", b"GetUnitPromotionType"),
+]
 # Legacy conversion helpers (__ftol3/__ltod3) referenced by the prebuilt
 # FireWorks objects; see the header comment in the file itself.
 CONV_HELPERS = ROOT / "scripts" / "lekmod_conv_helpers.S"
@@ -113,6 +119,24 @@ def apply_patch(lekmod_root: Path, patch_file: Path) -> None:
     print("patch: applied")
 
 
+def apply_extra_patches(lekmod_root: Path) -> None:
+    """Idempotently apply EXTRA_PATCHES on top of the main port."""
+    src = lekmod_root / "LEKMOD_DLL" / "CvGameCoreDLL_Expansion2"
+    for patch_file, marker_rel, marker in EXTRA_PATCHES:
+        marker_file = src / marker_rel
+        if marker in marker_file.read_bytes():
+            print(f"patch: {patch_file.name} already applied, skipping")
+            continue
+        print(f"patch: applying {patch_file.name}")
+        with open(patch_file, "rb") as f:
+            cp = subprocess.run(["patch", "-p1", "--batch", "--forward", "-d", str(src.parent)],
+                                stdin=f, capture_output=True)
+        if cp.returncode != 0 or marker not in marker_file.read_bytes():
+            sys.stdout.write(cp.stdout.decode("utf-8", "replace"))
+            sys.stderr.write(cp.stderr.decode("utf-8", "replace"))
+            sys.exit(f"{patch_file.name} failed; inspect the tree before rerunning")
+
+
 def parse_vcxproj(project_dir: Path) -> tuple[list[str], list[str], list[str], list[str], list[str]]:
     """Read the Mod|Win32 configuration: predefines, include dirs, libs, lib dirs, sources."""
     text = (project_dir / VCXPROJ).read_text(encoding="utf-8-sig")
@@ -165,6 +189,7 @@ def main(argv=None) -> int:
             return 2
     if not args.no_apply:
         apply_patch(lekmod_root, PATCH_FILE)
+        apply_extra_patches(lekmod_root)
 
     predefs, incdirs, libs, libdirs, sources = parse_vcxproj(project_dir)
     sources = [s for s in sources if s != PCH_CPP]

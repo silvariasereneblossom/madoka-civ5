@@ -1,0 +1,72 @@
+diff -ru a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp
+--- a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp	2026-09-22 00:42:34.295885800 -0400
++++ b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp	2026-09-22 00:42:34.321919100 -0400
+@@ -242,8 +242,8 @@
+ 		return false;
+ 	}
+ 
+-	// Combat class not valid for this Promotion
+-	if(!(promotionInfo->GetUnitCombatClass(unitInfo->GetUnitCombatType())))
++	// Combat class not valid for this Promotion (PMMM: checked against the promotion class, as in CP)
++	if(!(promotionInfo->GetUnitCombatClass(unitInfo->GetUnitPromotionType())))
+ 	{
+ 		return false;
+ 	}
+diff -ru a/CvGameCoreDLL_Expansion2/CvUnitClasses.cpp b/CvGameCoreDLL_Expansion2/CvUnitClasses.cpp
+--- a/CvGameCoreDLL_Expansion2/CvUnitClasses.cpp	2026-09-22 00:42:34.248801200 -0400
++++ b/CvGameCoreDLL_Expansion2/CvUnitClasses.cpp	2026-09-22 00:42:34.273855700 -0400
+@@ -64,6 +64,7 @@
+ 	m_iSpecialUnitType(NO_SPECIALUNIT),
+ 	m_iUnitCaptureClassType(NO_UNITCLASS),
+ 	m_iUnitCombatType(NO_UNITCOMBAT),
++	m_iUnitPromotionType(NO_UNITCOMBAT),
+ 	m_iDomainType(NO_DOMAIN),
+ 	m_iCivilianAttackPriority(NO_CIVILIAN_ATTACK_PRIORITY),
+ 	m_iDefaultUnitAIType(NO_UNITAI),
+@@ -283,6 +284,14 @@
+ 	szTextVal = kResults.GetText("CombatClass");
+ 	m_iUnitCombatType = GC.getInfoTypeForString(szTextVal, true);
+ 
++	// PMMM: CP's Units.PromotionClass -- which unit combat's promotion tree the unit levels through, separate from
++	// how it fights. Wish for the World's Magical Girls fight as melee but level through UNITCOMBAT_MAGICALGIRL.
++	// The column is staged by the WFTW Lekmod shim; empty or absent means "same as CombatClass", as in CP.
++	szTextVal = kResults.GetText("PromotionClass");
++	m_iUnitPromotionType = (szTextVal && *szTextVal) ? GC.getInfoTypeForString(szTextVal, true) : NO_UNITCOMBAT;
++	if(m_iUnitPromotionType == NO_UNITCOMBAT)
++		m_iUnitPromotionType = m_iUnitCombatType;
++
+ 	szTextVal = kResults.GetText("Domain");
+ 	m_iDomainType = GC.getInfoTypeForString(szTextVal, true);
+ 
+@@ -857,6 +866,12 @@
+ 	return m_iUnitCombatType;
+ }
+ 
++/// PMMM: promotion tree (Units.PromotionClass, falling back to the combat type)
++int CvUnitEntry::GetUnitPromotionType() const
++{
++	return m_iUnitPromotionType;
++}
++
+ /// What domain does this unit operate in (land, air or sea)
+ int CvUnitEntry::GetDomainType() const
+ {
+diff -ru a/CvGameCoreDLL_Expansion2/CvUnitClasses.h b/CvGameCoreDLL_Expansion2/CvUnitClasses.h
+--- a/CvGameCoreDLL_Expansion2/CvUnitClasses.h	2026-09-22 00:42:34.201288500 -0400
++++ b/CvGameCoreDLL_Expansion2/CvUnitClasses.h	2026-09-22 00:42:34.226772300 -0400
+@@ -82,6 +82,7 @@
+ 	int GetSpecialUnitType() const;
+ 	int GetUnitCaptureClassType() const;
+ 	int GetUnitCombatType() const;
++	int GetUnitPromotionType() const; // PMMM: Units.PromotionClass (CP), falls back to CombatClass
+ 	int GetDomainType() const;
+ 	int GetCivilianAttackPriority() const;
+ 	int GetDefaultUnitAIType() const;
+@@ -238,6 +239,7 @@
+ 	int m_iSpecialUnitType;
+ 	int m_iUnitCaptureClassType;
+ 	int m_iUnitCombatType;
++	int m_iUnitPromotionType;
+ 	int m_iDomainType;
+ 	int m_iCivilianAttackPriority;
+ 	int m_iDefaultUnitAIType;
