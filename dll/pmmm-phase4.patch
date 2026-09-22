@@ -69,6 +69,152 @@ index 75cf7e33..f1793a72 100644
  	if (IsAtWar(ePlayer))
  		return false;
  
+diff --git a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp
+index c179ea0a..79e6eb8b 100644
+--- a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp
++++ b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.cpp
+@@ -831,7 +831,7 @@ bool isBeforeUnitCycle(const CvUnit* pFirstUnit, const CvUnit* pSecondUnit)
+ }
+ 
+ /// Is this a valid Promotion for the UnitCombatType?
+-bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit)
++bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit, UnitCombatTypes ePromotionClassOverride)
+ {
+ 	CvUnitEntry* unitInfo = GC.getUnitInfo(eUnit);
+ 	CvPromotionEntry* promotionInfo = GC.getPromotionInfo(ePromotion);
+@@ -844,7 +844,7 @@ bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUni
+ 		return false;
+ 
+ 	// Combat class not valid for this Promotion
+-	if (!promotionInfo->GetUnitCombatClass(unitInfo->GetUnitPromotionType()))
++	if (!promotionInfo->GetUnitCombatClass(ePromotionClassOverride != NO_UNITCOMBAT ? (int)ePromotionClassOverride : unitInfo->GetUnitPromotionType()))
+ 		return false;
+ 
+ 	return true;
+@@ -859,7 +859,7 @@ bool IsPromotionValidForCivilianUnitType(PromotionTypes ePromotion, UnitTypes eU
+ 	return GC.getPromotionInfo(ePromotion)->GetCivilianUnitType(eUnit);
+ }
+ 
+-bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq)
++bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq, UnitCombatTypes ePromotionClassOverride)
+ {
+ 	CvUnitEntry* unitInfo = GC.getUnitInfo(eUnit);
+ 	CvPromotionEntry* promotionInfo = GC.getPromotionInfo(ePromotion);
+@@ -890,7 +890,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 	// Is this a valid Promotion for the UnitCombatType?
+ 	if(unitInfo->GetUnitCombatType() != NO_UNITCOMBAT)
+ 	{
+-		if(!::IsPromotionValidForUnitCombatType(ePromotion, eUnit))
++		if(!::IsPromotionValidForUnitCombatType(ePromotion, eUnit, ePromotionClassOverride))
+ 		{
+ 			return false;
+ 		}
+@@ -913,7 +913,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 	// Promotion Prereqs
+ 	if(NO_PROMOTION != promotionInfo->GetPrereqPromotion())
+ 	{
+-		if(!isPromotionValid((PromotionTypes)promotionInfo->GetPrereqPromotion(), eUnit, bLeader, true))
++		if(!isPromotionValid((PromotionTypes)promotionInfo->GetPrereqPromotion(), eUnit, bLeader, true, ePromotionClassOverride))
+ 		{
+ 			return false;
+ 		}
+@@ -941,7 +941,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 		bool bValid = false;
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq1 && isPromotionValid(ePrereq1, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq1 && isPromotionValid(ePrereq1, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -949,7 +949,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq2 && isPromotionValid(ePrereq2, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq2 && isPromotionValid(ePrereq2, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -957,7 +957,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq3 && isPromotionValid(ePrereq3, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq3 && isPromotionValid(ePrereq3, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -965,7 +965,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq4 && isPromotionValid(ePrereq4, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq4 && isPromotionValid(ePrereq4, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -973,7 +973,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq5 && isPromotionValid(ePrereq5, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq5 && isPromotionValid(ePrereq5, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -981,7 +981,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq6 && isPromotionValid(ePrereq6, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq6 && isPromotionValid(ePrereq6, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -989,7 +989,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq7 && isPromotionValid(ePrereq7, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq7 && isPromotionValid(ePrereq7, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -997,7 +997,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq8 && isPromotionValid(ePrereq8, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq8 && isPromotionValid(ePrereq8, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+@@ -1005,7 +1005,7 @@ bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader,
+ 
+ 		if(!bValid)
+ 		{
+-			if(NO_PROMOTION != ePrereq9 && isPromotionValid(ePrereq9, eUnit, bLeader, true))
++			if(NO_PROMOTION != ePrereq9 && isPromotionValid(ePrereq9, eUnit, bLeader, true, ePromotionClassOverride))
+ 			{
+ 				bValid = true;
+ 			}
+diff --git a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.h b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.h
+index 17bcfec5..ef12f817 100644
+--- a/CvGameCoreDLL_Expansion2/CvGameCoreUtils.h
++++ b/CvGameCoreDLL_Expansion2/CvGameCoreUtils.h
+@@ -220,9 +220,9 @@ CvCity* GetPlayerCity(IDInfo city);
+ CvUnit* GetPlayerUnit(const IDInfo& unit);
+ 
+ bool isBeforeUnitCycle(const CvUnit* pFirstUnit, const CvUnit* pSecondUnit);
+-bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit);
++bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit, UnitCombatTypes ePromotionClassOverride = NO_UNITCOMBAT);
+ bool IsPromotionValidForCivilianUnitType(PromotionTypes ePromotion, UnitTypes eUnit);
+-bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq=false);
++bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq=false, UnitCombatTypes ePromotionClassOverride = NO_UNITCOMBAT);
+ 
+ int getPopulationAsset(int iPopulation);
+ int getLandPlotsAsset(int iLandPlots);
 diff --git a/CvGameCoreDLL_Expansion2/CvMinorCivAI.cpp b/CvGameCoreDLL_Expansion2/CvMinorCivAI.cpp
 index 05605faa..1f39cd23 100644
 --- a/CvGameCoreDLL_Expansion2/CvMinorCivAI.cpp
@@ -462,3 +608,24 @@ index 40cf526b..aaeac743 100644
  	bool m_bIsNoReligiousStrife;
  	bool m_bIsEraScaling;
  	bool m_bIsOddEraScaler;
+diff --git a/CvGameCoreDLL_Expansion2/CvUnit.cpp b/CvGameCoreDLL_Expansion2/CvUnit.cpp
+index fd15d24d..f9138892 100644
+--- a/CvGameCoreDLL_Expansion2/CvUnit.cpp
++++ b/CvGameCoreDLL_Expansion2/CvUnit.cpp
+@@ -27658,7 +27658,15 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion) const
+ 		return false;
+ 	}
+ 
+-	if(!::isPromotionValid(ePromotion, getUnitType(), true))
++	// PMMM Clara Doll tag: a unit carrying it levels through the Magical Girl tree on any chassis
++	// it upgrades into (promotions survive upgrades, so the tag rides along).
++	static PromotionTypes ePMMMClaraDoll = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_PMMM_CLARA_DOLL", true);
++	static UnitCombatTypes ePMMMMagicalGirl = (UnitCombatTypes)GC.getInfoTypeForString("UNITCOMBAT_MAGICALGIRL", true);
++	UnitCombatTypes ePMMMOverride = NO_UNITCOMBAT;
++	if (ePMMMClaraDoll != NO_PROMOTION && ePMMMMagicalGirl != NO_UNITCOMBAT && isHasPromotion(ePMMMClaraDoll))
++		ePMMMOverride = ePMMMMagicalGirl;
++
++	if(!::isPromotionValid(ePromotion, getUnitType(), true, false, ePMMMOverride))
+ 		return false;
+ 
+ 	// Insta-heal - must be damaged

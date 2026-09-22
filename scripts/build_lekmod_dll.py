@@ -57,6 +57,8 @@ EXTRA_PATCHES = [
     (ROOT / "dll" / "lekmod-wftw-promotionclass.patch", "CvUnitClasses.h", b"GetUnitPromotionType"),
     # 2026-09-22: Ai Yo also forbids Declarations of Friendship and City-State alliances.
     (ROOT / "dll" / "lekmod-wftw-aiyo-diplomacy.patch", "CvTraitClasses.h", b"IsPMMMNoFriendship"),
+    # 2026-09-22: the Clara Doll tag keeps the Magical Girl promotion tree across upgrades.
+    (ROOT / "dll" / "lekmod-wftw-claradoll.patch", "CvGameCoreUtils.h", b"ePromotionClassOverride"),
 ]
 # Legacy conversion helpers (__ftol3/__ltod3) referenced by the prebuilt
 # FireWorks objects; see the header comment in the file itself.

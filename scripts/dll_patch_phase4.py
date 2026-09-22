@@ -289,6 +289,58 @@ def patch_culture_cpp():
     wr(p, s)
 
 
+def patch_clara_doll_tag(src=None):
+    """2026-09-22 ruling: a Clara Doll keeps the Magical Girl promotion tree (and its era scaling) through every
+    upgrade. The tag is PROMOTION_PMMM_CLARA_DOLL, which upgrades carry over; the DLL half is an optional
+    "treat this unit's promotion tree as X" argument on the promotion-validity helpers, passed by
+    CvUnit::isPromotionValid when the unit carries the tag. Shared by both DLLs: Lekmod calls this with its own
+    source directory and ships the result as dll/lekmod-wftw-claradoll.patch."""
+    src = SRC if src is None else Path(src)
+
+    p = src / "CvGameCoreUtils.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    if "ePromotionClassOverride" not in s:
+        s = s.replace("bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit);",
+                      "bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit, UnitCombatTypes ePromotionClassOverride = NO_UNITCOMBAT);")
+        s = s.replace("bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq=false);",
+                      "bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq=false, UnitCombatTypes ePromotionClassOverride = NO_UNITCOMBAT);")
+        wr(p, s)
+
+    p = src / "CvGameCoreUtils.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    if "ePromotionClassOverride" not in s:
+        s = once(s, "bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit)" + nl,
+                 "bool IsPromotionValidForUnitCombatType(PromotionTypes ePromotion, UnitTypes eUnit, UnitCombatTypes ePromotionClassOverride)" + nl, "utils combat sig")
+        # the promotion tree this check uses: the unit's own, or the caller's override (PMMM Clara Doll tag)
+        for old in ("promotionInfo->GetUnitCombatClass(unitInfo->GetUnitPromotionType())",
+                    "promotionInfo->GetUnitCombatClass(unitInfo->GetUnitCombatType())"):
+            if old in s:
+                s = s.replace(old, "promotionInfo->GetUnitCombatClass(ePromotionClassOverride != NO_UNITCOMBAT ? (int)ePromotionClassOverride : " + old[old.index("(") + 1:-1] + ")", 1)
+                break
+        s = once(s, "bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq)" + nl,
+                 "bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader, bool bTestingPrereq, UnitCombatTypes ePromotionClassOverride)" + nl, "utils valid sig")
+        # pass the override down: the combat-class test and every prerequisite recursion
+        s = s.replace("::IsPromotionValidForUnitCombatType(ePromotion, eUnit)", "::IsPromotionValidForUnitCombatType(ePromotion, eUnit, ePromotionClassOverride)")
+        s = s.replace(", eUnit, bLeader, true)", ", eUnit, bLeader, true, ePromotionClassOverride)")
+        wr(p, s)
+
+    p = src / "CvUnit.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    if "PMMM Clara Doll tag" not in s:
+        override = ("\t// PMMM Clara Doll tag: a unit carrying it levels through the Magical Girl tree on any chassis" + nl +
+                    "\t// it upgrades into (promotions survive upgrades, so the tag rides along)." + nl +
+                    "\tstatic PromotionTypes ePMMMClaraDoll = (PromotionTypes)GC.getInfoTypeForString(\"PROMOTION_PMMM_CLARA_DOLL\", true);" + nl +
+                    "\tstatic UnitCombatTypes ePMMMMagicalGirl = (UnitCombatTypes)GC.getInfoTypeForString(\"UNITCOMBAT_MAGICALGIRL\", true);" + nl +
+                    "\tUnitCombatTypes ePMMMOverride = NO_UNITCOMBAT;" + nl +
+                    "\tif (ePMMMClaraDoll != NO_PROMOTION && ePMMMMagicalGirl != NO_UNITCOMBAT && isHasPromotion(ePMMMClaraDoll))" + nl +
+                    "\t\tePMMMOverride = ePMMMMagicalGirl;" + nl + nl)
+        for old, new in (("\tif(!::isPromotionValid(ePromotion, getUnitType(), true))" + nl,
+                          override + "\tif(!::isPromotionValid(ePromotion, getUnitType(), true, false, ePMMMOverride))" + nl),
+                         ("\tif(!::isPromotionValid(ePromotion, getUnitType(), true/*bLeader*/))" + nl,
+                          override + "\tif(!::isPromotionValid(ePromotion, getUnitType(), true/*bLeader*/, false, ePMMMOverride))" + nl)):
+            if old in s:
+                s = once(s, old, new, "unit promotion override")
+                break
+        wr(p, s)
+
+
 def patch_ai_yo_diplomacy():
     """2026-09-22 ruling: Ai Yo also means no Declarations of Friendship and no City-State alliances.
     Two more trait columns and four gates. Every insertion goes AFTER the last line (or before the first line)
@@ -384,4 +436,5 @@ if __name__ == "__main__":
     patch_city_cpp()
     patch_culture_cpp()
     patch_ai_yo_diplomacy()
+    patch_clara_doll_tag()
     print("PMMM Phase 4 DLL changes applied to", SRC)

@@ -387,7 +387,13 @@ for when it resumes:
 | 2 | Ai Yo: Devil Homura cannot be in a Declaration of Friendship (neither proposes nor accepts; AIs never offer). | Trait column `PMMMNoFriendship`; DLL gates in `CvDiplomacyAI` (`IsWantsDoFWithPlayer` on CP, `IsDoFAcceptable`, and `SetDoFAccepted` as a backstop). |
 | 3 | Ai Yo: City-States can be her Friends but never her allies. | Trait column `PMMMCannotAllyCityStates`; DLL gate on the Ally-threshold test (CP `IsFriendshipAboveAlliesThreshold`, Lekmod `DoFriendshipChangeEffects`), which also strips an alliance an older save carries. |
 
-Both DLLs carry rulings 2-3: CP via `scripts/dll_patch_phase4.py` (`patch_ai_yo_diplomacy`), Lekmod via
+| 4 | Clara Dolls gain +2 [ICON_STRENGTH] Combat Strength per era and are buildable in every era; they still upgrade normally, and the upgraded unit keeps the Magical Girl tree, the era scaling and the Clara Doll identity. | `Units.ObsoleteTech = NULL`; identity promotion `PROMOTION_PMMM_CLARA_DOLL` (no effect of its own, `CannotBeChosen`, granted free, survives upgrades); DLL: an optional promotion-class override on the validity helpers, passed by `CvUnit::isPromotionValid` when the unit carries the tag; Lua: `SetClaraDollStrength` in `PMMMClaraDoll.lua` sets the chassis's Combat + 2 x era on every turn and move. |
+
+Ruling 4's rationale: upgrading dolls late was a gold and turn sink just to field units with the Magical Girl
+tree. A late-built doll stays a Swordsman chassis on purpose (28 strength by the Modern era): cheap, spammable,
+and a promotion carrier rather than a front-line unit.
+
+Both DLLs carry rulings 2-4: CP via `scripts/dll_patch_phase4.py` (`patch_ai_yo_diplomacy`), Lekmod via
 `dll/lekmod-wftw-aiyo-diplomacy.patch` (an `EXTRA_PATCHES` entry). Patch-script rule learned the hard way: new
 steps insert only at the boundaries of blocks earlier steps inserted, never inside them, or those steps stop
 recognising themselves and insert a second copy.

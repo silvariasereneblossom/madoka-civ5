@@ -298,6 +298,7 @@ UPDATE Units SET
 	ExtraSpies                        = (SELECT ExtraSpies FROM Units WHERE Type = 'UNIT_SWORDSMAN'),
 	ExtraLuxuries                     = (SELECT ExtraLuxuries FROM Units WHERE Type = 'UNIT_SWORDSMAN'),
 	Combat                            = 16,
+	ObsoleteTech                      = NULL,	-- buildable in every era (2026-09-22 ruling)
 	Moves                             = 2,
 	PromotionClass                    = 'UNITCOMBAT_MAGICALGIRL'
 WHERE Type = 'UNIT_PMMM_CLARA_DOLL';
@@ -350,6 +351,22 @@ SELECT 'UNIT_PMMM_CLARA_DOLL', TechType FROM Unit_TechTypes WHERE UnitType = 'UN
 DELETE FROM Promotion_PMMM_GrantAdjacentAllyPromotion WHERE PromotionType = 'PROMOTION_PMMM_CLARA_DOLL';
 DELETE FROM UnitPromotions_UnitClasses               WHERE PromotionType = 'PROMOTION_PMMM_CLARA_DOLL_BUFF';
 DELETE FROM UnitPromotions WHERE Type IN ('PROMOTION_PMMM_CLARA_DOLL', 'PROMOTION_PMMM_CLARA_DOLL_BUFF');
+
+--[2026-09-22 ruling] PROMOTION_PMMM_CLARA_DOLL comes back as the identity tag. It has no effect of its own;
+--it marks the unit as a Clara Doll, and because promotions survive upgrades it rides along into the
+--Longswordsman and everything after it. Two things read the tag:
+--  the DLLs   -- a tagged unit chooses from the Magical Girl promotion tree whatever chassis it is on
+--                (dll_patch_phase4.py patch_clara_doll_tag / dll/lekmod-wftw-claradoll.patch);
+--  the Lua    -- PMMMClaraDoll.lua gives a tagged unit +2 Combat Strength per era.
+--CannotBeChosen keeps it out of the promotion picker; it is granted by Unit_FreePromotions below.
+INSERT INTO UnitPromotions
+			(Type, Description, Help, Sound, CannotBeChosen, PortraitIndex, IconAtlas, PediaType, PediaEntry)
+VALUES		('PROMOTION_PMMM_CLARA_DOLL', 'TXT_KEY_PROMOTION_PMMM_CLARA_DOLL', 'TXT_KEY_PROMOTION_PMMM_CLARA_DOLL_HELP',
+			'AS2D_IF_LEVELUP', 1, 58, 'ABILITY_ATLAS', 'PEDIA_ATTRIBUTES', 'TXT_KEY_PROMOTION_PMMM_CLARA_DOLL');
+
+DELETE FROM Unit_FreePromotions WHERE UnitType = 'UNIT_PMMM_CLARA_DOLL' AND PromotionType = 'PROMOTION_PMMM_CLARA_DOLL';
+INSERT INTO Unit_FreePromotions (UnitType, PromotionType)
+VALUES ('UNIT_PMMM_CLARA_DOLL', 'PROMOTION_PMMM_CLARA_DOLL');	-- the identity tag, kept through every upgrade
 
 
 --------------------------------------------------------------------------------------------------------------
@@ -518,7 +535,10 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 		'The Witch''s Labyrinth is torn down and its hoard is yours: {1_Num} [ICON_GOLD] Gold.'),
 
 	('TXT_KEY_UNIT_PMMM_CLARA_DOLL_HELP',
-		'Unique Swordsman replacement for Meikyuu no Homura. 16 [ICON_STRENGTH] Combat Strength (Swordsman 14) and 2 [ICON_MOVES] Movement. Earns Magical Girl promotions from experience instead of the usual melee promotions.'),
+		'Unique Swordsman replacement for Meikyuu no Homura. 16 [ICON_STRENGTH] Combat Strength (Swordsman 14) and 2 [ICON_MOVES] Movement, and +2 [ICON_STRENGTH] Combat Strength for every Era that has passed. Never becomes obsolete: it can be built in any Era. Earns Magical Girl promotions from experience instead of the usual melee promotions, and keeps both the Magical Girl tree and the Era bonus when it upgrades.'),
+	('TXT_KEY_PROMOTION_PMMM_CLARA_DOLL', 'Clara Doll'),
+	('TXT_KEY_PROMOTION_PMMM_CLARA_DOLL_HELP',
+		'This unit is one of Homura''s Clara Dolls: +2 [ICON_STRENGTH] Combat Strength for every Era that has passed, and it chooses Magical Girl promotions instead of melee ones. Kept when the unit upgrades.'),
 	('TXT_KEY_UNIT_PMMM_CLARA_DOLL_STRATEGY',
 		'The Clara Doll is the Unique Unit of Meikyuu no Homura, replacing the Swordsman. It costs the same, needs the same [ICON_RES_IRON] Iron and technology, and hits harder with 16 [ICON_STRENGTH] Combat Strength against the Swordsman''s 14. As it gains experience it chooses from the Magical Girl promotion tree (Offense and Defense Training, then the Siege, Skirmish, Sentry and Support lines) rather than the melee one, and keeps those promotions when it upgrades. It is still a melee unit for every other purpose. An early army of Clara Dolls is how Homura starts the snowball her Unhappiness feeds on.'),
 

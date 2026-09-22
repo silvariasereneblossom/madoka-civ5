@@ -40,12 +40,38 @@ end
 GameEvents.CanHavePromotion.Add(ClaraDollCanHavePromotion)
 
 
+--[port] 2026-09-22 ruling: a Clara Doll gains +2 [ICON_STRENGTH] Combat Strength per era, and keeps doing so on
+--whatever chassis it upgrades into: the identity promotion PROMOTION_PMMM_CLARA_DOLL survives upgrades and the
+--DLLs let a tagged unit pick Magical Girl promotions on any chassis (SQL/Phase4/DemonHomura.sql explains both
+--halves). The unit is also never obsolete, so a fresh Swordsman-tier doll can be built in any era.
+local iPMMMClaraDollTag = GameInfoTypes.PROMOTION_PMMM_CLARA_DOLL
+local iPMMMClaraDollStrengthPerEra = 2
+local tPMMMChassisCombat = {}	-- unit type -> its database Combat, looked up once
+
+function SetClaraDollStrength(iPlayer, pUnit)
+	if not iPMMMClaraDollTag or not pUnit or not pUnit:IsHasPromotion(iPMMMClaraDollTag) then return end
+	local iType = pUnit:GetUnitType()
+	if tPMMMChassisCombat[iType] == nil then
+		local pInfo = GameInfo.Units[iType]
+		tPMMMChassisCombat[iType] = (pInfo and pInfo.Combat) or 0
+	end
+	local iBase = tPMMMChassisCombat[iType]
+	if iBase <= 0 then return end
+	local iTarget = iBase + iPMMMClaraDollStrengthPerEra * Players[iPlayer]:GetCurrentEra()
+	if pUnit:GetBaseCombatStrength() ~= iTarget then
+		pUnit:SetBaseCombatStrength(iTarget)
+	end
+end
+
+
 function ClaraDoll(iPlayer, iUnit, bTestAllAllies)
-	--[port] Phase 4: nothing grants an adjacent-ally buff any more; skip the per-unit sweep entirely.
-	if not MapModData.gPMMMAdjacentAllyBuffs or next(MapModData.gPMMMAdjacentAllyBuffs) == nil then return end
 	local pPlayer = Players[iPlayer]
 	local pUnit = pPlayer:GetUnitByID(iUnit)
 	if not pUnit then return end
+	SetClaraDollStrength(iPlayer, pUnit)
+
+	--[port] Phase 4: nothing grants an adjacent-ally buff any more; skip the per-unit sweep entirely.
+	if not MapModData.gPMMMAdjacentAllyBuffs or next(MapModData.gPMMMAdjacentAllyBuffs) == nil then return end
 	dprint("Running ClaraDoll function.")
 	-- Supposed to use the much faster CP methods, but they cause crashes, so let's not!
 	-- for k, v in pairs(MapModData.gPMMMAdjacentAllyBuffs) do

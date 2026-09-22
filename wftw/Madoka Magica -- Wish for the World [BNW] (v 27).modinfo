@@ -475,7 +475,7 @@
     <File md5="97AAD594B4160EA6ACAE444FBF9B1E10" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>
     <File md5="83D27F90F2D564AAA09843F95BD0A091" import="1">Lua/Gameplay/UniqueUnits/PMMMArtificialIncubator.lua</File>
     <File md5="C401DCE659ED7E27C0C628EB7384D2BA" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
-    <File md5="A89DD4BD0FCA012865437E5B3EDDE40E" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
+    <File md5="5DC1FA7747EC7F241B10E9739E8704CE" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
     <File md5="282A54679CD88C854984373CD4F1D83E" import="1">Lua/Gameplay/UniqueUnits/PMMMClockstopper.lua</File>
     <File md5="83959608796D55DAAA0641421C5363B8" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
@@ -571,7 +571,7 @@
     <File md5="4BAF184C1178AB2D33FAEBCE414BBBC3" import="0">SQL/Phase4/Mami.sql</File>
     <File md5="EA0D2390D2EEFA8DC6A41068480C7797" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="835263A67A9FC4096792F3F529B313E1" import="0">SQL/Phase4/Homura.sql</File>
-    <File md5="98A52608C7211255C9A6AAC8DA79518A" import="0">SQL/Phase4/DemonHomura.sql</File>
+    <File md5="D001041DDC93070EEE1D2ABC79138DB1" import="0">SQL/Phase4/DemonHomura.sql</File>
     <File md5="AE9E304D265CF0D33CB404CEB7547BA7" import="0">SQL/Phase4/Sayaka.sql</File>
     <File md5="E40735E9BFD09824EBFA6A5872352547" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
