@@ -55,6 +55,8 @@ PATCH_FILE = ROOT / "dll" / "lekmod-wftw.patch"
 EXTRA_PATCHES = [
     # 2026-09-22: CP's Units.PromotionClass, so Magical Girls level through their own promotion tree.
     (ROOT / "dll" / "lekmod-wftw-promotionclass.patch", "CvUnitClasses.h", b"GetUnitPromotionType"),
+    # 2026-09-22: Ai Yo also forbids Declarations of Friendship and City-State alliances.
+    (ROOT / "dll" / "lekmod-wftw-aiyo-diplomacy.patch", "CvTraitClasses.h", b"IsPMMMNoFriendship"),
 ]
 # Legacy conversion helpers (__ftol3/__ltod3) referenced by the prebuilt
 # FireWorks objects; see the header comment in the file itself.

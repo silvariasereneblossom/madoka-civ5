@@ -20,6 +20,8 @@ ALTER TABLE Traits ADD COLUMN 'PMMMUnhappinessPerBonusPercent' INTEGER DEFAULT 0
 ALTER TABLE Traits ADD COLUMN 'PMMMUnhappinessBonusMax' INTEGER DEFAULT 0 NOT NULL;
 ALTER TABLE Traits ADD COLUMN 'PMMMNoGoldenAges' BOOLEAN DEFAULT 0 NOT NULL;
 ALTER TABLE Traits ADD COLUMN 'PMMMNoIdeologyPressure' BOOLEAN DEFAULT 0 NOT NULL;
+ALTER TABLE Traits ADD COLUMN 'PMMMNoFriendship' BOOLEAN DEFAULT 0 NOT NULL;			--Ai Yo: no Declarations of Friendship either way (DLL)
+ALTER TABLE Traits ADD COLUMN 'PMMMCannotAllyCityStates' BOOLEAN DEFAULT 0 NOT NULL;	--Ai Yo: City-States can be Friends, never allies (DLL)
 -- Mami's city soft cap: every non-puppet city past the threshold adds Step x (cities over) unhappiness.
 ALTER TABLE Traits ADD COLUMN 'PMMMCityCapThreshold' INTEGER DEFAULT 0 NOT NULL;
 ALTER TABLE Traits ADD COLUMN 'PMMMCityCapUnhappinessStep' INTEGER DEFAULT 0 NOT NULL;

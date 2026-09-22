@@ -378,3 +378,16 @@ for when it resumes:
 - CP's capture popup (`PuppetCityPopup.lua`) returns without showing if the active player no longer owns the city.
 - `Player:AcquireCity(city, bConquest, bGift)` and `ChangeMinorCivFriendshipWithMajor` are bound; influence cap is
   `FRIENDSHIP_THRESHOLD_MAX` (120). A genuinely new city-state needs a free minor slot and is DLL research.
+
+## 16. Rulings, round 4 (2026-09-22)
+
+| # | Ruling | Implementation |
+|---|---|---|
+| 1 | Ultimate Madoka's diplomacy music is *Sagitta luminis* (peace and war). | Soundtrack pack `SND_LEADER_MUSIC_MADOKA_*` → `MadokaCiv-Peace41`; original Madoka unchanged. |
+| 2 | Ai Yo: Devil Homura cannot be in a Declaration of Friendship (neither proposes nor accepts; AIs never offer). | Trait column `PMMMNoFriendship`; DLL gates in `CvDiplomacyAI` (`IsWantsDoFWithPlayer` on CP, `IsDoFAcceptable`, and `SetDoFAccepted` as a backstop). |
+| 3 | Ai Yo: City-States can be her Friends but never her allies. | Trait column `PMMMCannotAllyCityStates`; DLL gate on the Ally-threshold test (CP `IsFriendshipAboveAlliesThreshold`, Lekmod `DoFriendshipChangeEffects`), which also strips an alliance an older save carries. |
+
+Both DLLs carry rulings 2-3: CP via `scripts/dll_patch_phase4.py` (`patch_ai_yo_diplomacy`), Lekmod via
+`dll/lekmod-wftw-aiyo-diplomacy.patch` (an `EXTRA_PATCHES` entry). Patch-script rule learned the hard way: new
+steps insert only at the boundaries of blocks earlier steps inserted, never inside them, or those steps stop
+recognising themselves and insert a second copy.

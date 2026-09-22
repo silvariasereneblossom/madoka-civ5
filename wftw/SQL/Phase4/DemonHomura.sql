@@ -500,6 +500,7 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 		|| 'Every 5 [ICON_HAPPINESS_4] Unhappiness from Cities and Population gives +1% to all yields and +1% [ICON_STRENGTH] Combat Strength (up to +25%).[NEWLINE]'
 		|| '[ICON_GREAT_PEOPLE] Prodigies are born 50% slower and never become Magical Girls.[NEWLINE]'
 		|| 'Can never enter a [ICON_GOLDEN_AGE] Golden Age, and is immune to Ideological pressure.[NEWLINE]'
+		|| 'Cannot make Declarations of Friendship, and City-States can never become her allies.[NEWLINE]'
 		|| 'Killing a Witch grants 10 [ICON_GOLD] Gold (+3 per Era); clearing a Witch''s Labyrinth grants 25 [ICON_GOLD] Gold (+10 per Era).'),
 
 	('TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_1',

@@ -289,10 +289,99 @@ def patch_culture_cpp():
     wr(p, s)
 
 
+def patch_ai_yo_diplomacy():
+    """2026-09-22 ruling: Ai Yo also means no Declarations of Friendship and no City-State alliances.
+    Two more trait columns and four gates. Every insertion goes AFTER the last line (or before the first line)
+    of a block the Phase 4 steps above inserted, never inside one: those steps detect "already applied" by
+    finding their whole block verbatim, and a line spliced into it would make them insert it a second time."""
+    p = SRC / "CvTraitClasses.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\tint GetPMMMCityCapUnhappinessStep() const;" + nl,
+             "\tint GetPMMMCityCapUnhappinessStep() const;" + nl +
+             "\tbool IsPMMMNoFriendship() const;" + nl + "\tbool IsPMMMCannotAllyCityStates() const;" + nl, "trait h decls 2")
+    s = once(s, "\tint m_iPMMMCityCapUnhappinessStep;" + nl,
+             "\tint m_iPMMMCityCapUnhappinessStep;" + nl +
+             "\tbool m_bPMMMNoFriendship;" + nl + "\tbool m_bPMMMCannotAllyCityStates;" + nl, "trait h members 2")
+    wr(p, s)
+
+    p = SRC / "CvTraitClasses.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    last = "int CvTraitEntry::GetPMMMCityCapUnhappinessStep() const { return m_iPMMMCityCapUnhappinessStep; }" + nl
+    s = once(s, last, last +
+             "bool CvTraitEntry::IsPMMMNoFriendship() const { return m_bPMMMNoFriendship; }" + nl +
+             "bool CvTraitEntry::IsPMMMCannotAllyCityStates() const { return m_bPMMMCannotAllyCityStates; }" + nl, "trait getters 2")
+    last = "\tm_iPMMMCityCapUnhappinessStep = kResults.GetInt(\"PMMMCityCapUnhappinessStep\");" + nl
+    s = once(s, last, last +
+             "\tm_bPMMMNoFriendship = kResults.GetBool(\"PMMMNoFriendship\");" + nl +
+             "\tm_bPMMMCannotAllyCityStates = kResults.GetBool(\"PMMMCannotAllyCityStates\");" + nl, "trait cache 2")
+    wr(p, s)
+
+    p = SRC / "CvPlayer.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\tvoid PMMMRefreshTraitCache() const;" + nl,
+             "\tvoid PMMMRefreshTraitCache() const;" + nl +
+             "\tbool IsPMMMNoFriendship() const;" + nl + "\tbool IsPMMMCannotAllyCityStates() const;" + nl +
+             "\tvoid PMMMRefreshDiplomacyTraitCache() const;" + nl, "player h decls 2")
+    s = once(s, "\tint m_iPMMMUnhappinessFromCitiesAndPop;" + nl,
+             "\tint m_iPMMMUnhappinessFromCitiesAndPop;" + nl +
+             "\tmutable int m_iPMMMDiplomacyCacheLeader;" + nl +
+             "\tmutable bool m_bPMMMNoFriendship;" + nl + "\tmutable bool m_bPMMMCannotAllyCityStates;" + nl, "player h members 2")
+    wr(p, s)
+
+    p = SRC / "CvPlayer.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\t, m_iPMMMUnhappinessFromCitiesAndPop(0)" + nl,
+             "\t, m_iPMMMUnhappinessFromCitiesAndPop(0)" + nl +
+             "\t, m_iPMMMDiplomacyCacheLeader(-2)" + nl +
+             "\t, m_bPMMMNoFriendship(false)" + nl + "\t, m_bPMMMCannotAllyCityStates(false)" + nl, "player ctor 2")
+    first = HELPERS.replace("\n", nl)[:HELPERS.replace("\n", nl).index("void CvPlayer::PMMMRefreshTraitCache() const")]
+    block = ("//\t--------------------------------------------------------------------------------" + nl +
+             "// PMMM Ai Yo, 2026-09-22 ruling: no Declarations of Friendship, never a City-State's ally." + nl +
+             "// Cached per leader like PMMMRefreshTraitCache, and likewise never serialized." + nl +
+             "void CvPlayer::PMMMRefreshDiplomacyTraitCache() const" + nl + "{" + nl +
+             "\tconst int iLeader = (int)getLeaderType();" + nl +
+             "\tif (m_iPMMMDiplomacyCacheLeader == iLeader)" + nl + "\t\treturn;" + nl + nl +
+             "\tm_iPMMMDiplomacyCacheLeader = iLeader;" + nl +
+             "\tm_bPMMMNoFriendship = false;" + nl + "\tm_bPMMMCannotAllyCityStates = false;" + nl +
+             "\tif (iLeader < 0 || !isMajorCiv())" + nl + "\t\treturn;" + nl + nl +
+             "\tconst CvLeaderHeadInfo& kLeader = getLeaderInfo();" + nl +
+             "\tfor (int iI = 0; iI < GC.getNumTraitInfos(); iI++)" + nl + "\t{" + nl +
+             "\t\tif (!kLeader.hasTrait(iI))" + nl + "\t\t\tcontinue;" + nl +
+             "\t\tCvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);" + nl +
+             "\t\tif (pTrait == NULL)" + nl + "\t\t\tcontinue;" + nl +
+             "\t\tif (pTrait->IsPMMMNoFriendship())" + nl + "\t\t\tm_bPMMMNoFriendship = true;" + nl +
+             "\t\tif (pTrait->IsPMMMCannotAllyCityStates())" + nl + "\t\t\tm_bPMMMCannotAllyCityStates = true;" + nl +
+             "\t}" + nl + "}" + nl + nl +
+             "bool CvPlayer::IsPMMMNoFriendship() const" + nl + "{" + nl +
+             "\tPMMMRefreshDiplomacyTraitCache();" + nl + "\treturn m_bPMMMNoFriendship;" + nl + "}" + nl + nl +
+             "bool CvPlayer::IsPMMMCannotAllyCityStates() const" + nl + "{" + nl +
+             "\tPMMMRefreshDiplomacyTraitCache();" + nl + "\treturn m_bPMMMCannotAllyCityStates;" + nl + "}" + nl + nl)
+    s = once(s, first, block + first, "player diplomacy cache")
+    wr(p, s)
+
+    p = SRC / "CvDiplomacyAI.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    guard = ("\t// PMMM Ai Yo: no Declarations of Friendship with (or for) a player whose trait forbids them" + nl +
+             "\tif (ePlayer >= 0 && ePlayer < MAX_MAJOR_CIVS && (GET_PLAYER(ePlayer).IsPMMMNoFriendship() || GET_PLAYER(GetID()).IsPMMMNoFriendship()))" + nl)
+    old = ("bool CvDiplomacyAI::IsWantsDoFWithPlayer(PlayerTypes ePlayer) const" + nl + "{" + nl +
+           "\tPRECONDITION(ePlayer >= 0 && ePlayer < MAX_MAJOR_CIVS, \"Player index out of bounds\");" + nl)
+    s = once(s, old, old + guard + "\t\treturn false;" + nl, "dof wants")
+    old = "bool CvDiplomacyAI::IsDoFAcceptable(PlayerTypes ePlayer)" + nl + "{" + nl
+    s = once(s, old, old + guard + "\t\treturn false;" + nl + nl, "dof acceptable")
+    old = "void CvDiplomacyAI::SetDoFAccepted(PlayerTypes ePlayer, bool bValue)" + nl + "{" + nl
+    s = once(s, old, old + "\t// PMMM Ai Yo: the backstop for any path (deals, events, Lua) that would still make one" + nl +
+             "\tif (bValue && ePlayer >= 0 && ePlayer < MAX_MAJOR_CIVS && (GET_PLAYER(ePlayer).IsPMMMNoFriendship() || GET_PLAYER(GetID()).IsPMMMNoFriendship()))" + nl +
+             "\t\treturn;" + nl + nl, "dof set")
+    wr(p, s)
+
+    p = SRC / "CvMinorCivAI.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    old = "bool CvMinorCivAI::IsFriendshipAboveAlliesThreshold(PlayerTypes ePlayer, int iFriendship) const" + nl + "{" + nl
+    s = once(s, old, old + "\t// PMMM Ai Yo: this player can be Friends but never an ally" + nl +
+             "\tif (ePlayer >= 0 && ePlayer < MAX_MAJOR_CIVS && GET_PLAYER(ePlayer).IsPMMMCannotAllyCityStates())" + nl +
+             "\t\treturn false;" + nl + nl, "cs ally")
+    wr(p, s)
+
+
 if __name__ == "__main__":
     patch_traits()
     patch_player_h()
     patch_player_cpp()
     patch_city_cpp()
     patch_culture_cpp()
+    patch_ai_yo_diplomacy()
     print("PMMM Phase 4 DLL changes applied to", SRC)
