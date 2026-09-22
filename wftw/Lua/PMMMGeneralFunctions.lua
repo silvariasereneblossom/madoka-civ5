@@ -102,6 +102,21 @@ function PMMMCombatModifierFromCapitalDistance(pUnit, pPlot)
 	return math.max(iModifier, 0)
 end
 
+--[port] Phase 6 Lekmod: GameInfo.Missions hides WFTW's own mission columns, as GameInfo.UnitPromotions does
+--(2026-09-22: Falsified Phenomena never entered targeting mode). Read them from the database instead; keyed by
+--mission ID (= MissionTypes value) and by Type string.
+local tPMMMMissionColumns = nil
+function PMMMMissionColumns(vMission)
+	if not tPMMMMissionColumns then
+		tPMMMMissionColumns = {}
+		for row in DB.Query("SELECT ID, Type, PMMMMissionRange, PMMMTargetType, PMMMMissionExec, PMMMSoulGemCorruptionBase, PMMMPolishAmount FROM Missions") do
+			tPMMMMissionColumns[row.ID] = row
+			tPMMMMissionColumns[row.Type] = row
+		end
+	end
+	return vMission ~= nil and tPMMMMissionColumns[vMission] or nil
+end
+
 local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
 local bPMMMCPPlayerChangeInfluence = nil
 local bPMMMCPPlayerExpansionPromise = nil

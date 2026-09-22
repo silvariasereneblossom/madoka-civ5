@@ -23,7 +23,7 @@ local iPromotion = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER
 local iSpentPromotion = GameInfoTypes.PROMOTION_PMMM_TIRO_MUSKETEER_DEBUFF
 local iMissionType = GameInfoTypes.MISSION_PMMM_TIRO_FINALE
 
-local pSiegeMission = GameInfo.Missions.MISSION_PMMM_TIRO_FINALE
+local pSiegeMission = PMMMMissionColumns("MISSION_PMMM_TIRO_FINALE")	-- [port] not GameInfo (Lekmod)
 local iSiegeRange = (pSiegeMission and pSiegeMission.PMMMMissionRange) or 2
 
 --A Cannon's ranged strength against a City, times 100 (the scale GetMeleeCombatDamageCity and city strength use).

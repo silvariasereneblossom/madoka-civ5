@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 
 --Range comes from the Missions row so the two halves cannot drift apart.
-local pKugatachiMission = GameInfo.Missions["MISSION_PMMM_KUGATACHI"]
+local pKugatachiMission = PMMMMissionColumns("MISSION_PMMM_KUGATACHI")	-- [port] not GameInfo (Lekmod)
 local iKugatachiRange = (pKugatachiMission and pKugatachiMission.PMMMMissionRange) or 2
 
 --Is there an enemy of this player anywhere on the plot?

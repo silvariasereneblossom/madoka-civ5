@@ -5,7 +5,7 @@
 
 local iPromotionType = GameInfoTypes.PROMOTION_PMMM_ARTIFICIAL_INCUBATOR
 local iMissionType = MissionTypes.MISSION_PMMM_POLISH
-local iPolishAmount = GameInfo.Missions[iMissionType].PMMMPolishAmount
+local iPolishAmount = (PMMMMissionColumns(iMissionType) or {}).PMMMPolishAmount	-- [port] not GameInfo (Lekmod)
 local iMagicalGirlClass = GameInfoTypes.UNITCLASS_PMMM_MAGICAL_GIRL
 
 function PolishCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iData2, _, _, iPlotX, iPlotY, bTestVisible)

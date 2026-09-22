@@ -31,8 +31,9 @@ function SetCustomMissionInfo(iPlayer, iUnit, iMission)
 		local pUnit = pPlayer:GetUnitByID(iUnit)
 		tMissionInfo.MissionID = iMission
 		tMissionInfo.RangePlots = FindMissionRange(iMission, iPlayer, pUnit:GetPlot(), pUnit)
-		tMissionInfo.ValidTargetPlots = FindValidTargets(pPlayer, pUnit, GameInfo.Missions[iMission].PMMMTargetType)
-		tMissionInfo.ExecFunction = GameInfo.Missions[iMission].PMMMMissionExec
+		local tCols = PMMMMissionColumns(iMission) or {}	-- [port] not GameInfo: Lekmod hides these columns
+		tMissionInfo.ValidTargetPlots = FindValidTargets(pPlayer, pUnit, tCols.PMMMTargetType)
+		tMissionInfo.ExecFunction = tCols.PMMMMissionExec
 		SetTargetHexHighlights()
 		bMissionModeSelected = true
 	else
@@ -51,9 +52,9 @@ end
 function FindMissionRange(iMission, iPlayer, pPlot, pUnit)
 	tMissionInfo.RangePlots = {}
 	local tPlots = {}
-	local pMission = GameInfo.Missions[iMission]
+	local pMission = PMMMMissionColumns(iMission) or {}	-- [port] not GameInfo: Lekmod hides these columns
 	local iTeam = Teams[Players[iPlayer]:GetTeam()]
-	if pMission.PMMMMissionRange > 0 then
+	if (pMission.PMMMMissionRange or 0) > 0 then
 		local iX = pPlot:GetX()
 		local iY = pPlot:GetY()
 		--If hills, they get extra ability to shoot over obstacles, just like standard ranged attacks

@@ -1337,7 +1337,7 @@ function OnUnitActionClicked( action )
 		end
 		--PMMM Mod Start: Custom missions with targeting
 		if GameInfoActions[action].MissionType > -1 then
-			local targetType = GameInfo.Missions[GameInfoActions[action].MissionType].PMMMTargetType
+			local targetType = (PMMMMissionColumns(GameInfoActions[action].MissionType) or {}).PMMMTargetType	-- [port] not GameInfo (Lekmod)
 			if targetType and type(targetType) == "string" then
 				LuaEvents.PMMMSetCustomMissionInfo(Game:GetActivePlayer(), UI.GetHeadSelectedUnit():GetID(), GameInfoActions[action].MissionType)
 			else

@@ -49,7 +49,7 @@ function RegisterLeaderAbility(sMission, tDef)
 	end
 	tDef.MissionType = sMission
 	tDef.MissionID = pMission.ID
-	tDef.Range = pMission.PMMMMissionRange or 1
+	tDef.Range = (PMMMMissionColumns(sMission) or {}).PMMMMissionRange or 1	-- [port] not GameInfo (Lekmod)
 	if tDef.EndsTurn == nil then tDef.EndsTurn = true end
 	if tDef.NeedsTarget == nil then tDef.NeedsTarget = true end
 	tPMMMLeaderAbilities[pMission.ID] = tDef

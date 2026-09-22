@@ -747,7 +747,7 @@ function DoSocialize(iPlayer, pHeadUnit, pPlot)
 	end
 end
 
-local iSocializeRange = GameInfo.Missions["MISSION_PMMM_SOCIALIZE"].PMMMMissionRange
+local iSocializeRange = (PMMMMissionColumns("MISSION_PMMM_SOCIALIZE") or {}).PMMMMissionRange	-- [port] not GameInfo (Lekmod)
 
 ----------------------------------------------------------------------------------------------------------------------------
 -- POLICIES
