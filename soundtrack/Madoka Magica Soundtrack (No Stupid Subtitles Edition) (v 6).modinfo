@@ -23,7 +23,7 @@
   <Blocks />
   <Files>
     <File md5="BBD30CF012CAED79B9BC8995659F52AD" import="0">MadokaSoundtrack.sql</File>
-    <File md5="325C842D2BC439758D83262E1F18C927" import="0">MadokaSoundtrack.xml</File>
+    <File md5="2275F3ABA13D588A16DF9ADEBFF50BD2" import="0">MadokaSoundtrack.xml</File>
     <File md5="C8AE277084AD72F57031B4B97EB21242" import="0">MadokaSoundtrackNewCivs.xml</File>
     <File md5="8B6A63C6B2BEE4B863D49238BE504441" import="1">Music/Either/MadokaCiv-Either1.mp3</File>
     <File md5="7A004A01CA6ED4F38CC6070573026988" import="1">Music/Either/MadokaCiv-Either10.mp3</File>

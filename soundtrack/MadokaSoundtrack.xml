@@ -743,12 +743,14 @@
 		</Row>
 		<Row>
 			<SoundID>SND_LEADER_MUSIC_MADOKA_PEACE</SoundID>
-			<Filename>MadokaCiv-Peace28</Filename>
+			<Filename>MadokaCiv-Peace41</Filename>
+			<!-- Sagitta luminis (Ultimate Madoka) -->
 			<LoadType>Streamed</LoadType>
 		</Row>
 		<Row>
 			<SoundID>SND_LEADER_MUSIC_MADOKA_WAR</SoundID>
-			<Filename>MadokaCiv-War24</Filename>
+			<Filename>MadokaCiv-Peace41</Filename>
+			<!-- Sagitta luminis (Ultimate Madoka) -->
 			<LoadType>Streamed</LoadType>
 		</Row>
 		<Row>
