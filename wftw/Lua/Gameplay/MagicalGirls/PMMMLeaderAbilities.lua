@@ -214,12 +214,12 @@ function PMMMVirtualAttack(pAttacker, pDefender, fMultiplier)
 	local pToPlot = pDefender:GetPlot()
 	if not pFromPlot or not pToPlot then return 0 end
 
-	local iStrength = math.floor(pAttacker:GetMaxAttackStrength(pFromPlot, pToPlot, pDefender) * fMultiplier)
+	local iStrength = math.floor(PMMMGetMaxAttackStrength(pAttacker, pFromPlot, pToPlot, pDefender) * fMultiplier)
 	local iDefense
 	if pDefender:IsEmbarked() then
 		iDefense = pDefender:GetEmbarkedUnitDefense()
 	else
-		iDefense = pDefender:GetMaxDefenseStrength(pToPlot, pAttacker)
+		iDefense = PMMMGetMaxDefenseStrength(pDefender, pToPlot, pAttacker)
 	end
 
 	--GetCombatDamage is a stub in CP 5.4.6; GetMeleeCombatDamage is the real one.
@@ -239,7 +239,7 @@ function PMMMVirtualAttackCity(pAttacker, pCity, fMultiplier)
 	local pToPlot = pCity:Plot()
 	if not pFromPlot or not pToPlot then return 0 end
 
-	local iStrength = math.floor(pAttacker:GetMaxAttackStrength(pFromPlot, pToPlot, nil) * fMultiplier)
+	local iStrength = math.floor(PMMMGetMaxAttackStrength(pAttacker, pFromPlot, pToPlot, nil, pCity) * fMultiplier)
 	local iDamage = PMMMGetMeleeCombatDamageCity(pAttacker, iStrength, pCity)
 	if not iDamage or iDamage < 0 then iDamage = 0 end
 	local iRoom = pCity:GetMaxHitPoints() - pCity:GetDamage() - 1

@@ -39,6 +39,69 @@ include("VV_PlotIt.lua")
 --value (Notifications table row 0), so the literal is the belt to the enum's braces.
 local iPMMMNotificationGeneric = (NotificationTypes and NotificationTypes.NOTIFICATION_GENERIC) or 0
 
+--[port] Phase 6 Lekmod: combat-strength bindings with a different signature per DLL (2026-09-22).
+--  CP:     GetMaxAttackStrength(fromPlot, toPlot, defender)
+--          GetMaxDefenseStrength(inPlot, attacker, bFromRangedAttack)
+--          GetMaxRangedCombatStrength(otherUnit, city, bAttacking, bForRangedAttack)
+--  Lekmod (LEKMOD_COMBAT_PREDICTOR_IMPROVEMENTS, on in its _Defines.h):
+--          GetMaxAttackStrength(toPlot, defender, defenderCity, interceptor, bRanged, bBombing, bAirSweep, fromPlot)
+--          GetMaxDefenseStrength(toPlot, attacker, attackerCity, interceptor, bRanged, bBombing, bAirSweep)
+--          no GetMaxRangedCombatStrength: ranged strength is the attack/defense call with bRanged set.
+--CP's argument order on Lekmod hands the DLL a Plot where it reads a Unit, and the game crashes (the enemy-unit
+--panel did this on a turn-start refresh). The probe: GetMeleeCombatDamage is CP-only (not in Lekmod or our port).
+local bPMMMCPCombatSignatures = nil
+local function PMMMUsesCPCombatSignatures(pUnit)
+	if bPMMMCPCombatSignatures == nil then
+		bPMMMCPCombatSignatures = (pUnit.GetMeleeCombatDamage ~= nil)
+	end
+	return bPMMMCPCombatSignatures
+end
+
+--Melee attack strength of pAttacker from pFromPlot into pToPlot against pDefender (a unit) or pDefenderCity.
+function PMMMGetMaxAttackStrength(pAttacker, pFromPlot, pToPlot, pDefender, pDefenderCity)
+	if PMMMUsesCPCombatSignatures(pAttacker) then
+		return pAttacker:GetMaxAttackStrength(pFromPlot, pToPlot, pDefender)
+	end
+	return pAttacker:GetMaxAttackStrength(pToPlot, pDefender, pDefenderCity, nil, false, false, false, pFromPlot)
+end
+
+--Defense strength of pDefender standing on pInPlot against pAttacker.
+function PMMMGetMaxDefenseStrength(pDefender, pInPlot, pAttacker, bFromRangedAttack)
+	if PMMMUsesCPCombatSignatures(pDefender) then
+		return pDefender:GetMaxDefenseStrength(pInPlot, pAttacker, bFromRangedAttack or false)
+	end
+	return pDefender:GetMaxDefenseStrength(pInPlot, pAttacker, nil, nil, bFromRangedAttack or false, false, false)
+end
+
+--CP's GetMaxRangedCombatStrength(pOther, pCity, bAttacking, bForRangedAttack). On Lekmod: attacking = ranged
+--attack strength into the target's plot; defending = ranged-defense strength on the unit's own plot.
+function PMMMGetMaxRangedCombatStrength(pUnit, pOther, pCity, bAttacking, bForRangedAttack)
+	if PMMMUsesCPCombatSignatures(pUnit) then
+		return pUnit:GetMaxRangedCombatStrength(pOther, pCity, bAttacking, bForRangedAttack)
+	end
+	if bAttacking then
+		local pToPlot = (pCity and pCity:Plot()) or (pOther and pOther:GetPlot())
+		return pUnit:GetMaxAttackStrength(pToPlot, pOther, pCity, nil, true, false, false, pUnit:GetPlot())
+	end
+	return pUnit:GetMaxDefenseStrength(pUnit:GetPlot(), pOther, pCity, nil, true, false, false)
+end
+
+--Capital-distance combat modifier. CP folds it into GetCombatModifierFromCapitalDistance(plot); Lekmod keeps the
+--vanilla CapitalDefenseModifier/CapitalDefenseFalloff pair, combined here as vanilla CvUnit does (base plus
+--distance times falloff, counted only while positive).
+function PMMMCombatModifierFromCapitalDistance(pUnit, pPlot)
+	if pUnit.GetCombatModifierFromCapitalDistance ~= nil then
+		return pUnit:GetCombatModifierFromCapitalDistance(pPlot)
+	end
+	local iModifier = pUnit:CapitalDefenseModifier()
+	if iModifier <= 0 or not pPlot then return 0 end
+	local pCapital = Players[pUnit:GetOwner()]:GetCapitalCity()
+	if not pCapital then return 0 end
+	local iDistance = Map.PlotDistance(pCapital:GetX(), pCapital:GetY(), pPlot:GetX(), pPlot:GetY())
+	iModifier = iModifier + iDistance * pUnit:CapitalDefenseFalloff()
+	return math.max(iModifier, 0)
+end
+
 local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
 local bPMMMCPPlayerChangeInfluence = nil
 local bPMMMCPPlayerExpansionPromise = nil

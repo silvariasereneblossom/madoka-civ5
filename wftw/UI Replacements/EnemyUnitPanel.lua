@@ -470,12 +470,12 @@ function UpdateCombatOddsUnitVsCity(pMyUnit, pCity)
 		local isRanged = pMyUnit:GetBaseRangedCombatStrength() > 0
 		if (isBNW) then isRanged = isRanged and (pMyUnit:IsRangedSupportFire() == false) end
 		if (isRanged) then
-			iMyStrength = pMyUnit:GetMaxRangedCombatStrength(nil, pCity, true, true);
+			iMyStrength = PMMMGetMaxRangedCombatStrength(pMyUnit, nil, pCity, true, true);
 			bRanged = true;
 
 		-- Melee Unit
 		else
-			iMyStrength = pMyUnit:GetMaxAttackStrength(pFromPlot, pToPlot, nil);
+			iMyStrength = PMMMGetMaxAttackStrength(pMyUnit, pFromPlot, pToPlot, nil, pCity);
 		end
 
 		iTheirStrength = pCity:GetStrengthValue();
@@ -845,12 +845,12 @@ function UpdateCombatOddsUnitVsUnit(pMyUnit, pTheirUnit)
 
 		-- Ranged Unit
 		if (pMyUnit:GetBaseRangedCombatStrength() > 0) then
-			iMyStrength = pMyUnit:GetMaxRangedCombatStrength(pTheirUnit, nil, true, true);
+			iMyStrength = PMMMGetMaxRangedCombatStrength(pMyUnit, pTheirUnit, nil, true, true);
 			bRanged = true;
 
 		-- Melee Unit
 		else
-			iMyStrength = pMyUnit:GetMaxAttackStrength(pFromPlot, pToPlot, pTheirUnit);
+			iMyStrength = PMMMGetMaxAttackStrength(pMyUnit, pFromPlot, pToPlot, pTheirUnit);
 		end
 
 		if (iMyStrength > 0) then
@@ -871,11 +871,11 @@ function UpdateCombatOddsUnitVsUnit(pMyUnit, pTheirUnit)
 				if (pTheirUnit:IsEmbarked()) then
 					iTheirStrength = pTheirUnit:GetEmbarkedUnitDefense();
 				else
-					iTheirStrength = pTheirUnit:GetMaxRangedCombatStrength(pMyUnit, nil, false, true);
+					iTheirStrength = PMMMGetMaxRangedCombatStrength(pTheirUnit, pMyUnit, nil, false, true);
 				end
 
 				if (iTheirStrength == 0 or pTheirUnit:GetDomainType() == DomainTypes.DOMAIN_SEA or (isBNW and pTheirUnit:IsRangedSupportFire())) then
-					iTheirStrength = pTheirUnit:GetMaxDefenseStrength(pToPlot, pMyUnit, true);
+					iTheirStrength = PMMMGetMaxDefenseStrength(pTheirUnit, pToPlot, pMyUnit, true);
 				end
 				
 				if (pMyUnit:GetDomainType() == DomainTypes.DOMAIN_AIR) then
@@ -886,7 +886,7 @@ function UpdateCombatOddsUnitVsUnit(pMyUnit, pTheirUnit)
 				
 			-- Normal Melee Combat
 			else
-				iTheirStrength = pTheirUnit:GetMaxDefenseStrength(pToPlot, pMyUnit);
+				iTheirStrength = PMMMGetMaxDefenseStrength(pTheirUnit, pToPlot, pMyUnit);
 
 				local pFireSupportUnit = pMyUnit:GetFireSupportUnit(pTheirUnit:GetOwner(), pToPlot:GetX(), pToPlot:GetY());
 				if (pFireSupportUnit ~= nil) then
@@ -1204,7 +1204,7 @@ function UpdateCombatOddsUnitVsUnit(pMyUnit, pTheirUnit)
 			-- CapitalDefenseModifier
 			-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
 			-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
-			iModifier = pMyUnit:GetCombatModifierFromCapitalDistance(pMyUnit:GetPlot());
+			iModifier = PMMMCombatModifierFromCapitalDistance(pMyUnit, pMyUnit:GetPlot());
 			if (iModifier ~= 0) then
 				controlTable = g_MyCombatDataIM:GetInstance();
 				controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
@@ -1800,7 +1800,7 @@ end
 				-- CapitalDefenseModifier
 				-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
 				-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
-				iModifier = pTheirUnit:GetCombatModifierFromCapitalDistance(pTheirUnit:GetPlot());
+				iModifier = PMMMCombatModifierFromCapitalDistance(pTheirUnit, pTheirUnit:GetPlot());
 				if (iModifier ~= 0) then
 					controlTable = g_TheirCombatDataIM:GetInstance();
 					controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );
@@ -2184,7 +2184,7 @@ end
 		-- CapitalDefenseModifier
 		-- [port] CP's DLL no longer binds the two capital-defense unit methods; it folds the distance
 		-- falloff into GetCombatModifierFromCapitalDistance(plot), as CP's own EnemyUnitPanel does.
-		iModifier = theirUnit:GetCombatModifierFromCapitalDistance(theirUnit:GetPlot());
+		iModifier = PMMMCombatModifierFromCapitalDistance(theirUnit, theirUnit:GetPlot());
 		if (iModifier ~= 0) then
 			controlTable = g_TheirCombatDataIM:GetInstance();
 			controlTable.Text:LocalizeAndSetText(  "TXT_KEY_EUPANEL_CAPITAL_DEFENSE_BONUS" );

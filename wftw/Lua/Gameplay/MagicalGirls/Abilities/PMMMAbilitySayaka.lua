@@ -244,7 +244,9 @@ end
 --Once per player: Decretum into the Hall's first slot, then the hidden flag policy.
 local function RhapsodyFirstSetup(iPlayer, pPlayer, pCapital)
 	if not iRhapsodyPolicy or pPlayer:HasPolicy(iRhapsodyPolicy) then return end
-	if iDecretum and iMusicHall and pCapital:IsHasBuilding(iMusicHall)
+	--[port] Phase 6 Lekmod: Game.CreateGreatWork is CP-only; without it the free Decretum is skipped (tracked
+	--degradation) and the rest of the setup still runs.
+	if iDecretum and iMusicHall and Game.CreateGreatWork and pCapital:IsHasBuilding(iMusicHall)
 	and pCapital:GetBuildingGreatWork(iMusicHallClass, 0) < 0 then
 		local sCreator = Locale.ConvertTextKey("TXT_KEY_LEADER_SAYAKA")
 		local iWork = Game.CreateGreatWork(iDecretum, iPlayer, pPlayer:GetCurrentEra(), sCreator)

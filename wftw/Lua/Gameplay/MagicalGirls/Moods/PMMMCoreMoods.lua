@@ -489,6 +489,13 @@ local iAutoSocializationMission = MissionTypes.MISSION_PMMM_SOCIALIZE_AUTO
 
 local tSocializationPromotions = {}
 
+--[port] Phase 6 Lekmod: Game.AnyoneHasAnyReligion is CP-only (it errored on every mood refresh, which left girls
+--without a Mood level). It is only a gate here; "any religion founded" is the same gate on a DLL without it.
+function PMMMAnyoneHasAnyReligion()
+	if Game.AnyoneHasAnyReligion then return Game.AnyoneHasAnyReligion() end
+	return Game.GetNumReligionsFounded() > 0
+end
+
 -- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
 for row in DB.Query("SELECT * FROM UnitPromotions") do
 	if row.MGLikeDislikeSpreadBonus > 0 or row.MGSocializeBonus > 0 or row.MGSocializingXPGrantedToPartner > 0 or row.MGSocializingLoyaltyGrantedToPartner > 0 then
@@ -978,7 +985,7 @@ t_MoodMods[iBeliefMoodID].Value = row.Value
 t_MoodMods[iBeliefMoodID].Func = (
 	function(iMGKey, pPlayer, pUnit)
 		local iVal = 0
-		if Game.AnyoneHasAnyReligion() then
+		if PMMMAnyoneHasAnyReligion() then
 			local bShouldTestBeliefs = false
 			local bIsFounder = false
 			local iReligion = -1
