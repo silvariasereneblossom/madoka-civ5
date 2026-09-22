@@ -368,6 +368,21 @@ function LeaderAbilityCustomMissionPossible(iPlayer, iUnit, iMission, iData1, iD
 	if pUnit:GetMoves() <= 0 then return false end
 	if bTestVisible then return true end
 	if tDef.CanUseHere then
+		--[port] For an aimed ability the plot the DLL passes is the girl's own tile, not the target, so testing
+		--CanUseHere there disabled every ability whose test is "an enemy on this tile" (Falsified Phenomena,
+		--2026-09-22). Accept the chosen target (pushed as negated coordinates, see LeaderAbilityCustomMissionStart)
+		--or, while no target is chosen yet (the button's enable check), any tile within range. Start re-checks the
+		--actual target before anything fires.
+		if tDef.NeedsTarget then
+			if iData1 and iData2 and iData1 <= 0 and iData2 <= 0 then
+				local pTarget = Map.GetPlot(-iData1, -iData2)
+				if pTarget and tDef.CanUseHere(pPlayer, pUnit, pTarget, iMGKey) then return true end
+			end
+			for pAreaPlot in PlotAreaSpiralIterator(pUnit:GetPlot(), tDef.Range or 1, 1, false, false, true) do
+				if pAreaPlot and tDef.CanUseHere(pPlayer, pUnit, pAreaPlot, iMGKey) then return true end
+			end
+			return false
+		end
 		local pPlot
 		if iPlotX and iPlotY and iPlotX >= 0 and iPlotY >= 0 then
 			pPlot = Map.GetPlot(iPlotX, iPlotY)
