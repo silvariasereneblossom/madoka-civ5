@@ -489,7 +489,8 @@ local iAutoSocializationMission = MissionTypes.MISSION_PMMM_SOCIALIZE_AUTO
 
 local tSocializationPromotions = {}
 
-for row in GameInfo.UnitPromotions() do
+-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+for row in DB.Query("SELECT * FROM UnitPromotions") do
 	if row.MGLikeDislikeSpreadBonus > 0 or row.MGSocializeBonus > 0 or row.MGSocializingXPGrantedToPartner > 0 or row.MGSocializingLoyaltyGrantedToPartner > 0 then
 		tSocializationPromotions[row.ID] = {
 			["LDBonus"] = row.MGLikeDislikeSpreadBonus,

@@ -258,7 +258,8 @@ local iSparring = GameInfoTypes.MGACTIONSTATE_SPARRING
 
 local tSparringPromos = {}
 
-for row in GameInfo.UnitPromotions() do
+-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+for row in DB.Query("SELECT * FROM UnitPromotions") do
 	if row.MGSparringPartnerBonus > 0 or row.MGSparringCooldownReduction > 0 then
 		tSparringPromos[row.ID] = {
 			["Bonus"] =	row.MGSparringPartnerBonus,

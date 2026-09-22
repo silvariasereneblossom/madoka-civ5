@@ -149,7 +149,8 @@ end
 	--Which promotions grant a new promotion when in a City?
 	MapModData.gPMMMInCityPromotions = {}
 
-	for promotion in GameInfo.UnitPromotions() do
+	-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+	for promotion in DB.Query("SELECT * FROM UnitPromotions") do
 		if promotion.NewPromotionInCity ~= nil then
 			MapModData.gPMMMInCityPromotions[promotion.ID] = GameInfo.UnitPromotions("Type ='" ..promotion.NewPromotionInCity.. "'")().ID
 		end
@@ -192,7 +193,8 @@ end
 	--Which promotions allow stealing other UU's promotions on city capture?
 	MapModData.gPMMMStealUUPromotions = {}
 
-	for row in GameInfo.UnitPromotions() do
+	-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+	for row in DB.Query("SELECT * FROM UnitPromotions") do
 		if row.ObtainUniqueUnitPromotionOnCityCapture == 1 then
 			table.insert(MapModData.gPMMMStealUUPromotions, row.ID)
 		end
@@ -303,7 +305,8 @@ end
 
 	--v27: Which promotions can reduce Soul Gem Corruption?
 	MapModData.gPMMMSoulGemCorruptionPromotions = {}
-	for row in GameInfo.UnitPromotions() do
+	-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+	for row in DB.Query("SELECT * FROM UnitPromotions") do
 		if row.SoulGemCorruptionMod ~= 0 then
 			MapModData.gPMMMSoulGemCorruptionPromotions[row.ID] = row.SoulGemCorruptionMod
 		end

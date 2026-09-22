@@ -5,6 +5,8 @@
 --------------------------------------------------------------
 
 include( "IconSupport" );
+include("PMMMGeneralFunctions.lua");	-- [port] PMMMPlayerHasWonder lives there; the top-panel context that includes
+									-- this file loads nothing else, so every refresh crashed (2026-09-21)
 
 ----------------------------------------------------------------------------------------------------------------------------
 --LOCAL TABLES

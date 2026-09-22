@@ -38,7 +38,9 @@ local function GetTiroSiegeStrengthTimes100()
 		end
 	end
 	local iPercent = 100
-	local pTiroPromo = GameInfo.UnitPromotions.PROMOTION_PMMM_TIRO_MUSKETEER
+	-- [port] DB.Query, not GameInfo: on Lekmod GameInfo.UnitPromotions does not expose WFTW's own columns (2026-09-21).
+	local pTiroPromo
+	for row in DB.Query("SELECT TiroFinaleStrength FROM UnitPromotions WHERE Type = 'PROMOTION_PMMM_TIRO_MUSKETEER'") do pTiroPromo = row end
 	if pTiroPromo and pTiroPromo.TiroFinaleStrength and pTiroPromo.TiroFinaleStrength > 0 then
 		iPercent = pTiroPromo.TiroFinaleStrength
 	end
