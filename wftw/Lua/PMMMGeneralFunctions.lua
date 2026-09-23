@@ -149,6 +149,16 @@ function PMMMRaiseGreatPersonExpended(iPlayer, iUnit, iUnitType, iX, iY)
 	end
 end
 
+--[port] A girl's table is persisted in the save, so one created by an older build (or by a path that predates a
+--field) can be missing pieces the rest of the code assumes. Fill them in rather than guarding every read: this
+--runs once per player per turn over that player's girls, and on the vacation path that first hit it.
+function PMMMEnsureGirlFields(iMGKey)
+	local tGirl = MagicalGirls and MagicalGirls[iMGKey]
+	if not tGirl then return end
+	if tGirl.Loyalty == nil then tGirl.Loyalty = GameDefines.MAXIMUM_MG_LOYALTY end
+	if tGirl.Influence == nil then tGirl.Influence = {} end
+end
+
 
 local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
 local bPMMMCPPlayerChangeInfluence = nil

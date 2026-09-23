@@ -1237,6 +1237,7 @@ function DoActionStateTurnUpkeep(iPlayer)
 	--SecondLoopKeys keeps which Keys to iterate over in the second loop instead of going through the whole table twice.
 	local SecondLoopKeys = {}
 	for k, v in pairs(MagicalGirls) do
+		if v.Owner == iPlayer then PMMMEnsureGirlFields(k) end	--[port] repair girls from older saves
 		if v.StatusTurns then
 			local iMGKey = k
 			if MagicalGirls[iMGKey].Owner == iPlayer then
