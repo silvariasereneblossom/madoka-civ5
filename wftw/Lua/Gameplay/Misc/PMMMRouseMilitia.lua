@@ -31,7 +31,7 @@ function RouseMilitiaCustomMissionStart(iPlayer, iUnit, iMission, iData1, iData2
 		local pUnit = pPlayer:GetUnitByID(iUnit)
 		local pPlot = pUnit:GetPlot()
 
-		GameEvents.GreatPersonExpended.Call(iPlayer, iUnit, pUnit:GetUnitType(), pUnit:GetX(), pUnit:GetY())
+		PMMMRaiseGreatPersonExpended(iPlayer, iUnit, pUnit:GetUnitType(), pUnit:GetX(), pUnit:GetY())
 		pUnit:Kill(true)
 		for pAreaPlot in PlotAreaSpiralIterator(pPlot, 1) do
 			local bJump = false

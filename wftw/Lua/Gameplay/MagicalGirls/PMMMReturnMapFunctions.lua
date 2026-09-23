@@ -149,6 +149,7 @@ function (iMGKey)
 	MagicalGirls[iMGKey].LastVacationTurn = Game:GetGameTurn()
 
 	--Influence
+	if not MagicalGirls[iMGKey].Influence then MagicalGirls[iMGKey].Influence = {} end	--[port] older saves have no table
 	if not MagicalGirls[iMGKey].Influence[iVacationDestination] then MagicalGirls[iMGKey].Influence[iVacationDestination] = 0 end
 	if iVacationDestination ~= iPlayer then
 		MagicalGirls[iMGKey].Influence[iVacationDestination] = MagicalGirls[iMGKey].Influence[iVacationDestination] + iVacationAmount 

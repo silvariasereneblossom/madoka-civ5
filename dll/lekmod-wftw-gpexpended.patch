@@ -1,0 +1,199 @@
+diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-22 21:07:41.511753300 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-22 21:07:41.535789800 -0400
+@@ -18027,7 +18027,7 @@
+ 
+ //	--------------------------------------------------------------------------------
+ /// Do effects when a GP is consumed
+-void CvPlayer::DoGreatPersonExpended(UnitTypes eGreatPersonUnit)
++void CvPlayer::DoGreatPersonExpended(UnitTypes eGreatPersonUnit, CvUnit* pGreatPersonUnit)
+ {
+ 	// Gold gained
+ 	int iExpendGold = GetGreatPersonExpendGold();
+@@ -18206,6 +18206,27 @@
+ 		bool bResult;
+ 		LuaSupport::CallHook(pkScriptSystem, "GreatPersonExpended", args.get(), bResult);
+ 	}
++
++	// PMMM: Lekmod's GreatPersonExpended passes only (player, unitType), and its own civ scripts read it that
++	// way, so it cannot change. Wish for the World needs the unit that was expended (its promotions, name and
++	// home city decide the Magical Girl it becomes), so raise a second hook with the Community Patch's
++	// arguments: (player, unitID, unitType, x, y).
++	if (pGreatPersonUnit != NULL)
++	{
++		ICvEngineScriptSystem1* pkPMMMScriptSystem = gDLL->GetScriptSystem();
++		if (pkPMMMScriptSystem)
++		{
++			CvLuaArgsHandle args;
++			args->Push(GetID());
++			args->Push(pGreatPersonUnit->GetID());
++			args->Push(eGreatPersonUnit);
++			args->Push(pGreatPersonUnit->getX());
++			args->Push(pGreatPersonUnit->getY());
++
++			bool bPMMMResult;
++			LuaSupport::CallHook(pkPMMMScriptSystem, "PMMMGreatPersonExpended", args.get(), bPMMMResult);
++		}
++	}
+ }
+ 
+ //	--------------------------------------------------------------------------------
+diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.h b/CvGameCoreDLL_Expansion2/CvPlayer.h
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-22 21:07:41.465699600 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-22 21:07:41.487730500 -0400
+@@ -925,7 +925,7 @@
+ 	void DoUnitKilledCombat(PlayerTypes eKilledPlayer, UnitTypes eUnit);
+ 
+ 	// Great People Expenditure
+-	void DoGreatPersonExpended(UnitTypes eGreatPersonUnit);
++	void DoGreatPersonExpended(UnitTypes eGreatPersonUnit, CvUnit* pGreatPersonUnit = NULL);
+ 	int GetGreatPersonExpendGold() const;
+ 	void ChangeGreatPersonExpendGold(int iChange);
+ 
+diff -ru a/CvGameCoreDLL_Expansion2/CvUnit.cpp b/CvGameCoreDLL_Expansion2/CvUnit.cpp
+--- a/CvGameCoreDLL_Expansion2/CvUnit.cpp	2026-09-22 21:07:41.561318100 -0400
++++ b/CvGameCoreDLL_Expansion2/CvUnit.cpp	2026-09-22 21:07:41.585859000 -0400
+@@ -7743,7 +7743,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 			if (!IsIgnoreExpended())
+ #endif
+-			kPlayer.DoGreatPersonExpended(getUnitType());
++			kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 		}
+ 
+ 		kill(true);
+@@ -8740,7 +8740,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 				if (!IsIgnoreExpended())
+ #endif
+-				kOwner.DoGreatPersonExpended(getUnitType());
++				kOwner.DoGreatPersonExpended(getUnitType(), this);
+ 				kill(true);
+ 			}
+ 			else
+@@ -8772,7 +8772,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 					if (!IsIgnoreExpended())
+ #endif
+-					kOwner.DoGreatPersonExpended(getUnitType());
++					kOwner.DoGreatPersonExpended(getUnitType(), this);
+ 					kill(true);
+ 				}
+ 				else
+@@ -8903,7 +8903,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 				if (!IsIgnoreExpended())
+ #endif
+-				kOwner.DoGreatPersonExpended(getUnitType());
++				kOwner.DoGreatPersonExpended(getUnitType(), this);
+ 				kill(true);
+ 			}
+ 			else
+@@ -8920,7 +8920,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 					if (!IsIgnoreExpended())
+ #endif
+-					kOwner.DoGreatPersonExpended(getUnitType());
++					kOwner.DoGreatPersonExpended(getUnitType(), this);
+ 					kill(true);
+ 				}
+ 				else
+@@ -9111,7 +9111,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 					if (!IsIgnoreExpended())
+ #endif
+-					kPlayer.DoGreatPersonExpended(getUnitType());
++					kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 				}
+ 
+ 				kill(true);
+@@ -9439,7 +9439,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		pPlayer->DoGreatPersonExpended(getUnitType());
++		pPlayer->DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -9674,7 +9674,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -9804,7 +9804,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ #ifdef NQ_TOURISM_FROM_TRADE_MISSIONS_FROM_POLICIES
+@@ -9958,7 +9958,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -10040,7 +10040,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -10203,7 +10203,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 			if (!IsIgnoreExpended())
+ #endif
+-			kPlayer.DoGreatPersonExpended(getUnitType());
++			kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 		}
+ 
+ 		kill(true);
+@@ -10634,7 +10634,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -10774,7 +10774,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kPlayer.DoGreatPersonExpended(getUnitType());
++		kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -10884,7 +10884,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 		if (!IsIgnoreExpended())
+ #endif
+-		kUnitOwner.DoGreatPersonExpended(getUnitType());
++		kUnitOwner.DoGreatPersonExpended(getUnitType(), this);
+ 	}
+ 
+ 	kill(true);
+@@ -11160,7 +11160,7 @@
+ #ifdef AUI_DLLNETMESSAGEHANDLER_FIX_RESPAWN_PROPHET_IF_BEATEN_TO_LAST_RELIGION
+ 					if (!IsIgnoreExpended())
+ #endif
+-					kPlayer.DoGreatPersonExpended(getUnitType());
++					kPlayer.DoGreatPersonExpended(getUnitType(), this);
+ 				}
+ 
+ 				kill(true);

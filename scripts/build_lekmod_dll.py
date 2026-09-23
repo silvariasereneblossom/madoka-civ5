@@ -59,6 +59,8 @@ EXTRA_PATCHES = [
     (ROOT / "dll" / "lekmod-wftw-aiyo-diplomacy.patch", "CvTraitClasses.h", b"IsPMMMNoFriendship"),
     # 2026-09-22: the Clara Doll tag keeps the Magical Girl promotion tree across upgrades.
     (ROOT / "dll" / "lekmod-wftw-claradoll.patch", "CvGameCoreUtils.h", b"ePromotionClassOverride"),
+    # 2026-09-22: PMMMGreatPersonExpended, the (player, unitID, unitType, x, y) hook WFTW needs.
+    (ROOT / "dll" / "lekmod-wftw-gpexpended.patch", "CvPlayer.cpp", b"PMMMGreatPersonExpended"),
 ]
 # Legacy conversion helpers (__ftol3/__ltod3) referenced by the prebuilt
 # FireWorks objects; see the header comment in the file itself.

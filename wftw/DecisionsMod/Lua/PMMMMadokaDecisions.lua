@@ -160,7 +160,7 @@ local Decisions_Mitakun = {}
 		pPlayer:ChangeNumResourceTotal(iMagistrate, -1)
 		for pUnit in pPlayer:Units() do
 			if pUnit:GetUnitClassType() == GameInfoTypes.UNITCLASS_ARTIST then
-				GameEvents.GreatPersonExpended.Call(pPlayer:GetID(), pUnit:GetID(), pUnit:GetUnitType(), pUnit:GetX(), pUnit:GetY())
+				PMMMRaiseGreatPersonExpended(pPlayer:GetID(), pUnit:GetID(), pUnit:GetUnitType(), pUnit:GetX(), pUnit:GetY())
 				pUnit:Kill(true)
 				break
 			end

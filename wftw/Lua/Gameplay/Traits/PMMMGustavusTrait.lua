@@ -12,6 +12,7 @@ function GustavusTrait(iPlayer, iUnit, bDontTestNextUnit)
 	local pUnit = pPlayer:GetUnitByID(iUnit)
 	if not pUnit then return end --[port] the unit may no longer exist / not be ours
 	local pThisPlot = pUnit:GetPlot()
+	if not pThisPlot then return end	--[port] a unit in transit (embarking, dying, being upgraded) has no plot
 	dprint("Running Gustavus trait on " ..pUnit:GetName())
 	local CombatTypes = {}
 	table.insert(CombatTypes, pUnit:GetUnitCombatType())

@@ -401,7 +401,7 @@
     <File md5="43F6128BE492E26BBAFB67F610A779F4" import="1">DecisionsMod/Lua/PMMMHomuraDecisions.lua</File>
     <File md5="4D44C91DEBB9524C28933874AB5019F8" import="1">DecisionsMod/Lua/PMMMKaoruUmikaDecisions.lua</File>
     <File md5="8DD13B10ADE10EE7E324071A88288919" import="1">DecisionsMod/Lua/PMMMKyoukoDecisions.lua</File>
-    <File md5="CB4E1C2126209D20AF4DBD085070C51B" import="1">DecisionsMod/Lua/PMMMMadokaDecisions.lua</File>
+    <File md5="C7F155AFE28B3D90D3DE0B2694D1A182" import="1">DecisionsMod/Lua/PMMMMadokaDecisions.lua</File>
     <File md5="A1675148224C7DB58BEF0F70ACCD6B59" import="1">DecisionsMod/Lua/PMMMMamiDecisions.lua</File>
     <File md5="2364AE34603342A3527F33D1CDD8809A" import="1">DecisionsMod/Lua/PMMMNagisaDecisions.lua</File>
     <File md5="EA0155E8EC71FFFC422126595320690C" import="1">DecisionsMod/Lua/PMMMOrikoKirikaDecisions.lua</File>
@@ -443,10 +443,10 @@
     <File md5="601BFA9EB174B20AF4C10F261A575C48" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
     <File md5="741EA15A5EBE00D196B0BB22752CCBAD" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
-    <File md5="A390C80D5521912BE2FAA7CFD91C1647" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
+    <File md5="45EC9EAB54238830CA5C23178E8E4BF4" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="8B46EC4CF6D9B3BE2A37C09FCD03585C" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
     <File md5="857E924EB484F440D4A5C9D0A8084019" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilityDefs.lua</File>
-    <File md5="D923CB760E09724463D47E18DF7420FE" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
+    <File md5="EA67FF72946FC48785F0B8A2C76F9172" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityUltimateMadoka.lua</File>
     <File md5="765BFEF76B60DFA0D98349633B4D879A" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityHomura.lua</File>
     <File md5="603BE463F068804A497006296465EB76" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityDemonHomura.lua</File>
     <File md5="2DBE7DB4DA2E2779C4B9D4C76D9A3C35" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilitySayaka.lua</File>
@@ -454,17 +454,17 @@
     <File md5="537C589B6A3DE8B09EAD1022CF84E557" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityKaoruUmika.lua</File>
     <File md5="44232A9C70845C55A576EAE9799706E7" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityNagisa.lua</File>
     <File md5="A81A26C2A3A4FFF7E5952EA6CBBF9C64" import="1">Lua/Gameplay/MagicalGirls/Abilities/PMMMAbilityOrikoKirika.lua</File>
-    <File md5="D21456370D3549ECB0514E30B823C983" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
+    <File md5="515892AFF05B7FA8A1887ACE3B71AA7A" import="1">Lua/Gameplay/MagicalGirls/PMMMReturnMapFunctions.lua</File>
     <File md5="2D493124109DD2DEB8D710048D9D8847" import="1">Lua/Gameplay/MagicalGirls/PMMMWitches.lua</File>
     <File md5="FA7ADF95B8B0244EE5C4772BB33175A9" import="1">Lua/Gameplay/Misc/PMMMCityConnectionBuildings.lua</File>
     <File md5="849A2B65ABB379DCA84E0E8E7761731C" import="1">Lua/Gameplay/Misc/PMMMPolicyMovementBonus.lua</File>
     <File md5="96F6B167252E818D27E081D30D0058DD" import="1">Lua/Gameplay/Misc/PMMMPurificationThroughHope.lua</File>
-    <File md5="256F1D92A4F28CB19FD2E3DB13B23DD4" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
+    <File md5="5F8C00EA5636BA1A50EB0EF2D7256E9E" import="1">Lua/Gameplay/Misc/PMMMRouseMilitia.lua</File>
     <File md5="D15D5E4692FA1CC375483019BCEE2A77" import="1">Lua/Gameplay/PMMMTraitBootstrapper.lua</File>
     <File md5="897A683ECF90A26F897A2CEF6FFE647D" import="1">Lua/Gameplay/PMMMUBBootstrapper.lua</File>
     <File md5="44DE9DDB0DAA092F47FE808EB864BB38" import="1">Lua/Gameplay/PMMMUUBootstrapper.lua</File>
     <File md5="081636C45B73781BA65EF16BEB356BB3" import="1">Lua/Gameplay/Traits/PMMMDemonHomuraTrait.lua</File>
-    <File md5="3A28CA4124E8AE678D90308A170E8CCA" import="1">Lua/Gameplay/Traits/PMMMGustavusTrait.lua</File>
+    <File md5="5C9E878BA16CE1676C01E03ACB81A7CE" import="1">Lua/Gameplay/Traits/PMMMGustavusTrait.lua</File>
     <File md5="B855B49EA39152812DFA4D723C1539CE" import="1">Lua/Gameplay/Traits/PMMMHomuraTrait.lua</File>
     <File md5="A4DD0F3B981E31634FCA16326AE95241" import="1">Lua/Gameplay/Traits/PMMMKyoukoTrait.lua</File>
     <File md5="F580777909423702CA9519AE1E8366B4" import="1">Lua/Gameplay/Traits/PMMMMamiTrait.lua</File>
@@ -483,8 +483,8 @@
     <File md5="77D506B4D15C497A370D32BE5AB115F7" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
     <File md5="56E49E2EE594F7AD0C0658036738C613" import="1">Lua/PMMMDataStorage.lua</File>
     <File md5="7B68E51E3630CD061D4CA3BB82C4C03C" import="1">Lua/PMMMDefines.lua</File>
-    <File md5="D42DAFB3DE710AB6735D1887325B18F3" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="71F5F4D7966C7CD649C638AE5FAD2AA0" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="E6619D9252536FF93E123B621B00B03F" import="1">Lua/PMMMGeneralFunctions.lua</File>
+    <File md5="FE7B4C752AE4441A5973CD14B86E1D80" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
     <File md5="2A53FE602925732FD331B821F698937A" import="0">Lua/UI/PleiadesFreezer.lua</File>

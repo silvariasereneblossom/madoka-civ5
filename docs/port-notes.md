@@ -364,3 +364,22 @@ the `GetMaxAttackStrength` / `GetMaxDefenseStrength` signatures and drops `GetMa
 calls crashed the game (enemy-unit panel refresh). All calls now go through DLL-aware helpers in
 `PMMMGeneralFunctions.lua`. `GameInfo.UnitPromotions` also hides WFTW's promotion columns on Lekmod, so those
 are read with `DB.Query`.
+
+## Lekmod: GreatPersonExpended has a different shape (2026-09-22)
+
+Play logs showed `PMMMMagicalGirls.lua:382 attempt to index local 'pUsedGP'` (22x) and `:409 bad argument #2`
+(12x) on Lekmod. Cause: CP raises `GreatPersonExpended` with `(player, unitID, unitType, x, y)`; Lekmod raises the
+legacy two-argument form `(player, unitType)`, so WFTW read a unit *type* as a unit ID. Every Magical Girl born
+from an expended Great Person died there, before the handler even reached its `NoMagicalGirls` check.
+
+Lekmod's own civ scripts (Bolivia, Georgia, prophetreplace) read the two-argument form, so that hook could not be
+changed. Our Lekmod DLL therefore raises a second hook, `PMMMGreatPersonExpended`, with CP's arguments
+(`dll/lekmod-wftw-gpexpended.patch`: `DoGreatPersonExpended` takes the unit, the 16 `CvUnit` call sites pass
+`this`). WFTW registers through `PMMMAddGreatPersonExpendedHandler` and fires through
+`PMMMRaiseGreatPersonExpended` (`PMMMGeneralFunctions.lua`), which pick the right hook per DLL. The probe is
+`Game.AnyoneHasAnyReligion ~= nil` (CP-only) because `GameEvents.<Name>` is created on first access and so cannot
+itself be probed. The handler also ignores a short call and a missing unit.
+
+Fixed in the same pass: `Game.AnyoneHasAnyReligion` in `PMMMCoreLikesDislikes.lua` (316 errors a session; the
+shared gate now lives in `PMMMGeneralFunctions.lua`), a Magical Girl's `Loyalty` and per-civ `Influence` table now
+initialised at birth on every spawn path, and `PMMMGustavusTrait.lua` returning when the unit has no plot.

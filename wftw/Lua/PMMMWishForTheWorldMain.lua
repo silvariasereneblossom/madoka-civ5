@@ -225,7 +225,7 @@ GameEvents.CityCanConstruct.Add(OnCityCanConstructLakeBuildings)
 GameEvents.CityCanConstruct.Add(OnCityCanConstructLandmassBuildings)
 
 --------GreatPersonExpended (added by DVMC)----------------------------------------------------------
-GameEvents.GreatPersonExpended.Add(MadokaInitMagicalGirl)
+PMMMAddGreatPersonExpendedHandler(MadokaInitMagicalGirl)
 
 --------UnitPromoted (added by DVMC)----------------------------------------------------------------
 GameEvents.UnitPromoted.Add(OnPromotedRunTraitScripts)

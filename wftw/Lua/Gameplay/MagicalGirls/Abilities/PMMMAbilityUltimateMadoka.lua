@@ -190,4 +190,4 @@ function UMadokaGreatPersonExpended(iPlayer, iUnit, iUnitType, iX, iY)
 	end
 end
 
-GameEvents.GreatPersonExpended.Add(UMadokaGreatPersonExpended)
+PMMMAddGreatPersonExpendedHandler(UMadokaGreatPersonExpended)

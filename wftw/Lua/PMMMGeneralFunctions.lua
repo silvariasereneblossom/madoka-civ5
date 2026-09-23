@@ -123,6 +123,32 @@ function PMMMAnyoneHasAnyReligion()
 	return Game.GetNumReligionsFounded() > 0
 end
 
+--[port] Phase 6 Lekmod: GreatPersonExpended carries different arguments per DLL. CP passes
+--(player, unitID, unitType, x, y); Lekmod passes only (player, unitType), and its own civ scripts read it that
+--way, so it could not be changed. Our Lekmod DLL therefore raises PMMMGreatPersonExpended with CP's arguments
+--(dll/lekmod-wftw-gpexpended.patch). Handlers that need the expended unit register through this, and code that
+--fires the event by hand uses PMMMRaiseGreatPersonExpended so both DLLs see a correctly shaped call.
+--GameEvents.<Name> springs into existence on first access, so the hook itself cannot be probed: test the DLL.
+--Game.AnyoneHasAnyReligion is Community Patch only, and this runs at load, where no unit instance is in hand.
+local bPMMMCommunityPatchDLL = (Game.AnyoneHasAnyReligion ~= nil)
+
+function PMMMAddGreatPersonExpendedHandler(fnHandler)
+	if bPMMMCommunityPatchDLL then
+		GameEvents.GreatPersonExpended.Add(fnHandler)
+	else
+		GameEvents.PMMMGreatPersonExpended.Add(fnHandler)
+	end
+end
+
+function PMMMRaiseGreatPersonExpended(iPlayer, iUnit, iUnitType, iX, iY)
+	if bPMMMCommunityPatchDLL then
+		GameEvents.GreatPersonExpended.Call(iPlayer, iUnit, iUnitType, iX, iY)
+	else
+		GameEvents.PMMMGreatPersonExpended.Call(iPlayer, iUnit, iUnitType, iX, iY)
+		GameEvents.GreatPersonExpended.Call(iPlayer, iUnitType)	-- Lekmod's own shape, for its civ scripts
+	end
+end
+
 
 local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
 local bPMMMCPPlayerChangeInfluence = nil

@@ -190,7 +190,11 @@ function OnCreatedMagicalGirl(iPlayer, iUnit)
 				["Level"] = 1,
 				["Status"] = GameInfoTypes.MGACTIONSTATE_ACTIVE,
 				["Class"] = tMagicalGirlSpawnTable["Class"] or 'UNITCLASS_PMMM_MAGICAL_GIRL',
-				["TurnCreated"] = Game:GetGameTurn()
+				["TurnCreated"] = Game:GetGameTurn(),
+				--[port] Loyalty and the per-civ Influence table are set here rather than further down, so a girl
+				--created by any path has them: reads of both errored in play (2026-09-22).
+				["Loyalty"] = GameDefines.MAXIMUM_MG_LOYALTY,
+				["Influence"] = {}
 			}
 				
 			--Name her if the spawn table doesn't have a name
@@ -376,7 +380,12 @@ function MadokaInitMagicalGirl(iPlayer, iUnitID, iUnitType, iX, iY)
 	if iPlayer < iMaxCivsAndCS then
 		if not PlayerHasMagicalGirls(iPlayer) then return end	-- [port] Magical Girls are exclusive to MG civs (define MAGICAL_GIRLS_EXCLUSIVE_TO_MG_CIVS)
 		local pPlayer = Players[iPlayer]
+		--[port] Phase 6 Lekmod: on a DLL whose GreatPersonExpended passes only (player, unitType) this handler is
+		--registered on PMMMGreatPersonExpended instead; ignore the short call rather than treating a unit type as
+		--a unit ID (it indexed a nil unit and killed the spawn, 2026-09-22).
+		if iUnitType == nil then return end
 		local pUsedGP = pPlayer:GetUnitByID(iUnitID)
+		if not pUsedGP then return end
 
 		--Units with the "does not become MG" promotion...well, you get the idea
 		if pUsedGP:IsHasPromotion(iNoMakeGMG) then
@@ -726,7 +735,8 @@ function MagicalGirlUpkeep(iPlayer)
 							iLoyaltyChange = iLoyaltyChange + (iHandicap + GameDefines.AI_MG_LOYALTY_BONUS_PER_TURN)				
 						end
 
-						MagicalGirls[iMGKey].Loyalty = MagicalGirls[iMGKey].Loyalty + iLoyaltyChange
+						--[port] older saves can hold a girl with no Loyalty yet; treat her as fully loyal
+						MagicalGirls[iMGKey].Loyalty = (MagicalGirls[iMGKey].Loyalty or GameDefines.MAXIMUM_MG_LOYALTY) + iLoyaltyChange
 
 						--clamp
 						MagicalGirls[iMGKey].Loyalty = math.min(MagicalGirls[iMGKey].Loyalty, GameDefines.MAXIMUM_MG_LOYALTY)
