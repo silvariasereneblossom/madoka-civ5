@@ -1041,7 +1041,7 @@ t_LikesDislikes[iReligionLDID].Desc = row.Description
 t_LikesDislikes[iReligionLDID].IsValidFunc = (
 	function(iPlayer, iMGKey)
 		--The player Civ or a met Civ must have founded a religion.
-		if Game.AnyoneHasAnyReligion() then
+		if PMMMAnyoneHasAnyReligion() then
 			local pTeam = Teams[Players[iPlayer]:GetTeam()]
 			for i = 0, GameDefines.MAX_CIV_PLAYERS - 1 do	
 				local pPlayer = Players[iPlayer];

@@ -59,8 +59,25 @@ function SetClaraDollStrength(iPlayer, pUnit)
 	if iBase <= 0 then return end
 	local iTarget = iBase + iPMMMClaraDollStrengthPerEra * Players[iPlayer]:GetCurrentEra()
 	if pUnit:GetBaseCombatStrength() ~= iTarget then
+		print("[PMMM] Clara Doll strength: " .. tostring(pUnit:GetName()) .. " " .. tostring(pUnit:GetBaseCombatStrength())
+			.. " -> " .. tostring(iTarget) .. " (chassis " .. tostring(iBase) .. ", era " .. tostring(Players[iPlayer]:GetCurrentEra()) .. ")")
 		pUnit:SetBaseCombatStrength(iTarget)
 	end
+end
+
+--An upgrade builds a new unit, which neither the turn hook nor the move hook has seen yet: scale it at once so
+--the player never sees the upgraded doll at its plain chassis strength. Both DLLs raise UnitUpgraded with
+--(owner, old unit, new unit); UnitCreated covers a doll that appears by any other route.
+function ClaraDollOnUpgrade(iPlayer, iOldUnit, iNewUnit)
+	local pPlayer = Players[iPlayer]
+	if not pPlayer then return end
+	SetClaraDollStrength(iPlayer, pPlayer:GetUnitByID(iNewUnit))
+end
+
+function ClaraDollOnCreated(iPlayer, iUnit)
+	local pPlayer = Players[iPlayer]
+	if not pPlayer then return end
+	SetClaraDollStrength(iPlayer, pPlayer:GetUnitByID(iUnit))
 end
 
 

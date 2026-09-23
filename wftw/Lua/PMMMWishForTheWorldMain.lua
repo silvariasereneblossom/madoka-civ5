@@ -232,6 +232,8 @@ GameEvents.UnitPromoted.Add(OnPromotedRunTraitScripts)
 
 --------UnitCreated (added by DVMC)----------------------------------------------------------------
 GameEvents.UnitCreated.Add(ReplaceHostileUnits)
+GameEvents.UnitCreated.Add(ClaraDollOnCreated)	--[port] era strength for a freshly built Clara Doll
+GameEvents.UnitUpgraded.Add(ClaraDollOnUpgrade)	--[port] and for the unit an upgrade creates
 GameEvents.UnitCreated.Add(GiveGPAName)
 GameEvents.UnitCreated.Add(OnCreatedMagicalGirl)
 -- [port] RemoveGeneralAdmiralBonusFromProdigies is commented out in PMMMRouseMilitia.lua, so this registered nil

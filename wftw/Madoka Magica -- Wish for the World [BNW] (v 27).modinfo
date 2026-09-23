@@ -440,8 +440,8 @@
     <File md5="CC70F0002A43E73EDE2CB2C411CA1E0E" import="1">Lua/Gameplay/Improvements/PMMMFarsightOracle.lua</File>
     <File md5="E67EC5FC12529E4CF4AE25CD76E23CDC" import="1">Lua/Gameplay/MagicalGirls/Entertainment/PMMMEntertainmentSystem.lua</File>
     <File md5="BEEB1935167E613AA2B6A6F06C80817F" import="1">Lua/Gameplay/MagicalGirls/MagicalGirlMissionHandler.lua</File>
-    <File md5="B12E7B5C7BB616178238D97F99DC4DD6" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
-    <File md5="F9045D443961D27BC07C9B32759B8714" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
+    <File md5="601BFA9EB174B20AF4C10F261A575C48" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreLikesDislikes.lua</File>
+    <File md5="741EA15A5EBE00D196B0BB22752CCBAD" import="1">Lua/Gameplay/MagicalGirls/Moods/PMMMCoreMoods.lua</File>
     <File md5="D8FAB5FF5EC69DFF506F0FC29AC9BE83" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaveMapFunctions.lua</File>
     <File md5="A390C80D5521912BE2FAA7CFD91C1647" import="1">Lua/Gameplay/MagicalGirls/PMMMMagicalGirls.lua</File>
     <File md5="8B46EC4CF6D9B3BE2A37C09FCD03585C" import="1">Lua/Gameplay/MagicalGirls/PMMMLeaderAbilities.lua</File>
@@ -475,7 +475,7 @@
     <File md5="97AAD594B4160EA6ACAE444FBF9B1E10" import="1">Lua/Gameplay/Traits/PMMMUltimateMadokaTrait.lua</File>
     <File md5="83D27F90F2D564AAA09843F95BD0A091" import="1">Lua/Gameplay/UniqueUnits/PMMMArtificialIncubator.lua</File>
     <File md5="C401DCE659ED7E27C0C628EB7384D2BA" import="1">Lua/Gameplay/UniqueUnits/PMMMBubbleBomber.lua</File>
-    <File md5="5DC1FA7747EC7F241B10E9739E8704CE" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
+    <File md5="AE941C0AC5E0820B4728944D5EB0A7F4" import="1">Lua/Gameplay/UniqueUnits/PMMMClaraDoll.lua</File>
     <File md5="282A54679CD88C854984373CD4F1D83E" import="1">Lua/Gameplay/UniqueUnits/PMMMClockstopper.lua</File>
     <File md5="83959608796D55DAAA0641421C5363B8" import="1">Lua/Gameplay/UniqueUnits/PMMMHeraldOfMadoka.lua</File>
     <File md5="35B6D79E4EC46CA16924080D6D8A3210" import="1">Lua/Gameplay/UniqueUnits/PMMMMagiclaw.lua</File>
@@ -483,8 +483,8 @@
     <File md5="77D506B4D15C497A370D32BE5AB115F7" import="1">Lua/Gameplay/UniqueUnits/PMMMTiroMusketeer.lua</File>
     <File md5="56E49E2EE594F7AD0C0658036738C613" import="1">Lua/PMMMDataStorage.lua</File>
     <File md5="7B68E51E3630CD061D4CA3BB82C4C03C" import="1">Lua/PMMMDefines.lua</File>
-    <File md5="B68D763258754C3611AE7953CBED641F" import="1">Lua/PMMMGeneralFunctions.lua</File>
-    <File md5="4CE9861CF4147A48E2702C3DB58E8360" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
+    <File md5="D42DAFB3DE710AB6735D1887325B18F3" import="1">Lua/PMMMGeneralFunctions.lua</File>
+    <File md5="71F5F4D7966C7CD649C638AE5FAD2AA0" import="1">Lua/PMMMWishForTheWorldMain.lua</File>
     <File md5="CC5C9CB12EF560D14D4C8A77AF46296C" import="0">Lua/UI/MagicalGirlInfoPanel.lua</File>
     <File md5="4F8BA9AB4E7B38ED58845C38C00845B4" import="0">Lua/UI/MagicalGirlInfoPanel.xml</File>
     <File md5="2A53FE602925732FD331B821F698937A" import="0">Lua/UI/PleiadesFreezer.lua</File>

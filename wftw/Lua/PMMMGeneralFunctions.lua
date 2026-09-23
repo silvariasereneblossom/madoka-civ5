@@ -116,6 +116,13 @@ function PMMMMissionColumns(vMission)
 	end
 	return vMission ~= nil and tPMMMMissionColumns[vMission] or nil
 end
+--[port] Phase 6 Lekmod: Game.AnyoneHasAnyReligion is CP-only. It is only a gate; "any religion founded" is the
+--same gate on a DLL without it. Lives here so every context that includes PMMMGeneralFunctions can use it.
+function PMMMAnyoneHasAnyReligion()
+	if Game.AnyoneHasAnyReligion then return Game.AnyoneHasAnyReligion() end
+	return Game.GetNumReligionsFounded() > 0
+end
+
 
 local bPMMMCPPlayerAddMessage = nil        -- cached presence probes (nil = not probed yet)
 local bPMMMCPPlayerChangeInfluence = nil
