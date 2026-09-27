@@ -398,6 +398,16 @@ and a promotion carrier rather than a front-line unit.
 
 | 7 | Ai Yo: a Courthouse still lifts an annexed city's extra occupation Unhappiness, but pays it out as Gold each turn. | Trait column `PMMMCourthouseUnhappinessToGold` (Gold per point, 1); Lua only, `DemonHomuraCourthouseGold` in `PMMMDemonHomuraTrait.lua` on her per-turn hook. Extra per city = (captured-city minus ordinary-city) + population x (occupied minus ordinary per-pop) from the Defines: 2 + 0.34 x pop on CP, so about 3/5/7 Gold at population 5/10/15. Not shown in the Gold-per-turn tooltip; an alert fires when the amount changes. |
 
+Ruling 5 correction (same day): the first build counted only the two flat policy happiness modifiers, which no
+policy or tenet in the database uses, so it converted nothing. Policy happiness actually arrives per building
+(`Policy_BuildingClassHappiness`: Militarism +2 per Barracks/Armory/Military Academy, Police State +3 per
+Courthouse, Fortified Borders, Universal Healthcare and most Order/Freedom tenets), per garrison (Military Caste)
+and per population (Aristocracy). `GetPMMMPolicyHappiness` now counts all of these, so the militaristic options
+that exist to absorb conquest unhappiness (the maintainer's stated reason for the ruling) pay her in Culture.
+Only the flat modifiers are suppressed; the rest still shows as happiness, which does nothing for her. Policy
+unhappiness *reductions* (Monarchy -50% capital, Meritocracy -5%, Universal Suffrage) are not converted and
+slightly shrink her bonus.
+
 Ruling 5 note: the suppressed happiness was already inert for her, since her yield bonus reads gross unhappiness
 from cities and population rather than the net figure. The conversion is what makes Policy happiness worth
 anything to her at all, and it softens the culture weakness the rest of the kit creates.

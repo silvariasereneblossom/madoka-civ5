@@ -254,7 +254,7 @@ index 05605faa..1f39cd23 100644
  		return false;
  
 diff --git a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
-index 47b19f30..bafed21e 100644
+index 47b19f30..a5c81990 100644
 --- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp
 +++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
 @@ -148,6 +148,20 @@ CvPlayer::CvPlayer() :
@@ -334,15 +334,39 @@ index 47b19f30..bafed21e 100644
  	if (MOD_BALANCE_VP)
  	{
  		return GetExcessHappiness() < /*20*/ GD_INT_GET(SUPER_UNHAPPY_THRESHOLD);
-@@ -20960,6 +20995,190 @@ bool CvPlayer::IsEmpireSuperUnhappy() const
+@@ -20960,6 +20995,214 @@ bool CvPlayer::IsEmpireSuperUnhappy() const
  	return GetExcessHappiness() <= /*-20*/ GD_INT_GET(SUPER_UNHAPPY_THRESHOLD);
  }
  
-+/// Ai Yo: the happiness her policies and ideology tenets would grant
++/// Ai Yo: the happiness her policies and ideology tenets grant. Counted here rather than intercepted:
++/// the engine sums these in several places per DLL, and the happiness does nothing for her anyway (her
++/// bonus reads gross unhappiness). Almost all of it arrives per building (Militarism, Police State,
++/// Fortified Borders, Universal Healthcare and most Order/Freedom tenets), per garrison (Military
++/// Caste) or per population (Aristocracy); the two flat modifiers are kept for completeness.
 +int CvPlayer::GetPMMMPolicyHappiness() const
 +{
-+	int iHappiness = GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
-+	iHappiness += getNumCities() * GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);
++	CvPlayerPolicies* pPolicies = GetPlayerPolicies();
++	int iHappiness = pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
++	iHappiness += getNumCities() * pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);
++	const int iPerGarrison = GetHappinessPerGarrisonedUnit();
++	const int iPerXPopulation = GetHappinessPerXPopulation();
++	int iLoop;
++	for (const CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
++	{
++		if (iPerGarrison > 0 && pCity->GetGarrisonedUnit() != NULL)
++			iHappiness += iPerGarrison;
++		if (iPerXPopulation > 0 && !pCity->IsPuppet())
++			iHappiness += pCity->getPopulation() / iPerXPopulation;
++		for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); iBuilding++)
++		{
++			const int iNum = pCity->GetCityBuildings()->GetNumBuilding((BuildingTypes)iBuilding);
++			if (iNum <= 0)
++				continue;
++			CvBuildingEntry* pInfo = GC.getBuildingInfo((BuildingTypes)iBuilding);
++			if (pInfo != NULL)
++				iHappiness += pPolicies->GetBuildingClassHappinessModifier((BuildingClassTypes)pInfo->GetBuildingClassType()) * iNum;
++		}
++	}
 +	return max(iHappiness, 0);
 +}
 +
@@ -525,7 +549,7 @@ index 47b19f30..bafed21e 100644
  /// Uprisings pop up if the empire is Very Unhappy
  void CvPlayer::DoUpdateUprisings()
  {
-@@ -22166,16 +22385,27 @@ int CvPlayer::DoUpdateTotalUnhappiness(CvCity* pAssumeCityAnnexed, CvCity* pAssu
+@@ -22166,16 +22409,27 @@ int CvPlayer::DoUpdateTotalUnhappiness(CvCity* pAssumeCityAnnexed, CvCity* pAssu
  
  		// City Population Unhappiness
  		iUnhappiness += GetUnhappinessFromCityPopulation(pAssumeCityAnnexed, pAssumeCityPuppeted);
@@ -554,7 +578,7 @@ index 47b19f30..bafed21e 100644
  		iUnhappiness /= 100;
  	}
  
-@@ -24962,6 +25192,9 @@ void CvPlayer::SetGoldenAgeProgressMeterTimes100(int iValue)
+@@ -24962,6 +25216,9 @@ void CvPlayer::SetGoldenAgeProgressMeterTimes100(int iValue)
  /// Changes what is our progress towards the next GA
  void CvPlayer::ChangeGoldenAgeProgressMeterTimes100(int iChange)
  {
@@ -564,7 +588,7 @@ index 47b19f30..bafed21e 100644
  	if (GC.getGame().isOption(GAMEOPTION_NO_HAPPINESS))
  		return;
  
-@@ -25056,6 +25289,10 @@ bool CvPlayer::isGoldenAge() const
+@@ -25056,6 +25313,10 @@ bool CvPlayer::isGoldenAge() const
  // Adding any positive turns of Golden Age counts as triggering a new Golden Age, even if there's one going on
  void CvPlayer::changeGoldenAgeTurns(int iChange, bool bFree)
  {

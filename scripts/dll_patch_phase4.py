@@ -404,15 +404,41 @@ def patch_ai_yo_culture(src=None):
     # break the contiguity its own step checks for, and it would insert a second copy of itself.
     # Anchored on the START of the 2026-09-22 diplomacy block: inserting after that block's
     # last line would sit between it and the HELPERS block, with the same result.
+    # CP names the per-building policy happiness lookup GetBuildingClassHappinessModifier; Lekmod keeps vanilla's name.
+    BCH = ("GetBuildingClassHappinessModifier" if "GetBuildingClassHappinessModifier" in rd(src / "CvPolicyClasses.h")
+           else "GetBuildingClassHappiness")
     dip = ("//" + TAB + "--------------------------------------------------------------------------------" + nl +
            "// PMMM Ai Yo, 2026-09-22 ruling: no Declarations of Friendship, never a City-State's ally." + nl)
     if dip not in s:    # the Lekmod port writes those accessors without the banner comment
         dip = "/// Ai Yo: no Declarations of Friendship, either way" + nl
     s = once(s, dip,
-             "/// Ai Yo: the happiness her policies and ideology tenets would grant" + nl +
+             "/// Ai Yo: the happiness her policies and ideology tenets grant. Counted here rather than intercepted:" + nl +
+             "/// the engine sums these in several places per DLL, and the happiness does nothing for her anyway (her" + nl +
+             "/// bonus reads gross unhappiness). Almost all of it arrives per building (Militarism, Police State," + nl +
+             "/// Fortified Borders, Universal Healthcare and most Order/Freedom tenets), per garrison (Military" + nl +
+             "/// Caste) or per population (Aristocracy); the two flat modifiers are kept for completeness." + nl +
              "int CvPlayer::GetPMMMPolicyHappiness() const" + nl + "{" + nl +
-             TAB + "int iHappiness = GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);" + nl +
-             TAB + "iHappiness += getNumCities() * GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);" + nl +
+             TAB + "CvPlayerPolicies* pPolicies = GetPlayerPolicies();" + nl +
+             TAB + "int iHappiness = pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);" + nl +
+             TAB + "iHappiness += getNumCities() * pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);" + nl +
+             TAB + "const int iPerGarrison = GetHappinessPerGarrisonedUnit();" + nl +
+             TAB + "const int iPerXPopulation = GetHappinessPerXPopulation();" + nl +
+             TAB + "int iLoop;" + nl +
+             TAB + "for (const CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))" + nl +
+             TAB + "{" + nl +
+             TAB + TAB + "if (iPerGarrison > 0 && pCity->GetGarrisonedUnit() != NULL)" + nl +
+             TAB + TAB + TAB + "iHappiness += iPerGarrison;" + nl +
+             TAB + TAB + "if (iPerXPopulation > 0 && !pCity->IsPuppet())" + nl +
+             TAB + TAB + TAB + "iHappiness += pCity->getPopulation() / iPerXPopulation;" + nl +
+             TAB + TAB + "for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); iBuilding++)" + nl +
+             TAB + TAB + "{" + nl +
+             TAB + TAB + TAB + "const int iNum = pCity->GetCityBuildings()->GetNumBuilding((BuildingTypes)iBuilding);" + nl +
+             TAB + TAB + TAB + "if (iNum <= 0)" + nl + TAB + TAB + TAB + TAB + "continue;" + nl +
+             TAB + TAB + TAB + "CvBuildingEntry* pInfo = GC.getBuildingInfo((BuildingTypes)iBuilding);" + nl +
+             TAB + TAB + TAB + "if (pInfo != NULL)" + nl +
+             TAB + TAB + TAB + TAB + "iHappiness += pPolicies->" + BCH + "((BuildingClassTypes)pInfo->GetBuildingClassType()) * iNum;" + nl +
+             TAB + TAB + "}" + nl +
+             TAB + "}" + nl +
              TAB + "return max(iHappiness, 0);" + nl + "}" + nl + nl +
              "/// Ai Yo: twice that happiness, as Culture per turn" + nl +
              "int CvPlayer::GetPMMMCultureFromPolicyHappinessTimes100() const" + nl + "{" + nl +

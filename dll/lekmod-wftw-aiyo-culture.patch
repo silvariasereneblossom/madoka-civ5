@@ -1,6 +1,6 @@
 diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
---- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 13:15:18.384087800 -0400
-+++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 13:15:18.411637700 -0400
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 17:53:51.409579100 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 17:53:51.439582100 -0400
 @@ -177,6 +177,8 @@
  	, m_bPMMMNoIdeologyPressure(false)
  	, m_bPMMMNoFriendship(false)
@@ -20,15 +20,39 @@ diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPl
  	// Trait bonus which adds Culture for trade partners? 
  	iCulturePerTurn += GetJONSCulturePerTurnFromTraits() * 100;
  
-@@ -14885,6 +14890,52 @@
+@@ -14885,6 +14890,76 @@
  	return m_bPMMMNoIdeologyPressure;
  }
  
-+/// Ai Yo: the happiness her policies and ideology tenets would grant
++/// Ai Yo: the happiness her policies and ideology tenets grant. Counted here rather than intercepted:
++/// the engine sums these in several places per DLL, and the happiness does nothing for her anyway (her
++/// bonus reads gross unhappiness). Almost all of it arrives per building (Militarism, Police State,
++/// Fortified Borders, Universal Healthcare and most Order/Freedom tenets), per garrison (Military
++/// Caste) or per population (Aristocracy); the two flat modifiers are kept for completeness.
 +int CvPlayer::GetPMMMPolicyHappiness() const
 +{
-+	int iHappiness = GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
-+	iHappiness += getNumCities() * GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);
++	CvPlayerPolicies* pPolicies = GetPlayerPolicies();
++	int iHappiness = pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
++	iHappiness += getNumCities() * pPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);
++	const int iPerGarrison = GetHappinessPerGarrisonedUnit();
++	const int iPerXPopulation = GetHappinessPerXPopulation();
++	int iLoop;
++	for (const CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
++	{
++		if (iPerGarrison > 0 && pCity->GetGarrisonedUnit() != NULL)
++			iHappiness += iPerGarrison;
++		if (iPerXPopulation > 0 && !pCity->IsPuppet())
++			iHappiness += pCity->getPopulation() / iPerXPopulation;
++		for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); iBuilding++)
++		{
++			const int iNum = pCity->GetCityBuildings()->GetNumBuilding((BuildingTypes)iBuilding);
++			if (iNum <= 0)
++				continue;
++			CvBuildingEntry* pInfo = GC.getBuildingInfo((BuildingTypes)iBuilding);
++			if (pInfo != NULL)
++				iHappiness += pPolicies->GetBuildingClassHappiness((BuildingClassTypes)pInfo->GetBuildingClassType()) * iNum;
++		}
++	}
 +	return max(iHappiness, 0);
 +}
 +
@@ -73,7 +97,7 @@ diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPl
  /// Ai Yo: no Declarations of Friendship, either way
  bool CvPlayer::IsPMMMNoFriendship() const
  {
-@@ -15373,6 +15424,10 @@
+@@ -15373,6 +15448,10 @@
  /// Returns the amount of Happiness being added by Policies
  int CvPlayer::GetHappinessFromPolicies() const
  {
@@ -85,8 +109,8 @@ diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPl
  	iHappiness += (getNumCities() * m_pPlayerPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY));
  
 diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.h b/CvGameCoreDLL_Expansion2/CvPlayer.h
---- a/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 13:15:18.321016900 -0400
-+++ b/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 13:15:18.355561100 -0400
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 17:53:51.343631900 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 17:53:51.379055300 -0400
 @@ -615,6 +615,10 @@
  	bool IsPMMMNoIdeologyPressure() const;
  	bool IsPMMMNoFriendship() const;
@@ -108,8 +132,8 @@ diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.h b/CvGameCoreDLL_Expansion2/CvPlay
  	mutable int m_iPMMMCityCapStep;
  	mutable int m_iPMMMUnhappinessFromCitiesAndPop;
 diff -ru a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
---- a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 13:15:18.261966300 -0400
-+++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 13:15:18.290996300 -0400
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 17:53:51.272695000 -0400
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 17:53:51.311257400 -0400
 @@ -260,6 +260,7 @@
  	m_bPMMMNoIdeologyPressure(false),
  	m_bPMMMNoFriendship(false),
@@ -135,8 +159,8 @@ diff -ru a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp b/CvGameCoreDLL_Expansion
  	m_iPMMMCityCapUnhappinessStep = kResults.GetInt("PMMMCityCapUnhappinessStep");
  
 diff -ru a/CvGameCoreDLL_Expansion2/CvTraitClasses.h b/CvGameCoreDLL_Expansion2/CvTraitClasses.h
---- a/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 13:15:18.211567700 -0400
-+++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 13:15:18.236587400 -0400
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 17:53:51.197106100 -0400
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 17:53:51.236157000 -0400
 @@ -199,6 +199,7 @@
  	bool IsPMMMNoIdeologyPressure() const;
  	bool IsPMMMNoFriendship() const;
