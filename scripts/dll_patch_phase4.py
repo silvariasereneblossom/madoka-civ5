@@ -20,6 +20,14 @@ def wr(p, s):
     io.open(p, "w", encoding="utf-8", errors="surrogateescape", newline="").write(s)
 
 
+TAB = chr(9)
+
+
+def NL(text):
+    """The line ending this file uses."""
+    return chr(13) + chr(10) if chr(13) + chr(10) in text else chr(10)
+
+
 def once(s, old, new, label):
     if new in s:
         return s  # already applied
@@ -341,6 +349,124 @@ def patch_clara_doll_tag(src=None):
         wr(p, s)
 
 
+def patch_ai_yo_culture(src=None):
+    """2026-09-27 ruling: happiness a policy or ideology tenet would give Ai Yo becomes twice as much Culture
+    instead. Trait column PMMMPolicyHappinessToCulture. The happiness itself is suppressed (it is inert for her
+    anyway: her bonus reads gross unhappiness from cities and population, not the net figure), and the Culture is
+    added next to the engine's own excess-happiness-to-Culture component.
+
+    CP applies policy happiness per city (CvCity) while Lekmod applies it on the player (CvPlayer), so the
+    suppression differs; everything else is identical. As with the other steps, insertions sit at the boundaries
+    of blocks earlier steps inserted, never inside them."""
+    src = SRC if src is None else Path(src)
+
+    p = src / "CvTraitClasses.h"; s = rd(p); nl = NL(s)
+    s = once(s, TAB + "bool IsPMMMCannotAllyCityStates() const;" + nl,
+             TAB + "bool IsPMMMCannotAllyCityStates() const;" + nl + TAB + "bool IsPMMMPolicyHappinessToCulture() const;" + nl, "trait h decls 3")
+    s = once(s, TAB + "bool m_bPMMMCannotAllyCityStates;" + nl,
+             TAB + "bool m_bPMMMCannotAllyCityStates;" + nl + TAB + "bool m_bPMMMPolicyHappinessToCulture;" + nl, "trait h members 3")
+    wr(p, s)
+
+    p = src / "CvTraitClasses.cpp"; s = rd(p); nl = NL(s)
+    s = once(s, "bool CvTraitEntry::IsPMMMCannotAllyCityStates() const { return m_bPMMMCannotAllyCityStates; }" + nl,
+             "bool CvTraitEntry::IsPMMMCannotAllyCityStates() const { return m_bPMMMCannotAllyCityStates; }" + nl +
+             "bool CvTraitEntry::IsPMMMPolicyHappinessToCulture() const { return m_bPMMMPolicyHappinessToCulture; }" + nl, "trait getters 3")
+    s = once(s, TAB + 'm_bPMMMCannotAllyCityStates = kResults.GetBool("PMMMCannotAllyCityStates");' + nl,
+                TAB + 'm_bPMMMCannotAllyCityStates = kResults.GetBool("PMMMCannotAllyCityStates");' + nl +
+                TAB + 'm_bPMMMPolicyHappinessToCulture = kResults.GetBool("PMMMPolicyHappinessToCulture");' + nl, "trait cache 3")
+    ctor = TAB + "m_bPMMMCannotAllyCityStates(false)," + nl
+    if ctor in s:   # Lekmod initialises trait members in the constructor
+        s = once(s, ctor, ctor + TAB + "m_bPMMMPolicyHappinessToCulture(false)," + nl, "trait ctor 3")
+    wr(p, s)
+
+    p = src / "CvPlayer.h"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    # CP keeps the 2026-09-22 flags in their own diplomacy cache; the Lekmod port put them in the main one, so
+    # the anchors differ per tree. The code inserted is the same: this flag always gets its own small cache.
+    decl_anchor = ("\tvoid PMMMRefreshDiplomacyTraitCache() const;" + nl
+                   if "PMMMRefreshDiplomacyTraitCache" in s else "\tbool IsPMMMCannotAllyCityStates() const;" + nl)
+    s = once(s, decl_anchor,
+             decl_anchor +
+             "\tbool IsPMMMPolicyHappinessToCulture() const;" + nl +
+             "\tint GetPMMMPolicyHappiness() const;" + nl +
+             "\tint GetPMMMCultureFromPolicyHappinessTimes100() const;" + nl +
+             "\tvoid PMMMRefreshCultureTraitCache() const;" + nl, "player h decls 3")
+    s = once(s, "\tmutable bool m_bPMMMCannotAllyCityStates;" + nl,
+             "\tmutable bool m_bPMMMCannotAllyCityStates;" + nl +
+             "\tmutable int m_iPMMMCultureCacheLeader;" + nl +
+             "\tmutable bool m_bPMMMPolicyHappinessToCulture;" + nl, "player h members 3")
+    wr(p, s)
+
+    p = src / "CvPlayer.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    s = once(s, "\t, m_bPMMMCannotAllyCityStates(false)" + nl,
+             "\t, m_bPMMMCannotAllyCityStates(false)" + nl + "\t, m_iPMMMCultureCacheLeader(-2)" + nl +
+             "\t, m_bPMMMPolicyHappinessToCulture(false)" + nl, "player ctor 3")
+    # This flag gets its own cache rather than joining the diplomacy one: adding a line inside that block would
+    # break the contiguity its own step checks for, and it would insert a second copy of itself.
+    # Anchored on the START of the 2026-09-22 diplomacy block: inserting after that block's
+    # last line would sit between it and the HELPERS block, with the same result.
+    dip = ("//" + TAB + "--------------------------------------------------------------------------------" + nl +
+           "// PMMM Ai Yo, 2026-09-22 ruling: no Declarations of Friendship, never a City-State's ally." + nl)
+    if dip not in s:    # the Lekmod port writes those accessors without the banner comment
+        dip = "/// Ai Yo: no Declarations of Friendship, either way" + nl
+    s = once(s, dip,
+             "/// Ai Yo: the happiness her policies and ideology tenets would grant" + nl +
+             "int CvPlayer::GetPMMMPolicyHappiness() const" + nl + "{" + nl +
+             TAB + "int iHappiness = GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);" + nl +
+             TAB + "iHappiness += getNumCities() * GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);" + nl +
+             TAB + "return max(iHappiness, 0);" + nl + "}" + nl + nl +
+             "/// Ai Yo: twice that happiness, as Culture per turn" + nl +
+             "int CvPlayer::GetPMMMCultureFromPolicyHappinessTimes100() const" + nl + "{" + nl +
+             TAB + "if (!IsPMMMPolicyHappinessToCulture())" + nl + TAB + TAB + "return 0;" + nl + nl +
+             TAB + "return GetPMMMPolicyHappiness() * 2 * 100;" + nl + "}" + nl + nl +
+             "/// Ai Yo's Culture conversion flag, cached per leader and never serialized" + nl +
+             "void CvPlayer::PMMMRefreshCultureTraitCache() const" + nl + "{" + nl +
+             TAB + "const int iLeader = (int)getLeaderType();" + nl +
+             TAB + "if (m_iPMMMCultureCacheLeader == iLeader)" + nl + TAB + TAB + "return;" + nl + nl +
+             TAB + "m_iPMMMCultureCacheLeader = iLeader;" + nl +
+             TAB + "m_bPMMMPolicyHappinessToCulture = false;" + nl +
+             TAB + "if (iLeader < 0 || !isMajorCiv())" + nl + TAB + TAB + "return;" + nl + nl +
+             TAB + "const CvLeaderHeadInfo& kLeader = getLeaderInfo();" + nl +
+             TAB + "for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)" + nl + TAB + "{" + nl +
+             TAB + TAB + "if (!kLeader.hasTrait(iI))" + nl + TAB + TAB + TAB + "continue;" + nl +
+             TAB + TAB + "CvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);" + nl +
+             TAB + TAB + "if (pTrait != NULL && pTrait->IsPMMMPolicyHappinessToCulture())" + nl +
+             TAB + TAB + TAB + "m_bPMMMPolicyHappinessToCulture = true;" + nl +
+             TAB + "}" + nl + "}" + nl + nl +
+             "bool CvPlayer::IsPMMMPolicyHappinessToCulture() const" + nl + "{" + nl +
+             TAB + "PMMMRefreshCultureTraitCache();" + nl + TAB + "return m_bPMMMPolicyHappinessToCulture;" + nl + "}" + nl + nl +
+             dip, "player culture accessors")
+    # add the Culture, next to the engine's own excess-happiness component
+    cp_line = "\tiTmp = GetJONSCulturePerTurnFromExcessHappinessTimes100();" + nl
+    lek_line = "\tiCulturePerTurn += GetJONSCulturePerTurnFromExcessHappinessTimes100();" + nl
+    if cp_line in s:
+        s = once(s, cp_line, "\t// PMMM Ai Yo: the happiness her policies would have given, as Culture" + nl +
+                 "\tiTmp = GetPMMMCultureFromPolicyHappinessTimes100();" + nl +
+                 "\tiCulturePerTurn += iTmp;" + nl +
+                 "\tGC.getGame().BuildYieldTimes100HelpText(toolTipSink, \"TXT_KEY_TP_CULTURE_FROM_HAPPINESS\", iTmp, \"\");" + nl + nl +
+                 cp_line, "cp culture add")
+    else:
+        s = once(s, lek_line, lek_line + nl +
+                 "\t// PMMM Ai Yo: the happiness her policies would have given, as Culture" + nl +
+                 "\tiCulturePerTurn += GetPMMMCultureFromPolicyHappinessTimes100();" + nl, "lekmod culture add")
+        # Lekmod keeps policy happiness on the player: suppress it there
+        s = once(s, "int CvPlayer::GetHappinessFromPolicies() const" + nl + "{" + nl,
+                 "int CvPlayer::GetHappinessFromPolicies() const" + nl + "{" + nl +
+                 "\t// PMMM Ai Yo: converted to Culture instead (GetPMMMCultureFromPolicyHappinessTimes100)" + nl +
+                 "\tif (IsPMMMPolicyHappinessToCulture())" + nl + "\t\treturn 0;" + nl + nl, "lekmod happiness off")
+    wr(p, s)
+
+    # CP keeps policy happiness on the city: suppress it there
+    p = src / "CvCity.cpp"; s = rd(p); nl = "\r\n" if "\r\n" in s else "\n"
+    old = "\t\tiTotalHappiness += kPlayer.GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);" + nl
+    if old in s:
+        s = once(s, old, "\t\t// PMMM Ai Yo: her policy happiness becomes Culture instead" + nl +
+                 "\t\tif (!kPlayer.IsPMMMPolicyHappinessToCulture())" + nl + "\t" + old, "cp city happiness capital")
+        old2 = ("\tiTotalHappiness += kPlayer.GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY) + kPlayer.GetExtraHappinessPerCity();" + nl)
+        s = once(s, old2, "\tif (kPlayer.IsPMMMPolicyHappinessToCulture())" + nl +
+                 "\t\tiTotalHappiness += kPlayer.GetExtraHappinessPerCity();" + nl + "\telse" + nl + "\t" + old2, "cp city happiness per city")
+        wr(p, s)
+
+
 def patch_ai_yo_diplomacy():
     """2026-09-22 ruling: Ai Yo also means no Declarations of Friendship and no City-State alliances.
     Two more trait columns and four gates. Every insertion goes AFTER the last line (or before the first line)
@@ -437,4 +563,5 @@ if __name__ == "__main__":
     patch_culture_cpp()
     patch_ai_yo_diplomacy()
     patch_clara_doll_tag()
+    patch_ai_yo_culture()
     print("PMMM Phase 4 DLL changes applied to", SRC)

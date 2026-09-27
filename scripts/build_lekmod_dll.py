@@ -61,6 +61,8 @@ EXTRA_PATCHES = [
     (ROOT / "dll" / "lekmod-wftw-claradoll.patch", "CvGameCoreUtils.h", b"ePromotionClassOverride"),
     # 2026-09-22: PMMMGreatPersonExpended, the (player, unitID, unitType, x, y) hook WFTW needs.
     (ROOT / "dll" / "lekmod-wftw-gpexpended.patch", "CvPlayer.cpp", b"PMMMGreatPersonExpended"),
+    # 2026-09-27: Ai Yo turns policy and ideology happiness into twice as much Culture.
+    (ROOT / "dll" / "lekmod-wftw-aiyo-culture.patch", "CvPlayer.cpp", b"PMMMRefreshCultureTraitCache"),
 ]
 # Legacy conversion helpers (__ftol3/__ltod3) referenced by the prebuilt
 # FireWorks objects; see the header comment in the file itself.

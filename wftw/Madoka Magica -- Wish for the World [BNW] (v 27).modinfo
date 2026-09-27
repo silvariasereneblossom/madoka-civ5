@@ -564,14 +564,14 @@
     <File md5="E99F889A7D25D826DA36C5BD7A493A87" import="0">SQL/Shared/MGDefines.sql</File>
     <File md5="D8C09F7BBC6E3A0EC199B145242D77E7" import="0">SQL/Shared/MGCivilizations.sql</File>
     <File md5="A6BF79F18BC64A34CD79CF483575972F" import="0">SQL/Phase4/Madoka.sql</File>
-    <File md5="0EC1B1A25B55BB0647905E55B6138ED3" import="0">SQL/Phase4/Abilities.sql</File>
+    <File md5="205DFB79EF98B6C1AA41CA8F31A187C1" import="0">SQL/Phase4/Abilities.sql</File>
     <File md5="63104FE760563D87EB9DD28501AC6318" import="0">SQL/Phase4/Nagisa.sql</File>
     <File md5="25B6B89CCF932F4766E7253E0A4D94B3" import="0">SQL/Phase4/OrikoKirika.sql</File>
     <File md5="ED81892B558783E5BFDBF82D0AC23907" import="0">SQL/Phase4/Kyouko.sql</File>
     <File md5="4BAF184C1178AB2D33FAEBCE414BBBC3" import="0">SQL/Phase4/Mami.sql</File>
     <File md5="EA0D2390D2EEFA8DC6A41068480C7797" import="0">SQL/Phase4/UltimateMadoka.sql</File>
     <File md5="835263A67A9FC4096792F3F529B313E1" import="0">SQL/Phase4/Homura.sql</File>
-    <File md5="D001041DDC93070EEE1D2ABC79138DB1" import="0">SQL/Phase4/DemonHomura.sql</File>
+    <File md5="652BEEAF1AA945312B64E5FA9EC956A4" import="0">SQL/Phase4/DemonHomura.sql</File>
     <File md5="AE9E304D265CF0D33CB404CEB7547BA7" import="0">SQL/Phase4/Sayaka.sql</File>
     <File md5="E40735E9BFD09824EBFA6A5872352547" import="0">SQL/Phase4/KaoruUmika.sql</File>
     <File md5="418BCB10C26F21182687F7A7E56750B3" import="0">SQL/Shared/MGIconBuilder.sql</File>
@@ -584,7 +584,7 @@
     <File md5="8E968CB796E87F10284EBCF8B6E90C0D" import="0">SQL/Shared/NavalOutpost.sql</File>
     <File md5="DB0DF1CE20A39BDE8332889E708ADF79" import="0">SQL/Shared/PlayerColors.sql</File>
     <File md5="CFF4C1C4BAE6554C20C7DDA6150184BA" import="0">SQL/Shared/PMMMNonMGPromotions.sql</File>
-    <File md5="CD492F29F25ED554FE55700C8B78F590" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
+    <File md5="6246E02098DA71C0FE8B7ECB16AB8441" import="0">SQL/Shared/MadokaTableUpdates.sql</File>
     <File md5="FD01B1194B3EE011A39E86749EBDBF68" import="1">SQL/Shared/UnitArtDefines.sql</File>
     <File md5="5CA12672FE05C265D6C10749CC4510E5" import="0">SQL/Shared/WFTWConcepts.sql</File>
     <File md5="B0BD2983D305AE2DB0AB9CD52B234F36" import="0">SQL/Songhai/AskiaTrait.sql</File>

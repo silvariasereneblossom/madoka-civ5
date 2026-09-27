@@ -100,7 +100,8 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 -- Devil Homura, Ai Yo: +1% per 5 unhappiness from cities and population, up to +25%.
 UPDATE Traits SET PMMMIgnoreUnhappinessPenalties = 1, PMMMUnhappinessPerBonusPercent = 5, PMMMUnhappinessBonusMax = 25,
 	PMMMNoGoldenAges = 1, PMMMNoIdeologyPressure = 1,
-	PMMMNoFriendship = 1, PMMMCannotAllyCityStates = 1	-- 2026-09-22 ruling: no friendships, no City-State allies
+	PMMMNoFriendship = 1, PMMMCannotAllyCityStates = 1,	-- 2026-09-22 ruling: no friendships, no City-State allies
+	PMMMPolicyHappinessToCulture = 1	-- 2026-09-27 ruling: Policy/Ideology Happiness becomes twice as much Culture
 WHERE Type = 'TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS';
 
 -- Mami: every city past the fourth adds 4 unhappiness per city over (5 cities +4, 6 +16, 7 +36).

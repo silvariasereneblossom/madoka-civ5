@@ -1,0 +1,155 @@
+diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.cpp b/CvGameCoreDLL_Expansion2/CvPlayer.cpp
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 13:15:18.384087800 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.cpp	2026-09-27 13:15:18.411637700 -0400
+@@ -177,6 +177,8 @@
+ 	, m_bPMMMNoIdeologyPressure(false)
+ 	, m_bPMMMNoFriendship(false)
+ 	, m_bPMMMCannotAllyCityStates(false)
++	, m_iPMMMCultureCacheLeader(-2)
++	, m_bPMMMPolicyHappinessToCulture(false)
+ 	, m_iPMMMCityCapThreshold(0)
+ 	, m_iPMMMCityCapStep(0)
+ 	, m_iPMMMUnhappinessFromCitiesAndPop(0)
+@@ -12404,6 +12406,9 @@
+ 	// Special bonus which adds excess Happiness to Culture?
+ 	iCulturePerTurn += GetJONSCulturePerTurnFromExcessHappinessTimes100();
+ 
++	// PMMM Ai Yo: the happiness her policies would have given, as Culture
++	iCulturePerTurn += GetPMMMCultureFromPolicyHappinessTimes100();
++
+ 	// Trait bonus which adds Culture for trade partners? 
+ 	iCulturePerTurn += GetJONSCulturePerTurnFromTraits() * 100;
+ 
+@@ -14885,6 +14890,52 @@
+ 	return m_bPMMMNoIdeologyPressure;
+ }
+ 
++/// Ai Yo: the happiness her policies and ideology tenets would grant
++int CvPlayer::GetPMMMPolicyHappiness() const
++{
++	int iHappiness = GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
++	iHappiness += getNumCities() * GetPlayerPolicies()->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY);
++	return max(iHappiness, 0);
++}
++
++/// Ai Yo: twice that happiness, as Culture per turn
++int CvPlayer::GetPMMMCultureFromPolicyHappinessTimes100() const
++{
++	if (!IsPMMMPolicyHappinessToCulture())
++		return 0;
++
++	return GetPMMMPolicyHappiness() * 2 * 100;
++}
++
++/// Ai Yo's Culture conversion flag, cached per leader and never serialized
++void CvPlayer::PMMMRefreshCultureTraitCache() const
++{
++	const int iLeader = (int)getLeaderType();
++	if (m_iPMMMCultureCacheLeader == iLeader)
++		return;
++
++	m_iPMMMCultureCacheLeader = iLeader;
++	m_bPMMMPolicyHappinessToCulture = false;
++	if (iLeader < 0 || !isMajorCiv())
++		return;
++
++	const CvLeaderHeadInfo& kLeader = getLeaderInfo();
++	for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
++	{
++		if (!kLeader.hasTrait(iI))
++			continue;
++		CvTraitEntry* pTrait = GC.getTraitInfo((TraitTypes)iI);
++		if (pTrait != NULL && pTrait->IsPMMMPolicyHappinessToCulture())
++			m_bPMMMPolicyHappinessToCulture = true;
++	}
++}
++
++bool CvPlayer::IsPMMMPolicyHappinessToCulture() const
++{
++	PMMMRefreshCultureTraitCache();
++	return m_bPMMMPolicyHappinessToCulture;
++}
++
+ /// Ai Yo: no Declarations of Friendship, either way
+ bool CvPlayer::IsPMMMNoFriendship() const
+ {
+@@ -15373,6 +15424,10 @@
+ /// Returns the amount of Happiness being added by Policies
+ int CvPlayer::GetHappinessFromPolicies() const
+ {
++	// PMMM Ai Yo: converted to Culture instead (GetPMMMCultureFromPolicyHappinessTimes100)
++	if (IsPMMMPolicyHappinessToCulture())
++		return 0;
++
+ 	int iHappiness = m_pPlayerPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS);
+ 	iHappiness += (getNumCities() * m_pPlayerPolicies->GetNumericModifier(POLICYMOD_EXTRA_HAPPINESS_PER_CITY));
+ 
+diff -ru a/CvGameCoreDLL_Expansion2/CvPlayer.h b/CvGameCoreDLL_Expansion2/CvPlayer.h
+--- a/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 13:15:18.321016900 -0400
++++ b/CvGameCoreDLL_Expansion2/CvPlayer.h	2026-09-27 13:15:18.355561100 -0400
+@@ -615,6 +615,10 @@
+ 	bool IsPMMMNoIdeologyPressure() const;
+ 	bool IsPMMMNoFriendship() const;
+ 	bool IsPMMMCannotAllyCityStates() const;
++	bool IsPMMMPolicyHappinessToCulture() const;
++	int GetPMMMPolicyHappiness() const;
++	int GetPMMMCultureFromPolicyHappinessTimes100() const;
++	void PMMMRefreshCultureTraitCache() const;
+ 	int GetPMMMCityCapUnhappiness() const;
+ 	void PMMMRefreshTraitCache() const;
+ 
+@@ -2045,6 +2049,8 @@
+ 	mutable bool m_bPMMMNoIdeologyPressure;
+ 	mutable bool m_bPMMMNoFriendship;
+ 	mutable bool m_bPMMMCannotAllyCityStates;
++	mutable int m_iPMMMCultureCacheLeader;
++	mutable bool m_bPMMMPolicyHappinessToCulture;
+ 	mutable int m_iPMMMCityCapThreshold;
+ 	mutable int m_iPMMMCityCapStep;
+ 	mutable int m_iPMMMUnhappinessFromCitiesAndPop;
+diff -ru a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 13:15:18.261966300 -0400
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.cpp	2026-09-27 13:15:18.290996300 -0400
+@@ -260,6 +260,7 @@
+ 	m_bPMMMNoIdeologyPressure(false),
+ 	m_bPMMMNoFriendship(false),
+ 	m_bPMMMCannotAllyCityStates(false),
++	m_bPMMMPolicyHappinessToCulture(false),
+ 	m_iPMMMCityCapThreshold(0),
+ 	m_iPMMMCityCapUnhappinessStep(0),
+ #endif
+@@ -902,6 +903,7 @@
+ bool CvTraitEntry::IsPMMMNoIdeologyPressure() const { return m_bPMMMNoIdeologyPressure; }
+ bool CvTraitEntry::IsPMMMNoFriendship() const { return m_bPMMMNoFriendship; }
+ bool CvTraitEntry::IsPMMMCannotAllyCityStates() const { return m_bPMMMCannotAllyCityStates; }
++bool CvTraitEntry::IsPMMMPolicyHappinessToCulture() const { return m_bPMMMPolicyHappinessToCulture; }
+ int CvTraitEntry::GetPMMMCityCapThreshold() const { return m_iPMMMCityCapThreshold; }
+ int CvTraitEntry::GetPMMMCityCapUnhappinessStep() const { return m_iPMMMCityCapUnhappinessStep; }
+ 
+@@ -1832,6 +1834,7 @@
+ 	m_bPMMMNoIdeologyPressure = kResults.GetBool("PMMMNoIdeologyPressure");
+ 	m_bPMMMNoFriendship = kResults.GetBool("PMMMNoFriendship");
+ 	m_bPMMMCannotAllyCityStates = kResults.GetBool("PMMMCannotAllyCityStates");
++	m_bPMMMPolicyHappinessToCulture = kResults.GetBool("PMMMPolicyHappinessToCulture");
+ 	m_iPMMMCityCapThreshold = kResults.GetInt("PMMMCityCapThreshold");
+ 	m_iPMMMCityCapUnhappinessStep = kResults.GetInt("PMMMCityCapUnhappinessStep");
+ 
+diff -ru a/CvGameCoreDLL_Expansion2/CvTraitClasses.h b/CvGameCoreDLL_Expansion2/CvTraitClasses.h
+--- a/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 13:15:18.211567700 -0400
++++ b/CvGameCoreDLL_Expansion2/CvTraitClasses.h	2026-09-27 13:15:18.236587400 -0400
+@@ -199,6 +199,7 @@
+ 	bool IsPMMMNoIdeologyPressure() const;
+ 	bool IsPMMMNoFriendship() const;
+ 	bool IsPMMMCannotAllyCityStates() const;
++	bool IsPMMMPolicyHappinessToCulture() const;
+ 	int GetPMMMCityCapThreshold() const;
+ 	int GetPMMMCityCapUnhappinessStep() const;
+ 
+@@ -496,6 +497,7 @@
+ 	bool m_bPMMMNoIdeologyPressure;
+ 	bool m_bPMMMNoFriendship;
+ 	bool m_bPMMMCannotAllyCityStates;
++	bool m_bPMMMPolicyHappinessToCulture;
+ 	int m_iPMMMCityCapThreshold;
+ 	int m_iPMMMCityCapUnhappinessStep;
+ 

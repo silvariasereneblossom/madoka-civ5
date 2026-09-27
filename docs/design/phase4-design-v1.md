@@ -393,7 +393,14 @@ Ruling 4's rationale: upgrading dolls late was a gold and turn sink just to fiel
 tree. A late-built doll stays a Swordsman chassis on purpose (28 strength by the Modern era): cheap, spammable,
 and a promotion carrier rather than a front-line unit.
 
-Both DLLs carry rulings 2-4: CP via `scripts/dll_patch_phase4.py` (`patch_ai_yo_diplomacy`), Lekmod via
+| 5 | Ai Yo: [ICON_HAPPINESS_1] Happiness that Policies and Ideology tenets would give her becomes twice as much [ICON_CULTURE] Culture instead. | Trait column `PMMMPolicyHappinessToCulture`; DLL adds `GetPMMMPolicyHappiness` (the two policy happiness modifiers) and `GetPMMMCultureFromPolicyHappinessTimes100`, added beside the engine's own excess-happiness-to-Culture component; the happiness itself is suppressed (CP: in `CvCity`, Lekmod: in `CvPlayer::GetHappinessFromPolicies`). |
+| 6 | The Ai Yo trait description overflowed the trait window; shortened. | `SQL/Phase4/DemonHomura.sql`, 780 -> 522 characters over 5 lines. The Civilopedia entry keeps the long form. |
+
+Ruling 5 note: the suppressed happiness was already inert for her, since her yield bonus reads gross unhappiness
+from cities and population rather than the net figure. The conversion is what makes Policy happiness worth
+anything to her at all, and it softens the culture weakness the rest of the kit creates.
+
+Both DLLs carry rulings 2-5: CP via `scripts/dll_patch_phase4.py` (`patch_ai_yo_diplomacy`), Lekmod via
 `dll/lekmod-wftw-aiyo-diplomacy.patch` (an `EXTRA_PATCHES` entry). Patch-script rule learned the hard way: new
 steps insert only at the boundaries of blocks earlier steps inserted, never inside them, or those steps stop
 recognising themselves and insert a second copy.

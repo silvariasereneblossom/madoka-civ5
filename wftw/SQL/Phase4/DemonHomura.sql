@@ -513,12 +513,12 @@ UPDATE Units SET ShowInPedia = 0 WHERE Type = 'UNIT_PMMM_INCUBATOR_SLAVE';
 INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS_SHORT', 'Ai Yo'),
 	('TXT_KEY_TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS',
-		'Suffers no penalties from [ICON_HAPPINESS_4] Unhappiness: no revolts, and no loss of yields, growth or [ICON_STRENGTH] Combat Strength.[NEWLINE]'
-		|| 'Every 5 [ICON_HAPPINESS_4] Unhappiness from Cities and Population gives +1% to all yields and +1% [ICON_STRENGTH] Combat Strength (up to +25%).[NEWLINE]'
-		|| '[ICON_GREAT_PEOPLE] Prodigies are born 50% slower and never become Magical Girls.[NEWLINE]'
-		|| 'Can never enter a [ICON_GOLDEN_AGE] Golden Age, and is immune to Ideological pressure.[NEWLINE]'
-		|| 'Cannot make Declarations of Friendship, and City-States can never become her allies.[NEWLINE]'
-		|| 'Killing a Witch grants 10 [ICON_GOLD] Gold (+3 per Era); clearing a Witch''s Labyrinth grants 25 [ICON_GOLD] Gold (+10 per Era).'),
+		--[2026-09-27] Kept short: the long form overflowed the trait window. The Civilopedia entry carries the detail.
+		'No [ICON_HAPPINESS_4] Unhappiness penalties. Instead, +1% Yields and [ICON_STRENGTH] Combat Strength per 5 [ICON_HAPPINESS_4] Unhappiness from Cities and Population (max +25%).[NEWLINE]'
+		|| 'Policy and Ideology [ICON_HAPPINESS_1] Happiness becomes 2x [ICON_CULTURE] Culture.[NEWLINE]'
+		|| '[ICON_GREAT_PEOPLE] Prodigies: -50% rate, never Magical Girls.[NEWLINE]'
+		|| 'No [ICON_GOLDEN_AGE] Golden Ages, Ideology pressure, Friendships or City-State allies.[NEWLINE]'
+		|| 'Witches: 10 [ICON_GOLD] (+3 per Era). Labyrinths: 25 [ICON_GOLD] (+10 per Era).'),
 
 	('TXT_KEY_CIVILOPEDIA_LEADERS_DEMON_HOMURA_TEXT_1',
 		'[ICON_BULLET]Ai Yo: no penalty from [ICON_HAPPINESS_4] Unhappiness ever applies to her. Her cities never revolt, and her yields, growth and [ICON_STRENGTH] Combat Strength never drop however unhappy her people are; the game treats her as never unhappy.[NEWLINE]'
