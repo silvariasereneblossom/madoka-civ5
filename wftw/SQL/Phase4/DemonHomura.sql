@@ -515,7 +515,7 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 	('TXT_KEY_TRAIT_NO_GREAT_PEOPLE_CAPITAL_YIELD_FROM_MG_KILLS',
 		--[2026-09-27] Kept short: the long form overflowed the trait window. The Civilopedia entry carries the detail.
 		'No [ICON_HAPPINESS_4] Unhappiness penalties. Instead, +1% Yields and [ICON_STRENGTH] Combat Strength per 5 [ICON_HAPPINESS_4] Unhappiness from Cities and Population (max +25%).[NEWLINE]'
-		|| 'Policy and Ideology [ICON_HAPPINESS_1] Happiness becomes 2x [ICON_CULTURE] Culture.[NEWLINE]'
+		|| 'Policy and Ideology [ICON_HAPPINESS_1] Happiness becomes 2x [ICON_CULTURE] Culture. Courthouses turn occupation [ICON_HAPPINESS_4] Unhappiness into [ICON_GOLD] Gold.[NEWLINE]'
 		|| '[ICON_GREAT_PEOPLE] Prodigies: -50% rate, never Magical Girls.[NEWLINE]'
 		|| 'No [ICON_GOLDEN_AGE] Golden Ages, Ideology pressure, Friendships or City-State allies.[NEWLINE]'
 		|| 'Witches: 10 [ICON_GOLD] (+3 per Era). Labyrinths: 25 [ICON_GOLD] (+10 per Era).'),
@@ -533,6 +533,8 @@ INSERT OR REPLACE INTO Language_en_US (Tag, Text) VALUES
 		'You killed the Witch and crushed its [ICON_PMMM_GRIEF_SEED] Grief Seed, absorbing its energy into your Dark Orb and earning {1_Num} [ICON_GOLD] Gold.'),
 	('TXT_KEY_PMMM_ALERT_LABYRINTH_GOLD_DEMON_HOMURA',
 		'The Witch''s Labyrinth is torn down and its hoard is yours: {1_Num} [ICON_GOLD] Gold.'),
+	('TXT_KEY_PMMM_ALERT_AI_YO_COURTHOUSE_GOLD',
+		'Your Courthouses now wring {1_Num} [ICON_GOLD] Gold a turn from the conquered.'),
 
 	('TXT_KEY_UNIT_PMMM_CLARA_DOLL_HELP',
 		'Unique Swordsman replacement for Meikyuu no Homura. 16 [ICON_STRENGTH] Combat Strength (Swordsman 14) and 2 [ICON_MOVES] Movement, and +2 [ICON_STRENGTH] Combat Strength for every Era that has passed. Never becomes obsolete: it can be built in any Era. Earns Magical Girl promotions from experience instead of the usual melee promotions, and keeps both the Magical Girl tree and the Era bonus when it upgrades.'),

@@ -396,6 +396,8 @@ and a promotion carrier rather than a front-line unit.
 | 5 | Ai Yo: [ICON_HAPPINESS_1] Happiness that Policies and Ideology tenets would give her becomes twice as much [ICON_CULTURE] Culture instead. | Trait column `PMMMPolicyHappinessToCulture`; DLL adds `GetPMMMPolicyHappiness` (the two policy happiness modifiers) and `GetPMMMCultureFromPolicyHappinessTimes100`, added beside the engine's own excess-happiness-to-Culture component; the happiness itself is suppressed (CP: in `CvCity`, Lekmod: in `CvPlayer::GetHappinessFromPolicies`). |
 | 6 | The Ai Yo trait description overflowed the trait window; shortened. | `SQL/Phase4/DemonHomura.sql`, 780 -> 522 characters over 5 lines. The Civilopedia entry keeps the long form. |
 
+| 7 | Ai Yo: a Courthouse still lifts an annexed city's extra occupation Unhappiness, but pays it out as Gold each turn. | Trait column `PMMMCourthouseUnhappinessToGold` (Gold per point, 1); Lua only, `DemonHomuraCourthouseGold` in `PMMMDemonHomuraTrait.lua` on her per-turn hook. Extra per city = (captured-city minus ordinary-city) + population x (occupied minus ordinary per-pop) from the Defines: 2 + 0.34 x pop on CP, so about 3/5/7 Gold at population 5/10/15. Not shown in the Gold-per-turn tooltip; an alert fires when the amount changes. |
+
 Ruling 5 note: the suppressed happiness was already inert for her, since her yield bonus reads gross unhappiness
 from cities and population rather than the net figure. The conversion is what makes Policy happiness worth
 anything to her at all, and it softens the culture weakness the rest of the kit creates.

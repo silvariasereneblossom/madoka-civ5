@@ -23,6 +23,7 @@ ALTER TABLE Traits ADD COLUMN 'PMMMNoIdeologyPressure' BOOLEAN DEFAULT 0 NOT NUL
 ALTER TABLE Traits ADD COLUMN 'PMMMNoFriendship' BOOLEAN DEFAULT 0 NOT NULL;			--Ai Yo: no Declarations of Friendship either way (DLL)
 ALTER TABLE Traits ADD COLUMN 'PMMMCannotAllyCityStates' BOOLEAN DEFAULT 0 NOT NULL;	--Ai Yo: City-States can be Friends, never allies (DLL)
 ALTER TABLE Traits ADD COLUMN 'PMMMPolicyHappinessToCulture' BOOLEAN DEFAULT 0 NOT NULL;	--Ai Yo: Policy/Ideology Happiness becomes 2x Culture (DLL)
+ALTER TABLE Traits ADD COLUMN 'PMMMCourthouseUnhappinessToGold' INTEGER DEFAULT 0;	--Ai Yo: Gold per point of occupation Unhappiness a Courthouse lifts (Lua)
 -- Mami's city soft cap: every non-puppet city past the threshold adds Step x (cities over) unhappiness.
 ALTER TABLE Traits ADD COLUMN 'PMMMCityCapThreshold' INTEGER DEFAULT 0 NOT NULL;
 ALTER TABLE Traits ADD COLUMN 'PMMMCityCapUnhappinessStep' INTEGER DEFAULT 0 NOT NULL;

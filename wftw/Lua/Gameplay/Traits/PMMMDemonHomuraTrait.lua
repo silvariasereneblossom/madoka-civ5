@@ -57,7 +57,55 @@ end
 --Mood and deal attrition damage to enemy Magical Girls in her territory; all three are retired.
 --Ai Yo clauses 1, 2 and 4 (no unhappiness penalties, yield/combat scaling with unhappiness, no
 --Golden Age, ideology immunity) are applied by the DLL trait columns, not here. No-op.
+--[2026-09-27 ruling] Ai Yo: a Courthouse still lifts the extra Unhappiness an annexed city carries while
+--occupied, but pays that amount out as Gold every turn (Traits.PMMMCourthouseUnhappinessToGold = Gold per point).
+--It is a choice per city: keep the Unhappiness (it feeds the Ai Yo bonus) or build the Courthouse for Gold.
+--"Extra" is what occupation adds over an ordinary city, from the Defines, so it follows either DLL's values.
+local tPMMMCourthouseGoldRate = {}	-- player -> Gold per point, read from her trait once
+local tPMMMCourthouseLastGold = {}	-- player -> last payout, so the alert only speaks when it changes
+
+local function PMMMCourthouseGoldRate(iPlayer)
+	if tPMMMCourthouseGoldRate[iPlayer] == nil then
+		local iRate = 0
+		local pPlayer = Players[iPlayer]
+		local pLeader = pPlayer and GameInfo.Leaders[pPlayer:GetLeaderType()]
+		if pLeader then
+			for row in GameInfo.Leader_Traits("LeaderType = '" .. pLeader.Type .. "'") do
+				local pTrait = GameInfo.Traits[row.TraitType]
+				if pTrait and (pTrait.PMMMCourthouseUnhappinessToGold or 0) > iRate then
+					iRate = pTrait.PMMMCourthouseUnhappinessToGold
+				end
+			end
+		end
+		tPMMMCourthouseGoldRate[iPlayer] = iRate
+	end
+	return tPMMMCourthouseGoldRate[iPlayer]
+end
+
+function DemonHomuraCourthouseGold(iPlayer)
+	local iRate = PMMMCourthouseGoldRate(iPlayer)
+	if iRate <= 0 then return end
+	local pPlayer = Players[iPlayer]
+	local fPerCity = math.max(0, (GameDefines.UNHAPPINESS_PER_CAPTURED_CITY or 0) - (GameDefines.UNHAPPINESS_PER_CITY or 0))
+	local fPerPop = math.max(0, (GameDefines.UNHAPPINESS_PER_OCCUPIED_POPULATION or 0) - (GameDefines.UNHAPPINESS_PER_POPULATION or 0))
+	local fExtra = 0
+	for pCity in pPlayer:Cities() do
+		if pCity:IsOccupied() and pCity:IsNoOccupiedUnhappiness() and not pCity:IsPuppet() then
+			fExtra = fExtra + fPerCity + fPerPop * pCity:GetPopulation()
+		end
+	end
+	local iGold = math.floor(fExtra * iRate)
+	if iGold > 0 then
+		pPlayer:ChangeGold(iGold)
+	end
+	if iPlayer == Game.GetActivePlayer() and iGold ~= (tPMMMCourthouseLastGold[iPlayer] or 0) and iGold > 0 then
+		Events.GameplayAlertMessage(Locale.ConvertTextKey("TXT_KEY_PMMM_ALERT_AI_YO_COURTHOUSE_GOLD", iGold))
+	end
+	tPMMMCourthouseLastGold[iPlayer] = iGold
+end
+
 function DemonHomuraOnTurnFunctions(iPlayer)
+	DemonHomuraCourthouseGold(iPlayer)
 end
 
 --[port] Phase 4: the capital city-view addin ("Stolen Magical Energy") is retired. The bootstrapper
